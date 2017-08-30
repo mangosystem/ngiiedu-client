@@ -16,7 +16,7 @@
 
 >### 3. Global Package 설치
 
-    'npm install -g babel webpack webpack-dev-server'
+>>`npm install -g babel webpack webpack-dev-server`
 >### 4. React Project 적용
 >>* react project 파일을 다운로드 합니다.
 >>* 압축을 해제하고 cmd에서 폴더의 경로로 이동합니다.
