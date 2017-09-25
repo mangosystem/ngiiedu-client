@@ -30,10 +30,12 @@ class MainContainer extends React.Component {
 
 	handleNextStep() {
 		const {stepIndex} = this.state;
+
 		this.setState({
 			stepIndex: stepIndex + 1,
 			finished: stepIndex >= 2
 		})
+
 	}
 
 	handlePrevStep() {
