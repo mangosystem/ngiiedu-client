@@ -10,15 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^4.0.0-beta",
+    "css-loader": "^0.28.5",
+    "jquery": "^3.2.1",
+    "material-ui": "^0.19.2",
+    "material-ui-search-bar": "^0.4.0",
+    "popper.js": "^1.12.5",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "redux": "^3.7.2",
     "react-tap-event-plugin": "^2.0.1",
-    "css-loader": "^0.28.5",
-    "style-loader": "^0.18.2",
-    "material-ui": "^0.19.0"
+    "redux": "^3.7.2",
+    "style-loader": "^0.18.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
