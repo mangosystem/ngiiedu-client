@@ -10,6 +10,8 @@ import TeacherListMainContainer from './teacherList/MainContainer';
 // import CoursesListContainer from './courses/course/list/MainContainer';
 import CoursesNewContainer from './courses/course/new/MainContainer';
 
+import SchoolsSyncContainer from './schools/sync/MainContainer';
+
 class App extends Component {
   render() {
     return (
@@ -22,6 +24,10 @@ class App extends Component {
                   <Route path="/teacher" component={TeacherListMainContainer}/>
 
                   <Route path="/courses/new" component={CoursesNewContainer}/>
+
+
+                  //학교 동기화
+                  <Route path="/schools/sync" component={SchoolsSyncContainer}/>
 
               </Switch>
           </div>
