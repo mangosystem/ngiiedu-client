@@ -1,59 +1,112 @@
 import React from 'react';
-import { GridList, GridTile } from 'material-ui/GridList';
+import {GridList, GridTile} from 'material-ui/GridList';
+import {List, ListItem} from 'material-ui/List';
 
-const tilesData = [
-  {
-    img: './img/a.jpg',
-    title: '우리지역 소음지도'
-  }, {
-		img: './img/a.jpg',
-    title: '우리동네 안전지도'
-  }, {
-		img: './img/a.jpg',
-    title: 'GPS 활용 위치학습'
-  }, {
-		img: './img/a.jpg',
-    title: '우리지역 인구지도'
-  }, {
-		img: './img/a.jpg',
-    title: '통합적 영토교육'
-  }, {
-		img: './img/a.jpg',
-    title: '우리학교 운동장 생태지도'
-  }, {
-		img: './img/a.jpg',
-    title: '지도 정확성'
-  }, {
-		img: './img/a.jpg',
-    title: '독도의 중요성'
+import Paper from 'material-ui/Paper';
+import Checkbox from 'material-ui/Checkbox';
+import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
+
+const style = {
+  item: {
+    selected: {
+      width: 200,
+      height: 250,
+      margin: 10,
+      display: 'inline-block',
+      borderStyle: 'solid',
+      borderColor: '#26C6DA'
+    },
+    unSelected: {
+      width: 200,
+      height: 250,
+      margin: 10,
+      display: 'inline-block',
+      borderStyle: 'none'
+    }
   }
-];
+};
 
 class Step1Module extends React.Component {
 
 	constructor() {
 		super();
 		this.state = {
+      items: []
 		};
+    this.onSelectionModule = this.onSelectionModule.bind(this);
 	}
+
+  componentWillMount() {
+    ajaxJson(
+			['GET', apiSvr+'/modules.json'],
+			null,
+			function(res) {
+        this.setState({
+          items: res.response.data
+        });
+			}.bind(this),
+			function(xhr, status, err) {
+				alert('Error');
+			}.bind(this)
+		);
+  }
+
+  onSelectionModule(itemId) {
+    this.props.onSelectedModule(itemId);
+  }
 
 	render() {
 		return (
-      <div>
-				<GridList
-					cols={3}
-					cellHeight={150}
-				>
-					{tilesData.map((tile, i) => (
-						<GridTile
-							key={i}
-							title={tile.title}
-						>
-							<img src={tile.img} />
-							</GridTile>
-					))}
-				</GridList>
-			</div>
+      <div style={{textAlign: 'center'}}>
+      {(() => {
+        const {items} = this.state;
+        if (items.length > 0) {
+
+          let itemCells = (
+            items.map((item, i) => (
+              <Paper
+                key={i}
+                style={this.props.selectedItem == item.idx ? style.item.selected : style.item.unSelected}
+                zDepth={1}
+              >
+                <Paper
+                  zDepth={0}
+                  style={{
+                    height:'150px',
+                    backgroundImage: 'url(' + item.moduleMetadata + ')',
+                    backgroundSize: 'auto',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => this.onSelectionModule(item.idx)}
+                >
+                  <IconButton iconClassName="muidocs-icon-custom-github" />
+                </Paper>
+                <p style={{paddingTop: '5px', paddingBottom: '5px'}}>{item.moduleName}</p>
+                <br />
+                <RaisedButton
+                  label="상세정보"
+                />
+              </Paper>
+            ))
+          );
+
+          return (
+            <div>
+              {itemCells}
+            </div>
+          )
+        } else {
+          return (
+            <div>
+              <img src="https://react.semantic-ui.com//assets/images/wireframe/paragraph.png" />
+            </div>
+          )
+        }
+      })()}
+      </div>
 		)
 	}
 }

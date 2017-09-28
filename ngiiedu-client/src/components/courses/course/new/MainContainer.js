@@ -1,4 +1,6 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
+
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import Divider from 'material-ui/Divider';
 import SearchBar from 'material-ui-search-bar'
@@ -19,23 +21,33 @@ class MainContainer extends React.Component {
 			finished: false,
 			stepIndex: 0,
 
+			processing: false,
+
 			selectedModule: null,
-			selectedWork: null,
-			selectedInfo: null
+			selectedWorks: [],
+
+			courseName: '',
+			courseMetadata: {
+				courseDesc: '',
+				schoolLevel: '',
+				schoolOffice: '',
+				schoolName: '',
+				studentGrade: '',
+				studentClass: ''
+			}
 		};
 
 		this.handleNextStep = this.handleNextStep.bind(this);
 		this.handlePrevStep = this.handlePrevStep.bind(this);
-	}
 
-	handleNextStep() {
-		const {stepIndex} = this.state;
+		this.onSelectedModule = this.onSelectedModule.bind(this);
+		this.onSelectedWorks = this.onSelectedWorks.bind(this);
 
-		this.setState({
-			stepIndex: stepIndex + 1,
-			finished: stepIndex >= 2
-		})
+		this.onChangedCourseName = this.onChangedCourseName.bind(this);
+		this.onChangedCourseMetadata = this.onChangedCourseMetadata.bind(this);
 
+		this.onCourseCreate = this.onCourseCreate.bind(this);
+		this.onClickCoursePage = this.onClickCoursePage.bind(this);
 	}
 
 	handlePrevStep() {
@@ -45,14 +57,88 @@ class MainContainer extends React.Component {
 				stepIndex: stepIndex - 1
 			})
 		}
+
+		if (stepIndex == 1) {
+			this.setState({
+				selectedModule: null,
+				selectedWorks: []
+			});
+		}
+	}
+
+	handleNextStep() {
+		const {stepIndex} = this.state;
+
+		if (stepIndex == 2) {
+			this.onCourseCreate();
+
+		} else {
+			this.setState({
+				stepIndex: stepIndex + 1,
+				finished: stepIndex >= 2
+			});
+		}
+
+	}
+
+	onSelectedModule(itemId) {
+		this.setState({
+			selectedModule: itemId
+		});
+	}
+
+	onSelectedWorks(itemIds) {
+		this.setState({
+			selectedWorks: itemIds
+		});
+	}
+
+	onChangedCourseName(name) {
+		this.setState({
+			courseName: name
+		});
+	}
+
+	onChangedCourseMetadata(metaObject) {
+		this.setState({
+			courseMetadata: metaObject
+		});
+	}
+
+	onCourseCreate() {
+		const {state} = this;
+
+		ajaxJson(
+			['POST', apiSvr+'/courses.json'],
+			{
+				moduleId: state.selectedModule,
+				moduleWorkIds: state.selectedWorks,
+				courseName: state.courseName,
+				courseMetadata: JSON.stringify(state.courseMetadata)
+			},
+			function(res) {
+				this.setState({
+					stepIndex: 3,
+					finished: true
+				});
+
+			}.bind(this),
+			function(xhr, status, err) {
+				alert('Error');
+			}.bind(this)
+		);
+	}
+
+	onClickCoursePage(courseId) {
+		// browserHistory.push('/course/' + courseId);
 	}
 
 	render() {
 		return (
-			<div style={{padding: '10px'}}>
+			<div style={{padding: '20px'}}>
 				<Stepper
 					activeStep={this.state.stepIndex}
-					style={{width: '50%', margin: 'auto'}}
+					style={{margin: '0 auto'}}
 				>
 					<Step>
 						<StepLabel>수업모듈 선택</StepLabel>
@@ -70,26 +156,38 @@ class MainContainer extends React.Component {
 
 				<Divider style={{marginTop: '20px', marginBottom: '50px'}} />
 
+				<div>
 				{(() => {
 					if (this.state.stepIndex == 0) {
 						return (
-							<Step1Module />
+							<Step1Module
+								selectedItem={this.state.selectedModule}
+								onSelectedModule={this.onSelectedModule}
+							/>
 						)
 					}	else if (this.state.stepIndex == 1) {
-							return (
-								<Step2Work />
-							)
+						return (
+							<Step2Work
+								selectedModule={this.state.selectedModule}
+								selectedItems={this.state.selectedWorks}
+								onSelectedWorks={this.onSelectedWorks}
+							/>
+						)
 					}	else if (this.state.stepIndex == 2) {
-							return (
-								<Step3Info />
-							)
+						return (
+							<Step3Info
+								onChangedCourseName={this.onChangedCourseName}
+								onChangedCourseMetadata={this.onChangedCourseMetadata}
+							/>
+						)
 					}	else if (this.state.stepIndex == 3) {
-							return (
-								<Step4Complete />
-							)
+						return (
+							<Step4Complete />
+						)
 					} else {
 					}
 				})()}
+				</div>
 
 				<Divider style={{marginTop: '50px', marginBottom: '20px'}} />
 
@@ -106,6 +204,13 @@ class MainContainer extends React.Component {
 								<RaisedButton
 									label={this.state.stepIndex == 2 ? '완료' : '다음'}
 									primary={true}
+									disabled={
+										this.state.processing ||
+										this.state.stepIndex == 0 && this.state.selectedModule == null ||
+										this.state.stepIndex == 1 && this.state.selectedWorks.length < 1 ||
+										this.state.stepIndex == 2 && this.state.courseName == ''
+										? true : false
+									}
 									onClick={this.handleNextStep}
 								/>
 							</div>
@@ -116,6 +221,7 @@ class MainContainer extends React.Component {
 								<RaisedButton
 									label={'수업페이지로 이동'}
 									primary={true}
+									onClick={this.onClickCoursePage}
 								/>
 							</div>
 						)

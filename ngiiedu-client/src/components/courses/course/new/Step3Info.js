@@ -4,7 +4,6 @@ import AutoComplete from 'material-ui/AutoComplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-
 const stItems = [
 	<MenuItem key={0} value={null} primaryText="" />,
 	<MenuItem key={1} value={'초등학교'} primaryText="초등학교" />,
@@ -25,34 +24,87 @@ class Step3Info extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			schoolType: '',
-			eduOffice: ''
+			courseName: null,
+			courseDesc: null,
+			schoolLevel: null,
+			schoolOffice: null,
+			schoolName: null,
+			studentGrade: null,
+			studentClass: null
 		};
 
-		this.handleNewRequest = this.handleNewRequest.bind(this);
-		this.handleSchoolType = this.handleSchoolType.bind(this);
-		this.handleEduOffice = this.handleEduOffice.bind(this);
+		this.onChangeCourseName = this.onChangeCourseName.bind(this);
+		this.onChangeCourseDesc = this.onChangeCourseDesc.bind(this);
+		this.onChangeSchoolLevel = this.onChangeSchoolLevel.bind(this);
+		this.onChangeSchoolOffice = this.onChangeSchoolOffice.bind(this);
+		this.onChangeSchoolName = this.onChangeSchoolName.bind(this);
+		this.onChangeStudentGrade = this.onChangeStudentGrade.bind(this);
+		this.onChangeStudentClass = this.onChangeStudentClass.bind(this);
+
+		this.onChangedCourseMetadata = this.onChangedCourseMetadata.bind(this);
 	}
 
-	handleNewRequest() {
-		console.log('handleNewRequest');
+	onChangeCourseName(e, v) {
 		this.setState({
-			searchText: '',
+			courseName: v
 		});
+		this.props.onChangedCourseName(v);
 	}
 
-	handleSchoolType(e, i, v) {
-		console.log(v);
+	onChangeCourseDesc(e, v) {
 		this.setState({
-			schoolType: v
+			courseDesc: v
 		});
+		this.onChangedCourseMetadata(v);
 	}
 
-	handleEduOffice(e, i, v) {
-		console.log(v);
+	onChangeSchoolLevel(e, i, v) {
 		this.setState({
-			eduOffice: v
+			schoolLevel: v
 		});
+		this.onChangedCourseMetadata();
+	}
+
+	onChangeSchoolOffice(e, i, v) {
+		this.setState({
+			schoolOffice: v
+		});
+		this.onChangedCourseMetadata();
+	}
+
+	onChangeSchoolName(e, i, v) {
+		this.setState({
+			schoolName: v
+		});
+		this.onChangedCourseMetadata();
+	}
+
+	onChangeStudentGrade(e, v) {
+		this.setState({
+			studentGrade: v
+		});
+		this.onChangedCourseMetadata();
+	}
+
+	onChangeStudentClass(e, v) {
+		this.setState({
+			studentClass: v
+		});
+		this.onChangedCourseMetadata();
+	}
+
+	onChangedCourseMetadata() {
+		const {state} = this;
+		let metadata = {
+			courseDesc: state.courseDesc,
+			schoolLevel: state.schoolLevel,
+			schoolOffice: state.schoolOffice,
+			schoolName: state.schoolName,
+			studentGrade: state.studentGrade,
+			studentClass: state.studentClass
+		}
+
+		this.props.onChangedCourseMetadata(metadata);
 	}
 
 	render() {
@@ -64,20 +116,22 @@ class Step3Info extends React.Component {
 					floatingLabelFixed={true}
 					fullWidth={true}
 					errorText=""
+					onChange={this.onChangeCourseName}
 				/>
 				<br />
 				<TextField
 					floatingLabelText="수업내용"
 					floatingLabelFixed={false}
 					fullWidth={true}
+					onChange={this.onChangeCourseDesc}
 				/>
 				<br />
 
 				<SelectField
 					floatingLabelText="학교급구분"
 					floatingLabelFixed={false}
-					value={this.state.schoolType}
-					onChange={this.handleSchoolType}
+					value={this.state.schoolLevel}
+					onChange={this.onChangeSchoolLevel}
 				>
 					{stItems}
 				</SelectField>
@@ -85,8 +139,8 @@ class Step3Info extends React.Component {
 				<SelectField
 					floatingLabelText="시도교육청명"
 					floatingLabelFixed={false}
-					value={this.state.eduOffice}
-					onChange={this.handleEduOffice}
+					value={this.state.schoolOffice}
+					onChange={this.onChangeSchoolOffice}
 				>
 					{eoItems}
 				</SelectField>
@@ -95,7 +149,7 @@ class Step3Info extends React.Component {
 					floatingLabelText="학교명"
 					floatingLabelFixed={false}
 					searchText={this.state.searchText}
-					onNewRequest={this.handleNewRequest}
+					onUpdateInput={this.onChangeSchoolName}
 					dataSource={[]}
 					openOnFocus={true}
 				/>
@@ -104,6 +158,7 @@ class Step3Info extends React.Component {
 					floatingLabelText="학년"
 					floatingLabelFixed={false}
 					inputStyle={{textAlign: 'center'}}
+					onChange={this.onChangeStudentGrade}
 					style={{width: '100px'}}
 				/>
 				-
@@ -111,6 +166,7 @@ class Step3Info extends React.Component {
 					floatingLabelText="반"
 					floatingLabelFixed={false}
 					inputStyle={{textAlign: 'center'}}
+					onChange={this.onChangeStudentClass}
 					style={{width: '100px'}}
 				/>
 			</div>
