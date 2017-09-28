@@ -1,0 +1,14 @@
+.SyncAPIStep1TextColumn{
+    width:45%;
+    border: 1px solid black;
+    text-align:center;
+    float:left; 
+}
+
+.SyncAPIStep1APIColumn{
+    width:45%;
+    border: 1px solid black;
+    text-align:center;
+    display:inline-block;
+    
+}

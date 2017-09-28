@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LeftMenu from  './LeftMenu';
+import LeftMenu from  '../common/LeftMenu';
 import SelectSyncWay from './SelectSyncWay';
 
 
@@ -7,8 +7,7 @@ class MainContainer extends Component {
     render() {
         return (
             <div>
-                <LeftMenu/>
-
+                <SelectSyncWay/>
             </div>
         );
     }

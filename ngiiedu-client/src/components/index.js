@@ -10,7 +10,12 @@ import TeacherListMainContainer from './teacherList/MainContainer';
 // import CoursesListContainer from './courses/course/list/MainContainer';
 import CoursesNewContainer from './courses/course/new/MainContainer';
 
+//학교 동기화
 import SchoolsSyncContainer from './schools/sync/MainContainer';
+import SchoolsSyncFileContainer from './schools/sync/file/MainContainer';
+import SchoolsSyncApiContainer from './schools/sync/api/MainContainer';
+
+
 
 class App extends Component {
   render() {
@@ -27,8 +32,13 @@ class App extends Component {
 
 
                   //학교 동기화
+                  <Route path="/schools/sync/file" component={SchoolsSyncFileContainer}/>
+                  <Route path="/schools/sync/api" component={SchoolsSyncApiContainer}/>
                   <Route path="/schools/sync" component={SchoolsSyncContainer}/>
 
+                  
+                  
+                  
               </Switch>
           </div>
       </BrowserRouter>
