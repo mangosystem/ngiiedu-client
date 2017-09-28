@@ -15,7 +15,7 @@ import SchoolsSyncContainer from './schools/sync/MainContainer';
 import SchoolsSyncFileContainer from './schools/sync/file/MainContainer';
 import SchoolsSyncApiContainer from './schools/sync/api/MainContainer';
 
-
+import UsersManageContainer from './users/manage/MainContainer';
 
 class App extends Component {
   render() {
@@ -36,7 +36,7 @@ class App extends Component {
                   <Route path="/schools/sync/api" component={SchoolsSyncApiContainer}/>
                   <Route path="/schools/sync" component={SchoolsSyncContainer}/>
 
-                  
+                  <Route path="/users/manage" component={UsersManageContainer}/>
                   
                   
               </Switch>

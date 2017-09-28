@@ -46,6 +46,8 @@ class Header extends React.Component {
                             <Link to="/"><MenuItem>메인화면</MenuItem></Link>
                             <Link to="/school"><MenuItem>학교목록</MenuItem></Link>
                             <Link to="/teacher"><MenuItem>교사목록</MenuItem></Link>
+                            <Link to="/courses/new"><MenuItem>수업개설</MenuItem></Link>
+                            <Link to="/users/manage"><MenuItem>사용자 관리</MenuItem></Link>
                     </div>
                 </Drawer>
 
