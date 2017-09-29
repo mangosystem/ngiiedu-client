@@ -11,7 +11,6 @@ import MenuItem from 'material-ui/MenuItem';
 
 //아이콘
 import Assignment from 'material-ui/svg-icons/action/assignment';
-import Sort from 'material-ui/svg-icons/action/swap-vert';
 import { blue400 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 
@@ -41,7 +40,12 @@ class List extends React.Component {
             value: '',
             category: 'userid',
             open: false,
-            detail: {}
+            detail: {},
+            isAscById: false,
+            isAscByName: true,
+            isAscByEmail: true,
+            isAscByDivision: true,
+            isAscByState: true
         };
     }
 
@@ -160,7 +164,52 @@ class List extends React.Component {
 
     }
 
-    sortJson (name) {
+    sortJson(name) {
+
+        if (name == 'userid') {
+            this.state.isAscById ? this.setState({ 
+                users: this.state.users.sort(this.sortJsonAsc(name)),
+                isAscById: !this.state.isAscById
+            }) : this.setState({
+                users: this.state.users.sort(this.sortJsonDesc(name)),
+                isAscById: !this.state.isAscById
+            });
+        } else if (name == 'userName') {
+            this.state.isAscByName ? this.setState({ 
+                users: this.state.users.sort(this.sortJsonAsc(name)),
+                isAscByName: !this.state.isAscByName
+            }) : this.setState({
+                users: this.state.users.sort(this.sortJsonDesc(name)),
+                isAscByName: !this.state.isAscByName
+            });
+        } else if (name == 'userEmail') {
+            this.state.isAscByEmail ? this.setState({ 
+                users: this.state.users.sort(this.sortJsonAsc(name)),
+                isAscByEmail: !this.state.isAscByEmail
+            }) : this.setState({
+                users: this.state.users.sort(this.sortJsonDesc(name)),
+                isAscByEmail: !this.state.isAscByEmail
+            });
+        } else if (name == 'userDivision') {
+            this.state.isAscByDivision ? this.setState({ 
+                users: this.state.users.sort(this.sortJsonAsc(name)),
+                isAscByDivision: !this.state.isAscByDivision
+            }) : this.setState({
+                users: this.state.users.sort(this.sortJsonDesc(name)),
+                isAscByDivision: !this.state.isAscByDivision
+            });
+        } else if (name == 'userState') {
+            this.state.isAscByState ? this.setState({ 
+                users: this.state.users.sort(this.sortJsonAsc(name)),
+                isAscByState: !this.state.isAscByState
+            }) : this.setState({
+                users: this.state.users.sort(this.sortJsonDesc(name)),
+                isAscByState: !this.state.isAscByState
+            });
+        }
+    }
+
+    sortJsonAsc (name) {
         
         return function(o, p) {
     
@@ -168,16 +217,11 @@ class List extends React.Component {
     
             if (typeof o === 'object' && typeof p === 'object' && o && p) {
     
-                a = o[name];
-    
-                b = p[name];
-    
-    
+                a = o[name];    
+                b = p[name];    
     
                 if (a === b) {
-
-                    return 0;
-    
+                    return 0;    
                 }
     
                 if (typeof a === typeof b) {
@@ -188,16 +232,43 @@ class List extends React.Component {
     
             } else {
     
-                throw {
+                throw {    
+                    name : 'Error',    
+                    message : 'Expected an object when sorting by ' + name    
+                };    
+            }    
+        };
     
-                    name : 'Error',
+    }
+
+    sortJsonDesc (name) {
+        
+        return function(o, p) {
     
-                    message : 'Expected an object when sorting by ' + name
+            var a, b;
     
-                };
+            if (typeof o === 'object' && typeof p === 'object' && o && p) {
     
-            }
+                a = o[name];    
+                b = p[name];    
     
+                if (a === b) {
+                    return 0;    
+                }
+    
+                if (typeof a === typeof b) {
+                    return a < b ? 1 : -1;
+    
+                }
+                return typeof a < typeof b ? 1 : -1;
+    
+            } else {
+    
+                throw {    
+                    name : 'Error',    
+                    message : 'Expected an object when sorting by ' + name    
+                };    
+            }    
         };
     
     }
@@ -251,48 +322,43 @@ class List extends React.Component {
                         <TableRow>
                             <TableHeaderColumn>
                                 아이디
-                                <IconButton>
-                                    <Sort
-                                        color={blue400}
-                                        onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userid")) })}}
-                                    />
-                                </IconButton>
+                                <i 
+                                    className="fa fa-sort" 
+                                    aria-hidden="true" 
+                                    onMouseUp={() => this.sortJson("userid")}>
+                                </i>                
                             </TableHeaderColumn>
                             <TableHeaderColumn>
                                 이름
-                                <IconButton>
-                                <Sort
-                                    color={blue400}
-                                    onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userName")) })}}
-                                />
-                            </IconButton>
+                                <i 
+                                    className="fa fa-sort"
+                                    aria-hidden="true" 
+                                    onMouseUp={() => this.sortJson("userName")}>
+                                </i> 
                             </TableHeaderColumn>
                             <TableHeaderColumn>
                                 이메일
-                                <IconButton>
-                                <Sort
-                                    color={blue400}
-                                    onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userEmail")) })}}
-                                />
-                            </IconButton>
+                                <i 
+                                    className="fa fa-sort"
+                                    aria-hidden="true" 
+                                    onMouseUp={() => this.sortJson("userEmail")}>
+                                </i> 
                             </TableHeaderColumn>
                             <TableHeaderColumn>
                                 사용자구분
-                                <IconButton>
-                                <Sort
-                                    color={blue400}
-                                    onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userDivision")) })}}
-                                />
-                            </IconButton>
+                                <i 
+                                    className="fa fa-sort"
+                                    aria-hidden="true" 
+                                    onMouseUp={() => this.sortJson("userDivision")}>
+                                </i> 
                             </TableHeaderColumn>
                             <TableHeaderColumn>
                                 상태
-                                <IconButton>
-                                <Sort
-                                    color={blue400}
-                                    onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userState")) })}}
-                                />
-                            </IconButton>
+                                <i 
+                                    className="fa fa-sort"
+                                    aria-hidden="true" 
+                                    onMouseUp={() => this.sortJson("userState")}>
+                                </i>
                             </TableHeaderColumn>
                             <TableHeaderColumn>
                                 상세정보
