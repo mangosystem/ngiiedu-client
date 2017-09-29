@@ -15,40 +15,91 @@ class SampleCheckEdit extends Component {
     constructor(){
         super();
         this.state = {
-            columnIndex: []
-
+            columnIndex: [],
+            dbColumnIndex:[],
+            menuItemStyle:[]
         };
 
         this.handleChange = this.handleChange.bind(this);
     }
-    componentWillMount(){
-        for(var i = 0;i<this.props.apiColumn.length;i++){
-            console.log(i);
-        }
-        this.props.apiColumn.indexOf(this.props.dbColumn[0])
-        
-    }
-
+//value menuList의 value , idx : 선택된 SelectField의 index
     handleChange(event, key, value, idx){
-        console.log(event);
+        let dbColumnIndex = this.state.dbColumnIndex;
+        dbColumnIndex[idx]=value;
+        this.setState({
+            dbColumnIndex:dbColumnIndex
+        });
+        // console.log("columnIndex"+this.state.columnIndex);
+        console.log("dbColumnIndex"+this.state.dbColumnIndex);
         
+        // apiColumn=this.props.apiColumn;
+        // for(var i =0;i<columnIndex.length;i++){
+        //     apiColumn[]
+        // }
+        var styleArray=[];
+        for(var i =0;i<this.props.apiColumn.length;i++){
+            styleArray.push({
+                display:"block"
+            })
+        }
+
+        for(var i =0;i<dbColumnIndex.length;i++){
+            styleArray[dbColumnIndex[i]]={
+                display:"none"
+            }
+        }
+
+        this.setState({
+            menuItemStyle:styleArray 
+        })
+
+        
+
+
     }
 
     componentWillReceiveProps(nextProps){
         let dbColumn = nextProps.dbColumn;
         let apiColumn = nextProps.apiColumn;
-        let tempArray =[];
+        var tempArray =[];
+        var tempArray2 =[];
 
-        for(var i=0;i<dbColumn.length;i++){
-            tempArray.push(apiColumn.indexOf(dbColumn[i]));
+        // for(var i=0;i<dbColumn.length;i++){
+        //     tempArray.push(apiColumn.indexOf(dbColumn[i]));
+        //     tempArray2.push(apiColumn.indexOf(dbColumn[i]));
+        // }
+        var styleArray=[]
+        for(var i=0;i<apiColumn.length;i++){
+            styleArray.push({
+                display:"block"
+            })
         }
 
-        this.setState({
-            columnIndex:tempArray
-        })
-        // console.log("배열" + tempArray.toString());
+        for(var i=0;i<dbColumn.length;i++){
 
-        // console.log("componentWillReceiveProps: " + JSON.stringify(nextProps));
+            let index = apiColumn.indexOf(dbColumn[i])
+            tempArray.push(index);
+
+            // this.state.menuItemStyle[index]={
+            //     display:"none"
+            // };
+
+            styleArray[index]={
+                display:"none"
+            };
+            // tempArray2.push(apiColumn.indexOf(dbColumn[i]));
+        }
+
+        
+
+        this.setState({
+            // columnIndex:tempArray,
+            dbColumnIndex:tempArray,
+            menuItemStyle:styleArray
+        })
+
+        console.log("tempArray"+tempArray);
+
     }
 
     render() {
@@ -67,33 +118,17 @@ class SampleCheckEdit extends Component {
                     
                     <SelectField
                         hintText="Select a name"
-                        value={this.state.columnIndex[idx]}
+                        value={this.state.dbColumnIndex[idx]}
                         onChange={(event, key, value) => this.handleChange(event, key, value, idx)}
                     >
-                    {this.state.columnIndex.map((row, idx) => (
-                        <MenuItem key={idx} value={this.state.columnIndex[idx]} primaryText={this.props.apiColumn[this.state.columnIndex[idx]]} />
-                    ))}
+                    {/* {this.state.columnIndex.map((row, idx) => (
+                        <MenuItem key={idx} style={this.state.menuItemStyle[idx]} value={this.state.columnIndex[idx]} primaryText={this.props.apiColumn[this.state.columnIndex[idx]]} />
+                    ))} */}
+                        <MenuItem  style={{display:"block"}} value={-1} primaryText={"선택안함"} />
 
-                    {/* <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[0])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[0])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[1])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[1])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[2])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[2])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[3])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[3])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[4])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[4])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[5])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[5])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[6])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[6])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[7])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[7])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[8])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[8])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[9])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[9])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[10])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[10])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[11])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[11])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[12])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[12])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[13])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[13])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[14])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[14])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[15])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[15])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[16])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[16])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[17])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[17])]} />
-                    <MenuItem value={this.props.apiColumn.indexOf(this.props.dbColumn[18])} primaryText={this.props.apiColumn[this.props.apiColumn.indexOf(this.props.dbColumn[18])]} />
-                     */}
+                    {this.props.apiColumn.map((row, idx) => (
+                        <MenuItem key={idx} style={this.state.menuItemStyle[idx]} value={idx} primaryText={this.props.apiColumn[idx]} />
+                    ))}
 
                     </SelectField>
                 </div>
