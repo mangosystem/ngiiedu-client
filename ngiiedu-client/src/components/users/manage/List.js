@@ -107,7 +107,7 @@ class List extends React.Component {
         }
         
         ajaxJson(
-			['PUT', 'http://localhost:8080/ngiiedu/api/v1/users/userState/' + contact.userid + '.json'],
+			['PUT', 'http://localhost:8080/ngiiedu/api/v1/users/' + contact.userid + '.json'],
 			{
 				"userState": value
 			},
