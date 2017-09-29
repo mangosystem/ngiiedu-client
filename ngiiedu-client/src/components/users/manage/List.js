@@ -11,7 +11,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 //아이콘
 import Assignment from 'material-ui/svg-icons/action/assignment';
-import Sort from 'material-ui/svg-icons/content/sort';
+import Sort from 'material-ui/svg-icons/action/swap-vert';
 import { blue400 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 
@@ -132,10 +132,6 @@ class List extends React.Component {
 		);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return (JSON.stringify(nextState) != JSON.stringify(this.state));
-    }
-
     handleClose() {
         this.setState({open: false});
     }
@@ -163,6 +159,49 @@ class List extends React.Component {
         });
 
     }
+
+    sortJson (name) {
+        
+        return function(o, p) {
+    
+            var a, b;
+    
+            if (typeof o === 'object' && typeof p === 'object' && o && p) {
+    
+                a = o[name];
+    
+                b = p[name];
+    
+    
+    
+                if (a === b) {
+
+                    return 0;
+    
+                }
+    
+                if (typeof a === typeof b) {
+                    return a < b ? -1 : 1;
+    
+                }
+                return typeof a < typeof b ? -1 : 1;
+    
+            } else {
+    
+                throw {
+    
+                    name : 'Error',
+    
+                    message : 'Expected an object when sorting by ' + name
+    
+                };
+    
+            }
+    
+        };
+    
+    }
+        
 
     render() {
 
@@ -213,14 +252,51 @@ class List extends React.Component {
                             <TableHeaderColumn>
                                 아이디
                                 <IconButton>
-                                    <Sort color={blue400}/>
+                                    <Sort
+                                        color={blue400}
+                                        onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userid")) })}}
+                                    />
                                 </IconButton>
                             </TableHeaderColumn>
-                            <TableHeaderColumn>이름</TableHeaderColumn>
-                            <TableHeaderColumn>이메일</TableHeaderColumn>
-                            <TableHeaderColumn>사용자구분</TableHeaderColumn>
-                            <TableHeaderColumn>상태</TableHeaderColumn>
-                            <TableHeaderColumn>상세정보</TableHeaderColumn>
+                            <TableHeaderColumn>
+                                이름
+                                <IconButton>
+                                <Sort
+                                    color={blue400}
+                                    onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userName")) })}}
+                                />
+                            </IconButton>
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                이메일
+                                <IconButton>
+                                <Sort
+                                    color={blue400}
+                                    onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userEmail")) })}}
+                                />
+                            </IconButton>
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                사용자구분
+                                <IconButton>
+                                <Sort
+                                    color={blue400}
+                                    onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userDivision")) })}}
+                                />
+                            </IconButton>
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                상태
+                                <IconButton>
+                                <Sort
+                                    color={blue400}
+                                    onMouseUp={() => {this.setState({ users: this.state.users.sort(this.sortJson("userState")) })}}
+                                />
+                            </IconButton>
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                상세정보
+                            </TableHeaderColumn>
                             </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false} className="TableBody">
@@ -287,5 +363,6 @@ class List extends React.Component {
         );
     }
 }
+
 
 export default List;
