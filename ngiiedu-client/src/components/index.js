@@ -4,11 +4,15 @@ import {BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 
 
 import MainContainer  from './mainSample/MainContainer';
-import SchoolListMainContainer from './schoolList/MainContainer';
+// import SchoolListMainContainer from './schoolList/MainContainer';
 import TeacherListMainContainer from './teacherList/MainContainer';
 
 // import CoursesListContainer from './courses/course/list/MainContainer';
 import CoursesNewContainer from './courses/course/new/MainContainer';
+
+//학교 목록 관리
+import SchoolListMainContainer from './schools/list/MainContainer';
+
 
 //학교 동기화
 import SchoolsSyncContainer from './schools/sync/MainContainer';
@@ -24,8 +28,8 @@ class App extends Component {
           <div>
               <Route exact path="/" component={MainContainer}/>
               <Switch>
-                  <Route path="/school/:name" component={SchoolListMainContainer}/>
-                  <Route path="/school" component={SchoolListMainContainer}/>
+                  <Route path="/schools/:name" component={SchoolListMainContainer}/>
+                  <Route path="/schoos/list" component={SchoolListMainContainer}/>
                   <Route path="/teacher" component={TeacherListMainContainer}/>
 
                   <Route path="/courses/new" component={CoursesNewContainer}/>
