@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Header from '../../common/Header';
-
 import List from './List';
+import UserPopup from './UserPopup';
 
 class MainContainer extends React.Component {
     render() {
@@ -10,6 +10,7 @@ class MainContainer extends React.Component {
             <div>
                 <Header />
                 <List />
+                <UserPopup />
             </div>
         );
     }

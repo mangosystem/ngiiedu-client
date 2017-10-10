@@ -14,3 +14,16 @@ export const actionSample2 =(color) =>({
     type :types.ACTION_SAMPLE2,
     color,
 });
+
+
+// UserPopup 상세정보
+export const actionUserid = (userid) => ({
+    type: types.USERID,
+    userid
+});
+
+// UserPopup
+export const actionOpen = (open) => ({
+    type: types.ACTION_OPEN,
+    open
+});
