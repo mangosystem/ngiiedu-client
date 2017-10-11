@@ -2,7 +2,9 @@ import * as types from '../actions/ActionTypes';
 
 const userInitialState = {
     userid: 'user1',
-    open: false
+    open: false,
+    category: 'userid',
+    keyword: ''
 };
 
 const user = (state = userInitialState, action) => {
@@ -14,6 +16,11 @@ const user = (state = userInitialState, action) => {
         case types.ACTION_OPEN:
             return Object.assign({}, state, {
                 open: action.open
+            });
+        case types.ACTION_SEARCH:
+            return Object.assign({}, state, {
+                category: action.category,
+                keyword: action.keyword
             });
         default:
             return state;

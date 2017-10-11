@@ -33,3 +33,9 @@ export const actionSchoolSyncEditColumn = (editColumn)=>({
     type: types.SCHOOLS_SYNC_EDITCOLUMN,
     editColumn
 });
+
+export const actionSearch = (category, keyword) => ({
+    type: types.ACTION_SEARCH,
+    category,
+    keyword
+});

@@ -63,10 +63,10 @@ class List extends React.Component {
 
     }
 
-    search() {
+    componentWillReceiveProps(nextProps) {
         
-        let keyword = this.state.value;
-        let category = this.state.category;
+        let keyword = nextProps.keyword;
+        let category = nextProps.category;
 
         $.ajax({
             url: 'http://localhost:8080/ngiiedu/api/v1/users.json',
@@ -257,33 +257,6 @@ class List extends React.Component {
 
         return (
             <div>
-                <div 
-                    style={{
-                        margin: '20px auto',
-                        maxWidth: '60%'
-                    }}
-                >
-                    <SelectField
-                        floatingLabelText="카테고리"
-                        value={this.state.category}
-                        onChange={this.handleChange.bind(this)}
-                        style={{
-                            maxWidth: '20%'
-                        }}
-                    >
-                        <MenuItem value="userid" primaryText="아이디" />
-                        <MenuItem value="userName" primaryText="이름" />
-                        <MenuItem value="userEmail" primaryText="이메일" />
-                    </SelectField>
-
-                    <SearchBar
-                        onChange={(value) => this.setState({value: value})}
-                        onRequestSearch={this.search.bind(this)}
-                        style={{
-                            maxWidth: '75%'
-                        }}
-                    />
-                </div>
                 <Table 
                    selectable={false}
                    className="Table"
@@ -299,7 +272,7 @@ class List extends React.Component {
                                     className="fa fa-sort" 
                                     aria-hidden="true" 
                                     onMouseUp={() => this.sortJson("userid")}>
-                                </i>                
+                                </i>
                             </TableHeaderColumn>
                             <TableHeaderColumn>
                                 이름
@@ -367,6 +340,11 @@ class List extends React.Component {
     }
 }
 
+let mapStateToProps = (state) => ({
+    category: state.user.category,
+    keyword: state.user.keyword
+});
+
 let mapDispatchToProps = (dispatch) => {
     return {
         updateUserid: (userid) => dispatch(actionUserid(userid)),
@@ -374,6 +352,6 @@ let mapDispatchToProps = (dispatch) => {
     };
 }
 
-List = connect(undefined, mapDispatchToProps)(List);
+List = connect(mapStateToProps, mapDispatchToProps)(List);
 
 export default List;
