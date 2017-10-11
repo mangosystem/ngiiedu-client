@@ -3,8 +3,9 @@ const apiSvr = 'http://localhost:8080/ngiiedu/api/v1';
 function ajaxJson( [method, url], data, successFnc, errorFnc ) {
   if (errorFnc == null) {
     errorFnc = function(xhr, status, err) {
-      console.debug('ajaxJson error(xhr, status, err)');
-      console.debug(xhr);
+      console.log('ajaxJson error(xhr, status, err)');
+      console.log(xhr);
+      alert('Error: 500');
     }
   }
 

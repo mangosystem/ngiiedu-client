@@ -1,0 +1,19 @@
+#footer .wrap {
+  position: relative;
+  margin: 0 auto;
+  max-width: 1024px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 12px;
+  color: #888;
+}
+  #footer .wrap nav {
+    float: left;
+  }
+    #footer .wrap nav a {
+      padding-right: 10px;
+    }
+  #footer .wrap address {
+    font-style: normal;
+    float: right;
+  }

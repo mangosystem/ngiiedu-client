@@ -1,5 +1,4 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import Divider from 'material-ui/Divider';
@@ -135,10 +134,10 @@ class MainContainer extends React.Component {
 
 	render() {
 		return (
-			<div style={{padding: '20px'}}>
+			<div>
 				<Stepper
 					activeStep={this.state.stepIndex}
-					style={{margin: '0 auto'}}
+					style={{margin: '0 auto', width: 500}}
 				>
 					<Step>
 						<StepLabel>수업모듈 선택</StepLabel>
@@ -154,7 +153,7 @@ class MainContainer extends React.Component {
 					</Step>
 				</Stepper>
 
-				<Divider style={{marginTop: '20px', marginBottom: '50px'}} />
+				<Divider style={{marginTop: '20px', marginBottom: '30px'}} />
 
 				<div>
 				{(() => {

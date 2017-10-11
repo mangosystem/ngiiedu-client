@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
+
+import Header from './main/Header.js';
+import Footer from './main/Footer.js';
+
 import {BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 // import history from './utils/history';
 
+import MainContainer  from './main/MainContainer';
+//import MainContainer  from './mainSample/MainContainer';
 
-import MainContainer  from './mainSample/MainContainer';
 // import SchoolListMainContainer from './schoolList/MainContainer';
 import TeacherListMainContainer from './teacherList/MainContainer';
 
@@ -25,26 +30,29 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-          <div>
+  			<div id="wrap">
+  				<Header />
+  				<div id="content">
+            <div style={{minHeight:'100%', height: '100%'}}>
               <Route exact path="/" component={MainContainer}/>
               <Switch>
-                  {/* <Route path="/schools/:name" component={SchoolListMainContainer}/> */}
-                  <Route path="/schools/list" component={SchoolListMainContainer}/>
-                  <Route path="/teacher" component={TeacherListMainContainer}/>
+                {/* <Route path="/schools/:name" component={SchoolListMainContainer}/> */}
+                <Route path="/schools/list" component={SchoolListMainContainer}/>
+                <Route path="/teacher" component={TeacherListMainContainer}/>
 
-                  <Route path="/courses/new" component={CoursesNewContainer}/>
+                <Route path="/courses/new" component={CoursesNewContainer}/>
 
+                //학교 동기화
+                <Route path="/schools/sync/file" component={SchoolsSyncFileContainer}/>
+                <Route path="/schools/sync/api" component={SchoolsSyncApiContainer}/>
+                <Route path="/schools/sync" component={SchoolsSyncContainer}/>
 
-                  //학교 동기화
-                  <Route path="/schools/sync/file" component={SchoolsSyncFileContainer}/>
-                  <Route path="/schools/sync/api" component={SchoolsSyncApiContainer}/>
-                  <Route path="/schools/sync" component={SchoolsSyncContainer}/>
-
-                  <Route path="/users/manage" component={UsersManageContainer}/>
-                  
-                  
+                <Route path="/users/manage" component={UsersManageContainer}/>
               </Switch>
-          </div>
+            </div>
+  				</div>
+  				<Footer />
+  			</div>
       </BrowserRouter>
     );
   }

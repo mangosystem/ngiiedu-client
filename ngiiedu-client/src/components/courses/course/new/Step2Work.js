@@ -53,7 +53,6 @@ class Step2Work extends React.Component {
         alert('Error');
       }.bind(this)
     );
-
   }
 
   isSelected(index) {
