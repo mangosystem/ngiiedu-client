@@ -27,3 +27,9 @@ export const actionOpen = (open) => ({
     type: types.ACTION_OPEN,
     open
 });
+
+//schools_sync_editColumn
+export const actionSchoolSyncEditColumn = (editColumn)=>({
+    type: types.SCHOOLS_SYNC_EDITCOLUMN,
+    editColumn
+});

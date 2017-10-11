@@ -5,3 +5,6 @@ export const ACTION_SAMPLE2 = 'ACTION_SAMPLE2';
 //user_manage_popup
 export const USERID = "USERID";
 export const ACTION_OPEN = "ACTION_OPEN";
+
+//schools_sync_editColumn
+export const SCHOOLS_SYNC_EDITCOLUMN = "SCHOOLS_SYNC_EDITCOLUMN";

@@ -12,21 +12,27 @@ import CompleteContainer from '../common/CompleteContainer';
 
 import './MainContainer.css';
 
+//redux 
+//store에 연결
+import { connect } from 'react-redux';
+//action 객체사용
+import * as actions from '../../../../actions/index';
+
 class MainContainer extends React.Component {
   
   constructor() {
     super();
     this.state={
       finished:false,
-      stepIndex:0
-
+      stepIndex:0,
+      newRow:'업로드중...',
+      overlapRow:'업로드중...'
     };
 
     this.handleNextStep = this.handleNextStep.bind(this);
 		this.handlePrevStep = this.handlePrevStep.bind(this);
-    
-  }        
-  
+    this.handleFinalStep = this.handleFinalStep.bind(this);
+  }     
 
 	handleNextStep() {
 		const {stepIndex} = this.state;
@@ -45,6 +51,45 @@ class MainContainer extends React.Component {
 				stepIndex: stepIndex - 1
 			})
 		}
+  }
+
+  handleFinalStep(){
+    var editColumn = this.props.editColumn
+    alert("마지막단계")
+    console.dir(editColumn);
+
+    for(var i=0;i<editColumn.length;i++){
+      
+        if(editColumn[i]==""){
+            if(i<5){
+                alert(dbColumn[i]+"는 필수 데이터입니다.");
+            return;}
+            // editColumn.push("");
+        }
+    }
+
+
+    ajaxJson(
+      ['POST',apiSvr+'/schools/sync/apiupload.json'],
+      {
+          editColumn:editColumn
+      },
+      function(res){
+          console.dir(res);
+          alert("신규데이터 : " +res.response.data.newRow +" 중복데이터 : " +res.response.data.overlapRow);
+          this.setState({
+            newRow:res.response.data.newRow,
+            overlapRow:res.response.data.overlapRow
+          })
+      }.bind(this)
+    )
+
+    const {stepIndex} = this.state;
+    
+        this.setState({
+          stepIndex: stepIndex + 1,
+          finished: stepIndex >=0
+    })
   }
 
     render() {
@@ -74,7 +119,7 @@ class MainContainer extends React.Component {
             }	else if (this.state.stepIndex == 1) {
                 return (
                   <div className="StepContainer">
-                  <CompleteContainer/>
+                  <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
                   </div>
                 )
             } else {
@@ -96,7 +141,7 @@ class MainContainer extends React.Component {
                   <RaisedButton
                     label={this.state.stepIndex == 0 ? '완료' : '다음'}
                     primary={true}
-                    onClick={this.handleNextStep}
+                    onClick={this.state.stepIndex == 0 ? this.handleFinalStep:this.handleNextStep}
                   />
                 </div>
               )
@@ -117,5 +162,20 @@ class MainContainer extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  editColumn: state.schoolsSync.editColumn
+});
+
+// const mapDispatchToProps = (dispatch) => ({
+//   onChangeColor: () => {
+//       const color = getRandomColor();
+//       dispatch(actions.actionSample2(color));
+//   }
+// });
+
+MainContainer = connect(
+  mapStateToProps
+)(MainContainer);
 
 export default MainContainer;

@@ -17,8 +17,7 @@ class SampleCheckContainer extends Component {
     componentWillMount(){
         
            ajaxJson(
-                ['GET',apiSvr+'/schools/api.json'],
-                // ['GET',apiSvr+'/test/api.json'],
+                ['GET',apiSvr+'/schools/sync/api.json'],
                 null,
                 function(res){
                     this.setState({
@@ -30,14 +29,16 @@ class SampleCheckContainer extends Component {
                     console.log(res);
                 }.bind(this)
             )
-        }
+    }
 
 
     render() {
         return (
             <div className="SyncAPIStep1Container">
                 <div className="SyncAPIStep1Left">
-                    <SampleCheckList tableData={this.state.tableData}/>
+                    <SampleCheckList tableData={this.state.tableData}
+                    apiColumn={this.state.apiColumns}
+                    />
                 </div>
                 <div className="SyncAPIStep1Right">
                     <SampleCheckEdit apiColumn={this.state.apiColumns}/> 

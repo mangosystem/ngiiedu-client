@@ -1,6 +1,7 @@
 import text from './textSample';
 import color from './colorSample';
 import user from './user';
+import schoolsSync from './schoolsSync.js';
 
 
 import { combineReducers } from 'redux';
@@ -9,7 +10,8 @@ import { combineReducers } from 'redux';
 const reducers = combineReducers({
     text,
     color,
-    user
+    user,
+    schoolsSync
 });
 
 export default reducers;

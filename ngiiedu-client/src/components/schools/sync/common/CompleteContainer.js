@@ -14,7 +14,11 @@ class Step2Complete extends Component {
     render() {
         return (
             <div className="CompleteContainer">
-                    볼빨간 사춘기
+                    신규 데이터 :
+                    {this.props.newRow}
+                    <br/>
+                    중복 데이터 : 
+                    {this.props.overlapRow}
             </div>
         );
     }
