@@ -27,9 +27,10 @@ class UserPopup extends React.Component {
         };
     }
 
-    componentDidUpdate() {
 
-        const userid = this.props.userid;
+    componentWillReceiveProps(nextProps) {
+
+        const userid = nextProps.userid;
 
         $.ajax({
             url: 'http://localhost:8080/ngiiedu/api/v1/users/' + userid + '.json',
