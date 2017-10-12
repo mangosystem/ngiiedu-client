@@ -164,7 +164,7 @@ const mapDispatchToProps = (dispatch) => ({
             for(var i=0;i<dbColumnIndex.length;i++){
     
                 if(dbColumnIndex[i]==-1){
-                    editColumn.push(null);
+                    editColumn.push("");
                 }else{
                     editColumn.push(apiColumn[dbColumnIndex[i]]);
                 }

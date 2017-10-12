@@ -10,7 +10,7 @@ const style = {
     display: 'inline-block',
   };
 
-class Step2Complete extends Component {
+class CompleteContainer extends Component {
     render() {
         return (
             <div className="CompleteContainer">
@@ -24,4 +24,4 @@ class Step2Complete extends Component {
     }
 }
 
-export default Step2Complete;
+export default CompleteContainer;

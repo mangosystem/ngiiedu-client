@@ -7,10 +7,6 @@ import {BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 // import history from './utils/history';
 
 import MainContainer  from './main/MainContainer';
-//import MainContainer  from './mainSample/MainContainer';
-
-// import SchoolListMainContainer from './schoolList/MainContainer';
-import TeacherListMainContainer from './teacherList/MainContainer';
 
 // import CoursesListContainer from './courses/course/list/MainContainer';
 import CoursesNewContainer from './courses/course/new/MainContainer';
@@ -36,9 +32,7 @@ class App extends Component {
             <div style={{minHeight:'100%', height: '100%'}}>
               <Route exact path="/" component={MainContainer}/>
               <Switch>
-                {/* <Route path="/schools/:name" component={SchoolListMainContainer}/> */}
                 <Route path="/schools/list" component={SchoolListMainContainer}/>
-                <Route path="/teacher" component={TeacherListMainContainer}/>
 
                 <Route path="/courses/new" component={CoursesNewContainer}/>
 

@@ -55,19 +55,18 @@ class MainContainer extends React.Component {
 
   handleFinalStep(){
     var editColumn = this.props.editColumn
-    alert("마지막단계")
+    // alert("마지막단계")
     console.dir(editColumn);
 
     for(var i=0;i<editColumn.length;i++){
       
         if(editColumn[i]==""){
             if(i<5){
-                alert(dbColumn[i]+"는 필수 데이터입니다.");
+                alert(this.props.dbColumn[i]+"는 필수 데이터입니다.");
             return;}
             // editColumn.push("");
         }
     }
-
 
     ajaxJson(
       ['POST',apiSvr+'/schools/sync/apiupload.json'],
@@ -76,7 +75,7 @@ class MainContainer extends React.Component {
       },
       function(res){
           console.dir(res);
-          alert("신규데이터 : " +res.response.data.newRow +" 중복데이터 : " +res.response.data.overlapRow);
+          // alert("신규데이터 : " +res.response.data.newRow +" 중복데이터 : " +res.response.data.overlapRow);
           this.setState({
             newRow:res.response.data.newRow,
             overlapRow:res.response.data.overlapRow
@@ -97,7 +96,7 @@ class MainContainer extends React.Component {
         <div style={{padding: '10px'}}>
           <Stepper
             activeStep={this.state.stepIndex}
-            style={{width: '50%', margin: 'auto'}}
+            style={{margin: '0 auto', width: 500}}
           >
             <Step>
               <StepLabel>항목 확인</StepLabel>
@@ -177,5 +176,28 @@ const mapStateToProps = (state) => ({
 MainContainer = connect(
   mapStateToProps
 )(MainContainer);
+
+MainContainer.defaultProps = {
+  dbColumn : [
+      "학교ID",
+      "학교명",
+      "학교급구분",
+      "운영상태",
+      "교육지원청명",
+      "교육지원청코드",
+      "시도교육청명",
+      "시도교육청코드",
+      "소재지지번주소",
+      "설립일자",
+      "설립형태",
+      "위도",
+      "경도",
+      "본교분교구분",
+      "소재지도로명주소",
+      "데이터기준일자",
+      "생성일자",
+      "변경일자"
+  ]
+};
 
 export default MainContainer;

@@ -22,15 +22,13 @@ class SampleCheckList extends Component {
             <div >
             <Table  
                 headerStyle={{
-                    width:2000,
+                    width:3000,
                     height:50
                 }}
                 bodyStyle={{
-                    width:2000,
-                    height:450
+                    width:3000,
+                    height:432
                 }}
-                fixedHeader={true}
-                fixedFooter={true}
                 selectable={false}
             >
                 <TableHeader

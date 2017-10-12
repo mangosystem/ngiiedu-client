@@ -11,8 +11,13 @@ import UploadDataContainer from './UploadDataContainer';
 import SampleCheckContainer from '../common/SampleCheckContainer';
 import CompleteContainer from '../common/CompleteContainer';
 
-
 import './MainContainer.css';
+
+//redux 
+//store에 연결
+import { connect } from 'react-redux';
+//action 객체사용
+import * as actions from '../../../../actions/index';
 
 class MainContainer extends React.Component {
   
@@ -20,15 +25,15 @@ class MainContainer extends React.Component {
     super();
     this.state={
       finished:false,
-      stepIndex:0
- 
-      // selectedModule: null,
-			// selectedWork: null,
-			// selectedInfo: null
+      stepIndex:0,
+      newRow:'업로드중...',
+      overlapRow:'업로드중...'
     };
 
     this.handleNextStep = this.handleNextStep.bind(this);
-		this.handlePrevStep = this.handlePrevStep.bind(this);
+    this.handlePrevStep = this.handlePrevStep.bind(this);
+    this.handleFinalStep = this.handleFinalStep.bind(this);
+    
     
   }        
   
@@ -51,19 +56,44 @@ class MainContainer extends React.Component {
 			})
 		}
   }
-  
-  // getStepContent(stepIndex) {
-  //   switch (stepIndex) {
-  //     case 0:
-  //       return 'Select campaign settings...';
-  //     case 1:
-  //       return 'What is an ad group anyways?';
-  //     case 2:
-  //       return 'This is the bit I really care about!';
-  //     default:
-  //       return 'You\'re a long way from home sonny jim!';
-  //   }
-  // }
+
+  handleFinalStep(){
+    var editColumn = this.props.editColumn
+    // alert("마지막단계")
+    console.dir(editColumn);
+
+    for(var i=0;i<editColumn.length;i++){
+      
+        if(editColumn[i]==""){
+            if(i<5){
+                alert(this.props.dbColumn[i]+"는 필수 데이터입니다.");
+            return;}
+            // editColumn.push("");
+        }
+    }
+
+    ajaxJson(
+      ['POST',apiSvr+'/schools/sync/apiupload.json'],
+      {
+          editColumn:editColumn
+      },
+      function(res){
+          console.dir(res);
+          // alert("신규데이터 : " +res.response.data.newRow +" 중복데이터 : " +res.response.data.overlapRow);
+          this.setState({
+            newRow:res.response.data.newRow,
+            overlapRow:res.response.data.overlapRow
+          })
+      }.bind(this)
+    )
+
+    const {stepIndex} = this.state;
+    
+        this.setState({
+          stepIndex: stepIndex + 1,
+          finished: stepIndex >=0
+    })
+  }
 
     render() {
       return (
@@ -101,7 +131,7 @@ class MainContainer extends React.Component {
             }	else if (this.state.stepIndex == 2) {
                 return (
                   <div className="StepContainer">
-                    <CompleteContainer/>
+                  <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
                   </div>
                 )
             } else {
@@ -123,8 +153,8 @@ class MainContainer extends React.Component {
                   <RaisedButton
                     label={this.state.stepIndex == 1 ? '완료' : '다음'}
                     primary={true}
-                    onClick={this.handleNextStep}
-                  />
+                    onClick={this.state.stepIndex == 1 ? this.handleFinalStep:this.handleNextStep}
+                    />
                 </div>
               )
             } else {
@@ -144,5 +174,38 @@ class MainContainer extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  editColumn: state.schoolsSync.editColumn
+});
+
+
+
+MainContainer = connect(
+  mapStateToProps
+)(MainContainer);
+
+MainContainer.defaultProps = {
+  dbColumn : [
+      "학교ID",
+      "학교명",
+      "학교급구분",
+      "운영상태",
+      "교육지원청명",
+      "교육지원청코드",
+      "시도교육청명",
+      "시도교육청코드",
+      "소재지지번주소",
+      "설립일자",
+      "설립형태",
+      "위도",
+      "경도",
+      "본교분교구분",
+      "소재지도로명주소",
+      "데이터기준일자",
+      "생성일자",
+      "변경일자"
+  ]
+};
 
 export default MainContainer;
