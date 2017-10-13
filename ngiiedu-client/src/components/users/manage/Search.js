@@ -18,15 +18,14 @@ class Search extends React.Component {
         super(props);
 
         this.state = {
-            category: 'userid',
-            value: ''
+            category: 'userid'
         };
     }
 
     search() {
         
         let category = this.state.category;
-        let keyword = this.state.value;
+        let keyword = $('#keyword').val();
 
         this.props.searchList(category, keyword);
         
@@ -70,7 +69,8 @@ class Search extends React.Component {
                         marginLeft: 15
                     }}
                 >            
-                    <TextField 
+                    <TextField
+                        id="keyword"
                         hintText="Search" 
                         style={{
                             marginLeft: 20,
@@ -78,7 +78,6 @@ class Search extends React.Component {
                         }}
                         fullWidth={true}
                         underlineShow={false}
-                        onChange={(event, value) => this.setState({value: value})}
                         onKeyDown={(event) => this.enterKey(event)}
                     />
                     <i 

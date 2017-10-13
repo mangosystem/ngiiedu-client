@@ -28,6 +28,7 @@ class Header extends React.Component {
     this.onChangeCourseOpen = this.onChangeCourseOpen.bind(this);
 
     this.onClickCreateCourse = this.onClickCreateCourse.bind(this);
+    this.onClickLogin = this.onClickLogin.bind(this);
   }
 
   onClickJoinCourse(evt) {
@@ -44,6 +45,10 @@ class Header extends React.Component {
 
   onClickCreateCourse(evt) {
     this.props.history.push("/courses/new");
+  }
+
+  onClickLogin(evt) {
+    this.props.history.push("/users/login");
   }
 
   render() {
@@ -94,6 +99,7 @@ class Header extends React.Component {
                     label="로그인"
                     default={true}
                     style={{}}
+                    onClick={this.onClickLogin}
                   />
                 </li>
                 <li style={{paddingTop: '4px'}}>

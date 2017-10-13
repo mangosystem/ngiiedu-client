@@ -7,7 +7,6 @@ import { actionUserid, actionOpen } from '../../../actions/index';
 import $ from 'jquery';
 
 //검색창
-import SearchBar from 'material-ui-search-bar';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -65,8 +64,8 @@ class List extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         
-        let keyword = nextProps.keyword;
-        let category = nextProps.category;
+        const keyword = '%'+nextProps.keyword+'%';
+        const category = nextProps.category;
 
         $.ajax({
             url: 'http://localhost:8080/ngiiedu/api/v1/users.json',
@@ -107,7 +106,7 @@ class List extends React.Component {
         }
         
         ajaxJson(
-			['PUT', 'http://localhost:8080/ngiiedu/api/v1/users/' + contact.userid + '.json'],
+			['PUT', 'http://localhost:8080/ngiiedu/api/v1/users/' + contact.userid + '/state.json'],
 			{
 				"userState": value
 			},

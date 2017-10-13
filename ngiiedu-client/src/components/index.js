@@ -20,7 +20,14 @@ import SchoolsSyncContainer from './schools/sync/MainContainer';
 import SchoolsSyncFileContainer from './schools/sync/file/MainContainer';
 import SchoolsSyncApiContainer from './schools/sync/api/MainContainer';
 
+//사용자 관리
 import UsersManageContainer from './users/manage/MainContainer';
+
+//회원가입
+import UserJoinContainer from './users/join/MainContainer';
+
+//로그인
+import UserLoginContainer from './users/login/MainContainer';
 
 class App extends Component {
   render() {
@@ -42,6 +49,8 @@ class App extends Component {
                 <Route path="/schools/sync" component={SchoolsSyncContainer}/>
 
                 <Route path="/users/manage" component={UsersManageContainer}/>
+                <Route path="/users/join" component={UserJoinContainer}/>
+                <Route path="/users/login" component={UserLoginContainer}/>                  
               </Switch>
             </div>
   				</div>
