@@ -39,3 +39,47 @@ export const actionSearch = (category, keyword) => ({
     category,
     keyword
 });
+
+//school id 받아오기
+export const actionSchoolId = (schoolId) =>({
+    type: types.SCHOOL_ID,
+    schoolId
+})
+
+//학교 상세정보
+export const actionSchoolInfoOpen = (infoOpen) => ({
+    type: types.SCHOOL_INFO_OPEN,
+    infoOpen
+})
+
+//학교 정보 수정
+export const actionEditSchoolOpen = (editOpen) => ({
+    type: types.EDIT_SCHOOL_OPEN,
+    editOpen
+})
+
+//학교 생성
+export const actionAddSchoolOpen = (addOpen) => ({
+    type: types.ADD_SCHOOL_OPEN,
+    addOpen
+})
+
+//학교 단일 삭제
+export const actionDelSchoolOpen = (deleteOpen) => ({
+    type: types.DEL_SCHOOL_OPEN,
+    deleteOpen
+})
+
+//학교 검색
+export const actionSearchSchool = (schoolLevel, category, keyword) => ({
+    type: types.SEARCH_SCHOOL,
+    schoolLevel,
+    category,
+    keyword
+})
+
+//학교목록 새로고침
+export const actionUpdateSchool = (tableData) => ({
+    type: types.UPDATE_SCHOOL,
+    tableData
+})

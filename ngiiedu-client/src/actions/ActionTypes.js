@@ -11,3 +11,17 @@ export const ACTION_SEARCH = "ACTION_SEARCH";
 //schools_sync_editColumn
 export const SCHOOLS_SYNC_EDITCOLUMN = "SCHOOLS_SYNC_EDITCOLUMN";
 
+//school school id
+export const SCHOOL_ID = "SCHOOL_ID";
+//school info popup
+export const SCHOOL_INFO_OPEN = "SCHOOL_INFO_OPEN";
+//edit school popup
+export const EDIT_SCHOOL_OPEN = "EDIT_SCHOOL_OPEN";
+//add school popup
+export const ADD_SCHOOL_OPEN = "ADD_SCHOOL_OPEN";
+//delete school popup
+export const DEL_SCHOOL_OPEN = "DEL_SCHOOL_OPEN"
+//search school
+export const SEARCH_SCHOOL = "SEARCH_SCHOOL";
+//update school data
+export const UPDATE_SCHOOL = "UPDATE_SCHOOL";
