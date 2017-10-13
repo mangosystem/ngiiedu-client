@@ -8,7 +8,7 @@ import {BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 
 import MainContainer  from './main/MainContainer';
 
-// import CoursesListContainer from './courses/course/list/MainContainer';
+import CoursesListContainer from './courses/course/list/MainContainer';
 import CoursesNewContainer from './courses/course/new/MainContainer';
 
 //학교 목록 관리
@@ -40,7 +40,8 @@ class App extends Component {
               <Route exact path="/" component={MainContainer}/>
               <Switch>
                 <Route path="/schools/list" component={SchoolListMainContainer}/>
-
+                
+                <Route path="/courses/list" component={CoursesListContainer}/>
                 <Route path="/courses/new" component={CoursesNewContainer}/>
 
                 //학교 동기화

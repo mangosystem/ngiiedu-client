@@ -29,6 +29,8 @@ class Header extends React.Component {
 
     this.onClickCreateCourse = this.onClickCreateCourse.bind(this);
     this.onClickLogin = this.onClickLogin.bind(this);
+
+    this.onClickListCourse = this.onClickListCourse.bind(this);
   }
 
   onClickJoinCourse(evt) {
@@ -45,6 +47,10 @@ class Header extends React.Component {
 
   onClickCreateCourse(evt) {
     this.props.history.push("/courses/new");
+  }
+
+  onClickListCourse(evt) {
+    this.props.history.push("/courses/list");
   }
 
   onClickLogin(evt) {
@@ -109,7 +115,7 @@ class Header extends React.Component {
                     targetOrigin={{horizontal: 'right', vertical: 'top'}}
                   >
                     <MenuItem primaryText="회원정보" />
-                    <MenuItem primaryText="수업목록" />
+                    <MenuItem primaryText="수업목록" onClick={this.onClickListCourse} />
                   </IconMenu>
                 </li>
               </ul>
