@@ -18,6 +18,6 @@ ReactDOM.render(
         <MuiThemeProvider>
             <App />
         </MuiThemeProvider>
-     </Provider>  
+     </Provider>
     ,appElement
 );

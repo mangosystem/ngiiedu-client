@@ -159,7 +159,7 @@ class MainContainer extends React.Component {
 
         const password = $('#password').val();
         const rePassword = $('#rePassword').val();
-        
+
         if (password == rePassword) {
             this.setState({
                 pwdErrorText: "비밀번호가 일치합니다.",
@@ -292,7 +292,7 @@ class MainContainer extends React.Component {
                     </div>
                     <div style={{textAlign: 'center', maxWidth: '30%', margin: 'auto'}}>
                         <br />
-                        <RaisedButton 
+                        <RaisedButton
                             label="가입하기"
                             fullWidth={true}
                             primary={true}

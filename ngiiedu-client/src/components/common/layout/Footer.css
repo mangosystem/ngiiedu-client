@@ -1,0 +1,10 @@
+#footer { display: block; margin-top: -46px; width: 100%; background-color: #fff; border-top: 1px solid #eee; }
+  #footer .inner { position: relative; margin: 0 auto; width: 1024px; height: 45px; line-height: 45px; font-size: 12px; color: #888; }
+  #footer .inner.wide { width: 100%; }
+
+    #footer nav { float: left; }
+    #footer .inner.wide nav { margin-left: 10px; }
+      #footer nav a { padding-right: 7px; }
+
+    #footer address { float: right; font-style: normal; }
+    #footer .inner.wide address { margin-right: 10px; }
