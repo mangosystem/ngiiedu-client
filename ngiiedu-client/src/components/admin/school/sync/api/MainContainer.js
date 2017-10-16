@@ -16,7 +16,6 @@ import FontIcon from 'material-ui/FontIcon';
 import SampleCheckContainer from '../common/SampleCheckContainer';
 import CompleteContainer from '../common/CompleteContainer';
 
-import './MainContainer.css';
 
 //left panal
 import LeftMenu from '../../common/LeftMenu.js';
@@ -111,30 +110,19 @@ class MainContainer extends React.Component {
 
                 <section>
                  <Paper>
-                  <Stepper
-                    activeStep={this.state.stepIndex}
-                    style={{margin: '0 auto', width: 500}}
-                  >
-                    <Step>
-                      <StepLabel>항목 확인</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>완료</StepLabel>
-                    </Step>
-                  </Stepper>
 
-                  <Divider style={{marginTop: '20px', marginBottom: '50px'}} />
+                  {/* <Divider style={{ marginBottom: '50px'}} /> */}
 
                   {(() => {
                     if (this.state.stepIndex == 0) {
                       return (
-                        <div className="StepContainer">
+                        <div >
                           <SampleCheckContainer/>
                         </div>
                       )
                     }	else if (this.state.stepIndex == 1) {
                         return (
-                          <div className="StepContainer">
+                          <div >
                           <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
                           </div>
                         )

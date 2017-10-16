@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-//import axios from 'axios';
-
+import Divider from 'material-ui/Divider';
 
  const style={
         width:250,
@@ -62,10 +61,14 @@ class UploadDataContainer extends Component {
   
   render(){
     return(
-      <form onSubmit={this.handleSubmit.bind(this)} >
-        <input type="file" name="file" onChange={this.handleChange.bind(this)}/>
-        <button type="submit">Submit</button>
-      </form>
+      <div>
+         <h1 style={{padding:20}}>파일 선택</h1>
+          <Divider style={{marginTop: '20px', marginBottom: '20px'}} />
+        <form onSubmit={this.handleSubmit.bind(this)} >
+          <input type="file" name="file" onChange={this.handleChange.bind(this)}/>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     );
   }
 }

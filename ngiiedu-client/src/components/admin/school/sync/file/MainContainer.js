@@ -17,7 +17,6 @@ import UploadDataContainer from './UploadDataContainer';
 import SampleCheckContainer from '../common/SampleCheckContainer';
 import CompleteContainer from '../common/CompleteContainer';
 
-import './MainContainer.css';
 
 //left panal
 import LeftMenu from '../../common/LeftMenu.js';
@@ -109,47 +108,25 @@ class MainContainer extends React.Component {
         <main id="main">
           <div className="inner">
             <div className="flexible">
-
               <LeftMenu/>
-            
-
               <section>
                 <Paper>
-
-
-                  <Stepper
-                    activeStep={this.state.stepIndex}
-                    style={{width: '50%', margin: 'auto'}}
-                  >
-                    <Step>
-                      <StepLabel>파일업로드</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>항목 확인</StepLabel>
-                    </Step>
-                    <Step>
-                      <StepLabel>완료</StepLabel>
-                    </Step>
-                  </Stepper>
-
-                  <Divider style={{marginTop: '20px', marginBottom: '50px'}} />
-
                   {(() => {
                     if (this.state.stepIndex == 0) {
                       return (
-                        <div className="StepContainer">
+                        <div>
                           <UploadDataContainer/>
                         </div>
                       )
                     }	else if (this.state.stepIndex == 1) {
                         return (
-                          <div className="StepContainer">
+                          <div>
                             <SampleCheckContainer/>
                           </div>
                         )
                     }	else if (this.state.stepIndex == 2) {
                         return (
-                          <div className="StepContainer">
+                          <div>
                           <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
                           </div>
                         )

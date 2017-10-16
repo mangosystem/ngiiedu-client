@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
-import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 import './CompleteContainer.css';
-
-const style = {
-    height: 100,
-    width: 200,
-    margin: 20,
-    textAlign: 'center',
-    display: 'inline-block',
-  };
 
 class CompleteContainer extends Component {
     render() {
         return (
-            <div className="CompleteContainer">
-                    신규 데이터 :
-                    {this.props.newRow}
-                    <br/>
-                    중복 데이터 : 
-                    {this.props.overlapRow}
+            <div>
+                <h1 style={{padding:20}}>동기화 완료</h1>
+                <Divider style={{marginTop: '20px', marginBottom: '20px'}} />
+                <div className="CompleteContainer">
+                        신규 데이터 :
+                        {this.props.newRow}
+                        <br/>
+                        <br/>
+                        중복 데이터 : 
+                        {this.props.overlapRow}
+                </div>
             </div>
         );
     }

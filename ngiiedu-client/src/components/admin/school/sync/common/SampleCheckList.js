@@ -13,13 +13,13 @@ import {
 import { connect } from 'react-redux';
 //action 객체사용
 import * as actions from '../../../../../actions/index';
-
+import Paper from 'material-ui/Paper';
 class SampleCheckList extends Component {
 
     render() {
 
         return (
-            <div >
+            <Paper >
             <Table
                 headerStyle={{
                     width:3000,
@@ -27,7 +27,7 @@ class SampleCheckList extends Component {
                 }}
                 bodyStyle={{
                     width:3000,
-                    height:432
+                    height:232
                 }}
                 selectable={false}
             >
@@ -60,7 +60,7 @@ class SampleCheckList extends Component {
             </Table>
 
 
-            </div>
+            </Paper>
         );
     }
 }
