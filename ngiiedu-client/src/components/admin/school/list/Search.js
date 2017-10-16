@@ -22,7 +22,6 @@ class Search extends React.Component {
 
         this.state = {
             schoolLevel:'',
-            category: 'schoolName',
             value: '',
             allLevelButton:'#00838F',
             elementaryLevelButton:'#00BCD4',
@@ -35,21 +34,14 @@ class Search extends React.Component {
     search() {
 
         let schoolLevel = this.state.schoolLevel;
-        let category = this.state.category;
         let keyword = this.state.value;
 
-        this.props.searchList(schoolLevel, category, keyword);
+        this.props.searchList(schoolLevel, keyword);
 
     };
 
     enterKey(e) {
         if (e.keyCode == 13) this.search();
-    };
-
-    handleChange(event, index, value) {
-        this.setState({
-            category: value
-        });
     };
 
     //학교구분 버튼
@@ -131,23 +123,11 @@ class Search extends React.Component {
                     />
                 </div>
 
-                <SelectField
-                    floatingLabelText="카테고리"
-                    value={this.state.category}
-                    onChange={this.handleChange.bind(this)}
-                    style={{
-                        maxWidth: '15%',
-                        marginLeft: 20
-                    }}
-                >
-                    <MenuItem value='schoolName' primaryText="학교명" />
-                    <MenuItem value='schoolEduOfficeName' primaryText="교육지원청명" />
-                </SelectField>
-
                 <Paper
                     style={{
                         maxWidth: '70%',
-                        marginLeft: 15
+                        margin: 'auto',
+                        marginTop:20
                     }}
                 >
                     <TextField
@@ -181,7 +161,7 @@ class Search extends React.Component {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        searchList: (schoolLevel, category, keyword) => dispatch(actionSearchSchool(schoolLevel, category, keyword))
+        searchList: (schoolLevel, keyword) => dispatch(actionSearchSchool(schoolLevel, keyword))
     };
 };
 

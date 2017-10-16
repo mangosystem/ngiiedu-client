@@ -71,10 +71,9 @@ export const actionDelSchoolOpen = (deleteOpen) => ({
 })
 
 //학교 검색
-export const actionSearchSchool = (schoolLevel, category, keyword) => ({
+export const actionSearchSchool = (schoolLevel, keyword) => ({
     type: types.SEARCH_SCHOOL,
     schoolLevel,
-    category,
     keyword
 })
 

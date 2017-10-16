@@ -11,7 +11,7 @@ import UserJoinContainer from './users/join/MainContainer';
 import UserLoginContainer from './users/login/MainContainer';
 
 // 인증 사용자
-import UserProfileContainer from './users/profile/MainContainer';
+//import UserProfileContainer from './users/profile/MainContainer';
 
 // 관리자 - 학교
 import SchoolListMainContainer from './admin/school/list/MainContainer';
@@ -60,12 +60,12 @@ class App extends Component {
                 <UserLoginContainer />
               </div>
             </Route>
-            <Route path="/profile">
+            {/* <Route path="/profile">
               <div>
                 <Header wide />
                 <UserProfileContainer />
               </div>
-            </Route>
+            </Route> */}
 
             <Route path="/cm-admin/school">
               <div>

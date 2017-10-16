@@ -83,11 +83,10 @@ class SchoolList extends React.Component {
 
         let schoolLevel = nextProps.schoolLevel;
         let keyword = '%'+nextProps.keyword+'%';
-        let category = nextProps.category;
 
         ajaxJson(
             ['GET',apiSvr+'/schools.json'],
-            {'category':category, 'keyword':keyword, 'schoolLevel':schoolLevel},
+            {'keyword':keyword, 'schoolLevel':schoolLevel},
             function(res){
                 this.setState({
                     tableData:JSON.parse(JSON.stringify(res)).response.data
@@ -368,7 +367,6 @@ class SchoolList extends React.Component {
 
 let mapStateToProps = (state) => ({
     schoolLevel: state.schoolList.schoolLevel,
-    category: state.schoolList.category,
     keyword: state.schoolList.keyword,
     tableData: state.schoolList.tableData
 });

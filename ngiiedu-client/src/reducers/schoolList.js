@@ -8,7 +8,6 @@ const schoolListInitialState = {
     deleteOpen: false,
     schoolLevel: '',
     tableData:[],
-    category: 'schoolName',
     keyword: ''
 };
 
@@ -39,7 +38,6 @@ const schoolList = (state = schoolListInitialState, action) => {
         case types.SEARCH_SCHOOL:
             return Object.assign({}, state, {
                 schoolLevel: action.schoolLevel,
-                category: action.category,
                 keyword: action.keyword
             });
         case types.UPDATE_SCHOOL:
