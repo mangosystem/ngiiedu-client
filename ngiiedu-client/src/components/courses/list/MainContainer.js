@@ -7,11 +7,13 @@ import CourseInfoModal from  './CourseInfoModal';
 class MainContainer extends React.Component {
     render() {
         return (
-            <div>
-                {/* <SearchCourse/><br/> */}
-                <CourseList/>
-                <CourseInfoModal/>
-            </div>
+            <main id="main">
+				<div className="inner">
+                    <SearchCourse/>
+                    <CourseList/>
+                    <CourseInfoModal/>
+                </div>
+            </main>
         );
     }
 }
