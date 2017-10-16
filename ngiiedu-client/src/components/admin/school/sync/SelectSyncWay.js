@@ -15,7 +15,7 @@ const styles = {
 const SelectSyncWay = () => {
     return (
         <div className="SelectSyncWay">
-            <Link to="/schools/sync/file">
+            <Link to="/cm-admin/schoolSync/file">
                 <RaisedButton 
                     label="파일 동기화" 
                     primary={true} 
@@ -25,7 +25,7 @@ const SelectSyncWay = () => {
             <br/>
             <br/>
             <br/>
-            <Link to="/schools/sync/api">
+            <Link to="/cm-admin/schoolSync/api">
                 <RaisedButton 
                     label="API 동기화" 
                     primary={true} 

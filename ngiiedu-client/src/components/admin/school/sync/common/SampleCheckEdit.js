@@ -102,7 +102,7 @@ class SampleCheckEdit extends Component {
             {this.props.dbColumn.map((row, idx) => (
                 <div key={idx}>
 
-                    <p>{row}</p>
+                    <p style={{textAlign: 'left'}}>{row}</p>
 
                     <SelectField
                         hintText="Select a name"

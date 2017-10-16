@@ -7,11 +7,20 @@ import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 
+import Paper from 'material-ui/Paper';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import FontIcon from 'material-ui/FontIcon';
+
 import UploadDataContainer from './UploadDataContainer';
 import SampleCheckContainer from '../common/SampleCheckContainer';
 import CompleteContainer from '../common/CompleteContainer';
 
 import './MainContainer.css';
+
+//left panal
+import MenuPanel from '../../common/MenuPanel.js';
 
 //redux
 //store에 연결
@@ -97,80 +106,99 @@ class MainContainer extends React.Component {
 
     render() {
       return (
-        <div style={{padding: '10px'}}>
-          <Stepper
-            activeStep={this.state.stepIndex}
-            style={{width: '50%', margin: 'auto'}}
-          >
-            <Step>
-              <StepLabel>파일업로드</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>항목 확인</StepLabel>
-            </Step>
-            <Step>
-              <StepLabel>완료</StepLabel>
-            </Step>
-          </Stepper>
+        <main id="main">
+          <div className="inner">
+            <div className="flexible">
 
-          <Divider style={{marginTop: '20px', marginBottom: '50px'}} />
-
-          {(() => {
-            if (this.state.stepIndex == 0) {
-              return (
-                <div className="StepContainer">
-                  <UploadDataContainer/>
-                </div>
-              )
-            }	else if (this.state.stepIndex == 1) {
-                return (
-                  <div className="StepContainer">
-                    <SampleCheckContainer/>
-                  </div>
-                )
-            }	else if (this.state.stepIndex == 2) {
-                return (
-                  <div className="StepContainer">
-                  <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
-                  </div>
-                )
-            } else {
-            }
-          })()}
-
-          <Divider style={{marginTop: '50px', marginBottom: '20px'}} />
-
-          {(() => {
-            if (!this.state.finished) {
-              return (
-                <div style={{textAlign: 'center'}}>
-                  <FlatButton
-                    label="뒤로"
-                    disabled={this.state.stepIndex == 0}
-                    onClick={this.handlePrevStep}
-                    style={{marginRight: 12}}
-                  />
-                  <RaisedButton
-                    label={this.state.stepIndex == 1 ? '완료' : '다음'}
-                    primary={true}
-                    onClick={this.state.stepIndex == 1 ? this.handleFinalStep:this.handleNextStep}
+              <MenuPanel
+                      isAccessor={true}
+                      isOwner={true}
+                      isMember={false}
                     />
-                </div>
-              )
-            } else {
-              return (
-                <div style={{textAlign: 'center'}}>
-                  <Link to="/schools/sync">
-                    <RaisedButton
-                      label={'확인'}
-                      primary={true}
-                    />
-                  </Link>
-                </div>
-              )
-            }
-          })()}
+
+              <section>
+                <Paper>
+
+
+                  <Stepper
+                    activeStep={this.state.stepIndex}
+                    style={{width: '50%', margin: 'auto'}}
+                  >
+                    <Step>
+                      <StepLabel>파일업로드</StepLabel>
+                    </Step>
+                    <Step>
+                      <StepLabel>항목 확인</StepLabel>
+                    </Step>
+                    <Step>
+                      <StepLabel>완료</StepLabel>
+                    </Step>
+                  </Stepper>
+
+                  <Divider style={{marginTop: '20px', marginBottom: '50px'}} />
+
+                  {(() => {
+                    if (this.state.stepIndex == 0) {
+                      return (
+                        <div className="StepContainer">
+                          <UploadDataContainer/>
+                        </div>
+                      )
+                    }	else if (this.state.stepIndex == 1) {
+                        return (
+                          <div className="StepContainer">
+                            <SampleCheckContainer/>
+                          </div>
+                        )
+                    }	else if (this.state.stepIndex == 2) {
+                        return (
+                          <div className="StepContainer">
+                          <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
+                          </div>
+                        )
+                    } else {
+                    }
+                  })()}
+
+                  <Divider style={{marginTop: '50px', marginBottom: '20px'}} />
+
+                  {(() => {
+                    if (!this.state.finished) {
+                      return (
+                        <div style={{textAlign: 'center',padding:20}}>
+                        <FlatButton
+                            label="뒤로"
+                            disabled={this.state.stepIndex == 0}
+                            onClick={this.handlePrevStep}
+                            style={{marginRight: 12}}
+                          />
+                          <RaisedButton
+                            label={this.state.stepIndex == 1 ? '완료' : '다음'}
+                            primary={true}
+                            onClick={this.state.stepIndex == 1 ? this.handleFinalStep:this.handleNextStep}
+                            />
+                        </div>
+                      )
+                    } else {
+                      return (
+                        <div style={{textAlign: 'center'}}>
+                          <Link to="/cm-admin/schoolSync">
+                            <RaisedButton
+                              label={'확인'}
+                              primary={true}
+                            />
+                          </Link>
+                        </div>
+                      )
+                    }
+                  })()}
+                  </Paper>
+
+              </section>
+            </div>
           </div>
+        </main>
+
     );
   }
 }
