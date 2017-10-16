@@ -20,7 +20,7 @@ import CompleteContainer from '../common/CompleteContainer';
 import './MainContainer.css';
 
 //left panal
-import MenuPanel from '../../common/MenuPanel.js';
+import LeftMenu from '../../common/LeftMenu.js';
 
 //redux
 //store에 연결
@@ -110,11 +110,8 @@ class MainContainer extends React.Component {
           <div className="inner">
             <div className="flexible">
 
-              <MenuPanel
-                      isAccessor={true}
-                      isOwner={true}
-                      isMember={false}
-                    />
+              <LeftMenu/>
+            
 
               <section>
                 <Paper>
