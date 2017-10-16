@@ -8,14 +8,13 @@ import Paper from 'material-ui/Paper';
 
 class MainContainer extends React.Component {
     render() {
-        return (
-            
+        return (            
             <main id="main">
                 <div className="inner">
                     <div className="flexible">
                         <LeftMenu/>
                         <section>
-                            <Paper>
+                            <Paper style={{padding:'20px 0'}}>
                                 <Search />
                                 <List />
                                 <UserPopup />
@@ -23,8 +22,7 @@ class MainContainer extends React.Component {
                         </section>
                     </div>
                 </div>
-            </main>
-            
+            </main>            
         );
     }
 }

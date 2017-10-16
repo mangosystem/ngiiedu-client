@@ -17,17 +17,13 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            category: 'userid'
-        };
     }
 
     search() {
 
-        let category = this.state.category;
         let keyword = $('#keyword').val();
 
-        this.props.searchList(category, keyword);
+        this.props.searchList(keyword);
 
     }
 
@@ -45,28 +41,13 @@ class Search extends React.Component {
         return (
             <div
                 style={{
-                    margin: '20px auto',
                     maxWidth: '100%'
                 }}
             >
-                <SelectField
-                    floatingLabelText="카테고리"
-                    value={this.state.category}
-                    onChange={this.handleChange.bind(this)}
-                    style={{
-                        maxWidth: '15%',
-                        marginLeft: 20
-                    }}
-                >
-                    <MenuItem value="userid" primaryText="아이디" />
-                    <MenuItem value="userName" primaryText="이름" />
-                    <MenuItem value="userEmail" primaryText="이메일" />
-                </SelectField>
-
                 <Paper
                     style={{
                         maxWidth: '70%',
-                        marginLeft: 15
+                        margin: 'auto'
                     }}
                 >
                     <TextField
@@ -100,7 +81,7 @@ class Search extends React.Component {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        searchList: (category, keyword) => dispatch(actionSearch(category, keyword))
+        searchList: (keyword) => dispatch(actionSearch(keyword))
     };
 }
 

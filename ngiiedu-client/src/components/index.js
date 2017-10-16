@@ -10,6 +10,9 @@ import {BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 import UserJoinContainer from './users/join/MainContainer';
 import UserLoginContainer from './users/login/MainContainer';
 
+// 인증 사용자
+import UserProfileContainer from './users/profile/MainContainer';
+
 // 관리자 - 학교
 import SchoolListMainContainer from './admin/school/list/MainContainer';
 import SchoolsSyncContainer from './admin/school/sync/MainContainer';
@@ -55,6 +58,12 @@ class App extends Component {
               <div>
                 <Header wide />
                 <UserLoginContainer />
+              </div>
+            </Route>
+            <Route path="/profile">
+              <div>
+                <Header wide />
+                <UserProfileContainer />
               </div>
             </Route>
 

@@ -100,7 +100,6 @@ class Search extends React.Component {
         return (
             <div
                 style={{
-                    margin: '20px auto',
                     maxWidth: '100%'
                 }}
             >

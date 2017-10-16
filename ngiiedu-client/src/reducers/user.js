@@ -3,7 +3,6 @@ import * as types from '../actions/ActionTypes';
 const userInitialState = {
     userid: 'user1',
     open: false,
-    category: 'userid',
     keyword: ''
 };
 
@@ -19,7 +18,6 @@ const user = (state = userInitialState, action) => {
             });
         case types.ACTION_SEARCH:
             return Object.assign({}, state, {
-                category: action.category,
                 keyword: action.keyword
             });
         default:

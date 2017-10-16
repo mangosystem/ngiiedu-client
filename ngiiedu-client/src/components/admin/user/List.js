@@ -35,11 +35,10 @@ class List extends React.Component {
         this.state = {
             users: [{}],
             value: '',
-            category: 'userid',
             isAscById: false,
             isAscByName: true,
             isAscByEmail: true,
-            isAscByDivision: true,
+            isAscByDivision: false,
             isAscByState: true
         };
     }
@@ -65,14 +64,12 @@ class List extends React.Component {
     componentWillReceiveProps(nextProps) {
 
         const keyword = '%'+nextProps.keyword+'%';
-        const category = nextProps.category;
 
         $.ajax({
             url: 'http://localhost:8080/ngiiedu/api/v1/users.json',
             dataType: 'json',
             cache: false,
             data: {
-                category: category,
                 keyword: keyword
             },
             success: function(data) {
@@ -89,12 +86,6 @@ class List extends React.Component {
             }.bind(this)
         });
 
-    }
-
-    handleChange(event, index, value) {
-        this.setState({
-            category: value
-        })
     }
 
     changeToggle(event, value, contact) {
@@ -254,6 +245,10 @@ class List extends React.Component {
 
     render() {
 
+        const tableStyle = {
+            textAlign: 'center'
+        };
+
         return (
             <div>
                 <Table
@@ -265,7 +260,7 @@ class List extends React.Component {
                         adjustForCheckbox={false}
                     >
                         <TableRow>
-                            <TableHeaderColumn>
+                            <TableHeaderColumn style={tableStyle}>
                                 아이디
                                 <i
                                     className="fa fa-sort"
@@ -273,7 +268,7 @@ class List extends React.Component {
                                     onMouseUp={() => this.sortJson("userid")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableHeaderColumn style={tableStyle}>
                                 이름
                                 <i
                                     className="fa fa-sort"
@@ -281,7 +276,7 @@ class List extends React.Component {
                                     onMouseUp={() => this.sortJson("userName")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableHeaderColumn style={tableStyle}>
                                 이메일
                                 <i
                                     className="fa fa-sort"
@@ -289,7 +284,7 @@ class List extends React.Component {
                                     onMouseUp={() => this.sortJson("userEmail")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableHeaderColumn style={tableStyle}>
                                 사용자구분
                                 <i
                                     className="fa fa-sort"
@@ -297,7 +292,7 @@ class List extends React.Component {
                                     onMouseUp={() => this.sortJson("userDivision")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableHeaderColumn style={tableStyle}>
                                 상태
                                 <i
                                     className="fa fa-sort"
@@ -305,7 +300,7 @@ class List extends React.Component {
                                     onMouseUp={() => this.sortJson("userState")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn>
+                            <TableHeaderColumn style={tableStyle}>
                                 상세정보
                             </TableHeaderColumn>
                             </TableRow>
@@ -314,17 +309,18 @@ class List extends React.Component {
                             {this.state.users.map((contact, i) => {
                                 return (
                                     <TableRow key={i} className="TableRow">
-                                        <TableRowColumn>{contact.userid}</TableRowColumn>
-                                        <TableRowColumn>{contact.userName}</TableRowColumn>
-                                        <TableRowColumn>{contact.userEmail}</TableRowColumn>
-                                        <TableRowColumn>{contact.userDivision==1? '교사':'학생'}</TableRowColumn>
+                                        <TableRowColumn style={tableStyle}>{contact.userid}</TableRowColumn>
+                                        <TableRowColumn style={tableStyle}>{contact.userName}</TableRowColumn>
+                                        <TableRowColumn style={tableStyle}>{contact.userEmail}</TableRowColumn>
+                                        <TableRowColumn style={tableStyle}>{contact.userDivision==1? '교사':'학생'}</TableRowColumn>
                                         <TableRowColumn>
                                         <Toggle
                                             toggled={contact.userState}
+                                            style={{maxWidth: '20%', margin: 'auto'}}
                                             onToggle={(event, value, i) => this.changeToggle(event, value, contact)}
                                         />
                                         </TableRowColumn>
-                                        <TableRowColumn>
+                                        <TableRowColumn style={tableStyle}>
                                             <IconButton onClick={(i) => this.showDetail(contact.userid)}>
                                                 <Assignment color={blue400}/>
                                             </IconButton>
@@ -340,7 +336,6 @@ class List extends React.Component {
 }
 
 let mapStateToProps = (state) => ({
-    category: state.user.category,
     keyword: state.user.keyword
 });
 

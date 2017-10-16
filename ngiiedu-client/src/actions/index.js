@@ -34,9 +34,9 @@ export const actionSchoolSyncEditColumn = (editColumn)=>({
     editColumn
 });
 
-export const actionSearch = (category, keyword) => ({
+// 관리자 사용자 관리 검색
+export const actionSearch = (keyword) => ({
     type: types.ACTION_SEARCH,
-    category,
     keyword
 });
 

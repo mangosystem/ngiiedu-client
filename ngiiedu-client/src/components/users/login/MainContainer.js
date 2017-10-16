@@ -82,7 +82,12 @@ class MainContainer extends React.Component {
                         onClick={this.login.bind(this)}
                     />
                     <br /><br />
-                    <a href="/users/join" style={{fontSize: '10px'}}>회원가입</a>
+                    <a href="/join" style={{fontSize: '12px'}}>회원가입</a>
+                    <div style={{fontSize: '12px', textAlign: 'right', float: 'right'}}>
+                        <a href="/find/id">아이디 찾기</a>
+                        <span> | </span>
+                        <a href="/find/password">비밀번호 찾기</a>
+                    </div>
                 </Paper>
             </div>
         );

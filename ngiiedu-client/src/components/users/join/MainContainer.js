@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
 import FontIcon from 'material-ui/FontIcon';
 
 import {orange500, cyan500} from 'material-ui/styles/colors';
@@ -221,87 +220,84 @@ class MainContainer extends React.Component {
 
     render() {
         return (
-            <div
-                style={{
-                    padding: '20px',
-                    margin: 'auto'
-                }}
-            >
-                <h3 style={{textAlign: 'center'}}>회원가입</h3>
-                <p style={{textAlign: 'center', fontSize: '11px'}}>로그인정보 및 가입정보를 입력하세요.</p>
-                <p style={{textAlign: 'right', fontSize: '10px'}}>*표시는 필수입력 사항입니다.</p>
-                <form action="http://localhost:8080/ngiiedu/api/v1/users.json" method="post" id="join">
-                    <div style={{maxWidth: '60%', textAlign: 'center', margin: 'auto'}}>
-                        <TextField
-                            name="userid"
-                            floatingLabelText="*아이디"
-                            fullWidth={true}
-                            errorText={this.state.idErrorText}
-                            errorStyle={this.state.idErrorStyle}
-                            floatingLabelFocusStyle={this.state.idErrorStyle}
-                            onChange={(e) => this.checkID(e.target.value)}
-                        />
-                        <TextField
-                            id="password"
-                            name="password"
-                            floatingLabelText="*비밀번호"
-                            fullWidth={true}
-                            type="password"
-                            onChange={() => this.checkPwd("password")}
-                        />
-                        <TextField
-                            id="rePassword"
-                            name="rePassword"
-                            floatingLabelText="*비밀번호 재확인"
-                            fullWidth={true}
-                            type="password"
-                            errorText={this.state.pwdErrorText}
-                            errorStyle={this.state.pwdErrorStyle}
-                            floatingLabelFocusStyle={this.state.pwdErrorStyle}
-                            onChange={() => this.checkPwd("rePassword")}
-                        />
-                        <TextField
-                            id="userName"
-                            name="userName"
-                            floatingLabelText="*이름"
-                            fullWidth={true}
-                        />
-                        <TextField
-                            name="userEmail"
-                            floatingLabelText="*이메일"
-                            fullWidth={true}
-                            errorText={this.state.emailErrorText}
-                            errorStyle={this.state.emailErrorStyle}
-                            floatingLabelFocusStyle={this.state.emailErrorStyle}
-                            onChange={(e) => this.checkEmail(e.target.value)}
-                        />
-                        <TextField
-                            name="schoolName"
-                            floatingLabelText="학교명"
-                            fullWidth={true}
-                        />
-                        <TextField
-                            name="schoolAuthkey"
-                            floatingLabelText="학교 비밀코드(교사전용)"
-                            fullWidth={true}
-                            errorText={this.state.authkeyErrorText}
-                            errorStyle={this.state.authkeyErrorStyle}
-                            floatingLabelFocusStyle={this.state.authkeyErrorStyle}
-                            onChange={(e) => this.checkAuthkey(e.target.value)}
-                        />
-                    </div>
-                    <div style={{textAlign: 'center', maxWidth: '30%', margin: 'auto'}}>
-                        <br />
-                        <RaisedButton
-                            label="가입하기"
-                            fullWidth={true}
-                            primary={true}
-                            icon={<FontIcon className="fa fa-check" />}
-                            onClick={this.submit.bind(this)}
-                        />
-                    </div>
-                </form>
-            </div>
+            <main id="main">
+                <div className="inner">
+                    <h3 style={{textAlign: 'center'}}>회원가입</h3>
+                    <p style={{textAlign: 'center', fontSize: '11px'}}>로그인정보 및 가입정보를 입력하세요.</p>
+                    <p style={{textAlign: 'right', fontSize: '10px'}}>*표시는 필수입력 사항입니다.</p>
+                    <form action="http://localhost:8080/ngiiedu/api/v1/users.json" method="post" id="join">
+                        <div style={{maxWidth: '60%', textAlign: 'center', margin: 'auto'}}>
+                            <TextField
+                                name="userid"
+                                floatingLabelText="*아이디"
+                                fullWidth={true}
+                                errorText={this.state.idErrorText}
+                                errorStyle={this.state.idErrorStyle}
+                                floatingLabelFocusStyle={this.state.idErrorStyle}
+                                onChange={(e) => this.checkID(e.target.value)}
+                            />
+                            <TextField
+                                id="password"
+                                name="password"
+                                floatingLabelText="*비밀번호"
+                                fullWidth={true}
+                                type="password"
+                                onChange={() => this.checkPwd("password")}
+                            />
+                            <TextField
+                                id="rePassword"
+                                name="rePassword"
+                                floatingLabelText="*비밀번호 재확인"
+                                fullWidth={true}
+                                type="password"
+                                errorText={this.state.pwdErrorText}
+                                errorStyle={this.state.pwdErrorStyle}
+                                floatingLabelFocusStyle={this.state.pwdErrorStyle}
+                                onChange={() => this.checkPwd("rePassword")}
+                            />
+                            <TextField
+                                id="userName"
+                                name="userName"
+                                floatingLabelText="*이름"
+                                fullWidth={true}
+                            />
+                            <TextField
+                                name="userEmail"
+                                floatingLabelText="*이메일"
+                                fullWidth={true}
+                                errorText={this.state.emailErrorText}
+                                errorStyle={this.state.emailErrorStyle}
+                                floatingLabelFocusStyle={this.state.emailErrorStyle}
+                                onChange={(e) => this.checkEmail(e.target.value)}
+                            />
+                            <TextField
+                                name="schoolName"
+                                floatingLabelText="학교명"
+                                fullWidth={true}
+                            />
+                            <TextField
+                                name="schoolAuthkey"
+                                floatingLabelText="학교 비밀코드(교사전용)"
+                                fullWidth={true}
+                                errorText={this.state.authkeyErrorText}
+                                errorStyle={this.state.authkeyErrorStyle}
+                                floatingLabelFocusStyle={this.state.authkeyErrorStyle}
+                                onChange={(e) => this.checkAuthkey(e.target.value)}
+                            />
+                        </div>
+                        <div style={{textAlign: 'center', maxWidth: '30%', margin: 'auto'}}>
+                            <br />
+                            <RaisedButton
+                                label="가입하기"
+                                fullWidth={true}
+                                primary={true}
+                                icon={<FontIcon className="fa fa-check" />}
+                                onClick={this.submit.bind(this)}
+                            />
+                        </div>
+                    </form>
+                </div>
+            </main>
         );
     }
 }
