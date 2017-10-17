@@ -18,56 +18,38 @@ class SearchCourse extends React.Component {
         super(props);
 
         this.state = {
-            category: 'userid',
             value: ''
         };
-    }
+    };
 
     search() {
-
-        let category = this.state.category;
+        console.log("search?");
         let keyword = this.state.value;
-
-        this.props.searchList(category, keyword);
-
-    }
+        this.props.searchList(keyword);
+    };
 
     enterKey(e) {
         if (e.keyCode == 13) this.search();
-    }
+    };
 
-    handleChange(event, index, value) {
+    handleChange(e, i, v) {
         this.setState({
-            category: value
+            value: v
         })
-    }
+    };
 
     render() {
         return (
             <div
                 style={{
-                    margin: '20px auto',
+                    margin: '10px auto',
                     maxWidth: '100%'
                 }}
             >
-                <SelectField
-                    floatingLabelText="카테고리"
-                    value={this.state.category}
-                    onChange={this.handleChange.bind(this)}
-                    style={{
-                        maxWidth: '15%',
-                        marginLeft: 20
-                    }}
-                >
-                    <MenuItem value="userid" primaryText="아이디" />
-                    <MenuItem value="userName" primaryText="이름" />
-                    <MenuItem value="userEmail" primaryText="이메일" />
-                </SelectField>
 
                 <Paper
                     style={{
-                        maxWidth: '70%',
-                        marginLeft: 15
+                        maxWidth: '100%'
                     }}
                 >
                     <TextField
@@ -101,7 +83,7 @@ class SearchCourse extends React.Component {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        searchList: (category, keyword) => dispatch(actionSearch(category, keyword))
+        searchList: (keyword) => dispatch(actionSearch(keyword))
     };
 }
 

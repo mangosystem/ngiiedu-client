@@ -15,19 +15,14 @@ class MainContainer extends Component {
         return (
             <main id="main">
                 <div className="inner"> 
-                <div className="flexible">
-
-                <LeftMenu/>
-  
-
-                     <section>
-                    <Paper>
-                        <SelectSyncWay/>
-                    </Paper>
-
-                     </section>
-                     </div>
-
+                    <div className="flexible">
+                    <LeftMenu/>
+                        <section>
+                            <Paper>
+                                <SelectSyncWay/>
+                            </Paper>
+                        </section>
+                    </div>
                 </div>
             </main>
         );

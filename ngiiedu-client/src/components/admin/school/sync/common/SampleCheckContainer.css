@@ -1,24 +1,13 @@
 .SampleCheckList{
-    width:500px;
-    border: 1px solid black;
+    width:800px;
     text-align:center;
-    height:500px;
-    /* display:inline-block; */ float:left; 
-    /* overflow: auto; */
+    height:300px;
+    margin:20px;
 }
 
 .SampleCheckEdit{
-    
-    width:280px;
-    border: 1px solid black;
+    margin-bottom:20px;
+    width:850px;
     text-align:center;
-    display:inline-block;
-    height:500px;
-    overflow: scroll;
-}
-
-.SyncAPIStep1Container{
-    display:inline-block;
-    width:100%;
-    height:500px;
+    height:150px;
 }
