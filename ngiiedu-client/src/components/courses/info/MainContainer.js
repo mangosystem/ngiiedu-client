@@ -60,6 +60,7 @@ class MainContainer extends React.Component {
               isAccessor={this.state.isAccessor}
               isOwner={this.state.isOwner}
               isMember={this.state.isMember}
+              activeMenu={'DATA'}
             />
 
             <section>
