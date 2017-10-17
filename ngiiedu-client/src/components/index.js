@@ -90,19 +90,19 @@ class App extends Component {
             </Route>
             <Route exact path="/cm-admin/schoolSync">
               <div>
-                <Header wide />
+                <Header  />
                 <SchoolsSyncContainer />
               </div>
             </Route>
             <Route path="/cm-admin/schoolSync/api">
               <div>
-                <Header wide />
+                <Header  />
                 <SchoolsSyncApiContainer />
               </div>
             </Route>
             <Route path="/cm-admin/schoolSync/file">
               <div>
-                <Header wide />
+                <Header  />
                 <SchoolsSyncFileContainer />
               </div>
             </Route>
