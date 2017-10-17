@@ -32,6 +32,8 @@ import CourseMemberContainer from './courses/member/MainContainer';
 import CourseTeamContainer from './courses/team/MainContainer';
 import CourseSettingContainer from './courses/setting/MainContainer';
 
+import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
+
 import Error404 from './common/message/Error404';
 
 class App extends Component {
@@ -128,7 +130,7 @@ class App extends Component {
               </div>
             </Route>
 
-            <Route path="/course/:COURSEID/work">
+            <Route exact path="/course/:COURSEID/work">
               <div>
                 <Header />
                 <CourseWorkContainer />
@@ -155,6 +157,10 @@ class App extends Component {
                 <CourseSettingContainer />
                 <Footer />
               </div>
+            </Route>
+
+            <Route path="/course/:COURSEID/work/:workId">
+              <WorkFrameDataCollect />
             </Route>
 
             <Route component={Error404}/>
