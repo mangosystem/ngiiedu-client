@@ -31,7 +31,6 @@ class EditPopup extends React.Component {
             selectTableData: {},
             tableData:[]
         };
-        this.editSchoolIdChange = this.editSchoolIdChange.bind(this);
         this.editSchoolNameChange = this.editSchoolNameChange.bind(this);
         this.editSchoolEduOfficeNameChange = this.editSchoolEduOfficeNameChange.bind(this);
         this.editSchoolEduOfficeCodeChange = this.editSchoolEduOfficeCodeChange.bind(this);
@@ -95,16 +94,6 @@ class EditPopup extends React.Component {
     };
 
     //학교정보 수정 textfield 정보 수정
-    editSchoolIdChange(event, value){
-        this.setState({
-            selectTableData:update(
-                this.state.selectTableData,{
-                    schoolId:{$set:value}
-                }
-            )
-        });
-    };
-
     editSchoolNameChange(event, value){
         this.setState({
             selectTableData:update(
@@ -323,7 +312,7 @@ class EditPopup extends React.Component {
                                     학교아이디
                                 </TableRowColumn>
                                 <TableRowColumn>
-                                    <TextField hintText="학교아이디" value={this.state.selectTableData.schoolId||''} onChange={this.editSchoolIdChange}/>
+                                    {this.state.selectTableData.schoolId}
                                 </TableRowColumn>
                             </TableRow>
                             <TableRow>

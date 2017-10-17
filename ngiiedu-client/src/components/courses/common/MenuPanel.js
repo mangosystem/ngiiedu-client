@@ -40,16 +40,19 @@ class MenuPanel extends React.Component {
                     <MenuItem
                       primaryText="수업 정보"
                       leftIcon={<IconInfoOutline />}
+                      href="/course/:COURSEID"
                       className={this.props.activeMenu == 'INFO' ? 'aml' : 'uml'}
                     />
                     <MenuItem
                       primaryText="관련 데이터"
                       leftIcon={<IconFileDownload />}
+                      href="/course/:COURSEID/data"
                       className={this.props.activeMenu == 'DATA' ? 'aml' : 'uml'}
                     />
                     <MenuItem
                       primaryText="수업 과정"
                       leftIcon={<IconWeb />}
+                      href="/course/:COURSEID/work"
                       className={this.props.activeMenu == 'WORK' ? 'aml' : 'uml'}
                     />
                   </Menu>
@@ -60,11 +63,13 @@ class MenuPanel extends React.Component {
                     <MenuItem
                       primaryText="멤버"
                       leftIcon={<IconPerson />}
+                      href="/course/:COURSEID/member"
                       className={this.props.activeMenu == 'MEMBER' ? 'aml' : 'uml'}
                     />
                     <MenuItem
                       primaryText="팀"
                       leftIcon={<IconGroup />}
+                      href="/course/:COURSEID/team"
                       className={this.props.activeMenu == 'TEAM' ? 'aml' : 'uml'}
                     />
                   </Menu>
@@ -74,6 +79,7 @@ class MenuPanel extends React.Component {
                     <MenuItem
                       primaryText="수업 설정"
                       leftIcon={<IconSettings />}
+                      href="/course/:COURSEID/setting"
                       className={this.props.activeMenu == 'SETTING' ? 'aml' : 'uml'}
                     />
                   </Menu>

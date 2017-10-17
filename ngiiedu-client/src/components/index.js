@@ -22,6 +22,19 @@ import SchoolsSyncApiContainer from './admin/school/sync/api/MainContainer';
 // 관리자 - 사용자
 import UsersManageContainer from './admin/user/MainContainer';
 
+// 관리자 - 수업관리
+import CourseContainer from './admin/course/MainContainer';
+
+// 관리자 - 사용자지원
+import SupportContainer from './admin/support/MainContainer';
+import SupportPdsContainer from './admin/support/pds/MainContainer';
+import SupportFaqContainer from './admin/support/faq/MainContainer';
+import SupportQnaContainer from './admin/support/qna/MainContainer';
+
+// 관리자 - 수업모듈
+import ModuleContainer from './admin/module/MainContainer';
+import ModuleBuilderContainer from './builder/MainContainer';
+
 // 수업
 import CourseListContainer from './courses/list/MainContainer';
 import CourseCreateContainer from './courses/create/MainContainer';
@@ -98,6 +111,51 @@ class App extends Component {
               <div>
                 <Header wide />
                 <UsersManageContainer />
+              </div>
+            </Route>
+
+            <Route path="/cm-admin/course">
+              <div>
+                <Header wide />
+                <CourseContainer />
+              </div>
+            </Route>
+
+            <Route path="/cm-admin/support">
+              <div>
+                <Header wide />
+                <SupportContainer />
+              </div>
+            </Route>
+            <Route path="/cm-admin/supportPds">
+              <div>
+                <Header wide />
+                <SupportPdsContainer />
+              </div>
+            </Route>
+            <Route path="/cm-admin/supportFaq">
+              <div>
+                <Header wide />
+                <SupportFaqContainer />
+              </div>
+            </Route>
+            <Route path="/cm-admin/supportQna">
+              <div>
+                <Header wide />
+                <SupportQnaContainer />
+              </div>
+            </Route>
+
+            <Route path="/cm-admin/module">
+              <div>
+                <Header wide />
+                <ModuleContainer />
+              </div>
+            </Route>
+            <Route path="/cm-admin/moduleBuilder">
+              <div>
+                <Header wide />
+                <ModuleBuilderContainer />
               </div>
             </Route>
 

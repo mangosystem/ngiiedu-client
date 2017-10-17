@@ -19,7 +19,7 @@ import CompleteContainer from '../common/CompleteContainer';
 
 
 //left panal
-import LeftMenu from '../../common/LeftMenu.js';
+import LeftMenu from '../../../common/LeftMenu.js';
 
 //redux
 //store에 연결

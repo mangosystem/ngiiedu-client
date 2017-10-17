@@ -1,10 +1,4 @@
 import React, { Component } from 'react';
-import SchoolList from  './SchoolList';
-import Search from './Search';
-import InfoPopup from './popup/InfoPopup';
-import EditPopup from './popup/EditPopup';
-import AddPopup from './popup/AddPopup';
-import DeletePopup from './popup/DeletePopup'
 
 import LeftMenu from '../../common/LeftMenu';
 import Paper from 'material-ui/Paper';
@@ -16,16 +10,11 @@ class MainContainer extends React.Component {
                 <div className="inner">
                     <div className="flexible">
                         <LeftMenu
-                            activeMenu="schoolList"
+                            activeMenu="supportFaq"
                         />
                         <section>
                             <Paper>
-                                <Search/>
-                                <SchoolList/>
-                                <InfoPopup/>
-                                <EditPopup/>
-                                <AddPopup/>
-                                <DeletePopup/>
+                                사용자지원 FAQ 관리
                             </Paper>
                         </section>
                     </div>

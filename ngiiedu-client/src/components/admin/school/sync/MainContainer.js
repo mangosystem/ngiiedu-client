@@ -5,7 +5,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
 //left panal
-import LeftMenu from '../common/LeftMenu.js';
+import LeftMenu from '../../common/LeftMenu.js';
 
 
 
@@ -16,7 +16,9 @@ class MainContainer extends Component {
             <main id="main">
                 <div className="inner"> 
                     <div className="flexible">
-                    <LeftMenu/>
+                        <LeftMenu
+                            activeMenu="schoolSync"
+                        />
                         <section>
                             <Paper>
                                 <SelectSyncWay/>
