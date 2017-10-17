@@ -2,6 +2,15 @@ import React from 'react';
 
 import MenuPanel from '../common/MenuPanel.js';
 
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+
 class MainContainer extends React.Component {
 
   constructor(props){
@@ -28,7 +37,52 @@ class MainContainer extends React.Component {
               activeMenu={'MEMBER'}
             />
             <section>
-              수업 - 멤버
+              <Table
+                selectable={false}
+                className="Table"
+              >
+                <TableHeader
+                  displaySelectAll={false}
+                  adjustForCheckbox={false}
+                >
+                  <TableRow>
+                    <TableHeaderColumn>
+                      이름
+                      <i className="fa fa-sort" aria-hidden="true"></i>
+                    </TableHeaderColumn>
+                    <TableHeaderColumn>
+                      이메일
+                      <i className="fa fa-sort" aria-hidden="true"></i>
+                    </TableHeaderColumn>
+                  </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false} className="TableBody">
+                  <TableRow className="TableRow">
+                      <TableRowColumn>이름</TableRowColumn>
+                      <TableRowColumn>이메일</TableRowColumn>
+                  </TableRow>
+                  <TableRow className="TableRow">
+                      <TableRowColumn>이름1</TableRowColumn>
+                      <TableRowColumn>이메일1</TableRowColumn>
+                  </TableRow>
+                  <TableRow className="TableRow">
+                      <TableRowColumn>이름2</TableRowColumn>
+                      <TableRowColumn>이메일2</TableRowColumn>
+                  </TableRow>
+                  <TableRow className="TableRow">
+                      <TableRowColumn>이름3</TableRowColumn>
+                      <TableRowColumn>이메일3</TableRowColumn>
+                  </TableRow>
+                  <TableRow className="TableRow">
+                      <TableRowColumn>이름4</TableRowColumn>
+                      <TableRowColumn>이메일4</TableRowColumn>
+                  </TableRow>
+                  <TableRow className="TableRow">
+                      <TableRowColumn>이름5</TableRowColumn>
+                      <TableRowColumn>이메일5</TableRowColumn>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </section>
           </div>
         </div>
