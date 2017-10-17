@@ -108,7 +108,10 @@ class MainContainer extends React.Component {
         <main id="main">
           <div className="inner">
             <div className="flexible">
-              <LeftMenu/>
+              <LeftMenu
+               activeMenu="schoolSync"
+              
+              />
               <section>
                 <Paper>
                   {(() => {
