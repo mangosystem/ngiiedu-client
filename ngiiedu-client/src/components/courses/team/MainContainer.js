@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 
 import MenuPanel from '../common/MenuPanel.js';
 
@@ -17,6 +18,7 @@ class MainContainer extends React.Component {
   }
 
   componentWillMount() {
+     // console.log(this.props.match.params.COURSEID);
   }
 
   render() {
@@ -130,4 +132,4 @@ class MainContainer extends React.Component {
   }
 };
 
-export default MainContainer;
+export default withRouter(MainContainer);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { actionSearch } from '../../../actions/index';
+import { actionSearchCourse } from '../../../actions/index';
 
 //검색창
 import SelectField from 'material-ui/SelectField';
@@ -23,7 +23,6 @@ class SearchCourse extends React.Component {
     };
 
     search() {
-        console.log("search?");
         let keyword = this.state.value;
         this.props.searchList(keyword);
     };
@@ -83,7 +82,7 @@ class SearchCourse extends React.Component {
 
 let mapDispatchToProps = (dispatch) => {
     return {
-        searchList: (keyword) => dispatch(actionSearch(keyword))
+        searchList: (keyword) => dispatch(actionSearchCourse(keyword))
     };
 }
 

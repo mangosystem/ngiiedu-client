@@ -82,3 +82,15 @@ export const actionUpdateSchool = (tableData) => ({
     type: types.UPDATE_SCHOOL,
     tableData
 })
+
+// 코스 검색
+export const actionSearchCourse = (keyword) => ({
+    type: types.SEARCH_COURSE,
+    keyword
+})
+
+// 코스 id 받아오기 
+export const actionCourseId = (courseId) => ({
+    type: types.COURSE_ID,
+    courseId
+})

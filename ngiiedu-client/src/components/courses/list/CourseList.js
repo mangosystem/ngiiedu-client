@@ -20,14 +20,14 @@ import {
 } from 'material-ui/Table';
 
 class CourseList extends React.Component {
-
-    constructor() {
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             courseTableData: [],
             joinedCourseTableData: [],
             courseTablSelectedRows: [],
             joinedCourseTablSelectedRows: [],
+            //keyword: '',
             fixedHeader: true,
             selectable: true
         };
@@ -291,8 +291,9 @@ class CourseList extends React.Component {
     }
 }
 
+
 let mapStateToProps = (state) => ({
-    keyword: state.user.keyword
+    keyword: state.courseList.keyword
 });
 
 CourseList = connect(mapStateToProps)(CourseList);

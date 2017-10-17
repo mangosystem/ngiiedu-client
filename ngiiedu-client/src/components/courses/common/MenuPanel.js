@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 
 import Paper from 'material-ui/Paper';
 
@@ -21,10 +22,20 @@ class MenuPanel extends React.Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      courseId:''
+    }
   }
 
-  render() {
+  componentWillMount() {
+    // alert('생성자, 참여자 구분하여 UI 구성');
+    this.setState({
+      courseId:this.props.match.params.COURSEID
+    });
+  }
 
+
+  render() {
 
     return (
       <div>
@@ -40,20 +51,20 @@ class MenuPanel extends React.Component {
                     <MenuItem
                       primaryText="수업 정보"
                       leftIcon={<IconInfoOutline />}
-                      href="/course/:COURSEID"
                       className={this.props.activeMenu == 'INFO' ? 'aml' : 'uml'}
+                      href={"/course/" + this.state.courseId}
                     />
                     <MenuItem
                       primaryText="관련 데이터"
                       leftIcon={<IconFileDownload />}
-                      href="/course/:COURSEID/data"
                       className={this.props.activeMenu == 'DATA' ? 'aml' : 'uml'}
+                      href={"/course/" + this.state.courseId + "/data"}
                     />
                     <MenuItem
                       primaryText="수업 과정"
                       leftIcon={<IconWeb />}
-                      href="/course/:COURSEID/work"
                       className={this.props.activeMenu == 'WORK' ? 'aml' : 'uml'}
+                      href={"/course/" + this.state.courseId + "/work"}
                     />
                   </Menu>
                 </Paper>
@@ -63,14 +74,14 @@ class MenuPanel extends React.Component {
                     <MenuItem
                       primaryText="멤버"
                       leftIcon={<IconPerson />}
-                      href="/course/:COURSEID/member"
                       className={this.props.activeMenu == 'MEMBER' ? 'aml' : 'uml'}
+                      href={"/course/" + this.state.courseId + "/member"}
                     />
                     <MenuItem
                       primaryText="팀"
                       leftIcon={<IconGroup />}
-                      href="/course/:COURSEID/team"
                       className={this.props.activeMenu == 'TEAM' ? 'aml' : 'uml'}
+                      href={"/course/" + this.state.courseId + "/team"}
                     />
                   </Menu>
                 </Paper>
@@ -79,8 +90,8 @@ class MenuPanel extends React.Component {
                     <MenuItem
                       primaryText="수업 설정"
                       leftIcon={<IconSettings />}
-                      href="/course/:COURSEID/setting"
                       className={this.props.activeMenu == 'SETTING' ? 'aml' : 'uml'}
+                      href={"/course/" + this.state.courseId + "/setting"}
                     />
                   </Menu>
                 </Paper>
@@ -101,21 +112,45 @@ class MenuPanel extends React.Component {
                 <Paper className="mui-paper">
                   <Menu desktop className="mui-menu">
                     <Subheader>수업</Subheader>
-                    <MenuItem primaryText="수업 정보" leftIcon={<IconInfoOutline />}/>
-                    <MenuItem primaryText="관련 데이터" leftIcon={<IconFileDownload />} />
-                    <MenuItem primaryText="수업 과정" leftIcon={<IconWeb />}/>
+                    <MenuItem 
+                      primaryText="수업 정보" 
+                      leftIcon={<IconInfoOutline />}
+                      href={"/course/" + this.state.courseId + "/info"}
+                    />
+                    <MenuItem 
+                      primaryText="관련 데이터" 
+                      leftIcon={<IconFileDownload />} 
+                      href={"/course/" + this.state.courseId + "/data"}  
+                    />
+                    <MenuItem 
+                      primaryText="수업 과정" 
+                      leftIcon={<IconWeb />}
+                      href={"/course/" + this.state.courseId + "/work"}
+                    />
                   </Menu>
                 </Paper>
                 <Paper className="mui-paper">
                   <Menu desktop className="mui-menu">
                     <Subheader>참여자</Subheader>
-                    <MenuItem primaryText="멤버" leftIcon={<IconPerson />} />
-                    <MenuItem primaryText="팀" leftIcon={<IconGroup />} />
+                    <MenuItem 
+                      primaryText="멤버" 
+                      leftIcon={<IconPerson />} 
+                      href={"/course/" + this.state.courseId + "/member"}
+                    />
+                    <MenuItem 
+                      primaryText="팀" 
+                      leftIcon={<IconGroup />} 
+                      href={"/course/" + this.state.courseId + "/team"}
+                    />
                   </Menu>
                 </Paper>
                 <Paper className="mui-paper">
                   <Menu desktop className="mui-menu">
-                    <MenuItem primaryText="수업 설정" leftIcon={<IconSettings />} />
+                    <MenuItem 
+                      primaryText="수업 설정" 
+                      leftIcon={<IconSettings />} 
+                      href={"/course/" + this.state.courseId + "/setting"}
+                    />
                   </Menu>
                 </Paper>
               </aside>
@@ -143,4 +178,4 @@ MenuPanel.defaultProps = {
   activeMenu: 'INFO'
 };
 
-export default MenuPanel;
+export default withRouter(MenuPanel);

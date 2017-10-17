@@ -3,7 +3,7 @@ import color from './colorSample';
 import user from './user';
 import schoolsSync from './schoolsSync.js';
 import schoolList from './schoolList.js';
-
+import courseList from './courseList.js';
 
 import { combineReducers } from 'redux';
 
@@ -13,7 +13,8 @@ const reducers = combineReducers({
     color,
     user,
     schoolsSync,
-    schoolList
+    schoolList,
+    courseList
 });
 
 export default reducers;

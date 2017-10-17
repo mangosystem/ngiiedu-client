@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 
 import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
@@ -27,10 +28,10 @@ class MainContainer extends React.Component {
       isMember: false
     }
   }
-
-
+  
   componentWillMount() {
     // alert('생성자, 참여자 구분하여 UI 구성');
+    console.log(this.props.match.params.COURSEID);
   }
 
   render() {
@@ -60,7 +61,6 @@ class MainContainer extends React.Component {
               isAccessor={this.state.isAccessor}
               isOwner={this.state.isOwner}
               isMember={this.state.isMember}
-              activeMenu={'INFO'}
             />
 
             <section>
@@ -120,4 +120,4 @@ class MainContainer extends React.Component {
   }
 };
 
-export default MainContainer;
+export default withRouter(MainContainer);

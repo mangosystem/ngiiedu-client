@@ -25,3 +25,7 @@ export const DEL_SCHOOL_OPEN = "DEL_SCHOOL_OPEN"
 export const SEARCH_SCHOOL = "SEARCH_SCHOOL";
 //update school data
 export const UPDATE_SCHOOL = "UPDATE_SCHOOL";
+//search course
+export const SEARCH_COURSE = "SEARCH_COURSE";
+//course id
+export const COURSE_ID = "COURSE_ID";
