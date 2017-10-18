@@ -6,6 +6,11 @@ import MenuPanel from '../common/MenuPanel.js';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MenuItem from 'material-ui/MenuItem';
+import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
+
 class MainContainer extends React.Component {
 
   constructor(props){
@@ -23,6 +28,13 @@ class MainContainer extends React.Component {
   }
 
   render() {
+
+    const divStyle = {
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'space-between'
+    };
+
     return (
       <main id="main">
 				<div className="inner">
@@ -35,9 +47,17 @@ class MainContainer extends React.Component {
             />
             <section>
               <Paper>
-                <div  style={{padding: '20px'}}>
+                <div  style={{padding: '5px 20px 20px 20px'}}>
+                  <div style={divStyle}>
                   <div style={{fontSize: '20px', lineHeight: '30px'}}>수업 지도안</div>
-                  <br />
+                    <IconMenu
+                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    >
+                      <MenuItem primaryText="수정" />
+                    </IconMenu>
+                  </div>
                   <Divider />
                   <br />
                   <ul style={{marginLeft: '10%'}}>
@@ -46,9 +66,17 @@ class MainContainer extends React.Component {
                 </div>
               </Paper>
               <Paper>
-                <div  style={{padding: '20px'}}>
-                  <div style={{fontSize: '20px', lineHeight: '30px'}}>교사용 수업자료</div>
-                  <br />
+                <div  style={{padding: '5px 20px 20px 20px'}}>
+                  <div style={divStyle}>
+                    <div style={{fontSize: '20px', lineHeight: '30px'}}>교사용 수업자료</div>
+                    <IconMenu
+                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    >
+                      <MenuItem primaryText="수정" />
+                    </IconMenu>
+                  </div>
                   <Divider />
                   <br />
                   <ul style={{marginLeft: '10%'}}>
@@ -59,9 +87,17 @@ class MainContainer extends React.Component {
                 </div>
               </Paper>
               <Paper>
-                <div  style={{padding: '20px'}}>
-                  <div style={{fontSize: '20px', lineHeight: '30px'}}>학생 활동지</div>
-                  <br />
+                <div style={{padding: '5px 20px 20px 20px'}}>
+                  <div style={divStyle}>
+                    <div style={{fontSize: '20px', lineHeight: '30px'}}>학생 활동지</div>
+                      <IconMenu
+                        iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                      >
+                        <MenuItem primaryText="수정" />
+                      </IconMenu>
+                    </div>
                   <Divider />
                   <br />
                   <ul style={{marginLeft: '10%'}}>
@@ -73,9 +109,17 @@ class MainContainer extends React.Component {
                 </div>
               </Paper>
               <Paper>
-                <div  style={{padding: '20px'}}>
-                  <div style={{fontSize: '20px', lineHeight: '30px'}}>교사용 참고자료</div>
-                  <br />
+                <div style={{padding: '5px 20px 20px 20px'}}>
+                  <div style={divStyle}>
+                    <div style={{fontSize: '20px', lineHeight: '30px'}}>교사용 참고자료</div>
+                      <IconMenu
+                        iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                      >
+                        <MenuItem primaryText="수정" />
+                      </IconMenu>
+                    </div>
                   <Divider />
                   <br />
                   <ul style={{marginLeft: '10%'}}>
@@ -84,12 +128,20 @@ class MainContainer extends React.Component {
                 </div>
               </Paper>
               <Paper>
-                <div  style={{padding: '20px'}}>
-                  <div style={{fontSize: '20px', lineHeight: '30px'}}>활동매뉴얼</div>
-                  <br />
+                <div style={{padding: '5px 20px 20px 20px'}}>
+                  <div style={divStyle}>
+                    <div style={{fontSize: '20px', lineHeight: '30px'}}>활동 매뉴얼</div>
+                      <IconMenu
+                        iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                      >
+                        <MenuItem primaryText="수정" />
+                      </IconMenu>
+                  </div>
                   <Divider />
                   <br />
-                    <ul style={{marginLeft: '10%'}}>
+                  <ul style={{marginLeft: '10%'}}>
                     <li>1차시 - 교사용_소음 및 소음지도 개념</li>
                     <li>2~3차시 - 교사용_구글맵 현장조사 매뉴얼</li>
                     <li>2~3차시 - 콜렉터 현장조사 매뉴얼</li>

@@ -104,14 +104,12 @@ class MainContainer extends React.Component {
       return (
         <main id="main">
           <div className="inner"> 
-           <div className="flexible">
-           <LeftMenu
-           activeMenu="schoolSync"
-          
-          />           
-
-                <section>
-                 <Paper>
+            <div className="flexible">
+              <LeftMenu
+                activeMenu="schoolSync"            
+              />         
+              <section>
+                  <Paper>
 
                   {/* <Divider style={{ marginBottom: '50px'}} /> */}
 
@@ -119,20 +117,14 @@ class MainContainer extends React.Component {
                     if (this.state.stepIndex == 0) {
                       return (
                         <div >
-                          <SampleCheckContainer/>
+                        <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
                         </div>
                       )
-                    }	else if (this.state.stepIndex == 1) {
-                        return (
-                          <div >
-                          <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
-                          </div>
-                        )
-                    } else {
-                    }
-                  })()}
+                  } else {
+                  }
+                })()}
 
-                  <Divider style={{marginTop: '50px', marginBottom: '20px'}} />
+                    <Divider style={{marginTop: '50px', marginBottom: '20px'}} />
 
                   {(() => {
                     if (!this.state.finished) {
@@ -160,7 +152,6 @@ class MainContainer extends React.Component {
                     }
                   })()}
                 </Paper>
-
               </section>
             </div>
           </div>

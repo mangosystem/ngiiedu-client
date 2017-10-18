@@ -5,6 +5,13 @@ import MenuPanel from '../common/MenuPanel.js';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MenuItem from 'material-ui/MenuItem';
+import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 
 class MainContainer extends React.Component {
 
@@ -34,7 +41,8 @@ class MainContainer extends React.Component {
       width: '100%', 
       height: '30%', 
       display: 'flex', 
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent: 'space-between'
     };
 
     const pStyle = {
@@ -61,6 +69,13 @@ class MainContainer extends React.Component {
                 <Paper style={style}>
                   <div style={divStyle}>
                     <p style={pStyle}>A팀</p>
+                    <IconMenu
+                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    >
+                      <MenuItem primaryText="수정" />
+                    </IconMenu>
                   </div>
                   <Divider />
                   <br />
@@ -74,6 +89,13 @@ class MainContainer extends React.Component {
                 <Paper style={style}>
                   <div style={divStyle}>
                     <p style={pStyle}>B팀</p>
+                    <IconMenu
+                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    >
+                      <MenuItem primaryText="수정" />
+                    </IconMenu>
                   </div>
                   <Divider />
                   <br />
@@ -87,6 +109,13 @@ class MainContainer extends React.Component {
                 <Paper style={style}>
                   <div style={divStyle}>
                     <p style={pStyle}>C팀</p>
+                    <IconMenu
+                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    >
+                      <MenuItem primaryText="수정" />
+                    </IconMenu>
                   </div>
                   <Divider />
                   <br />
@@ -100,6 +129,13 @@ class MainContainer extends React.Component {
                 <Paper style={style}>
                   <div style={divStyle}>
                     <p style={pStyle}>D팀</p>
+                    <IconMenu
+                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    >
+                      <MenuItem primaryText="수정" />
+                    </IconMenu>
                   </div>
                   <Divider />
                   <br />
@@ -113,6 +149,13 @@ class MainContainer extends React.Component {
                 <Paper style={style}>
                   <div style={divStyle}>
                     <p style={pStyle}>E팀</p>
+                    <IconMenu
+                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    >
+                      <MenuItem primaryText="수정" />
+                    </IconMenu>
                   </div>
                   <Divider />
                   <br />
@@ -123,6 +166,9 @@ class MainContainer extends React.Component {
                     <li>이창현</li>
                   </ul>
                 </Paper>
+                <FloatingActionButton zDepth={0} style={{margin: '0 auto'}}>
+                  <ContentAdd />
+                </FloatingActionButton>
               </div>
             </section>
           </div>

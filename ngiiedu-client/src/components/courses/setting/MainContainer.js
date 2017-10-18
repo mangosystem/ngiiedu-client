@@ -41,7 +41,7 @@ class MainContainer extends React.Component {
                     <div style={{lineHeight: '30px', margin: '0 auto'}}>
                       수업 비활성화
                       <br/>
-                      수업을 비화설화 상태로 변경합니다.
+                      수업을 비활성화 상태로 변경합니다.
                         <div
                           style={{float: 'right', padding: '0px 25px'}}
                         >

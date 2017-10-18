@@ -109,8 +109,7 @@ class MainContainer extends React.Component {
           <div className="inner">
             <div className="flexible">
               <LeftMenu
-               activeMenu="schoolSync"
-              
+                activeMenu="schoolSync"
               />
               <section>
                 <Paper>
@@ -169,8 +168,7 @@ class MainContainer extends React.Component {
                       )
                     }
                   })()}
-                  </Paper>
-
+                </Paper>
               </section>
             </div>
           </div>
