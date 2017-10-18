@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from "react-router-dom";
 
 import Dialog from 'material-ui/Dialog';
 
@@ -70,8 +69,11 @@ class ModalContainer extends React.Component {
 			},
       function(res) {
 				if (res.response.code == 200) {
-					alert('수업페이지로이동');
-					this.props.history.push("/");
+					if(res.response.data.status == 'CJS01') {
+						alert('수업참여 신청을 완료하였습니다. 승인 후 사용할 수 있습니다.');
+					}
+					this.onClickClose();
+
 				} else {
 					alert(res.response.message);
 				}
@@ -82,6 +84,7 @@ class ModalContainer extends React.Component {
 
 	render() {
 		return (
+			<div>
 			<Dialog
 				open={this.state.isOpen}
 				title="수업참여하기"
@@ -125,6 +128,7 @@ class ModalContainer extends React.Component {
 					onClick={this.onClickKeyValid}
 				/>
 			</Dialog>
+			</div>
 		)
 	}
 }
@@ -137,4 +141,4 @@ ModalContainer.defaultProps = {
 	isOpen: false
 };
 
-export default withRouter(ModalContainer);
+export default ModalContainer;

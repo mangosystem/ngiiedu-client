@@ -9,6 +9,7 @@ import Divider from 'material-ui/Divider';
 
 import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Badge from 'material-ui/Badge';
@@ -22,13 +23,32 @@ import IconHelpOutline from 'material-ui/svg-icons/action/help-outline';
 
 import Avatar from 'material-ui/Avatar';
 
+import CourseJoinModal from '../../courses/join/ModalContainer';
 
 import './Header.css';
 
 class Header extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
+    this.state = {
+      isOpenJoinCourse: false
+    }
+
+    this.onClickJoinCourse = this.onClickJoinCourse.bind(this);
+    this.onChangeCourseOpen = this.onChangeCourseOpen.bind(this);
+  }
+
+  onClickJoinCourse(evt) {
+    this.setState({
+      isOpenJoinCourse: true
+    });
+  }
+
+  onChangeCourseOpen(value){
+    this.setState({
+      isOpenJoinCourse: value
+    });
   }
 
   render() {
@@ -46,6 +66,10 @@ class Header extends React.Component {
 
           <div style={{flex: 1, marginRight: 0}}>
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+              <CourseJoinModal
+                isOpen={this.state.isOpenJoinCourse}
+                onChangeOpen={this.onChangeCourseOpen}
+              />
               <Badge
                 badgeContent={10}
                 secondary={true}
@@ -74,6 +98,10 @@ class Header extends React.Component {
                 >
                   <MenuItem primaryText="회원정보" />
                   <MenuItem primaryText="수업목록" href="/course" />
+                  <MenuItem primaryText="수업 참여하기" href="#"
+                    onClick={this.onChangeCourseOpen}
+                  />
+                  <MenuItem primaryText="수업 만들기" href="/courseCreate" />
               </IconMenu>
               <IconButton style={{width: 50, height: 50, marginTop: 5, marginBottom: 5}}>
                 <IconHelpOutline />
