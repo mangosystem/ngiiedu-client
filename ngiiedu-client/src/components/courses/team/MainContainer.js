@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from "react-router-dom";
 
 import MenuPanel from '../common/MenuPanel.js';
+import TeamPopup from './TeamPopup.js';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
@@ -12,6 +13,10 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
+import Chip from 'material-ui/Chip';
+// import List from 'material-ui/svg-icons/action/list';
+import IconList from 'material-ui/svg-icons/action/list';
+
 
 class MainContainer extends React.Component {
 
@@ -20,12 +25,19 @@ class MainContainer extends React.Component {
     this.state = {
       isAccessor: true,
       isOwner: true,
-      isMember: false
+      isMember: false,
+
+      teamPopupOpen:false
     }
+
+    this.teamPopup = this.teamPopup.bind(this);
   }
 
-  componentWillMount() {
-     // console.log(this.props.match.params.COURSEID);
+  teamPopup(value){
+    alert(value);
+    this.setState =({
+      teamPopupOpen : true
+    })
   }
 
   render() {
@@ -34,7 +46,7 @@ class MainContainer extends React.Component {
       width: '32%',
       height: '250px',
       marginBottom: '1%',
-      marginRight: '1%'
+      marginLeft: '1%'
     };
 
     const divStyle = {
@@ -50,8 +62,34 @@ class MainContainer extends React.Component {
       fontWeight: 'bold'
     };
 
-    const ulStyle = {
-      marginLeft: '15%'
+
+    const bDivStyle = {
+      width: '32%',
+      height: '250px',
+      marginBottom: '1%',
+      marginLeft: '1%', 
+      display: 'flex', 
+      alignItems: 'center'
+    }
+
+    const cDivStyle = {
+      widht:'100%',
+      height:'60%'
+    }
+
+
+    const styles = {
+      chip: {
+        marginLeft: '4%',
+        marginTop: '2%'
+      },
+      wrapper: {
+        paddingTop:10,
+        display: 'flex', 
+        flexWrap: 'wrap',
+        overflow:'auto',
+        maxHeight:'100%'
+      },
     };
 
     return (
@@ -65,111 +103,85 @@ class MainContainer extends React.Component {
               activeMenu={'TEAM'}
             />
             <section>
+              <Paper style={{padding:'2%'}}>
               <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
                 <Paper style={style}>
                   <div style={divStyle}>
                     <p style={pStyle}>A팀</p>
                     <IconMenu
-                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                      iconButtonElement={<IconButton><IconList /></IconButton>}
                       anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                       targetOrigin={{horizontal: 'right', vertical: 'top'}}
                     >
                       <MenuItem primaryText="수정" />
+                      <MenuItem primaryText="삭제" />
                     </IconMenu>
                   </div>
                   <Divider />
-                  <br />
-                  <ul style={ulStyle}>
-                    <li>조근후</li>
-                    <li>최유정</li>
-                    <li>김현아</li>
-                    <li>박성철</li>
-                  </ul>
+                  <div style={cDivStyle}>
+                    <div style={styles.wrapper}>
+                      <Chip
+                        style={styles.chip}
+                      >
+                        조근후
+                      </Chip>
+                      
+                    </div>
+                  </div>
                 </Paper>
+
                 <Paper style={style}>
-                  <div style={divStyle}>
-                    <p style={pStyle}>B팀</p>
-                    <IconMenu
-                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                <div style={divStyle}>
+                  <p style={pStyle}>A팀</p>
+                  <IconMenu
+                    iconButtonElement={<IconButton><IconList /></IconButton>}
+                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                  >
+                    <MenuItem primaryText="수정" />
+                    <MenuItem primaryText="삭제" />
+                  </IconMenu>
+                </div>
+                <Divider />
+                <div style={cDivStyle}>
+                  <div style={styles.wrapper}>
+                    <Chip
+                      style={styles.chip}
                     >
-                      <MenuItem primaryText="수정" />
-                    </IconMenu>
+                      조근후
+                    </Chip>
+                    
                   </div>
-                  <Divider />
-                  <br />
-                  <ul style={ulStyle}>
-                    <li>김현빈</li>
-                    <li>이상규</li>
-                    <li>류승현</li>
-                    <li>김민영</li>
-                  </ul>
-                </Paper>
-                <Paper style={style}>
-                  <div style={divStyle}>
-                    <p style={pStyle}>C팀</p>
-                    <IconMenu
-                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                </div>
+              </Paper>
+
+              <Paper style={style}>
+                <div style={divStyle}>
+                  <p style={pStyle}>A팀</p>
+                  <IconMenu
+                    iconButtonElement={<IconButton><IconList /></IconButton>}
+                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                  >
+                    <MenuItem primaryText="수정" />
+                    <MenuItem primaryText="삭제" />
+
+                  </IconMenu>
+                </div>
+                <Divider />
+                <div style={cDivStyle}>
+                  <div style={styles.wrapper}>
+                    <Chip
+                      style={styles.chip}
                     >
-                      <MenuItem primaryText="수정" />
-                    </IconMenu>
+                      조근후
+                    </Chip>
                   </div>
-                  <Divider />
-                  <br />
-                  <ul style={ulStyle}>
-                    <li>고기원</li>
-                    <li>한주영</li>
-                    <li>황인영</li>
-                    <li>조현기</li>
-                  </ul>
-                </Paper>
-                <Paper style={style}>
-                  <div style={divStyle}>
-                    <p style={pStyle}>D팀</p>
-                    <IconMenu
-                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
-                      <MenuItem primaryText="수정" />
-                    </IconMenu>
-                  </div>
-                  <Divider />
-                  <br />
-                  <ul style={ulStyle}>
-                    <li>홍석권</li>
-                    <li>임지영</li>
-                    <li>이보경</li>
-                    <li>반지현</li>
-                  </ul>
-                </Paper>
-                <Paper style={style}>
-                  <div style={divStyle}>
-                    <p style={pStyle}>E팀</p>
-                    <IconMenu
-                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
-                      <MenuItem primaryText="수정" />
-                    </IconMenu>
-                  </div>
-                  <Divider />
-                  <br />
-                  <ul style={ulStyle}>
-                    <li>김효정</li>
-                    <li>손자영</li>
-                    <li>류정현</li>
-                    <li>이창현</li>
-                  </ul>
-                </Paper>
-                <FloatingActionButton zDepth={0} style={{margin: '0 auto'}}>
-                  <ContentAdd />
-                </FloatingActionButton>
+                </div>
+              </Paper>
+                <TeamPopup/>
               </div>
+              </Paper>
             </section>
           </div>
         </div>

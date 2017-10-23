@@ -1,5 +1,15 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import Divider from 'material-ui/Divider';
+
+
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
+import MenuItem from 'material-ui/MenuItem';
+
 
 import MenuPanel from '../common/MenuPanel.js';
 
@@ -19,12 +29,20 @@ class MainContainer extends React.Component {
     this.state = {
       isAccessor: true,
       isOwner: true,
-      isMember: false
+      isMember: false,
+      expanded:true
+
     }
+    this.handleExpandChange = this.handleExpandChange.bind(this);
+    
   }
 
+  handleExpandChange(expand) {
+    this.setState({expanded: expand});
+  }
+
+
   componentWillMount() {
-    // console.log(this.props.match.params.COURSEID);
   }
 
   render() {
@@ -39,88 +57,116 @@ class MainContainer extends React.Component {
               activeMenu={'MEMBER'}
             />
             <section>
-              <Table
-                selectable={false}
-                className="Table"
-              >
-                <TableHeader
-                  displaySelectAll={false}
-                  adjustForCheckbox={false}
-                >
-                  <TableRow>
-                    <TableHeaderColumn>
-                      이름
-                      <i className="fa fa-sort" aria-hidden="true"></i>
-                    </TableHeaderColumn>
-                    <TableHeaderColumn>
-                      이메일
-                      <i className="fa fa-sort" aria-hidden="true"></i>
-                    </TableHeaderColumn>
-                  </TableRow>
-                </TableHeader>
-                <TableBody displayRowCheckbox={false} className="TableBody">
-                  <TableRow className="TableRow">
-                      <TableRowColumn>조근후</TableRowColumn>
-                      <TableRowColumn>khjo@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>최유정</TableRowColumn>
-                      <TableRowColumn>yjchoi@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>김현아</TableRowColumn>
-                      <TableRowColumn>hakim@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>박성철</TableRowColumn>
-                      <TableRowColumn>scpark@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>김현빈</TableRowColumn>
-                      <TableRowColumn>hbkim@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>류승현</TableRowColumn>
-                      <TableRowColumn>shryuee@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>김민영</TableRowColumn>
-                      <TableRowColumn>mykim@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>고기원</TableRowColumn>
-                      <TableRowColumn>kwko@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>한주영</TableRowColumn>
-                      <TableRowColumn>jyhan@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>황인영</TableRowColumn>
-                      <TableRowColumn>iyhwang@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>조현기</TableRowColumn>
-                      <TableRowColumn>hgjo@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>홍석권</TableRowColumn>
-                      <TableRowColumn>skhong@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>임지영</TableRowColumn>
-                      <TableRowColumn>jylim@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>이보경</TableRowColumn>
-                      <TableRowColumn>bklee@naver.com</TableRowColumn>
-                  </TableRow>
-                  <TableRow className="TableRow">
-                      <TableRowColumn>반지현</TableRowColumn>
-                      <TableRowColumn>hjban@naver.com</TableRowColumn>
-                  </TableRow>
-                </TableBody>
-              </Table>
+
+            <Card
+            expanded={this.state.expanded} onExpandChange={(expand) => this.handleExpandChange(expand)}
+            >
+              <CardHeader
+                title="참여"
+                subtitle="Subtitle"
+                actAsExpander={true}
+                showExpandableButton={true}
+              />
+              <CardText expandable={true}>
+              <Divider/>
+                <div style={{margin:'auto'}}>
+                <div style={{display:'flex'}}>
+                            <div style={{padding:10,width:'70%'}}>
+                              <h3>조근후</h3>
+                              <p style={{color:'rgb(158, 158, 158)',marginLeft:10,marginTop:5}}>klmo214@naver.com</p>
+                            </div>
+                            <div style={{padding:10,width:'30%',textAlign:'right'}}>
+                            <FlatButton label="차단" secondary={true} />
+                              
+                            </div>
+                          </div>
+                </div>
+                <Divider/>
+                <div style={{margin:'auto'}}>
+                <div style={{display:'flex'}}>
+                            <div style={{padding:10,width:'70%'}}>
+                              <h3>조근후</h3>
+                              <p style={{color:'rgb(158, 158, 158)',marginLeft:10,marginTop:5}}>klmo214@naver.com</p>
+                            </div>
+                            <div style={{padding:10,width:'30%',textAlign:'right'}}>
+                            <FlatButton label="차단" secondary={true} />
+                             
+                            </div>
+                          </div>
+                </div>
+                <Divider/>
+                <div style={{margin:'auto'}}>
+                <div style={{display:'flex'}}>
+                            <div style={{padding:10,width:'70%'}}>
+                              <h3>조근후</h3>
+                              <p style={{color:'rgb(158, 158, 158)',marginLeft:10,marginTop:5}}>klmo214@naver.com</p>
+                            </div>
+                            <div style={{padding:10,width:'30%',textAlign:'right'}}>
+                              <FlatButton label="차단" secondary={true} />
+                              
+                            </div>
+                          </div>
+                </div>  
+                
+              <Divider/>
+
+             
+              </CardText>
+            </Card>
+
+            <Card>
+              <CardHeader
+                title="승인대기"
+                subtitle="Subtitle"
+                actAsExpander={true}
+                showExpandableButton={true}
+              />
+              <CardText expandable={true}>
+              <Divider/>
+              <div style={{margin:'auto'}}>
+              <div style={{display:'flex'}}>
+                          <div style={{padding:10,width:'70%'}}>
+                            <h3>조근후</h3>
+                            <p style={{color:'rgb(158, 158, 158)',marginLeft:10,marginTop:5}}>klmo214@naver.com</p>
+                          </div>
+                          <div style={{padding:10,width:'30%',textAlign:'right'}}>
+                            <FlatButton label="승인" primary={true}  style={{marginLeft:10}}/>
+                            <FlatButton label="차단" secondary={true} style={{marginLeft:10}} />
+                          </div>
+                        </div>
+              </div>  
+              
+            <Divider/>
+              </CardText>
+            </Card>
+            
+            <Card>
+              <CardHeader
+                title="차단"
+                subtitle="Subtitle"
+                actAsExpander={true}
+                showExpandableButton={true}
+              />
+              <CardText expandable={true}>
+              <Divider/>
+              <div style={{margin:'auto'}}>
+              <div style={{display:'flex'}}>
+                          <div style={{padding:10,width:'90%'}}>
+                            <h3>조근후</h3>
+                            <p style={{color:'rgb(158, 158, 158)',marginLeft:10,marginTop:5}}>klmo214@naver.com</p>
+                          </div>
+                          <div style={{padding:10,width:'30%',textAlign:'right'}}>
+                          <FlatButton label="차단해제" primary={true} />
+                          </div>
+                        </div>
+              </div>  
+              
+            <Divider/>
+              </CardText>
+            </Card>
+
+            
+              
             </section>
           </div>
         </div>
