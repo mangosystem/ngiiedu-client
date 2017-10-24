@@ -30,7 +30,10 @@ class MainContainer extends React.Component {
       isOwner: true,
       isMember: false,
       isEdit: false,
-      courseInfo: {}
+      courseName: '',
+      courseMetadata: '',
+      authkey: '',
+      courseid: this.props.match.params.COURSEID
     };
   }
 
@@ -41,36 +44,80 @@ class MainContainer extends React.Component {
 
   componentDidMount() {
 
-    const courseid = this.props.match.params.COURSEID;
+    ajaxJson(
+			['GET', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '.json'],
+			null,
+			function(data) {
+        const courseInfo = JSON.parse(JSON.stringify(data)).response.data;
+        
+        this.setState({courseName: courseInfo.courseName});
+        this.setState({courseMetadata: JSON.parse(courseInfo.courseMetadata).courseDesc});
 
-    $.ajax({
-        url: 'http://localhost:8080/ngiiedu/api/v1/courses/' + courseid + '.json',
-        dataType: 'json',
-        cache: false,
-        success: function(data) {
-            const courseInfo = JSON.parse(JSON.stringify(data)).response.data;
+			}.bind(this),
+			function(xhr, status, err) {
+				console.error(status, err.toString());
+			}.bind(this)
+    );
 
-            console.log(courseInfo);
-            this.setState({courseInfo: courseInfo});
+    ajaxJson(
+			['GET', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '/authkey.json'],
+			null,
+			function(data) {
+        let authkey = JSON.parse(JSON.stringify(data)).response.data;
+        this.setState({ authkey: authkey.substring(0,3) + '-' + authkey.substring(3,6) });
 
-        }.bind(this),
-        error: function(xhr, status, err) {
-            console.error(status, err.toString());
-        }.bind(this)
-    });
+			}.bind(this),
+			function(xhr, status, err) {
+				console.error(status, err.toString());
+			}.bind(this)
+    );
 
-    $.ajax({
-        url: 'http://localhost:8080/ngiiedu/api/v1/courses/' + courseid + '/authkey.json',
-        dataType: 'json',
-        cache: false,
-        success: function(data) {
-            let authkey = JSON.parse(JSON.stringify(data)).response.data;
-            console.log(authkey);
-        }.bind(this),
-        error: function(xhr, status, err) {
-            console.error(status, err.toString());
-        }.bind(this)
-    });
+    
+  }
+
+  modifyCourseInfo() {
+    const courseName = $('#courseName').val();
+    const courseMetadata = $('#courseMetadata').val();
+
+    this.setState({courseName: courseName});
+    this.setState({courseMetadata: courseMetadata});
+    this.setState({isEdit: false});
+
+    const data = {
+      idx: this.state.courseid,
+      courseName: courseName,
+      courseMetadata: courseMetadata
+    };
+
+    ajaxJson(
+			['PUT', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '.json'],
+			data,
+			function(data) {
+        let aa = JSON.parse(JSON.stringify(data)).response.data;
+        console.log("data" +aa);
+			}.bind(this),
+			function(xhr, status, err) {
+				console.error(status, err.toString());
+			}.bind(this)
+    );
+
+
+  }
+
+  modifyAuthkey() {
+
+    ajaxJson(
+			['GET', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '/authkey/modify.json'],
+			null,
+			function(data) {
+        let authkey = JSON.parse(JSON.stringify(data)).response.data;        
+        this.setState({ authkey: authkey.substring(0,3) + '-' + authkey.substring(3,6) });
+
+			}.bind(this),
+			function(xhr, status, err) {
+				console.error(status, err.toString());
+			}.bind(this)
+    );
   }
 
   render() {
@@ -91,10 +138,10 @@ class MainContainer extends React.Component {
                       <div>
                         <div style={{ paddingTop: 15, paddingBottom: 10 }}>
                           <div style={{ 
-                            fontSize: '1.4rem', fontWeight: 200, display: 'flex', padding: '0 20px',
+                            fontSize: '1.4rem', fontWeight: 'bold', display: 'flex', padding: '0 20px',
                             alignItems: 'center', justifyContent: 'space-between' 
                           }}>
-                            <div style={{ lineHeight: '2rem' }}>{this.state.courseInfo.courseName}</div>
+                            <div style={{ lineHeight: '2rem' }}>{this.state.courseName}</div>
                             {(() => {
                               if (this.state.isAccessor && this.state.isOwner) 
                                 return (
@@ -107,10 +154,9 @@ class MainContainer extends React.Component {
                             })()}
                           </div>
                         </div>
-                        <div style={{ padding: 20, marginBottom: 20 }}>
+                        <div style={{ padding: '0 20px 20px 20px', marginBottom: 20 }}>
                           <div style={{ fontSize: '1rem', fontWeight: 200 }}>
-                            {this.state.courseInfo.courseMetadata}
-                            우리지역 소음지도 만들기 소음은 우리의 일상생활에 일어나는 현상이지만 지나치게 큰 소음은 생활환경을 불편하게 하는 요소가 될 수 있다. 평소에 무심코 지나칠 수 있는 소음을 스마트폰 측정앱을 이용하여 측정해보고, 소음의 원인, 불편함을 느끼는 정도를 확인하고, 저감할 수 있는 대책은 무엇인지를 생각해보는 활동을 수행한다.
+                            {this.state.courseMetadata}
                           </div>
                         </div>
                       </div>
@@ -121,17 +167,17 @@ class MainContainer extends React.Component {
                         <div style={{ paddingTop: 15, paddingBottom: 10 }}>
                           <div style={{ display: 'flex', padding: '0 20px' }}>
                             <TextField
-                              id="title"
-                              inputStyle={{fontSize: '1.4rem', fontWeight: 200}}
-                              defaultValue={this.state.courseInfo.courseName}
+                              id="courseName"
+                              inputStyle={{fontSize: '1.4rem', fontWeight: 'bold'}}
+                              defaultValue={this.state.courseName}
                               fullWidth={true}
                             />
                           </div>
                         </div>
-                        <div style={{ padding: 20, marginBottom: 20 }}>
+                        <div style={{ padding: '0 20px 20px 20px', marginBottom: 20 }}>
                           <TextField
-                            id="detail"
-                            defaultValue="우리지역 소음지도 만들기 소음은 우리의 일상생활에 일어나는 현상이지만 지나치게 큰 소음은 생활환경을 불편하게 하는 요소가 될 수 있다. 평소에 무심코 지나칠 수 있는 소음을 스마트폰 측정앱을 이용하여 측정해보고, 소음의 원인, 불편함을 느끼는 정도를 확인하고, 저감할 수 있는 대책은 무엇인지를 생각해보는 활동을 수행한다."
+                            id="courseMetadata"
+                            defaultValue={this.state.courseMetadata}
                             multiLine={true}
                             fullWidth={true}
                           />                          
@@ -140,7 +186,7 @@ class MainContainer extends React.Component {
                           <FlatButton label="취소" style={{margin: '5px'}}
                             onClick={() => this.setState({isEdit: false})}/>
                           <FlatButton label="저장" primary={true}  style={{margin: '5px'}}
-                            onClick={() => this.setState({isEdit: false})}
+                            onClick={this.modifyCourseInfo.bind(this)}
                             icon={<i className="fa fa-check" aria-hidden="true"></i>}/>
                         </div>
                         <br />
@@ -155,7 +201,7 @@ class MainContainer extends React.Component {
                       <div style={{ paddingTop: 15, paddingBottom: 10 }}>
                         <div style={{ fontSize: '1.5rem', display: 'flex', padding: '0 20px' }}>
                           <div style={{ lineHeight: '48px', margin: '0 auto' }}>
-                            수업코드 : CAP TOZ
+                            수업코드 : {this.state.authkey}
                           </div>
                           <div>
                             <IconMenu
@@ -163,7 +209,7 @@ class MainContainer extends React.Component {
                               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                               targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                             >
-                              <MenuItem primaryText="코드 변경" />
+                              <MenuItem primaryText="코드 변경" onClick={this.modifyAuthkey.bind(this)}/>
                             </IconMenu>
                           </div>
                         </div>

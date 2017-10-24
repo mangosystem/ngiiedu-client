@@ -9,8 +9,10 @@ import IconDownload from 'material-ui/svg-icons/file/file-download';
 
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
-import MenuItem from 'material-ui/MenuItem';
-import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
+
+import Checkbox from 'material-ui/Checkbox';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 
 import FlatButton from 'material-ui/FlatButton';
 
@@ -29,7 +31,10 @@ class MainContainer extends React.Component {
     this.state = {
       isAccessor: true,
       isOwner: true,
-      isMember: false
+      isMember: false,
+      data: [{
+        
+      }]
     };
   }
 
@@ -52,12 +57,18 @@ class MainContainer extends React.Component {
 
     const divStyle = {
       display: 'flex', 
-      alignItems: 'center', 
+      alignItems: 'center',
       justifyContent: 'space-between'
     };
 
     const style = {
       textAlign: 'right'
+    };
+
+    const titleStyle = {
+      fontSize: '20px', 
+      lineHeight: '20px', 
+      fontWeight: 'bold'
     };
 
     return (
@@ -72,21 +83,22 @@ class MainContainer extends React.Component {
             />
             <section>
               <Paper>
-                <div  style={{padding: '5px 20px 20px 20px'}}>
+                <div  style={{padding: '20px'}}>
                   <div style={divStyle}>
-                  <div style={{fontSize: '20px', lineHeight: '20px'}}>수업 지도안</div>
-                    <IconMenu
-                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
-                      <MenuItem primaryText="수정" />
-                    </IconMenu>
+                  <div style={titleStyle}>수업 지도안</div>
                   </div>
+                  <br />
                   <Table selectable={false}>
                     <TableBody displayRowCheckbox={false}>
                         <TableRow>
-                            <TableRowColumn>우리지역 소음지도 만들기</TableRowColumn>
+                            <TableRowColumn>
+                              <Checkbox
+                                checkedIcon={<Visibility />}
+                                uncheckedIcon={<VisibilityOff />}
+                                label="시끄러워도 우리동네!"
+                              />
+                            </TableRowColumn>
+                            <TableRowColumn colSpan="2">우리지역 소음지도 만들기</TableRowColumn>
                             <TableRowColumn style={style}>                              
                               <FlatButton 
                                 label="download"
@@ -94,22 +106,30 @@ class MainContainer extends React.Component {
                                 icon={<IconDownload />} />                            
                             </TableRowColumn>
                         </TableRow>
+                        <TableRow>
+                        <TableRowColumn colSpan="2">우리지역 소음지도 만들기</TableRowColumn>
+                        <TableRowColumn></TableRowColumn>
+                        <TableRowColumn style={style}>                              
+                          <FlatButton 
+                            label="download"
+                            labelPosition="before"
+                            icon={<IconDownload />} />
+                            <Checkbox
+                              checkedIcon={<Visibility />}
+                              uncheckedIcon={<VisibilityOff />}
+                            />
+                        </TableRowColumn>
+                        </TableRow>
                     </TableBody>
                   </Table>
                 </div>
               </Paper>
               <Paper>
-                <div  style={{padding: '5px 20px 20px 20px'}}>
+                <div  style={{padding: '20px'}}>
                   <div style={divStyle}>
-                    <div style={{fontSize: '20px', lineHeight: '20px'}}>교사용 수업자료</div>
-                    <IconMenu
-                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
-                      <MenuItem primaryText="수정" />
-                    </IconMenu>
+                    <div style={titleStyle}>교사용 수업자료</div>
                   </div>
+                  <br />
                   <Table selectable={false}>
                     <TableBody displayRowCheckbox={false}>
                         <TableRow>
@@ -129,7 +149,7 @@ class MainContainer extends React.Component {
                                 labelPosition="before"
                                 icon={<IconDownload />} />                            
                             </TableRowColumn>
-                        </TableRow>
+                            </TableRow>
                         <TableRow>
                             <TableRowColumn>2~3차시 - 콜렉터 현장조사 매뉴얼</TableRowColumn>
                             <TableRowColumn style={style}>                              
@@ -144,17 +164,11 @@ class MainContainer extends React.Component {
                 </div>
               </Paper>
               <Paper>
-                <div style={{padding: '5px 20px 20px 20px'}}>
+                <div style={{padding: '20px'}}>
                   <div style={divStyle}>
-                    <div style={{fontSize: '20px', lineHeight: '20px'}}>학생 활동지</div>
-                    <IconMenu
-                        iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
-                        <MenuItem primaryText="수정" />
-                    </IconMenu>
+                    <div style={titleStyle}>학생 활동지</div>
                   </div>
+                  <br />
                   <Table selectable={false}>
                     <TableBody displayRowCheckbox={false}>
                         <TableRow>
@@ -198,17 +212,11 @@ class MainContainer extends React.Component {
                 </div>
               </Paper>
               <Paper>
-                <div style={{padding: '5px 20px 20px 20px'}}>
+                <div style={{padding: '20px'}}>
                   <div style={divStyle}>
-                    <div style={{fontSize: '20px', lineHeight: '20px'}}>교사용 참고자료</div>
-                    <IconMenu
-                      iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
-                      <MenuItem primaryText="수정" />
-                    </IconMenu>
+                    <div style={titleStyle}>교사용 참고자료</div>
                   </div>
+                  <br />
                   <Table selectable={false}>
                     <TableBody displayRowCheckbox={false}>
                         <TableRow>
@@ -225,17 +233,11 @@ class MainContainer extends React.Component {
                 </div>
               </Paper>
               <Paper>
-                <div style={{padding: '5px 20px 20px 20px'}}>
+                <div style={{padding: '20px'}}>
                   <div style={divStyle}>
-                    <div style={{fontSize: '20px', lineHeight: '20px'}}>활동 매뉴얼</div>
-                    <IconMenu
-                        iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
-                        <MenuItem primaryText="수정" />
-                    </IconMenu>
+                    <div style={titleStyle}>활동 매뉴얼</div>
                   </div>
+                  <br />
                   <Table selectable={false}>
                     <TableBody displayRowCheckbox={false}>
                         <TableRow>
