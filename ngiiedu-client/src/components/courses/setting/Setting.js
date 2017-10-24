@@ -29,6 +29,17 @@ class Setting extends React.Component {
   }
   //수업 활성화 비활성화
   courseChecked(){
+    //let id = this.props.match.params.COURSEID;
+    // ajaxJson(
+    //   ['PUT',apiSvr+'/schools/'+id+'.json'],
+    //   !this.state.checked,
+    //   function(res){
+          
+    //   }.bind(this),
+    //   function(e){
+    //     alert(e);
+    //   }
+    // );
     this.setState({
       checked: !this.state.checked
     });

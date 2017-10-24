@@ -36,7 +36,9 @@ class MainContainer extends React.Component {
             <section>
               <Paper zDepth={1} style={{padding: 20}}>
                 <Work
+                  isAccessor={this.state.isAccessor}
                   isOwner={this.state.isOwner}
+                  isMember={this.state.isMember}
                 />
               </Paper>
             </section>

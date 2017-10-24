@@ -15,24 +15,40 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 
 import MenuPanel from '../common/MenuPanel.js';
 
+import Checkbox from 'material-ui/Checkbox';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+
 class Work extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
       workList:[
-        {id:1, name:'토론', place:'교실 내 수업', content:'소음 및 소음지도 개념을 논의하고 우리동네 소음원에 대해 토의'},
-        {id:2, name:'현장실습', place:'야외수업', content:'모바일 기기를 활용한 우리 지역 소음원 현장 조사'},
-        {id:3, name:'전산실습', place:'컴퓨터실 수업', content:'컴퓨터를 이용한 주제지도 및 스토리맵 작성하기'},
-        {id:4, name:'토론', place:'교실 내 수업', content:'팀별 소음지도 및 소음저감대책 등 발표'}
-      ]
+        {id:1, name:'토론', place:'교실 내 수업', content:'소음 및 소음지도 개념을 논의하고 우리동네 소음원에 대해 토의', checked:false},
+        {id:2, name:'현장실습', place:'야외수업', content:'모바일 기기를 활용한 우리 지역 소음원 현장 조사', checked:true},
+        {id:3, name:'전산실습', place:'컴퓨터실 수업', content:'컴퓨터를 이용한 주제지도 및 스토리맵 작성하기', checked:false},
+        {id:4, name:'토론', place:'교실 내 수업', content:'팀별 소음지도 및 소음저감대책 등 발표', checked:true}
+      ],
     }
-    this.editWork = this.editWork.bind(this);
     this.enterWork = this.enterWork.bind(this);
+    this.courseChecked = this.courseChecked.bind(this);
   }
-
-  editWork(id){
-    console.log(id);
+  //수업 활성화 비활성화
+  courseChecked(work){
+    console.log(work.id)
+    let checked = !work.checked
+    console.log(checked)
+    // ajaxJson(
+    //   ['PUT',apiSvr+'/schools/'+work.id+'.json'],
+    //   work.checked,
+    //   function(res){
+          
+    //   }.bind(this),
+    //   function(e){
+    //     alert(e);
+    //   }
+    // );
   };
 
   enterWork(id){
@@ -53,33 +69,70 @@ class Work extends React.Component {
         <Divider />
         <br />
         {this.state.workList.map((work,i) => (
-          <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}  key={work.id}>
-            
-            <CardHeader
-              actAsExpander={true}
-              showExpandableButton={true}
-            >
-            <Paper zDepth={0} style={{textAlign: 'left'}}>
-              <Avatar size={60} style={{fontSize: 20}}>
-                <div style={{textAlign:'center', width:'70%', whiteSpace:'normal'}}>
-                  {work.name}
-                </div>
-              </Avatar>
-              <div style={{width:'90%', float:'right'}}><br/>
-                {work.place}
-              </div>
-            </Paper>
-            </CardHeader>
+          <div key={work.id}>
+          {this.props.isMember&&this.props.isAccessor&&work.checked ? 
+              <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                
+                <CardHeader
+                  actAsExpander={true}
+                  showExpandableButton={true}
+                >
+                <Paper zDepth={0} style={{textAlign: 'left'}}>
+                  <Avatar size={60} style={{fontSize: 20}}>
+                    <div style={{textAlign:'center', width:'70%', whiteSpace:'normal'}}>
+                      {work.name}
+                    </div>
+                  </Avatar>
+                  <div style={{width:'90%', float:'right'}}><br/>
+                    {work.place}
+                  </div>
+                </Paper>
+                </CardHeader>
 
-            <CardActions style={{textAlign: 'right' }}>
-              {this.props.isOwner ? <FlatButton label="수정하기" onClick={(i)=>this.editWork(work.id)}/>:''}
-              <FlatButton label="수행하기" primary={true} onClick={(i)=>this.enterWork(work.id)}/>
-            </CardActions>
+                <CardActions style={{textAlign: 'right' }}>
+                  <FlatButton label="수행하기" primary={true} onClick={(i)=>this.enterWork(work.id)}/>
+                </CardActions>
 
-            <CardText expandable={true}>
-              {work.content}
-            </CardText>
-          </Card>
+                <CardText expandable={true}>
+                  {work.content}
+                </CardText>
+              </Card>
+            : this.props.isOwner&&this.props.isAccessor ?
+              <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+                
+                <CardHeader
+                  actAsExpander={true}
+                  showExpandableButton={true}
+                >
+                <Paper zDepth={0} style={{textAlign: 'left'}}>
+                  <Avatar size={60} style={{fontSize: 20}}>
+                    <div style={{textAlign:'center', width:'70%', whiteSpace:'normal'}}>
+                      {work.name}
+                    </div>
+                  </Avatar>
+                  <div style={{width:'90%', float:'right'}}><br/>
+                    {work.place}
+                  </div>
+                </Paper>
+                </CardHeader>
+
+                <CardActions style={{textAlign: 'right' }}>
+                  <FlatButton label="수행하기" primary={true} onClick={(i)=>this.enterWork(work.id)}/>
+                </CardActions>
+
+                <CardText expandable={true}>
+                    <Checkbox 
+                      checkedIcon={<Visibility />} 
+                      uncheckedIcon={<VisibilityOff />} 
+                      checked = {work.checked}
+                      label={work.content} 
+                      labelPosition="left"
+                      onCheck={(i)=>this.courseChecked(work)}
+                    />
+                </CardText>
+              </Card>
+            :''}
+          </div>
         ))}
       </div>
     );
