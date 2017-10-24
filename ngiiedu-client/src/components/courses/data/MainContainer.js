@@ -34,7 +34,18 @@ class MainContainer extends React.Component {
   }
 
   componentWillMount() {
-    // console.log(this.props.match.params.COURSEID);
+    console.log(this.props.match.params.COURSEID);
+
+    ajaxJson(
+      ['GET', apiSvr + '/courses/' + this.props.match.params.COURSEID + '/workData.json'],
+      null,
+      function (res) {
+          console.log('datas : ' + res.response.data);
+      }.bind(this),
+      function (xhr, status, err) {
+          alert('Error');
+      }.bind(this)
+    );
   }
 
   render() {

@@ -58,6 +58,19 @@ class MainContainer extends React.Component {
             console.error(status, err.toString());
         }.bind(this)
     });
+
+    $.ajax({
+        url: 'http://localhost:8080/ngiiedu/api/v1/courses/' + courseid + '/authkey.json',
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+            let authkey = JSON.parse(JSON.stringify(data)).response.data;
+            console.log(authkey);
+        }.bind(this),
+        error: function(xhr, status, err) {
+            console.error(status, err.toString());
+        }.bind(this)
+    });
   }
 
   render() {
