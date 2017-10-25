@@ -24,8 +24,8 @@ class MainContainer extends React.Component {
 
     this.state = {
       isAccessor: true,
-      isOwner: true,
-      isMember: false,
+      isOwner: false,
+      isMember: true,
       groupedByDivision: []
     };
   }
@@ -139,35 +139,49 @@ class MainContainer extends React.Component {
                     <br />
                     <Table selectable={false}>
                       <TableBody displayRowCheckbox={false}>
-                        {data.map((row,index) => {
-                          if (this.state.isAccessor && this.state.isOwner)
-                            return (
-                              <TableRow key={index}>
-                                <TableRowColumn colSpan="3">
-                                  <div  style={{display: 'flex', alignItems: 'center'}}>
-                                    <Checkbox
-                                      style={{maxWidth: '5%'}}
-                                      checked={row.status == 't' ? true : false}
-                                      onCheck={(event, status, index) => this.modifyCourseWorkData(event, status, row.idx)}
-                                    />
-                                    <div>
-                                      <p style={subStyle}>{row.moduleWorkSeq} - </p>
-                                      <p style={{fontSize: '1.3em'}}>{row.moduleWorkDataName}</p>
+                      {(() => {
+                        if (this.state.isAccessor && this.state.isOwner) {
+                          return (
+                            data.map((row, index) => (
+                                <TableRow key={index}>
+                                  <TableRowColumn colSpan="3">
+                                    <div  style={{display: 'flex', alignItems: 'center'}}>
+                                      <Checkbox
+                                        style={{maxWidth: '5%'}}
+                                        checked={row.status == 't' ? true : false}
+                                        onCheck={(event, status, index) => this.modifyCourseWorkData(event, status, row.idx)}
+                                      />
+                                      <div>
+                                        <p style={subStyle}>{row.moduleWorkSeq} - </p>
+                                        <p style={{fontSize: '1.3em'}}>{row.moduleWorkDataName}</p>
+                                      </div>
                                     </div>
-                                  </div>
-                                </TableRowColumn>
-                                <TableRowColumn style={style}>                              
-                                  <FlatButton 
-                                    label="download"
-                                    labelPosition="before"
-                                    icon={<IconDownload />}
-                                    onClick={() => window.open(row.moduleWorkDataPath, '_blank')}
-                                  />                            
+                                  </TableRowColumn>
+                                  <TableRowColumn style={style}>                              
+                                    <FlatButton 
+                                      label="download"
+                                      labelPosition="before"
+                                      icon={<IconDownload />}
+                                      onClick={() => window.open(row.moduleWorkDataPath, '_blank')}
+                                    />                            
+                                  </TableRowColumn>
+                                </TableRow>
+                            ))
+                        );}
+                        else if (this.state.isAccessor && this.state.isMember) {
+                          let filterData = data.filter(val => (val.status == 't'));
+
+                          if (filterData.length == 0)
+                            return (
+                              <TableRow colSpan="4">
+                                <TableRowColumn style={{fontSize: '1.05em'}}>
+                                  다운로드 가능한 데이터가 없습니다.
                                 </TableRowColumn>
                               </TableRow>
                             );
-                          else if (row.status != 'f') 
-                            return (
+                          else 
+                          return (
+                            filterData.map((row, index) => (
                               <TableRow key={index}>
                                 <TableRowColumn colSpan="3">
                                   <p style={subStyle}>{row.moduleWorkSeq} - </p>
@@ -182,9 +196,10 @@ class MainContainer extends React.Component {
                                   />                            
                                 </TableRowColumn>
                               </TableRow>
-                            );
-                          else return (<TableRow key={index} style={{display: 'none'}}></TableRow>);
-                        })}
+                            ))
+                          );
+                        }
+                      })()}
                       </TableBody>
                     </Table>
                   </div>
