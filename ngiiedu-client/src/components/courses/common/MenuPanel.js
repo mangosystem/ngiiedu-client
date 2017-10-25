@@ -115,16 +115,19 @@ class MenuPanel extends React.Component {
                     <MenuItem 
                       primaryText="수업 정보" 
                       leftIcon={<IconInfoOutline />}
-                      href={"/course/" + this.state.courseId + "/info"}
+                      className={this.props.activeMenu == 'INFO' ? 'aml' : 'uml'}
+                      href={"/course/" + this.state.courseId}
                     />
                     <MenuItem 
                       primaryText="관련 데이터" 
                       leftIcon={<IconFileDownload />} 
+                      className={this.props.activeMenu == 'DATA' ? 'aml' : 'uml'}
                       href={"/course/" + this.state.courseId + "/data"}  
                     />
                     <MenuItem 
                       primaryText="수업 과정" 
                       leftIcon={<IconWeb />}
+                      className={this.props.activeMenu == 'WORK' ? 'aml' : 'uml'}
                       href={"/course/" + this.state.courseId + "/work"}
                     />
                   </Menu>
@@ -135,11 +138,13 @@ class MenuPanel extends React.Component {
                     <MenuItem 
                       primaryText="멤버" 
                       leftIcon={<IconPerson />} 
+                      className={this.props.activeMenu == 'MEMBER' ? 'aml' : 'uml'}
                       href={"/course/" + this.state.courseId + "/member"}
                     />
                     <MenuItem 
                       primaryText="팀" 
                       leftIcon={<IconGroup />} 
+                      className={this.props.activeMenu == 'TEAM' ? 'aml' : 'uml'}
                       href={"/course/" + this.state.courseId + "/team"}
                     />
                   </Menu>
@@ -149,6 +154,7 @@ class MenuPanel extends React.Component {
                     <MenuItem 
                       primaryText="수업 설정" 
                       leftIcon={<IconSettings />} 
+                      className={this.props.activeMenu == 'SETTING' ? 'aml' : 'uml'}
                       href={"/course/" + this.state.courseId + "/setting"}
                     />
                   </Menu>

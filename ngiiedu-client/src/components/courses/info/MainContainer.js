@@ -49,10 +49,10 @@ class MainContainer extends React.Component {
 			null,
 			function(data) {
         const courseInfo = JSON.parse(JSON.stringify(data)).response.data;
-        
-        this.setState({courseName: courseInfo.courseName});
-        this.setState({courseMetadata: JSON.parse(courseInfo.courseMetadata).courseDesc});
-
+        this.setState({
+          courseName: courseInfo.courseName,
+          courseMetadata: JSON.parse(courseInfo.courseMetadata)
+        });
 			}.bind(this),
 			function(xhr, status, err) {
 				console.error(status, err.toString());
@@ -77,30 +77,34 @@ class MainContainer extends React.Component {
 
   modifyCourseInfo() {
     const courseName = $('#courseName').val();
-    const courseMetadata = $('#courseMetadata').val();
+    const courseDesc = $('#courseDesc').val();
 
-    this.setState({courseName: courseName});
-    this.setState({courseMetadata: courseMetadata});
-    this.setState({isEdit: false});
-
+    let courseMetadata = this.state.courseMetadata;
+    courseMetadata.courseDesc = courseDesc;
+    
+    this.setState({
+      courseName: courseName,
+      courseMetadata: courseMetadata,
+      isEdit: false
+    });
+    
     const data = {
       idx: this.state.courseid,
       courseName: courseName,
-      courseMetadata: courseMetadata
+      courseMetadata: JSON.stringify(courseMetadata)
     };
+    
 
     ajaxJson(
-			['PUT', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '.json'],
+      ['PUT', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '.json'],
 			data,
 			function(data) {
-        let aa = JSON.parse(JSON.stringify(data)).response.data;
-        console.log("data" +aa);
+        console.log("수정됨");
 			}.bind(this),
 			function(xhr, status, err) {
 				console.error(status, err.toString());
 			}.bind(this)
     );
-
 
   }
 
@@ -156,7 +160,7 @@ class MainContainer extends React.Component {
                         </div>
                         <div style={{ padding: '0 20px 20px 20px', marginBottom: 20 }}>
                           <div style={{ fontSize: '1rem', fontWeight: 200 }}>
-                            {this.state.courseMetadata}
+                            {this.state.courseMetadata.courseDesc}
                           </div>
                         </div>
                       </div>
@@ -176,8 +180,8 @@ class MainContainer extends React.Component {
                         </div>
                         <div style={{ padding: '0 20px 20px 20px', marginBottom: 20 }}>
                           <TextField
-                            id="courseMetadata"
-                            defaultValue={this.state.courseMetadata}
+                            id="courseDesc"
+                            defaultValue={this.state.courseMetadata.courseDesc}
                             multiLine={true}
                             fullWidth={true}
                           />                          

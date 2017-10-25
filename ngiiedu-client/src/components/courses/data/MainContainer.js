@@ -6,13 +6,7 @@ import MenuPanel from '../common/MenuPanel.js';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import IconDownload from 'material-ui/svg-icons/file/file-download';
-
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-
 import Checkbox from 'material-ui/Checkbox';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 
 import FlatButton from 'material-ui/FlatButton';
 
@@ -32,20 +26,70 @@ class MainContainer extends React.Component {
       isAccessor: true,
       isOwner: true,
       isMember: false,
-      data: [{
-        
-      }]
+      groupedByDivision: []
     };
   }
 
-  componentWillMount() {
-    console.log(this.props.match.params.COURSEID);
+  groupByDivision(courseData) {
 
+    var groupedByDivision = {};
+
+    for (var key in courseData) {
+      var Division = courseData[key].moduleWorkDataDivision;
+
+      if (!groupedByDivision[Division]) {
+        groupedByDivision[Division] = [];
+      }
+      groupedByDivision[Division].push(courseData[key]);
+    }
+
+    var Divisions = Object.keys(groupedByDivision);
+    let temp =[];
+
+    for (let i = 0; i < Divisions.length; i++) {
+      var entries = groupedByDivision[Divisions[i]];
+      temp.push(entries);
+    }
+    this.setState({ groupedByDivision: temp });
+  }
+
+  modifyCourseWorkData(event, status, idx) {
+
+    ajaxJson(
+      ['PUT', apiSvr + '/courses/' + idx + '/workData.json'],
+      { status: status },
+      function (data) {
+      }.bind(this),
+      function (xhr, status, err) {
+          alert('Error');
+      }.bind(this)
+    );
+
+    let tempStatus;
+    if (status) tempStatus = 't'; else tempStatus = 'f';
+
+    for (let i in this.state.groupedByDivision) {
+      for (let j in this.state.groupedByDivision[i]) {
+        if (this.state.groupedByDivision[i][j].idx == idx) {
+          let newData = this.state.groupedByDivision;
+          newData[i][j].status = tempStatus;
+          this.setState({
+            groupedByDivision: newData
+          });
+        }
+      }
+    }
+
+  }
+
+
+  componentDidMount() {
     ajaxJson(
       ['GET', apiSvr + '/courses/' + this.props.match.params.COURSEID + '/workData.json'],
       null,
-      function (res) {
-          console.log('datas : ' + res.response.data);
+      function (data) {
+        const courseData = JSON.parse(JSON.stringify(data)).response.data;
+        this.groupByDivision(courseData);
       }.bind(this),
       function (xhr, status, err) {
           alert('Error');
@@ -71,6 +115,10 @@ class MainContainer extends React.Component {
       fontWeight: 'bold'
     };
 
+    const subStyle = {
+      color: 'grey'
+    };
+
     return (
       <main id="main">
 				<div className="inner">
@@ -82,195 +130,66 @@ class MainContainer extends React.Component {
               activeMenu={'DATA'}
             />
             <section>
-              <Paper>
-                <div  style={{padding: '20px'}}>
-                  <div style={divStyle}>
-                  <div style={titleStyle}>수업 지도안</div>
+              {this.state.groupedByDivision.map((data,i) => (
+                <Paper key={i}>
+                  <div  style={{padding: '20px'}}>
+                    <div style={divStyle}>
+                    <div style={titleStyle}>{data[0].moduleWorkDataDivisionText}</div>
+                    </div>
+                    <br />
+                    <Table selectable={false}>
+                      <TableBody displayRowCheckbox={false}>
+                        {data.map((row,index) => {
+                          if (this.state.isAccessor && this.state.isOwner)
+                            return (
+                              <TableRow key={index}>
+                                <TableRowColumn colSpan="3">
+                                  <div  style={{display: 'flex', alignItems: 'center'}}>
+                                    <Checkbox
+                                      style={{maxWidth: '5%'}}
+                                      checked={row.status == 't' ? true : false}
+                                      onCheck={(event, status, index) => this.modifyCourseWorkData(event, status, row.idx)}
+                                    />
+                                    <div>
+                                      <p style={subStyle}>{row.moduleWorkSeq} - </p>
+                                      <p style={{fontSize: '1.3em'}}>{row.moduleWorkDataName}</p>
+                                    </div>
+                                  </div>
+                                </TableRowColumn>
+                                <TableRowColumn style={style}>                              
+                                  <FlatButton 
+                                    label="download"
+                                    labelPosition="before"
+                                    icon={<IconDownload />}
+                                    onClick={() => window.open(row.moduleWorkDataPath, '_blank')}
+                                  />                            
+                                </TableRowColumn>
+                              </TableRow>
+                            );
+                          else if (row.status != 'f') 
+                            return (
+                              <TableRow key={index}>
+                                <TableRowColumn colSpan="3">
+                                  <p style={subStyle}>{row.moduleWorkSeq} - </p>
+                                  <p style={{fontSize: '1.3em'}}>{row.moduleWorkDataName}</p>
+                                </TableRowColumn>
+                                <TableRowColumn style={style}>
+                                  <FlatButton 
+                                    label="download"
+                                    labelPosition="before"
+                                    icon={<IconDownload />}
+                                    onClick={() => window.open(row.moduleWorkDataPath, '_blank')}
+                                  />                            
+                                </TableRowColumn>
+                              </TableRow>
+                            );
+                          else return (<TableRow key={index} style={{display: 'none'}}></TableRow>);
+                        })}
+                      </TableBody>
+                    </Table>
                   </div>
-                  <br />
-                  <Table selectable={false}>
-                    <TableBody displayRowCheckbox={false}>
-                        <TableRow>
-                            <TableRowColumn>
-                              <Checkbox
-                                checkedIcon={<Visibility />}
-                                uncheckedIcon={<VisibilityOff />}
-                                label="시끄러워도 우리동네!"
-                              />
-                            </TableRowColumn>
-                            <TableRowColumn colSpan="2">우리지역 소음지도 만들기</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                        <TableRowColumn colSpan="2">우리지역 소음지도 만들기</TableRowColumn>
-                        <TableRowColumn></TableRowColumn>
-                        <TableRowColumn style={style}>                              
-                          <FlatButton 
-                            label="download"
-                            labelPosition="before"
-                            icon={<IconDownload />} />
-                            <Checkbox
-                              checkedIcon={<Visibility />}
-                              uncheckedIcon={<VisibilityOff />}
-                            />
-                        </TableRowColumn>
-                        </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </Paper>
-              <Paper>
-                <div  style={{padding: '20px'}}>
-                  <div style={divStyle}>
-                    <div style={titleStyle}>교사용 수업자료</div>
-                  </div>
-                  <br />
-                  <Table selectable={false}>
-                    <TableBody displayRowCheckbox={false}>
-                        <TableRow>
-                            <TableRowColumn>1차시 - 교사용_소음 및 소음지도 개념</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>2~3차시 - 교사용_구글맵 현장조사 매뉴얼</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                            </TableRow>
-                        <TableRow>
-                            <TableRowColumn>2~3차시 - 콜렉터 현장조사 매뉴얼</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </Paper>
-              <Paper>
-                <div style={{padding: '20px'}}>
-                  <div style={divStyle}>
-                    <div style={titleStyle}>학생 활동지</div>
-                  </div>
-                  <br />
-                  <Table selectable={false}>
-                    <TableBody displayRowCheckbox={false}>
-                        <TableRow>
-                            <TableRowColumn>2~3차시 - 학생용_구글맵을 이용한 소음지도 만들기</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>4~5차시 - 학생용_구글맵으로 소음지도 분석활동하기</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>4~5차시 - 학생용_스토리맵 만들기 매뉴얼</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>4~5차시 - 학생용_우리 지역 소음지도 해석하기</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </Paper>
-              <Paper>
-                <div style={{padding: '20px'}}>
-                  <div style={divStyle}>
-                    <div style={titleStyle}>교사용 참고자료</div>
-                  </div>
-                  <br />
-                  <Table selectable={false}>
-                    <TableBody displayRowCheckbox={false}>
-                        <TableRow>
-                            <TableRowColumn colSpan="2">2~3차시 - 참고자료_소음지도 지오데이터베이스 생성 매뉴얼</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </Paper>
-              <Paper>
-                <div style={{padding: '20px'}}>
-                  <div style={divStyle}>
-                    <div style={titleStyle}>활동 매뉴얼</div>
-                  </div>
-                  <br />
-                  <Table selectable={false}>
-                    <TableBody displayRowCheckbox={false}>
-                        <TableRow>
-                            <TableRowColumn>1차시 - 교사용_소음 및 소음지도 개념</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>2~3차시 - 교사용_구글맵 현장조사 매뉴얼</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableRowColumn>2~3차시 - 콜렉터 현장조사 매뉴얼</TableRowColumn>
-                            <TableRowColumn style={style}>                              
-                              <FlatButton 
-                                label="download"
-                                labelPosition="before"
-                                icon={<IconDownload />} />                            
-                            </TableRowColumn>
-                        </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </Paper>
+                </Paper>
+              ))}
             </section>
           </div>
         </div>
