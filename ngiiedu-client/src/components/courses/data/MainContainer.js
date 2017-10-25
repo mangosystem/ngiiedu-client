@@ -24,8 +24,8 @@ class MainContainer extends React.Component {
 
     this.state = {
       isAccessor: true,
-      isOwner: false,
-      isMember: true,
+      isOwner: true,
+      isMember: false,
       groupedByDivision: []
     };
   }
