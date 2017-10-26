@@ -19,6 +19,8 @@ import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 
+import update from 'react-addons-update';
+
 class Work extends React.Component {
 
   constructor(props){
@@ -33,25 +35,24 @@ class Work extends React.Component {
   //수업 활성화 비활성화
   courseChecked(work){
     let courseId = this.props.match.params.COURSEID;
-    console.log(courseId);
-    console.log(work.idx);
-    console.log(!work.status);
     ajaxJson(
       ['PUT',apiSvr+'/courses/'+courseId+'/work.json'],
       {'idx':work.idx, 'status':!work.status},
       function(res){
-        ajaxJson(
-          ['GET',apiSvr+'/courses/'+courseId+'/work.json'],
-          null,
-          function(res){
-            console.log(res.response.data);
+        for(let i=0; i<this.state.workList.length; i++){
+          if(this.state.workList[i].idx == work.idx){
             this.setState({
-              workList:res.response.data
-            },function(){
-              console.log(this.state.workList)
+              workList:update(
+                this.state.workList,
+                {
+                  [i]:{
+                    status:{$set:res.response.data.status}
+                  }
+                }
+              )
             });
-          }.bind(this)
-        );
+          };
+        }
       }.bind(this),
       function(e){
         alert(e);
