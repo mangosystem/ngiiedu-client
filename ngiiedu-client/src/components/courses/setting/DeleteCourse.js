@@ -24,17 +24,17 @@ class DeleteCourse extends React.Component {
   changePassword(event, value){
     this.setState({
       password:value
+    },function(){
+      console.log(this.state.password)
     })
   }
 
   //수업 삭제
   deleteCourse(){
     let id = this.props.match.params.COURSEID;
-    console.log(id)
-    this.props.deleteCourse();
     // ajaxJson(
-    //   ['DELETE',apiSvr+'/schools.json'],
-    //   null,
+    //   ['DELETE',apiSvr+'/courses/'+courseId+'.json'],
+    //   {'courseId':id, 'userid':this.props.courseData, 'password':this.state.password},
     //   function(res){
     //     this.props.deleteCourse();
     //   }.bind(this),

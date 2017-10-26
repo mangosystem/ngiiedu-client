@@ -21,7 +21,8 @@ class Setting extends React.Component {
     this.state = {
       checked: false,
       deleteOpen:false,
-      leaveOpen:false
+      leaveOpen:false,
+      courseData:{}
     }
     this.courseChecked = this.courseChecked.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
@@ -29,20 +30,19 @@ class Setting extends React.Component {
   }
   //수업 활성화 비활성화
   courseChecked(){
-    //let id = this.props.match.params.COURSEID;
-    // ajaxJson(
-    //   ['PUT',apiSvr+'/schools/'+id+'.json'],
-    //   !this.state.checked,
-    //   function(res){
-          
-    //   }.bind(this),
-    //   function(e){
-    //     alert(e);
-    //   }
-    // );
-    this.setState({
-      checked: !this.state.checked
-    });
+    let id = this.props.match.params.COURSEID;
+    ajaxJson(
+      ['PUT',apiSvr+'/courses/'+id+'/status.json'],
+      {'status':!this.state.courseData.status},
+      function(res){
+        this.setState({
+          courseData:res.response.data
+        });
+      }.bind(this),
+      function(e){
+        alert(e);
+      }
+    );
   };
   //수업 삭제 모달
   deleteCourse(){
@@ -56,6 +56,20 @@ class Setting extends React.Component {
       leaveOpen: !this.state.leaveOpen
     });
   };
+
+  componentWillMount() {
+    let courseId = this.props.match.params.COURSEID;
+    ajaxJson(
+      ['GET',apiSvr+'/courses/'+courseId+'.json'],
+      null,
+      function(res){
+        console.log(res.response.data);
+        this.setState({
+          courseData:res.response.data
+        });
+      }.bind(this)
+    );
+  }
 
   render() {
     if (this.props.isAccessor && this.props.isOwner) {
@@ -72,7 +86,7 @@ class Setting extends React.Component {
               <Checkbox
                 checkedIcon={<Visibility />}
                 uncheckedIcon={<VisibilityOff />}
-                checked = {this.state.checked}
+                checked = {this.state.courseData.status}
                 label="수업을 활성화 / 비활성화 상태로 변경합니다."
                 labelPosition="left"
                 onCheck={this.courseChecked}
