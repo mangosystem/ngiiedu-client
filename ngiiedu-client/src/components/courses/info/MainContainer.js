@@ -7,19 +7,15 @@ import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 
-import Divider from 'material-ui/Divider';
-import Subheader from 'material-ui/Subheader';
-
 import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import IconEdit from 'material-ui/svg-icons/image/edit';
 
-import { List, ListItem } from 'material-ui/List';
-
 import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 
 import MenuPanel from '../common/MenuPanel.js';
+import AuthkeyInfo from './AuthkeyInfo';
 
 class MainContainer extends React.Component {
 
@@ -33,7 +29,8 @@ class MainContainer extends React.Component {
       courseName: '',
       courseMetadata: '',
       authkey: '',
-      courseid: this.props.match.params.COURSEID
+      courseid: this.props.match.params.COURSEID,
+      authkeyOpen: false
     };
   }
 
@@ -106,6 +103,10 @@ class MainContainer extends React.Component {
 			}.bind(this)
     );
 
+  }
+
+  changeAuthkeyOpen() {
+    this.setState({ authkeyOpen: !this.state.authkeyOpen });
   }
 
   modifyAuthkey() {
@@ -201,24 +202,33 @@ class MainContainer extends React.Component {
               {(() => {
                 if (this.state.isAccessor && this.state.isOwner)
                   return (
-                    <Paper>
-                      <div style={{ paddingTop: 15, paddingBottom: 10 }}>
-                        <div style={{ fontSize: '1.5rem', display: 'flex', padding: '0 20px' }}>
-                          <div style={{ lineHeight: '48px', margin: '0 auto' }}>
-                            수업코드 : {this.state.authkey}
-                          </div>
-                          <div>
-                            <IconMenu
-                              iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                            >
-                              <MenuItem primaryText="코드 변경" onClick={this.modifyAuthkey.bind(this)}/>
-                            </IconMenu>
+                    <div>
+                      <Paper>
+                        <div style={{ paddingTop: 15, paddingBottom: 10 }}>
+                          <div style={{ fontSize: '1.5rem', display: 'flex', padding: '0 20px' }}>
+                            <div style={{ lineHeight: '48px', margin: '0 auto' }}>
+                              수업코드 : {this.state.authkey}
+                            </div>
+                            <div>
+                              <IconMenu
+                                iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
+                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                              >
+                                <MenuItem primaryText="표시" onClick={() => this.setState({authkeyOpen: !this.state.authkeyOpen})}/>
+                                <MenuItem primaryText="코드 변경" onClick={this.modifyAuthkey.bind(this)}/>
+                              </IconMenu>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Paper>
+                      </Paper>
+
+                      <AuthkeyInfo 
+                        authkeyOpen={this.state.authkeyOpen}
+                        authkey={this.state.authkey}
+                        changeAuthkeyOpen={this.changeAuthkeyOpen.bind(this)}
+                      />
+                    </div>
                   );
               })()}
             </section>
