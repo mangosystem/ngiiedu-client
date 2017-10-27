@@ -24,19 +24,18 @@ class LeaveCourse extends React.Component {
   changePassword(event, value){
     this.setState({
       password:value
-    })
-  }
+    });
+  };
 
   //수업 탈퇴
   leaveCourse(){
     let id = this.props.match.params.COURSEID;
-    console.log(id)
-    this.props.leaveCourse();
     // ajaxJson(
-    //   ['DELETE',apiSvr+'/schools.json'],
-    //   null,
+    //   ['DELETE',apiSvr+'/courses/'+id+'.json'],
+    //   {'courseId':id, 'password':this.state.password},
     //   function(res){
-    //     this.props.leaveCourse();
+    //     this.props.leaveCourse();//탈퇴 모달 닫기
+    //     window.location.href='/course' //수업 리스트로 돌아가기
     //   }.bind(this),
     //   function(e){
     //     console.log(e);

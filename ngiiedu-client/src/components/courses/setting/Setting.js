@@ -63,7 +63,6 @@ class Setting extends React.Component {
       ['GET',apiSvr+'/courses/'+courseId+'.json'],
       null,
       function(res){
-        console.log(res.response.data);
         this.setState({
           courseData:res.response.data
         });
