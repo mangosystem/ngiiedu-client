@@ -162,67 +162,78 @@ class TeamPopup extends React.Component {
             />
             <div style={dialLogStyle}>
                 <div style={leftStyle}>
-                    <Paper
-                        style={{
-                            maxWidth: '100%',
-                            margin: 'auto',
-                            marginTop:20,
-                            height:'10%'
-                        }}
-                    >
-                    <TextField
-                        hintText="Search"
-                        style={{
-                            marginLeft: 20,
-                            maxWidth: '80%'
-                        }}
-                        fullWidth={true}
-                        underlineShow={false}
-                        onChange={(event, value) => this.setState({value: value})}
-                        onKeyDown={(event) => this.enterKey(event)}
-                    />
-                    <i
-                        className="fa fa-search"
-                        aria-hidden="true"
-                        style={{
-                            marginLeft: 10,
-                            color: 'grey',
-                            cursor: 'pointer'
-                        }}
-                        onMouseUp={this.search.bind(this)}
-                    >
-                    </i>
-                </Paper>
-                <div style={{overflow:'auto',height:'80%'}}>
+                 
+                <div style={{overflow:'auto',height:'100%'}}>
                     {this.props.member.map((row,index)=>(
+
                         <div key={index}>
                             <Divider style={{marginTop:10}}/>
-                            <p>{row[0].teamName==null?'미배정':row[0].teamName}</p>
+                            <p>{row[0].teamId==null?'미배정':row[0].teamName}</p>
                             
                             <div style={{marginTop:10,marginLeft:10}}>
                             {this.props.member[index].map((row2,index2)=>(
-                                <Checkbox
-                                    key ={index2}
-                                    style={{marginBottom:10}}
-                                    label={row2.userName}
-                                    labelPosition="left"
-                                    disabled={row2.teamId==this.props.selectedTeamId ? false:row2.teamId != null}
-                                    checked = {this.state.selectedUserId.indexOf(row2.userId)>=0}
-                                    checkedIcon={
-                                        <ToggleRadioButtonChecked color={grey500} style={{fill: "#A9BCF5"}}/>
+                                    
+                                (() => {
+                                    if (row2.joinStatus=='CJS02') {
+                                        return(
+                                        
+                                        <Checkbox
+                                            key ={index2}
+                                            style={{marginBottom:10}}
+                                            label={row2.userName}
+                                            labelPosition="left"
+                                            disabled={row2.teamId==this.props.selectedTeamId ? false:row2.teamId != null}
+                                            checked = {this.state.selectedUserId.indexOf(row2.userId)>=0}
+                                            checkedIcon={
+                                                <ToggleRadioButtonChecked color={grey500} style={{fill: "#A9BCF5"}}/>
+                                            }
+                                            uncheckedIcon={
+                                                index<this.props.checkIndex? 
+                                                    <ToggleRadioButtonUnchecked color={grey500} style={{fill: "#E6E6E6"}}/> 
+                                                    :  
+                                                    <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
+                                            }
+                                            onClick ={(event, isInputChecked) => this.checkedChange(event, isInputChecked, row2.userId)}
+                                        />
+                                    )}
+                                    else if(row2.joinStatus=='CJS04'){
+                                        return(
+                                            <Checkbox
+                                                key ={index2}
+                                                style={{marginBottom:10}}
+                                                label={row2.userName}
+                                                labelPosition="left"
+                                                disabled={true}
+                                                checked = {this.state.selectedUserId.indexOf(row2.userId)>=0}
+                                                checkedIcon={
+                                                    <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
+                                                }
+                                                uncheckedIcon={
+                                                    <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
+                                                }
+                                                onClick ={(event, isInputChecked) => this.checkedChange(event, isInputChecked, row2.userId)}
+                                            />
+                                        )
+                                    }else{
+                                        return;
                                     }
-                                    uncheckedIcon={
-                                        index<this.props.checkIndex? 
-                                            <ToggleRadioButtonUnchecked color={grey500} style={{fill: "#E6E6E6"}}/> 
-                                            :  
-                                            <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
-                                    }
-                                    onClick ={(event, isInputChecked) => this.checkedChange(event, isInputChecked, row2.userId)}
-                                />
+                                })()
                             ))}
                             </div>
                         </div>
                     ))}
+
+                    {(() => {
+                        if (this.state.isAccessor && this.state.isOwner) {
+                        return(
+                            <div style={{padding:10,width:'30%',textAlign:'right'}}>
+                            <FlatButton label="차단" secondary={true} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'BLOCK')}/>
+                            </div>
+                        )
+                        }
+                    })()}
+
+                  
 
                     
                 </div>
@@ -234,7 +245,7 @@ class TeamPopup extends React.Component {
                             {this.props.member.map((row,index)=>(
                                 <div key={index} style={{overflow:"auto"}}>
                                 {this.props.member[index].map((row3,index3)=>(
-                                    row3.userId==row2 ?
+                                    row3.userId==row2 &&row3.joinStatus=='CJS02'?
                                     <Chip
                                         key={row3.userId}
                                         style={{margin: 4,marginLeft:15}}
@@ -256,7 +267,8 @@ class TeamPopup extends React.Component {
 }
 
 TeamPopup.defaultProps={
-    selectedTeamId:null
+    selectedTeamId:null,
+    blockMember:[]
 }
 
 

@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import MenuPanel from '../common/MenuPanel.js';
 import TeamPopup from './TeamPopup.js';
+import DeletePopup from './DeletePopup.js';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
@@ -34,28 +35,29 @@ class MainContainer extends React.Component {
       selectedTeamName: null,
       selectedUserId:[],
       teams:[],
-      selectedTeamId:null
+      selectedTeamId:null,
+      alertOpen:false,
+      blockMember : []
       
     }
     this.handleOpen = this.handleOpen.bind(this);
     this.deleteTeam = this.deleteTeam.bind(this);
     this.ajaxCall = this.ajaxCall.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.deletehandleClose = this.deletehandleClose.bind(this);
   }
-  
-  
 
+  deletehandleClose(teamId){
+    this.setState({
+      alertOpen:!this.state.alertOpen,
+      selectedTeamId:teamId
+    })
+  }
+
+ 
+
+  
   handleClose(summit,teamId,teamName,selectedUserId){
-
-
-    //팀생성
-    ///{courseId}/team
-    //data teamName
-   
-    
-    
-
-
     if(summit){
       if(teamName==null){
         alert('팀명을 입력하세요');
@@ -130,7 +132,6 @@ class MainContainer extends React.Component {
         }
       }
 
-
       //팀이름변경
       if(teamName != this.state.selectedTeamId){
 
@@ -144,27 +145,26 @@ class MainContainer extends React.Component {
             }.bind(this)
         )
       }
-
-      
     }
-
     this.setState({open: false});
-    
-
   }
 
 
   deleteTeam(teamId){
     var courseId = this.props.match.params.COURSEID;
+
     ajaxJson(
       ['DELETE',apiSvr+'/courses/'+courseId+'/team/'+teamId+'.json'],
       null,
       function(res){
           console.log('deleteTeam : '+teamId);
           this.ajaxCall();
-          
       }.bind(this)
     )
+
+    this.setState({
+      alertOpen:false
+    })
   }
 
   handleOpen(seq){
@@ -174,15 +174,13 @@ class MainContainer extends React.Component {
     var checkIndex = 1;
     var tempArr =[];
     let member = [];
-    var teamName = null;
-    member = member.concat(this.state.teamsMember);
-    
-    //-----------
     var selectedTeamId;
     var selectedTeamName;
     var selectedTeamMember=[];
     var selectedUserIds=[];
-    //-----------
+    member = member.concat(this.state.teamsMember);
+    
+
     //선택한 seq의 값에따른 check disable 수
     if(seq !=null){
       //-----------
@@ -201,10 +199,6 @@ class MainContainer extends React.Component {
       for(var i = 0;i<selectedTeamMember.length;i++){
         selectedUserIds.push(selectedTeamMember[i].userId);
       }
-      //-----------
-      // teamName = member[seq][0].teamName;
-      // tempArr.push(member[seq]);
-      // member.splice(seq,1);
     }else{
       checkIndex =checkIndex-1;
     }
@@ -216,8 +210,6 @@ class MainContainer extends React.Component {
         checkIndex=checkIndex+1;
       }
     }
-  
-    
      
     this.setState({
       open: true,
@@ -227,11 +219,7 @@ class MainContainer extends React.Component {
       selectedTeamName: selectedTeamName, //edit
       selectedTeamId:selectedTeamId
     })
-
-
   }
-
- 
 
   ajaxCall(){
     //ajaxdata connect
@@ -253,16 +241,27 @@ class MainContainer extends React.Component {
       null,
       function(res){
           var data = res.response.data;
+          var activeData =[];
+          var blockMember =[];
           //순서정렬 및 중복제거
-          // var data = this.state.data;
           var seq = [];
           var teamsMember=[]
+
+          //data 사용자상태에따라 분류
           for(var i=0;i<data.length;i++){
-            var teamSeq = data[i].teamSeq
-            // console.log(teamSeq != null);
-            // if(teamSeq != null){
-              seq.push(teamSeq);
-            // }
+            if(data[i].joinStatus=='CJS02'||data[i].joinStatus=='CJS04'){
+              activeData.push(data[i]);
+            }else if(data[i].joinStatus=='CJS04'){
+              blockMember.push(data[i]);
+            }
+          }
+          //
+          data = activeData;
+          
+          
+          for(var i=0;i<data.length;i++){
+              var teamSeq = data[i].teamSeq
+                seq.push(teamSeq);
           }
           var a = [];
           for(var i=0;i<seq.length;i++){
@@ -280,20 +279,14 @@ class MainContainer extends React.Component {
             var a = seq.indexOf(''+data[i].teamSeq)//index
             teamsMember[a].push(data[i]);
           }
-      
+          
           this.setState({
             teamsMember:teamsMember
           })
-          // console.log(seq);
-          // console.dir('teams : '+teams[0][0].name);
           
       }.bind(this)
     )
-
-
-
   }
-  
   
   componentDidMount() {
     this.ajaxCall();
@@ -379,10 +372,12 @@ class MainContainer extends React.Component {
                                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
                               >
                                 <MenuItem primaryText="수정" onClick={(seq)=>this.handleOpen(index)}/>
-                                <MenuItem primaryText="삭제"onClick={(seq)=>this.deleteTeam(row.idx)}/>
+                                <MenuItem primaryText="삭제"onClick={(teamId)=>this.deletehandleClose(row.idx)}/>
                               </IconMenu>
                             )
                           }
+
+                          
                         })()}
                       </div>
                       <Divider />
@@ -391,12 +386,13 @@ class MainContainer extends React.Component {
                           {this.state.teamsMember.map((row2,index2)=>(
                             row2[0].teamId==row.idx ?
                             row2.map((row3,index3)=>(
+                                row3.joinStatus =='CJS02'?
                                 <Chip
                                   key={index3}
                                   style={styles.chip}
                                 >
                                  {row3.userName}
-                                </Chip>
+                                </Chip> :null
                               )) : null
                           ))}
                         </div>
@@ -426,11 +422,19 @@ class MainContainer extends React.Component {
           open={this.state.open}
           courseId={this.props.match.params.COURSEID}      
           member={this.state.editTeams}
+          blockMember={this.state.blockMember}
           checkIndex={this.state.checkIndex}
           selectedUserId={this.state.selectedUserId}
           selectedTeamName={this.state.selectedTeamName}
           selectedTeamId = {this.state.selectedTeamId}
           handleClose = {(summit,teamId,teamName,selectedUserId)=>this.handleClose(summit,teamId,teamName,selectedUserId)}
+        />
+        <DeletePopup
+          open = {this.state.alertOpen}
+          selectedTeamId = {this.state.selectedTeamId}
+          courseId={this.props.match.params.COURSEID}
+          deleteTeam={(value)=>this.deleteTeam(value)}
+          deletehandleClose={()=>this.deletehandleClose()}
         />
       </main>
     );
