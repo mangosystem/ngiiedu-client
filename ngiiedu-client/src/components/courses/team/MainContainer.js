@@ -17,7 +17,6 @@ import Chip from 'material-ui/Chip';
 // import List from 'material-ui/svg-icons/action/list';
 import IconList from 'material-ui/svg-icons/action/list';
 
-
 class MainContainer extends React.Component {
 
   constructor(props){
@@ -26,19 +25,279 @@ class MainContainer extends React.Component {
       isAccessor: true,
       isOwner: true,
       isMember: false,
+      open:false,
+      teamPopupOpen:false,
+      teamsMember :[], //ajax로 불러온 팀멤버 리스트
+      editTeams:[], //props 에 전달할 팀리스트
+      // seq :null,
+      checkIndex:null,
+      selectedTeamName: null,
+      selectedUserId:[],
+      teams:[],
+      selectedTeamId:null
+      
+    }
+    this.handleOpen = this.handleOpen.bind(this);
+    this.deleteTeam = this.deleteTeam.bind(this);
+    this.ajaxCall = this.ajaxCall.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
+  
+  
 
-      teamPopupOpen:false
+  handleClose(summit,teamId,teamName,selectedUserId){
+
+
+    //팀생성
+    ///{courseId}/team
+    //data teamName
+   
+    
+    
+
+
+    if(summit){
+      if(teamName==null){
+        alert('팀명을 입력하세요');
+        return;
+      }
+
+
+      var courseId = this.props.match.params.COURSEID;
+  
+        //팀생성
+      if(teamId==null){
+        $.ajax({
+          method:'POST',
+          url: apiSvr+'/courses/'+courseId+'/team.json',
+          dataType: 'json',
+          data:{
+            teamName : teamName
+          },
+          async: false,
+          success: function(res) {
+            console.log("팀생성" + teamName);
+            console.dir(res);
+            teamId = res.response.data.idx;
+          }.bind(this),
+          error: function(xhr, status, err) {
+              console.error(status, err.toString());
+          }.bind(this)
+        });
+      }
+        
+      // 팀멤버 추가
+      for(var i =0;i<selectedUserId.length;i++){
+  
+        if(this.state.selectedUserId.indexOf(selectedUserId[i])==-1){
+          $.ajax({
+            type:'POST',
+            url: apiSvr+'/courses/'+courseId+'/team/'+teamId+'/member.json',
+            dataType: 'json',
+            async: false,
+            data:{
+              memberId:selectedUserId[i]
+            },
+            success: function(res) {
+              console.log("팀멤버 추가"+selectedUserId[i]);
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(status, err.toString());
+            }.bind(this)
+          });
+        }
+      }
+  
+      //팀 멤버 삭제
+      ///{courseId}/team/{teamId}/member/{memberId}
+      // console.log(this.state.selectedUserId);
+      for(var i = 0 ; i <this.state.selectedUserId.length;i++){
+        console.log(this.state.selectedUserId[i])
+        if(selectedUserId.indexOf(this.state.selectedUserId[i])==-1){
+          $.ajax({
+            method:'POST',
+            url: apiSvr+'/courses/'+courseId+'/team/'+teamId+'/member/'+this.state.selectedUserId[i]+'.json',
+            dataType: 'json',
+            data:{_method__ : 'DELETE'},
+            async: false,
+            success: function(res) {
+              console.log("팀멤버 삭제"+this.state.selectedUserId[i]);
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(status, err.toString());
+            }.bind(this)
+          });
+        }
+      }
+
+
+      //팀이름변경
+      if(teamName != this.state.selectedTeamId){
+
+        ajaxJson(
+            ['PUT',apiSvr+'/courses/'+courseId+'/team/'+teamId+'/name.json'],
+            {
+                teamName:teamName
+            },
+            function(res){
+              this.ajaxCall();
+            }.bind(this)
+        )
+      }
+
+      
     }
 
-    this.teamPopup = this.teamPopup.bind(this);
+    this.setState({open: false});
+    
+
   }
 
-  teamPopup(value){
-    alert(value);
-    this.setState =({
-      teamPopupOpen : true
-    })
+
+  deleteTeam(teamId){
+    var courseId = this.props.match.params.COURSEID;
+    ajaxJson(
+      ['DELETE',apiSvr+'/courses/'+courseId+'/team/'+teamId+'.json'],
+      null,
+      function(res){
+          console.log('deleteTeam : '+teamId);
+          this.ajaxCall();
+          
+      }.bind(this)
+    )
   }
+
+  handleOpen(seq){
+    //배열 재배치 
+    //미분류 -> 현재 선택한 팀 순서
+    //선택 비선택 변수 설정
+    var checkIndex = 1;
+    var tempArr =[];
+    let member = [];
+    var teamName = null;
+    member = member.concat(this.state.teamsMember);
+    
+    //-----------
+    var selectedTeamId;
+    var selectedTeamName;
+    var selectedTeamMember=[];
+    var selectedUserIds=[];
+    //-----------
+    //선택한 seq의 값에따른 check disable 수
+    if(seq !=null){
+      //-----------
+      selectedTeamId = this.state.teams[seq].idx;
+      selectedTeamName = this.state.teams[seq].teamName;
+      for(var i = 0 ; i<member.length;i++){
+        if(member[i][0].teamId == selectedTeamId){
+          console.dir("member[i][0].teamId: " + member[i][0].teamId);
+          console.dir(member[i][0].teamId)
+          selectedTeamMember = member[i];
+          tempArr.push(selectedTeamMember);
+          member.splice(i,1);
+        }
+      }
+      //id 배열들;
+      for(var i = 0;i<selectedTeamMember.length;i++){
+        selectedUserIds.push(selectedTeamMember[i].userId);
+      }
+      //-----------
+      // teamName = member[seq][0].teamName;
+      // tempArr.push(member[seq]);
+      // member.splice(seq,1);
+    }else{
+      checkIndex =checkIndex-1;
+    }
+    for(var i =0;i<member.length;i++){
+      if(member[i][0].teamSeq != null){
+        tempArr.push(member[i]);
+      }else{
+        tempArr.unshift(member[i]);
+        checkIndex=checkIndex+1;
+      }
+    }
+  
+    
+     
+    this.setState({
+      open: true,
+      editTeams:tempArr, //edit
+      checkIndex:checkIndex,
+      selectedUserId:selectedUserIds, //edit
+      selectedTeamName: selectedTeamName, //edit
+      selectedTeamId:selectedTeamId
+    })
+
+
+  }
+
+ 
+
+  ajaxCall(){
+    //ajaxdata connect
+    var courseId = this.props.match.params.COURSEID;
+    // /courses/20/team.json
+    ajaxJson(
+      ['GET',apiSvr+'/courses/'+courseId+'/team.json'],
+      null,
+      function(res){
+        var data = res.response.data;
+        this.setState({
+          teams : data
+        });
+      }.bind(this)
+    );
+
+    ajaxJson(
+      ['GET',apiSvr+'/courses/'+courseId+'/team/memberInfos.json'],
+      null,
+      function(res){
+          var data = res.response.data;
+          //순서정렬 및 중복제거
+          // var data = this.state.data;
+          var seq = [];
+          var teamsMember=[]
+          for(var i=0;i<data.length;i++){
+            var teamSeq = data[i].teamSeq
+            // console.log(teamSeq != null);
+            // if(teamSeq != null){
+              seq.push(teamSeq);
+            // }
+          }
+          var a = [];
+          for(var i=0;i<seq.length;i++){
+            if(typeof a[seq[i]]=='undefined'){
+              a[seq[i]] = 1;
+            }
+          }
+          seq.length = 0;
+          for(var i in a){
+            seq[seq.length] = i
+            teamsMember.push([]);
+          }
+              
+          for(var i=0;i<data.length;i++){
+            var a = seq.indexOf(''+data[i].teamSeq)//index
+            teamsMember[a].push(data[i]);
+          }
+      
+          this.setState({
+            teamsMember:teamsMember
+          })
+          // console.log(seq);
+          // console.dir('teams : '+teams[0][0].name);
+          
+      }.bind(this)
+    )
+
+
+
+  }
+  
+  
+  componentDidMount() {
+    this.ajaxCall();
+  }    
 
   render() {
 
@@ -51,7 +310,7 @@ class MainContainer extends React.Component {
 
     const divStyle = {
       width: '100%', 
-      height: '30%', 
+      height: 48, 
       display: 'flex', 
       alignItems: 'center',
       justifyContent: 'space-between'
@@ -60,6 +319,7 @@ class MainContainer extends React.Component {
     const pStyle = {
       marginLeft: '10%', 
       fontWeight: 'bold'
+      
     };
 
 
@@ -105,86 +365,73 @@ class MainContainer extends React.Component {
             <section>
               <Paper style={{padding:'2%'}}>
               <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
-                <Paper style={style}>
-                  <div style={divStyle}>
-                    <p style={pStyle}>A팀</p>
-                    <IconMenu
-                      iconButtonElement={<IconButton><IconList /></IconButton>}
-                      anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    >
-                      <MenuItem primaryText="수정" />
-                      <MenuItem primaryText="삭제" />
-                    </IconMenu>
-                  </div>
-                  <Divider />
-                  <div style={cDivStyle}>
-                    <div style={styles.wrapper}>
-                      <Chip
-                        style={styles.chip}
-                      >
-                        조근후
-                      </Chip>
-                      
+                {this.state.teams.map((row,index)=>(
+                  <Paper  key={index} style={style}>
+                    <div>
+                      <div style={divStyle}>
+                        <p style={pStyle}>{row.teamName}</p>
+                        {(() => {
+                          if (this.state.isAccessor && this.state.isOwner) {
+                            return(
+                              <IconMenu
+                                iconButtonElement={<IconButton><IconList /></IconButton>}
+                                anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                                targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                              >
+                                <MenuItem primaryText="수정" onClick={(seq)=>this.handleOpen(index)}/>
+                                <MenuItem primaryText="삭제"onClick={(seq)=>this.deleteTeam(row.idx)}/>
+                              </IconMenu>
+                            )
+                          }
+                        })()}
+                      </div>
+                      <Divider />
+                      <div style={cDivStyle}>
+                        <div style={styles.wrapper}>
+                          {this.state.teamsMember.map((row2,index2)=>(
+                            row2[0].teamId==row.idx ?
+                            row2.map((row3,index3)=>(
+                                <Chip
+                                  key={index3}
+                                  style={styles.chip}
+                                >
+                                 {row3.userName}
+                                </Chip>
+                              )) : null
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </Paper>
+                  </Paper>
 
-                <Paper style={style}>
-                <div style={divStyle}>
-                  <p style={pStyle}>A팀</p>
-                  <IconMenu
-                    iconButtonElement={<IconButton><IconList /></IconButton>}
-                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                  >
-                    <MenuItem primaryText="수정" />
-                    <MenuItem primaryText="삭제" />
-                  </IconMenu>
-                </div>
-                <Divider />
-                <div style={cDivStyle}>
-                  <div style={styles.wrapper}>
-                    <Chip
-                      style={styles.chip}
-                    >
-                      조근후
-                    </Chip>
-                    
-                  </div>
-                </div>
-              </Paper>
+                ))}
 
-              <Paper style={style}>
-                <div style={divStyle}>
-                  <p style={pStyle}>A팀</p>
-                  <IconMenu
-                    iconButtonElement={<IconButton><IconList /></IconButton>}
-                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                  >
-                    <MenuItem primaryText="수정" />
-                    <MenuItem primaryText="삭제" />
-
-                  </IconMenu>
-                </div>
-                <Divider />
-                <div style={cDivStyle}>
-                  <div style={styles.wrapper}>
-                    <Chip
-                      style={styles.chip}
-                    >
-                      조근후
-                    </Chip>
-                  </div>
-                </div>
-              </Paper>
-                <TeamPopup/>
+                {(() => {
+                  if (this.state.isAccessor && this.state.isOwner) {
+                    return(
+                      <div style={bDivStyle}>
+                          <FloatingActionButton zDepth={0} style={{margin: '0 auto'}} onClick={(seq)=>this.handleOpen(null)} >
+                              <ContentAdd />
+                          </FloatingActionButton>
+                      </div>
+                    )
+                  }
+                })()}
               </div>
               </Paper>
             </section>
           </div>
         </div>
+        <TeamPopup
+          open={this.state.open}
+          courseId={this.props.match.params.COURSEID}      
+          member={this.state.editTeams}
+          checkIndex={this.state.checkIndex}
+          selectedUserId={this.state.selectedUserId}
+          selectedTeamName={this.state.selectedTeamName}
+          selectedTeamId = {this.state.selectedTeamId}
+          handleClose = {(summit,teamId,teamName,selectedUserId)=>this.handleClose(summit,teamId,teamName,selectedUserId)}
+        />
       </main>
     );
   }
