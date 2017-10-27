@@ -20,142 +20,77 @@ import {
 } from 'material-ui/Table';
 
 class CourseList extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            courseTableData: [],
-            joinedCourseTableData: [],
-            courseTablSelectedRows: [],
-            joinedCourseTablSelectedRows: [],
-            //keyword: '',
+            courseInfoListOwnData: [],
+            courseInfoListJoinData: [],
             fixedHeader: true,
-            selectable: true
+            selectable: true,
+            isAccessor: true,
+            isOwner: true,
+            isMember: false,
+            userid: '1'
         };
-
-        this.onSelectionCourse = this.onSelectionCourse.bind(this);
-        this.onSelectionJoinedCourse = this.onSelectionJoinedCourse.bind(this);
-        this.isCourseTableSelected = this.isCourseTableSelected.bind(this);
-        this.isJoinedCourseTableSelected = this.isJoinedCourseTableSelected.bind(this);
-        this.courseTableRowSelection = this.courseTableRowSelection.bind(this);
-        this.joinedCourseTableRowSelection = this.joinedCourseTableRowSelection.bind(this);
     }
 
     componentDidMount() {
         let params = null;
         ajaxJson(
-            ['GET', apiSvr + '/courses/list/courseDetail.json'],
+            ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListJoin.json'],
             params,
             function (res) {
                 this.setState({
-                    courseTableData: res.response.data
+                    courseInfoListJoinData: res.response.data
                 });
             }.bind(this),
             function (xhr, status, err) {
-                alert('Error');
+                console.log(err);
             }.bind(this)
         );
 
-        ajaxJson( // id 입력..
-            ['GET', apiSvr + '/courses/list/' + '1' + '/courseDetail.json'],
+        ajaxJson(
+            ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListOwn.json'],
             params,
             function (res) {
                 this.setState({
-                    joinedCourseTableData: res.response.data
+                    courseInfoListOwnData: res.response.data
                 });
             }.bind(this),
             function (xhr, status, err) {
-                alert('Error');
+                console.log(err);
             }.bind(this)
         );
     };
 
     componentWillReceiveProps(nextProps) {
+        // 검색 
         let params = ({ 'keyword': '%' + nextProps.keyword + '%' });
         ajaxJson(
-            ['GET', apiSvr + '/courses/list/courseDetail.json'],
+            ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListJoin.json'],
             params,
             function (res) {
                 this.setState({
-                    courseTableData: res.response.data
+                    courseInfoListJoinData: res.response.data
                 });
             }.bind(this),
             function (xhr, status, err) {
-                alert('Error');
+                console.log(err);
             }.bind(this)
         );
 
-        ajaxJson( // id 입력..
-            ['GET', apiSvr + '/courses/list/' + '1' + '/courseDetail.json'],
+        ajaxJson(
+            ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListOwn.json'],
             params,
             function (res) {
                 this.setState({
-                    joinedCourseTableData: res.response.data
+                    courseInfoListOwnData: res.response.data
                 });
             }.bind(this),
             function (xhr, status, err) {
-                alert('Error');
+                console.log(err);
             }.bind(this)
         );
-    };
-
-    isCourseTableSelected(index) {
-        return this.state.courseTablSelectedRows.indexOf(index) !== -1;
-    };
-
-    isJoinedCourseTableSelected(index) {
-        return this.state.joinedCourseTablSelectedRows.indexOf(index) !== -1;
-    };
-
-    onSelectionCourse(courseTablSelectedRows) {
-        this.setState({
-            courseTablSelectedRows: courseTablSelectedRows
-        });
-
-        let courseIds = [];
-        for (let n of courseTablSelectedRows) {
-            this.state.items.map(function (v, i) {
-                if (n == i) {
-                    courseIds.push(v.idx);
-                    return;
-                }
-            });
-        };
-
-        console.log(courseIds);
-    };
-
-    onSelectionJoinedCourse(joinedCourseTablSelectedRows) {
-        this.setState({
-            joinedCourseTablSelectedRows: joinedCourseTablSelectedRows
-        });
-
-        let courseIds = [];
-        for (let n of joinedCourseTablSelectedRows) {
-            this.state.items.map(function (v, i) {
-                if (n == i) {
-                    courseIds.push(v.idx);
-                    return;
-                }
-            });
-        }
-
-        console.log(courseIds);
-    }
-
-    courseTableRowSelection(sr) {
-        if (sr.length != 0) {
-            this.setState({
-                courseTablSelectedRows: sr
-            });
-        }
-    };
-
-    joinedCourseTableRowSelection(sr) {
-        if (sr.length != 0) {
-            this.setState({
-                joinedCourseTablSelectedRows: sr
-            });
-        }
     };
 
     render() {
@@ -165,44 +100,34 @@ class CourseList extends React.Component {
                 // expanded={true}
                 >
                     <CardHeader
-                        title="개설된 수업(전체수업)"
-                        subtitle=""
-                        // actAsExpander={true}
-                        // showExpandableButton={true}
+                        title="내가 참여한 수업"
                         style={{
                             // backgroundColor: '#70a8ff'
                         }}
                     />
-                    <CardText
-                    // expandable={true}
-                    >
+                    <CardText>
                         <div>
                             <Table
-                                onRowSelection={this.courseTableRowSelection}
-                                fixedHeader={this.state.fixedHeader}
-                                multiSelectable={false}
-                                selectable={this.state.selectable}
                                 height={'300px'}
                             >
                                 <TableHeader displaySelectAll={false}>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false}>
-                                    {this.state.courseTableData.map((row, i) => (
+                                    {this.state.courseInfoListJoinData.map((row, i) => (
                                         <TableRow
-                                            selected={this.isCourseTableSelected(i)}
                                             key={row.idx}
                                             style={{ height: '70px' }}
                                         >
                                             <TableRowColumn style={{ width: '10%' }}>
                                                 <Avatar src={row.moduleMetadata} />
                                             </TableRowColumn>
-                                            <TableRowColumn style={{ width: '70%' }}>
+                                            <TableRowColumn style={{ width: '55%' }}>
                                                 {row.courseName}
                                             </TableRowColumn>
                                             <TableRowColumn style={{ width: '10%' }}>
                                                 <Avatar>{row.courseCreateUserId.charAt(0)}</Avatar>
                                             </TableRowColumn>
-                                            <TableRowColumn style={{ width: '10%' }}>
+                                            <TableRowColumn style={{ width: '15%' }}>
                                                 {row.courseCreateUserId}
                                             </TableRowColumn>
                                             <TableRowColumn style={{ width: '10%' }}>
@@ -228,39 +153,28 @@ class CourseList extends React.Component {
                 <br />
                 <Card>
                     <CardHeader
-                        title="참여중인 수업"
-                        subtitle=""
-                        // actAsExpander={true}
-                        // showExpandableButton={true}
-                        style={{
-                            // backgroundColor: '#70a8ff'
-                        }}
+                        title="내가 개설한 수업"
                     />
                     <CardText>
                         <div>
                             <Table
-                                onRowSelection={this.joinedCourseTableRowSelection}
-                                fixedHeader={this.state.fixedHeader}
-                                multiSelectable={false}
-                                selectable={this.state.selectable}
                                 height={'300px'}
                             >
                                 <TableHeader displaySelectAll={false}>
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false} >
-                                    {this.state.joinedCourseTableData.map((row, i) => (
+                                    {this.state.courseInfoListOwnData.map((row, i) => (
                                         <TableRow
-                                            selected={this.isJoinedCourseTableSelected(i)}
                                             key={row.idx}
                                             style={{ height: '70px' }}
                                         >
                                             <TableRowColumn style={{ width: '10%' }}>
                                                 <Avatar src={row.moduleMetadata} />
                                             </TableRowColumn>
-                                            <TableRowColumn style={{ width: '70%' }}>
+                                            <TableRowColumn style={{ width: '55%' }}>
                                                 {row.courseName}
                                             </TableRowColumn>
-                                            <TableRowColumn style={{ width: '10%' }}>
+                                            <TableRowColumn style={{ width: '15%' }}>
                                                 <Avatar>{row.courseCreateUserId.charAt(0)}</Avatar>
                                             </TableRowColumn>
                                             <TableRowColumn style={{ width: '10%' }}>
@@ -290,7 +204,6 @@ class CourseList extends React.Component {
         )
     }
 }
-
 
 let mapStateToProps = (state) => ({
     keyword: state.courseList.keyword
