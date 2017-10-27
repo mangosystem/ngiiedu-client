@@ -32,7 +32,7 @@ class Work extends React.Component {
     this.enterWork = this.enterWork.bind(this);
     this.courseChecked = this.courseChecked.bind(this);
   }
-  //수업 활성화 비활성화
+  //수업 과정 활성화 비활성화
   courseChecked(work){
     let courseId = this.props.match.params.COURSEID;
     ajaxJson(
@@ -60,8 +60,10 @@ class Work extends React.Component {
     );
   };
 
+  //수업 과정 들어가기
   enterWork(id){
-    console.log(id);
+    alert('수업 과정 아이디 : '+id+', 수업 과정 들어가기');
+    //window.location.href='수업 과정 url'
   };
 
   componentWillMount() {
@@ -70,11 +72,8 @@ class Work extends React.Component {
       ['GET',apiSvr+'/courses/'+courseId+'/work.json'],
       null,
       function(res){
-        console.log(res.response.data);
         this.setState({
           workList:res.response.data
-        },function(){
-          console.log(this.state.workList)
         });
       }.bind(this)
     );
@@ -86,7 +85,7 @@ class Work extends React.Component {
         {this.props.isAccessor?
           <div>
             <h3>수업 과정</h3>
-            <p>교사가 수업만들기에서 추가한 수업과정이 아래에 나타납니다.</p>
+            <p>교사가 수업만들기에서 추가한 수업 과정이 아래에 나타납니다.</p>
             <br />
             <Divider />
             <br />
