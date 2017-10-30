@@ -17,18 +17,35 @@ import IconChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import IconArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 import IconMoreVert from 'material-ui/svg-icons/navigation/more-vert';
 import IconHelpOutline from 'material-ui/svg-icons/action/help-outline';
+import IconAddCircleOutline from 'material-ui/svg-icons/content/add-circle-outline';
+import IconCropSquare from 'material-ui/svg-icons/image/crop-square';
 
 import Avatar from 'material-ui/Avatar';
 
 import MapsEditorPanel from './MapsEditorPanel';
 import PropertiesPanel from './PropertiesPanel';
+import NewMapAlert from './NewMapAlert';
+import EditMapTitle from './EditMapTitle';
+import DeleteMap from './DeleteMap';
+
 
 class MainContainer extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      editMode: ''
+      editMode: '',
+      openNewMap: false,
+      openEditTitle: false,
+      subjectMap: [],
+      storyMap: [],
+      isSubjectMode: true,
+      editMapMode: true,
+      tempTitle: '',
+      tempIndex: 0,
+      subjectCount: 0,
+      storyCount: 0,
+      openDeleteMap: false
     }
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
   }
@@ -45,7 +62,198 @@ class MainContainer extends React.Component {
     });
   }
 
+
+  addMapTitle(title) {
+
+    if (this.state.isSubjectMode) {
+      const newObj = {
+        title: title,
+        index: this.state.subjectCount++
+      };
+
+      this.setState({
+        subjectMap: this.state.subjectMap.concat(newObj)
+      });
+
+    } else {
+      const newObj = {
+        title: title,
+        index: this.state.storyCount++
+      };
+      this.setState({
+        storyMap: this.state.storyMap.concat(newObj)
+      });
+    }
+  }
+
+  editMapTitle(title) {
+
+    //주제지도
+    if (this.state.editMapMode) {
+
+      for (let i in this.state.subjectMap) {
+        if (i == this.state.tempIndex) {
+          let newMap = this.state.subjectMap;
+          newMap[i].title = title;
+          this.setState({
+            subjectMap: newMap
+          });
+        }
+      }
+
+    // 스토리지도
+    } else {
+
+      for (let i in this.state.storyMap) {
+        if (i == this.state.tempIndex) {
+          let newMap = this.state.storyMap;
+          newMap[i].title = title;
+          this.setState({
+            storyMap: newMap
+          });
+        }
+      }
+    }
+
+  }
+
+  deleteMap() {
+
+    //주제지도
+    if (this.state.editMapMode) {
+      
+      for (let i in this.state.subjectMap) {
+        if (i == this.state.tempIndex) {
+          let newMap = this.state.subjectMap;
+          newMap.splice(i, 1);
+          this.setState({
+            subjectMap: newMap
+          });
+        }
+      }
+
+    // 스토리지도
+    } else {
+
+      for (let i in this.state.storyMap) {
+        if (i == this.state.tempIndex) {
+          let newMap = this.state.storyMap;
+          newMap.splice(i, 1);
+          this.setState({
+            storyMap: newMap
+          });
+        }
+      }
+    }
+  }
+
+  newMap(title) {
+    if (title == "주제지도")
+      this.setState({ isSubjectMode: true });
+    else 
+      this.setState({ isSubjectMode: false });
+    
+
+    this.setState({
+      openNewMap: true
+    });
+  }
+
+  newMapHandle() {
+    this.setState({
+      openNewMap: !this.state.openNewMap
+    });
+  }
+
+  editTitleHandle() {
+    this.setState({
+      openEditTitle: !this.state.openEditTitle
+    });
+  }
+
+  deleteHandle() {
+    this.setState({
+      openDeleteMap: !this.state.openDeleteMap
+    });
+  }
+
   render() {
+
+    let subject = () => {
+      let array = [];
+
+      let newItem = <ListItem
+                      key={0}
+                      primaryText="새로 만들기"
+                      leftIcon={<IconAddCircleOutline />}
+                      onClick={() => this.newMap("주제지도")}
+                    />;
+
+      array.push(newItem);
+
+      if (this.state.subjectMap.length != 0) {
+        this.state.subjectMap.map((row, index) => (
+          array.push(
+            <ListItem
+              key={index+1}
+              primaryText={row.title}
+              rightIcon={
+                <IconMenu
+                  iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  style={{display: 'flex', alignItems: 'center'}}
+                >
+                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openEditTitle: true, tempTitle: row.title, editMapMode: true, tempIndex: row.index})}/>
+                  <MenuItem primaryText="삭제" onClick={() => this.setState({openDeleteMap: true, tempTitle: row.title, editMapMode: true, tempIndex: row.index})}/>
+                </IconMenu>
+              }
+            />
+          )
+        ));
+      }
+
+      return array;
+    }
+
+    let story = () => {
+      let array = [];
+
+      let newItem = <ListItem
+                      key={0}
+                      primaryText="새로 만들기"
+                      leftIcon={<IconAddCircleOutline />}
+                      onClick={() => this.newMap("스토리지도")}
+                    />;
+
+      array.push(newItem);
+
+      if (this.state.storyMap.length != 0) {
+        this.state.storyMap.map((row, index) => (
+          array.push(
+            <ListItem
+              key={index+1}
+              primaryText={row.title}
+              rightIcon={
+                <IconMenu
+                  iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  style={{display: 'flex', alignItems: 'center'}}
+                >
+                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openEditTitle: true, tempTitle: row.title, editMapMode: false, tempIndex: row.index})}/>
+                  <MenuItem primaryText="삭제" onClick={(index) => this.setState({openDeleteMap: true, tempTitle: row.title, editMapMode: false, tempIndex: row.index})}/>
+                </IconMenu>
+              }
+            />
+          )
+        ));
+      }
+
+      return array;
+    }
+
+
     return (
       <div>
         <header id="header">
@@ -107,26 +315,17 @@ class MainContainer extends React.Component {
           <div style={{ position: 'absolute', top: 60, bottom: 0, left: 0, right: 0 }}>
             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
               <List>
-                <Subheader>General</Subheader>
                 <ListItem
-                  primaryText="소음데이터 수집"
-                  secondaryText={
-                    <p>
-                    모바일 기기를 활용한 우리 지역 소음원 현장 조사 지역 소음원 현장 조사 모바일 기기를 활용한 우리
-                    모바일 기기를 활용한 우리 지역 소음원 현장 조사 지역 소음원 현장 조사 모바일 기기를 활용한 우리
-                    </p>
-                  }
-                  secondaryTextLines={2}
+                  primaryText="주제지도 만들기"
+                  initiallyOpen={true}
+                  primaryTogglesNestedList={true}
+                  nestedItems={subject()}
                 />
                 <ListItem
-                  primaryText="소음데이터 수집"
-                  secondaryText={
-                    <p>
-                    모바일 기기를 활용한 우리 지역 소음원 현장 조사 지역 소음원 현장 조사 모바일 기기를 활용한 우리
-                    모바일 기기를 활용한 우리 지역 소음원 현장 조사 지역 소음원 현장 조사 모바일 기기를 활용한 우리
-                    </p>
-                  }
-                  secondaryTextLines={2}
+                  primaryText="스토리지도 만들기"
+                  initiallyOpen={true}
+                  primaryTogglesNestedList={true}
+                  nestedItems={story()}
                 />
               </List>
             </div>
@@ -140,6 +339,23 @@ class MainContainer extends React.Component {
                 propertiesMode={this.state.editMode}
               />
             </div>
+            <NewMapAlert 
+              open={this.state.openNewMap}
+              newMapHandle={this.newMapHandle.bind(this)}
+              addMap={this.addMapTitle.bind(this)}
+            />
+            <EditMapTitle
+              open={this.state.openEditTitle}
+              editMapHandle={this.editTitleHandle.bind(this)}
+              editTitle={this.editMapTitle.bind(this)}
+              title={this.state.tempTitle}
+            />
+            <DeleteMap
+              open={this.state.openDeleteMap}
+              title={this.state.tempTitle}
+              deleteMapHandle={this.deleteHandle.bind(this)}
+              deleteMap={this.deleteMap.bind(this)}
+            />
           </div>
         </main>
       </div>

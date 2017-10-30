@@ -96,7 +96,7 @@ class MainContainer extends React.Component {
       ['PUT', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '.json'],
 			data,
 			function(data) {
-        console.log("수정됨");
+        //console.log("수정됨");
 			}.bind(this),
 			function(xhr, status, err) {
 				console.error(status, err.toString());

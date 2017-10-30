@@ -109,52 +109,52 @@ class App extends Component {
 
             <Route path="/cm-admin/user">
               <div>
-                <Header wide />
+                <Header  />
                 <UsersManageContainer />
               </div>
             </Route>
 
             <Route path="/cm-admin/course">
               <div>
-                <Header wide />
+                <Header  />
                 <CourseContainer />
               </div>
             </Route>
 
             <Route path="/cm-admin/support">
               <div>
-                <Header wide />
+                <Header  />
                 <SupportContainer />
               </div>
             </Route>
             <Route path="/cm-admin/supportPds">
               <div>
-                <Header wide />
+                <Header  />
                 <SupportPdsContainer />
               </div>
             </Route>
             <Route path="/cm-admin/supportFaq">
               <div>
-                <Header wide />
+                <Header  />
                 <SupportFaqContainer />
               </div>
             </Route>
             <Route path="/cm-admin/supportQna">
               <div>
-                <Header wide />
+                <Header  />
                 <SupportQnaContainer />
               </div>
             </Route>
 
             <Route path="/cm-admin/module">
               <div>
-                <Header wide />
+                <Header  />
                 <ModuleContainer />
               </div>
             </Route>
             <Route path="/cm-admin/moduleBuilder">
               <div>
-                <Header wide />
+                <Header  />
                 <ModuleBuilderContainer />
               </div>
             </Route>
