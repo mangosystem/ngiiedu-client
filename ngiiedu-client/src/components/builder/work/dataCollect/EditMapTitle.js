@@ -45,7 +45,7 @@ class EditMapTitle extends React.Component {
                     actions={actions}
                     open={this.props.open}
                     autoScrollBodyContent={false}
-                    contentStyle={{width: '20%'}}
+                    contentStyle={{width: '40%'}}
                 >
                     <TextField
                         id="mapTitle"

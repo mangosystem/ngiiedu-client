@@ -41,11 +41,11 @@ class NewMapAlert extends React.Component {
         return (
             <div>
                 <Dialog
-                    title="새로 만들기"
+                    title="주제지도 만들기"
                     actions={actions}
                     open={this.props.open}
                     autoScrollBodyContent={false}
-                    contentStyle={{width: '20%'}}
+                    contentStyle={{width: '40%'}}
                 >
                     <TextField
                         id="mapTitle"

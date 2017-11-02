@@ -27,7 +27,9 @@ import PropertiesPanel from './PropertiesPanel';
 import NewMapAlert from './NewMapAlert';
 import EditMapTitle from './EditMapTitle';
 import DeleteMap from './DeleteMap';
-
+import EditorPanel from './EditorPanel';
+import SelectTemplate from './SelectTemplate';
+import SelectMap from './SelectMap';
 
 class MainContainer extends React.Component {
 
@@ -35,25 +37,51 @@ class MainContainer extends React.Component {
     super(props);
     this.state = {
       editMode: '',
+      editorMode: false,
       openNewMap: false,
       openEditTitle: false,
-      subjectMap: [],
+      openTemplate: false,
+      openSelectMap: false,
+      subjectMap: [{title: "주제지도1", index: 0}],
       storyMap: [],
       isSubjectMode: true,
       editMapMode: true,
       tempTitle: '',
       tempIndex: 0,
-      subjectCount: 0,
+      storyMapIndex: 0,
+      storyTabIndex: 0,
+      subjectCount: 1,
       storyCount: 0,
       openDeleteMap: false
     }
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
+    this.onChangeEditorMode = this.onChangeEditorMode.bind(this);
   }
 
   componentWillMount() {
   }
 
   componentDidMount() {
+
+    ajaxJson(
+      ['GET', apiSvr + '/modules/' + 20 + '/moduleWork/3/subWork.json'],
+      null,
+      function (data) {
+
+        const storyMap = JSON.parse(JSON.stringify(data)).response.data;
+        console.log(storyMap);
+
+
+        this.setState({
+          storyMap: storyMap
+        });
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
+
+
   }
 
   onChangeEditMode(value) {
@@ -62,6 +90,11 @@ class MainContainer extends React.Component {
     });
   }
 
+  onChangeEditorMode() {
+    this.setState({
+      editorMode: !this.state.editorMode
+    });
+  }
 
   addMapTitle(title) {
 
@@ -77,8 +110,8 @@ class MainContainer extends React.Component {
 
     } else {
       const newObj = {
-        title: title,
-        index: this.state.storyCount++
+        moduleWorkSubName: title,
+        moduleWorkSubSeq: this.state.storyCount++
       };
       this.setState({
         storyMap: this.state.storyMap.concat(newObj)
@@ -107,7 +140,7 @@ class MainContainer extends React.Component {
       for (let i in this.state.storyMap) {
         if (i == this.state.tempIndex) {
           let newMap = this.state.storyMap;
-          newMap[i].title = title;
+          newMap[i].moduleWorkSubName = title;
           this.setState({
             storyMap: newMap
           });
@@ -148,16 +181,26 @@ class MainContainer extends React.Component {
   }
 
   newMap(title) {
-    if (title == "주제지도")
-      this.setState({ isSubjectMode: true });
+    if (title == "주제지도") 
+      this.setState({ 
+        isSubjectMode: true,
+        openNewMap: true
+      });
+    
     else 
-      this.setState({ isSubjectMode: false });
+      this.setState({ 
+        isSubjectMode: false,
+        openTemplate: true
+      });
     
 
-    this.setState({
-      openNewMap: true
-    });
   }
+
+  addStoryTab(title) {
+
+
+      
+  }  
 
   newMapHandle() {
     this.setState({
@@ -174,6 +217,21 @@ class MainContainer extends React.Component {
   deleteHandle() {
     this.setState({
       openDeleteMap: !this.state.openDeleteMap
+    });
+  }
+
+  templateHandle() {
+    this.setState({
+      openTemplate: !this.state.openTemplate
+    });
+  }
+
+  selectMapHandle() {
+
+    console.log(this);
+
+    this.setState({
+      openSelectMap: !this.state.openSelectMap
     });
   }
 
@@ -232,8 +290,8 @@ class MainContainer extends React.Component {
         this.state.storyMap.map((row, index) => (
           array.push(
             <ListItem
-              key={index+1}
-              primaryText={row.title}
+              key={row.moduleWorkSubSeq}
+              primaryText={row.moduleWorkSubName}
               rightIcon={
                 <IconMenu
                   iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
@@ -241,8 +299,9 @@ class MainContainer extends React.Component {
                   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                   style={{display: 'flex', alignItems: 'center'}}
                 >
-                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openEditTitle: true, tempTitle: row.title, editMapMode: false, tempIndex: row.index})}/>
-                  <MenuItem primaryText="삭제" onClick={(index) => this.setState({openDeleteMap: true, tempTitle: row.title, editMapMode: false, tempIndex: row.index})}/>
+                  <MenuItem primaryText="컨텐츠 입력" onClick={() => this.setState({editorMode: true})}/>
+                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openEditTitle: true, tempTitle: row.moduleWorkSubName, editMapMode: false, tempIndex: row.moduleWorkSubSeq-1})}/>
+                  <MenuItem primaryText="삭제" onClick={(index) => this.setState({openDeleteMap: true, tempTitle: row.moduleWorkSubName, editMapMode: false, tempIndex: row.moduleWorkSubSeq-1})}/>
                 </IconMenu>
               }
             />
@@ -322,7 +381,7 @@ class MainContainer extends React.Component {
                   nestedItems={subject()}
                 />
                 <ListItem
-                  primaryText="스토리지도 만들기"
+                  primaryText="스토리맵 만들기"
                   initiallyOpen={true}
                   primaryTogglesNestedList={true}
                   nestedItems={story()}
@@ -339,10 +398,27 @@ class MainContainer extends React.Component {
                 propertiesMode={this.state.editMode}
               />
             </div>
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300 }}>
+              <EditorPanel
+                editorMode={this.state.editorMode}
+                onChangeEditorMode={this.onChangeEditorMode}
+              />
+            </div>
             <NewMapAlert 
               open={this.state.openNewMap}
               newMapHandle={this.newMapHandle.bind(this)}
               addMap={this.addMapTitle.bind(this)}
+            />
+            <SelectTemplate
+              open={this.state.openTemplate}
+              templateHandle={this.templateHandle.bind(this)}
+              addMap={this.addMapTitle.bind(this)}
+            />
+            <SelectMap
+              open={this.state.openSelectMap}
+              selectMapHandle={this.selectMapHandle.bind(this)}
+              subjectMap={this.state.subjectMap}
+              addStoryTab={this.addStoryTab.bind(this)}
             />
             <EditMapTitle
               open={this.state.openEditTitle}
