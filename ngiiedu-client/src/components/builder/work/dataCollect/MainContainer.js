@@ -31,6 +31,7 @@ import DeleteMap from './DeleteMap';
 import EditorPanel from './EditorPanel';
 import SelectTemplate from './SelectTemplate';
 import SelectMap from './SelectMap';
+import PointSymbolizer from './PointSymbolizer';
 
 class MainContainer extends React.Component {
 
@@ -53,7 +54,8 @@ class MainContainer extends React.Component {
       storyTabIndex: 0,
       subjectCount: 1,
       storyCount: 4,
-      openDeleteMap: false
+      openDeleteMap: false,
+      stylePanel: false
     }
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
     this.onChangeEditorMode = this.onChangeEditorMode.bind(this);
@@ -257,6 +259,7 @@ class MainContainer extends React.Component {
               key={index+1}
               primaryText={row.title}
               leftIcon={<IconPlace />}
+              onClick={()=>this.setState({stylePanel:!this.state.stylePanel})}//임시용
               rightIcon={
                 <IconMenu
                   iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
@@ -395,10 +398,15 @@ class MainContainer extends React.Component {
                 onChangeEditMode={this.onChangeEditMode}
               />
             </div>
-            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff' }}>
-              <PropertiesPanel
-                propertiesMode={this.state.editMode}
-              />
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff' ,zIndex:1 }}>
+              {this.state.stylePanel==false?
+                <PropertiesPanel
+                  propertiesMode={this.state.editMode}
+                />
+                :
+                <PointSymbolizer styles={null} />
+              }
+        
             </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300 }}>
               <EditorPanel

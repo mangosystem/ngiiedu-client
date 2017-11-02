@@ -36,8 +36,7 @@ class MainContainer extends React.Component {
       selectedUserId:[],
       teams:[],
       selectedTeamId:null,
-      alertOpen:false,
-      blockMember : []
+      alertOpen:false
       
     }
     this.handleOpen = this.handleOpen.bind(this);
@@ -242,7 +241,6 @@ class MainContainer extends React.Component {
       function(res){
           var data = res.response.data;
           var activeData =[];
-          var blockMember =[];
           //순서정렬 및 중복제거
           var seq = [];
           var teamsMember=[]
@@ -251,8 +249,6 @@ class MainContainer extends React.Component {
           for(var i=0;i<data.length;i++){
             if(data[i].joinStatus=='CJS02'||data[i].joinStatus=='CJS04'){
               activeData.push(data[i]);
-            }else if(data[i].joinStatus=='CJS04'){
-              blockMember.push(data[i]);
             }
           }
           //
@@ -422,7 +418,6 @@ class MainContainer extends React.Component {
           open={this.state.open}
           courseId={this.props.match.params.COURSEID}      
           member={this.state.editTeams}
-          blockMember={this.state.blockMember}
           checkIndex={this.state.checkIndex}
           selectedUserId={this.state.selectedUserId}
           selectedTeamName={this.state.selectedTeamName}
