@@ -19,6 +19,7 @@ import IconMoreVert from 'material-ui/svg-icons/navigation/more-vert';
 import IconHelpOutline from 'material-ui/svg-icons/action/help-outline';
 import IconAddCircleOutline from 'material-ui/svg-icons/content/add-circle-outline';
 import IconCropSquare from 'material-ui/svg-icons/image/crop-square';
+import IconPlace from 'material-ui/svg-icons/maps/place';
 
 import Avatar from 'material-ui/Avatar';
 
@@ -51,7 +52,7 @@ class MainContainer extends React.Component {
       storyMapIndex: 0,
       storyTabIndex: 0,
       subjectCount: 1,
-      storyCount: 0,
+      storyCount: 4,
       openDeleteMap: false
     }
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
@@ -255,6 +256,7 @@ class MainContainer extends React.Component {
             <ListItem
               key={index+1}
               primaryText={row.title}
+              leftIcon={<IconPlace />}
               rightIcon={
                 <IconMenu
                   iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
