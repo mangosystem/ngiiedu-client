@@ -46,6 +46,8 @@ import CourseTeamContainer from './courses/team/MainContainer';
 import CourseSettingContainer from './courses/setting/MainContainer';
 
 import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
+import StoryMapPreview from './builder/work/storyMap/MainContainer';
+
 
 import Error404 from './common/message/Error404';
 
@@ -81,7 +83,12 @@ class App extends Component {
                 <UserProfileContainer />
               </div>
             </Route> */}
-
+            <Route path="/cm-admin">
+              <div>
+                <Header />
+                <SchoolListMainContainer />
+              </div>
+            </Route>
             <Route path="/cm-admin/school">
               <div>
                 <Header />
@@ -219,6 +226,10 @@ class App extends Component {
 
             <Route path="/course/:COURSEID/work/:workId">
               <WorkFrameDataCollect />
+            </Route>
+
+            <Route path="/course/:COURSEID/preview/:storyMapId">
+              <StoryMapPreview />
             </Route>
 
             <Route component={Error404}/>
