@@ -2,7 +2,7 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem'; 
-import ColorPicker from 'material-ui-color-picker';
+import ColorPicker from '../../../../../../webapps/assets/cdn/material-color-picker/index.js';
 
 class FillColor extends React.Component {
 
