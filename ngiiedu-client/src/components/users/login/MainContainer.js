@@ -14,13 +14,13 @@ class MainContainer extends React.Component {
         const password = $('#password').val();
 
         $.ajax({
-            url: 'http://localhost:8080/ngiiedu/api/v1/users/login.json',
+            url: '/ngiiedu/login_process',
             dataType: 'json',
             type: 'POST',
             cache: false,
-            data: { 
-                userid: userid, 
-                password: password 
+            data: {
+                username: userid,
+                password: password
             },
             success: function(data) {
 
@@ -53,41 +53,44 @@ class MainContainer extends React.Component {
                         maxWidth: '40%',
                         margin: '10% auto'
                     }}
-                >                    
-                    <TextField
-                        id="userid"
-                        floatingLabelText="아이디"
-                        floatingLabelFixed={true}
-                        fullWidth={true}
-                        style={{
-                            margin: 'auto'
-                        }}
-                    />
-                    <TextField
-                        id="password"
-                        floatingLabelText="비밀번호"
-                        floatingLabelFixed={true}
-                        fullWidth={true}
-                        type="password"
-                        onKeyDown={(event) => this.enterKey(event)}
-                        style={{
-                            margin: 'auto'
-                        }}
-                    />
-                    <br /><br />
-                    <RaisedButton 
-                        label="로그인" 
-                        primary={true}
-                        fullWidth={true}
-                        onClick={this.login.bind(this)}
-                    />
+                >
+                    <form action="/ngiiedu/login_process" method="POST">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        <TextField
+                            id="userid"
+                            floatingLabelText="아이디"
+                            floatingLabelFixed={true}
+                            fullWidth={true}
+                            style={{
+                                margin: 'auto'
+                            }}
+                        />
+                        <TextField
+                            id="password"
+                            floatingLabelText="비밀번호"
+                            floatingLabelFixed={true}
+                            fullWidth={true}
+                            type="password"
+                            onKeyDown={(event) => this.enterKey(event)}
+                            style={{
+                                margin: 'auto'
+                            }}
+                        />
+                        <br /><br />
+                        <RaisedButton
+                            label="로그인"
+                            primary={true}
+                            fullWidth={true}
+                            onClick={this.login.bind(this)}
+                        />
+                    </form>
                     <br /><br />
                     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px'}}>
-                        <a href="/join">회원가입</a>
+                        <a href="/ngiiedu/join">회원가입</a>
                         <div>
-                            <a href="/find/id">아이디 찾기</a>
+                            <a href="/ngiiedu/find/id">아이디 찾기</a>
                             <span> | </span>
-                            <a href="/find/password">비밀번호 찾기</a>
+                            <a href="/ngiiedu/find/password">비밀번호 찾기</a>
                         </div>
                     </div>
                 </Paper>

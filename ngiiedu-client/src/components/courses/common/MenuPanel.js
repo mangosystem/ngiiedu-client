@@ -52,19 +52,19 @@ class MenuPanel extends React.Component {
                       primaryText="수업 정보"
                       leftIcon={<IconInfoOutline />}
                       className={this.props.activeMenu == 'INFO' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId}
+                      href={"/ngiiedu/course/" + this.state.courseId}
                     />
                     <MenuItem
                       primaryText="관련 데이터"
                       leftIcon={<IconFileDownload />}
                       className={this.props.activeMenu == 'DATA' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/data"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/data"}
                     />
                     <MenuItem
                       primaryText="수업 과정"
                       leftIcon={<IconWeb />}
                       className={this.props.activeMenu == 'WORK' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/work"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/work"}
                     />
                   </Menu>
                 </Paper>
@@ -75,13 +75,13 @@ class MenuPanel extends React.Component {
                       primaryText="멤버"
                       leftIcon={<IconPerson />}
                       className={this.props.activeMenu == 'MEMBER' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/member"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/member"}
                     />
                     <MenuItem
                       primaryText="팀"
                       leftIcon={<IconGroup />}
                       className={this.props.activeMenu == 'TEAM' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/team"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/team"}
                     />
                   </Menu>
                 </Paper>
@@ -91,7 +91,7 @@ class MenuPanel extends React.Component {
                       primaryText="수업 설정"
                       leftIcon={<IconSettings />}
                       className={this.props.activeMenu == 'SETTING' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/setting"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/setting"}
                     />
                   </Menu>
                 </Paper>
@@ -112,50 +112,50 @@ class MenuPanel extends React.Component {
                 <Paper className="mui-paper">
                   <Menu desktop className="mui-menu">
                     <Subheader>수업</Subheader>
-                    <MenuItem 
-                      primaryText="수업 정보" 
+                    <MenuItem
+                      primaryText="수업 정보"
                       leftIcon={<IconInfoOutline />}
                       className={this.props.activeMenu == 'INFO' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId}
+                      href={"/ngiiedu/course/" + this.state.courseId}
                     />
-                    <MenuItem 
-                      primaryText="관련 데이터" 
-                      leftIcon={<IconFileDownload />} 
+                    <MenuItem
+                      primaryText="관련 데이터"
+                      leftIcon={<IconFileDownload />}
                       className={this.props.activeMenu == 'DATA' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/data"}  
+                      href={"/ngiiedu/course/" + this.state.courseId + "/data"}
                     />
-                    <MenuItem 
-                      primaryText="수업 과정" 
+                    <MenuItem
+                      primaryText="수업 과정"
                       leftIcon={<IconWeb />}
                       className={this.props.activeMenu == 'WORK' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/work"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/work"}
                     />
                   </Menu>
                 </Paper>
                 <Paper className="mui-paper">
                   <Menu desktop className="mui-menu">
                     <Subheader>참여자</Subheader>
-                    <MenuItem 
-                      primaryText="멤버" 
-                      leftIcon={<IconPerson />} 
+                    <MenuItem
+                      primaryText="멤버"
+                      leftIcon={<IconPerson />}
                       className={this.props.activeMenu == 'MEMBER' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/member"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/member"}
                     />
-                    <MenuItem 
-                      primaryText="팀" 
-                      leftIcon={<IconGroup />} 
+                    <MenuItem
+                      primaryText="팀"
+                      leftIcon={<IconGroup />}
                       className={this.props.activeMenu == 'TEAM' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/team"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/team"}
                     />
                   </Menu>
                 </Paper>
                 <Paper className="mui-paper">
                   <Menu desktop className="mui-menu">
-                    <MenuItem 
-                      primaryText="수업 설정" 
-                      leftIcon={<IconSettings />} 
+                    <MenuItem
+                      primaryText="수업 설정"
+                      leftIcon={<IconSettings />}
                       className={this.props.activeMenu == 'SETTING' ? 'aml' : 'uml'}
-                      href={"/course/" + this.state.courseId + "/setting"}
+                      href={"/ngiiedu/course/" + this.state.courseId + "/setting"}
                     />
                   </Menu>
                 </Paper>

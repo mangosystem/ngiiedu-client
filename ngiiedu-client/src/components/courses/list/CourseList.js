@@ -64,7 +64,7 @@ class CourseList extends React.Component {
     };
 
     componentWillReceiveProps(nextProps) {
-        // 검색 
+        // 검색
         let params = ({ 'keyword': '%' + nextProps.keyword + '%' });
         ajaxJson(
             ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListJoin.json'],
@@ -139,7 +139,7 @@ class CourseList extends React.Component {
                                                 >
                                                     <MenuItem
                                                         primaryText="이동하기"
-                                                        href={"/course/" + row.idx}
+                                                        href={contextPath + "/course/" + row.idx}
                                                     />
                                                 </IconMenu>
                                             </TableRowColumn>
@@ -189,7 +189,7 @@ class CourseList extends React.Component {
                                                 >
                                                     <MenuItem
                                                         primaryText="이동하기"
-                                                        href={"/course/" + row.idx}
+                                                        href={contextPath + "/course/" + row.idx}
                                                     />
                                                 </IconMenu>
                                             </TableRowColumn>

@@ -57,7 +57,7 @@ class Header extends React.Component {
         <div className={this.props.wide ? "inner wide" : "inner"} style={{display: 'flex'}}>
 
           <div style={{flex: 1, marginLeft: 0, paddingTop: 20, paddingBottom: 20}}>
-            <Link to="/course"><h3>NGII-EDU LOGO</h3></Link>
+            <Link to="/ngiiedu/course"><h3>NGII-EDU LOGO</h3></Link>
           </div>
 
           <div style={{flex: 4}}>
@@ -97,11 +97,11 @@ class Header extends React.Component {
                   targetOrigin={{horizontal: 'right', vertical: 'top'}}
                 >
                   <MenuItem primaryText="회원정보" />
-                  <MenuItem primaryText="수업목록" href="/course" />
+                  <MenuItem primaryText="수업목록" href="/ngiiedu/course" />
                   <MenuItem primaryText="수업 참여하기" href="#"
                     onClick={this.onChangeCourseOpen}
                   />
-                  <MenuItem primaryText="수업 만들기" href="/courseCreate" />
+                  <MenuItem primaryText="수업 만들기" href="/ngiiedu/courseCreate" />
               </IconMenu>
               <IconButton style={{width: 50, height: 50, marginTop: 5, marginBottom: 5}}>
                 <IconHelpOutline />

@@ -1,5 +1,7 @@
 const apiSvr = 'http://localhost:8080/ngiiedu/api/v1';
 
+const contextPath = '/ngiiedu';
+
 function ajaxJson( [method, url], data, successFnc, errorFnc ) {
   if (errorFnc == null) {
     errorFnc = function(xhr, status, err) {

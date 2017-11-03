@@ -1,14 +1,14 @@
+
 import React, { Component } from 'react';
 
 import Header from './common/layout/Header.js';
 import Footer from './common/layout/Footer.js';
 
-import {BrowserRouter, Router, Route, Switch } from 'react-router-dom';
-
+import {BrowserRouter, Router, Route, Switch} from 'react-router-dom';
 
 // 미인증 사용자
-import UserJoinContainer from './users/join/MainContainer';
-import UserLoginContainer from './users/login/MainContainer';
+// import UserJoinContainer from './users/join/MainContainer';
+// import UserLoginContainer from './users/login/MainContainer';
 
 // 인증 사용자
 //import UserProfileContainer from './users/profile/MainContainer';
@@ -45,200 +45,188 @@ import CourseMemberContainer from './courses/member/MainContainer';
 import CourseTeamContainer from './courses/team/MainContainer';
 import CourseSettingContainer from './courses/setting/MainContainer';
 
-import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
-import StoryMapPreview from './builder/work/storyMap/MainContainer';
+// import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
+// import StoryMapPreview from './builder/work/storyMap/MainContainer';
 
+const contextPath = '/ngiiedu';
 
 import Error404 from './common/message/Error404';
 
 class App extends Component {
 
-  componentWillMount() {
-    console.log(this);
-  }
+    componentWillMount() {
+        console.log(this);
+    }
 
-  render() {
+    render() {
 
-    return (
-      <BrowserRouter>
-        <div id="wrap">
+        return (
+            <BrowserRouter>
+            	<div id="wrap">
+            		<Switch>
+            			<Route exact path={contextPath + "/cm-admin"}>
+            				<div>
+            					<Header />
+            					<SchoolListMainContainer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/cm-admin/school"}>
+            				<div>
+            					<Header />
+            					<SchoolListMainContainer />
+            				</div>
+            			</Route>
+            			<Route exact path={contextPath + "/cm-admin/schoolSync"}>
+            				<div>
+            					<Header />
+            					<SchoolsSyncContainer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/cm-admin/schoolSync/api"}>
+            				<div>
+            					<Header />
+            					<SchoolsSyncApiContainer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/cm-admin/schoolSync/file"}>
+            				<div>
+            					<Header />
+            					<SchoolsSyncFileContainer />
+            				</div>
+            			</Route>
 
-          <Switch>
+            			<Route path={contextPath + "/cm-admin/user"}>
+            				<div>
+            					<Header />
+            					<UsersManageContainer />
+            				</div>
+            			</Route>
 
-            <Route path="/join">
-              <div>
-                <Header wide />
-                <UserJoinContainer />
-              </div>
-            </Route>
-            <Route path="/login">
-              <div>
-                <Header wide />
-                <UserLoginContainer />
-              </div>
-            </Route>
-            {/* <Route path="/profile">
-              <div>
-                <Header wide />
-                <UserProfileContainer />
-              </div>
-            </Route> */}
-            <Route path="/cm-admin">
-              <div>
-                <Header />
-                <SchoolListMainContainer />
-              </div>
-            </Route>
-            <Route path="/cm-admin/school">
-              <div>
-                <Header />
-                <SchoolListMainContainer />
-              </div>
-            </Route>
-            <Route exact path="/cm-admin/schoolSync">
-              <div>
-                <Header  />
-                <SchoolsSyncContainer />
-              </div>
-            </Route>
-            <Route path="/cm-admin/schoolSync/api">
-              <div>
-                <Header  />
-                <SchoolsSyncApiContainer />
-              </div>
-            </Route>
-            <Route path="/cm-admin/schoolSync/file">
-              <div>
-                <Header  />
-                <SchoolsSyncFileContainer />
-              </div>
-            </Route>
+            			<Route path={contextPath + "/cm-admin/course"}>
+            				<div>
+            					<Header />
+            					<CourseContainer />
+            				</div>
+            			</Route>
 
-            <Route path="/cm-admin/user">
-              <div>
-                <Header  />
-                <UsersManageContainer />
-              </div>
-            </Route>
+            			<Route path={contextPath + "/cm-admin/support"}>
+            				<div>
+            					<Header />
+            					<SupportContainer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/cm-admin/supportPds"}>
+            				<div>
+            					<Header />
+            					<SupportPdsContainer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/cm-admin/supportFaq"}>
+            				<div>
+            					<Header />
+            					<SupportFaqContainer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/cm-admin/supportQna"}>
+            				<div>
+            					<Header />
+            					<SupportQnaContainer />
+            				</div>
+            			</Route>
 
-            <Route path="/cm-admin/course">
-              <div>
-                <Header  />
-                <CourseContainer />
-              </div>
-            </Route>
+            			<Route path={contextPath + "/cm-admin/module"}>
+            				<div>
+            					<Header />
+            					<ModuleContainer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/cm-admin/moduleBuilder"}>
+            				<div>
+            					<Header />
+            					<ModuleBuilderContainer />
+            				</div>
+            			</Route>
 
-            <Route path="/cm-admin/support">
-              <div>
-                <Header  />
-                <SupportContainer />
-              </div>
-            </Route>
-            <Route path="/cm-admin/supportPds">
-              <div>
-                <Header  />
-                <SupportPdsContainer />
-              </div>
-            </Route>
-            <Route path="/cm-admin/supportFaq">
-              <div>
-                <Header  />
-                <SupportFaqContainer />
-              </div>
-            </Route>
-            <Route path="/cm-admin/supportQna">
-              <div>
-                <Header  />
-                <SupportQnaContainer />
-              </div>
-            </Route>
+                        <Route exact path={contextPath}>
+            				<div>
+            					<Header />
+            					<CourseListContainer />
+            					<Footer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/courseCreate"}>
+            				<div>
+            					<Header />
+            					<CourseCreateContainer />
+            					<Footer />
+            				</div>
+            			</Route>
+            			<Route exact path={contextPath + "/course"}>
+            				<div>
+            					<Header />
+            					<CourseListContainer />
+            					<Footer />
+            				</div>
+            			</Route>
+            			<Route exact path={contextPath + "/course/:COURSEID"}>
+            				<div>
+            					<Header />
+            					<CourseInfoContainer />
+            					<Footer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/course/:COURSEID/data"}>
+            				<div>
+            					<Header />
+            					<CourseDataContainer />
+            					<Footer />
+            				</div>
+            			</Route>
 
-            <Route path="/cm-admin/module">
-              <div>
-                <Header  />
-                <ModuleContainer />
-              </div>
-            </Route>
-            <Route path="/cm-admin/moduleBuilder">
-              <div>
-                <Header  />
-                <ModuleBuilderContainer />
-              </div>
-            </Route>
+            			<Route exact path={contextPath + "/course/:COURSEID/work"}>
+            				<div>
+            					<Header />
+            					<CourseWorkContainer />
+            					<Footer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/course/:COURSEID/member"}>
+            				<div>
+            					<Header />
+            					<CourseMemberContainer />
+            					<Footer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/course/:COURSEID/team"}>
+            				<div>
+            					<Header />
+            					<CourseTeamContainer />
+            					<Footer />
+            				</div>
+            			</Route>
+            			<Route path={contextPath + "/course/:COURSEID/setting"}>
+            				<div>
+            					<Header />
+            					<CourseSettingContainer />
+            					<Footer />
+            				</div>
+            			</Route>
 
-            <Route path="/courseCreate">
-              <div>
-                <Header />
-                <CourseCreateContainer />
-                <Footer />
-              </div>
-            </Route>
-            <Route exact path="/course">
-              <div>
-                <Header />
-                <CourseListContainer />
-                <Footer />
-              </div>
-            </Route>
-            <Route exact path="/course/:COURSEID">
-              <div>
-                <Header />
-                <CourseInfoContainer />
-                <Footer />
-              </div>
-            </Route>
-            <Route path="/course/:COURSEID/data">
-              <div>
-                <Header />
-                <CourseDataContainer />
-                <Footer />
-              </div>
-            </Route>
+                        {
+            			// <Route path="/ngiiedu/course/:COURSEID/work/:workId">
+            			// 	<WorkFrameDataCollect />
+            			// </Route>
+            			// <Route path="/ngiiedu/course/:COURSEID/preview/:storyMapId">
+            			// 	<StoryMapPreview />
+            			// </Route>
+                        }
 
-            <Route exact path="/course/:COURSEID/work">
-              <div>
-                <Header />
-                <CourseWorkContainer />
-                <Footer />
-              </div>
-            </Route>
-            <Route path="/course/:COURSEID/member">
-              <div>
-                <Header />
-                <CourseMemberContainer />
-                <Footer />
-              </div>
-            </Route>
-            <Route path="/course/:COURSEID/team">
-              <div>
-                <Header />
-                <CourseTeamContainer />
-                <Footer />
-              </div>
-            </Route>
-            <Route path="/course/:COURSEID/setting">
-              <div>
-                <Header />
-                <CourseSettingContainer />
-                <Footer />
-              </div>
-            </Route>
-
-            <Route path="/course/:COURSEID/work/:workId">
-              <WorkFrameDataCollect />
-            </Route>
-
-            <Route path="/course/:COURSEID/preview/:storyMapId">
-              <StoryMapPreview />
-            </Route>
-
-            <Route component={Error404}/>
-
-          </Switch>
-        </div>
-      </BrowserRouter>
-    );
-  }
+            			<Route component={Error404} />
+            		</Switch>
+            	</div>
+            </BrowserRouter>
+        );
+    }
 }
 
 export default App;

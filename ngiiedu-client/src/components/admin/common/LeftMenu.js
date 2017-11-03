@@ -36,13 +36,13 @@ class LeftMenu extends React.Component {
                     <Subheader>학교관리</Subheader>
                     <MenuItem
                         primaryText="학교목록"
-                        href="/cm-admin/school"
+                        href="/ngiiedu/cm-admin/school"
                         leftIcon={<IconSchool />}
                         className={this.props.activeMenu == 'schoolList' ? 'aml' : 'uml'}
                     />
                     <MenuItem
                         primaryText="동기화"
-                        href="/cm-admin/schoolSync"
+                        href="/ngiiedu/cm-admin/schoolSync"
                         leftIcon={<IconSync />}
                         className={this.props.activeMenu == 'schoolSync' ? 'aml' : 'uml'}
                     />
@@ -52,7 +52,7 @@ class LeftMenu extends React.Component {
                     <Menu desktop className="aside-menu">
                     <MenuItem
                         primaryText="회원관리"
-                        href="/cm-admin/user"
+                        href="/ngiiedu/cm-admin/user"
                         leftIcon={<IconAccountBox />}
                         className={this.props.activeMenu == 'user' ? 'aml' : 'uml'}
                     />
@@ -62,7 +62,7 @@ class LeftMenu extends React.Component {
                     <Menu desktop className="aside-menu">
                     <MenuItem
                         primaryText="수업관리"
-                        href="/cm-admin/course"
+                        href="/ngiiedu/cm-admin/course"
                         leftIcon={<IconWeb />}
                         className={this.props.activeMenu == 'course' ? 'aml' : 'uml'}
                     />
@@ -73,25 +73,25 @@ class LeftMenu extends React.Component {
                     <Subheader>사용자지원</Subheader>
                     <MenuItem
                         primaryText="메인"
-                        href="/cm-admin/support"
+                        href="/ngiiedu/cm-admin/support"
                         leftIcon={<IconHome />}
                         className={this.props.activeMenu == 'support' ? 'aml' : 'uml'}
                     />
                     <MenuItem
                         primaryText="자료실 관리"
-                        href="/cm-admin/supportPds"
+                        href="/ngiiedu/cm-admin/supportPds"
                         leftIcon={<IconFolderShared />}
                         className={this.props.activeMenu == 'supportPds' ? 'aml' : 'uml'}
                     />
                     <MenuItem
                         primaryText="FAQ 관리"
-                        href="/cm-admin/supportFaq"
+                        href="/ngiiedu/cm-admin/supportFaq"
                         leftIcon={<IconHelp />}
                         className={this.props.activeMenu == 'supportFaq' ? 'aml' : 'uml'}
                     />
                     <MenuItem
                         primaryText="Q&A 관리"
-                        href="/cm-admin/supportQna"
+                        href="/ngiiedu/cm-admin/supportQna"
                         leftIcon={<IconHelpOutLine />}
                         className={this.props.activeMenu == 'supportQna' ? 'aml' : 'uml'}
                     />
@@ -102,13 +102,13 @@ class LeftMenu extends React.Component {
                     <Subheader>수업모듈</Subheader>
                     <MenuItem
                         primaryText="수업모듈 관리"
-                        href="/cm-admin/module"
+                        href="/ngiiedu/cm-admin/module"
                         leftIcon={<IconSettings />}
                         className={this.props.activeMenu == 'module' ? 'aml' : 'uml'}
                     />
                     <MenuItem
                         primaryText="수업모듈 생성도구"
-                        href="/cm-admin/moduleBuilder"
+                        href="/ngiiedu/cm-admin/moduleBuilder"
                         leftIcon={<IconBuild />}
                         className={this.props.activeMenu == 'moduleBuilder' ? 'aml' : 'uml'}
                     />
