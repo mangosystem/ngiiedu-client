@@ -9,17 +9,22 @@ import TextField from 'material-ui/TextField';
 import { cyan500 } from 'material-ui/styles/colors';
 
 
-class EditMapTitle extends React.Component {
+class NewMapAlert extends React.Component {
 
     constructor(props) {
         super(props);
     }
 
-    edit() {
+    addMapTitle() {
         const title = $('#mapTitle').val();
 
-        this.props.editTitle(title);
-        this.props.editMapHandle();
+        if (this.props.title == '') {
+            this.props.addMap(title);
+        } else {
+            this.props.editTitle(title);
+        }
+
+        this.props.newMapHandle();
     }
 
     render() {
@@ -27,13 +32,13 @@ class EditMapTitle extends React.Component {
         const actions = [
             <FlatButton
               label="취소"
-              onClick={this.props.editMapHandle}
+              onClick={this.props.newMapHandle}
             />,
             <FlatButton
-              label="변경"
+              label="확인"
               backgroundColor={cyan500}
               style={{color: 'white'}}
-              onClick={this.edit.bind(this)}
+              onClick={this.addMapTitle.bind(this)}
             />
         ];
 
@@ -41,19 +46,20 @@ class EditMapTitle extends React.Component {
         return (
             <div>
                 <Dialog
-                    title="이름 변경"
+                    title={this.props.title == '' ? "주제지도 만들기" : "이름 변경"}
                     actions={actions}
                     open={this.props.open}
                     autoScrollBodyContent={false}
-                    contentStyle={{width: '40%'}}
+                    contentStyle={{width: '50%'}}
                 >
                     <TextField
                         id="mapTitle"
                         name="title"
+                        defaultValue={this.props.title}
                         floatingLabelText="제목"
                         fullWidth={true}
                         floatingLabelFixed={true}
-                        defaultValue={this.props.title}
+                        autoFocus
                     />
                 </Dialog>
             </div>
@@ -61,4 +67,4 @@ class EditMapTitle extends React.Component {
     }
 }
 
-export default EditMapTitle;
+export default NewMapAlert;

@@ -45,7 +45,7 @@ class DeleteMap extends React.Component {
                     actions={actions}
                     open={this.props.open}
                     autoScrollBodyContent={false}
-                    contentStyle={{width: '40%'}}
+                    contentStyle={{width: '50%'}}
                 >
                     <b>{this.props.title}</b> 지도가 삭제됩니다.
                     <br />

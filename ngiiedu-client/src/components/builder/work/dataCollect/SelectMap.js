@@ -18,22 +18,28 @@ class SelectMap extends React.Component {
         super(props);
 
         this.state = {
-            value: null
+            value: 1
         };
     }
 
     handleChange(event, index, value) {
-        this.setState({
-            value
-        });
+        
+        this.props.changeTempIdx(value);
+
     }
 
     addStoryTab() {
 
         const title = $('#title').val();
+        const value = this.props.value;
+
+        if (this.props.title == '') {
+            this.props.addStoryTab(title, value);
+        } else {
+            this.props.editStoryTab(title, value);
+        }
 
         this.props.selectMapHandle();
-        this.props.addStoryTab(title);
 
     }
 
@@ -62,24 +68,26 @@ class SelectMap extends React.Component {
                     autoScrollBodyContent={false}
                     contentStyle={{width: '50%'}}
                 >
+                    <SelectField
+                        fullWidth={true}
+                        floatingLabelText="지도 선택"
+                        value={this.props.value}
+                        onChange={this.handleChange.bind(this)}
+                    >
+                        { this.props.subjectMap.map((row, index) => (
+                            <MenuItem key={row.idx} value={row.idx} primaryText={row.outputName} />
+                        ))}
+                    </SelectField>
+                    <br />
                     <TextField
                         id="title"
                         name="title"
+                        defaultValue={this.props.title}
                         floatingLabelText="주제명"
                         fullWidth={true}
                         floatingLabelFixed={true}
+                        autoFocus
                     />
-                    <br />
-                    <SelectField
-                        floatingLabelText="지도 선택"
-                        value={this.state.value}
-                        onChange={this.handleChange.bind(this)}
-                    >
-                        <MenuItem value={null} primaryText="" />
-                        { this.props.subjectMap.map((row, index) => (
-                            <MenuItem key={row.index} value={row.index} primaryText={row.title} />
-                        ))}
-                    </SelectField>
                 </Dialog>
             </div>
         );

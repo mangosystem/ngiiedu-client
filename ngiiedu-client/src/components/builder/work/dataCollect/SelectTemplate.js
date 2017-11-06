@@ -21,87 +21,98 @@ class SelectTemplate extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            stepIndex: 0
-        };
     }
 
-    handleNext() {
-        const {stepIndex} = this.state;
-        this.setState({
-          stepIndex: stepIndex + 1
-        });
-    };
-    
-    handlePrev() {
-        const {stepIndex} = this.state;
-        if (stepIndex > 0) {
-          this.setState({stepIndex: stepIndex - 1});
-        }
-    };
+    changeTemplate(template) {
 
-    getStepContent(stepIndex) {
-    switch (stepIndex) {
-        case 0:
-            return (
-                <div>
-                    <Subheader>템플릿 선택</Subheader>
-                    <FlatButton label="탭"></FlatButton>
-                    <FlatButton label="아코디언"></FlatButton>
-                </div>
-            );
-        case 1:
-            return (
-                <TextField
-                    id="mapTitle"
-                    name="title"
-                    floatingLabelText="제목"
-                    fullWidth={true}
-                    floatingLabelFixed={true}
-                />
-            );
-        default:
-            return 'You\'re a long way from home sonny jim!';
-        }
+        this.props.changeTemplate(template);
+
     }
+
 
     addMapTitle() {
-        const title = $('#mapTitle').val();
 
-        this.setState({
-            stepIndex: 0
-        });
+        const title = $('#title').val();
 
-        this.props.addMap(title);
+        const template = this.props.template;
+        
+        if (this.props.title == '') {
+            this.props.addMap(title, template);
+        } else {
+            this.props.editMapSetting(title, template);
+        }
+
         this.props.templateHandle();
     }
 
     render() {
 
-        const {stepIndex} = this.state;        
+
+        const actions = [
+            <FlatButton
+              label="취소"
+              onClick={this.props.templateHandle}
+            />,
+            <FlatButton
+              label={this.props.title == ''? "확인" : "변경"}
+              backgroundColor={cyan500}
+              style={{color: 'white'}}
+              onClick={this.addMapTitle.bind(this)}
+            />
+        ];
+
+        const style = {
+            selected: {
+                border: '3px solid',
+                borderColor: cyan500,
+                width: '300px',
+                height: '206px'
+            },
+
+            unselected: {
+                border: '1px solid',
+                width: '300px',
+                height: '206px'
+            }
+        };
 
         return (
             <div>
                 <Dialog
-                    title="스토리맵 만들기"
+                    title={this.props.title == ''? "스토리맵 만들기" : "스토리맵 수정하기"}
+                    actions={actions}
                     open={this.props.open}
                     autoScrollBodyContent={false}
                     contentStyle={{width: '50%'}}
                 >
-                    <div>{this.getStepContent(stepIndex)}</div>
-                    
-                    <div style={{textAlign: 'right', marginTop: 30}}>
-                        <FlatButton
-                            label={stepIndex == 0? "취소" : "이전"}
-                            onClick={stepIndex == 0? this.props.templateHandle : this.handlePrev.bind(this)}
-                        />
-                        <FlatButton
-                            label={stepIndex == 1? "확인" : "다음"}
-                            backgroundColor={cyan500}
-                            style={{color: 'white'}}
-                            onClick={stepIndex == 1? this.addMapTitle.bind(this) : this.handleNext.bind(this)}
-                        />
+                    <div>
+                        <br />
+                        <p>템플릿 선택</p>
+                        <br />
+                        <div style={{display: 'flex', justifyContent: 'space-around'}}>
+                            <img 
+                                src="/assets/images/tab.png" 
+                                alt="Tab" 
+                                style={this.props.template == "tab"? style.selected : style.unselected} 
+                                onClick={() => this.changeTemplate("tab")}/>
+                            <img 
+                                src="/assets/images/accordion.png" 
+                                alt="accordion" 
+                                style={this.props.template == "accordion" ? style.selected : style.unselected} 
+                                onClick={() => this.changeTemplate("accordion")}/>
+                        </div>
                     </div>
+                    <br />
+                    <div>
+                        <p>스토리맵 제목</p>
+                        <TextField
+                            id="title"
+                            name="title"
+                            defaultValue={this.props.title}
+                            fullWidth={true}
+                            floatingLabelFixed={true}
+                        />
+                    </div>                    
                 </Dialog>
             </div>
         );

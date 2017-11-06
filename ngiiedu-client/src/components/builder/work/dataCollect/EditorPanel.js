@@ -58,7 +58,7 @@ class EditorPanel extends React.Component {
             rows="50" 
             cols="35" 
             defaultValue="에디터에 기본으로 삽입할 글(수정 모드)이 없다면 이 value 값을 지정하지 않으시면 됩니다."
-            style={{ minWidth: '260px', maxHeight: '600px' }}
+            style={{ minWidth: '260px', maxHeight: '800px' }}
           ></textarea>
           <div style={{ textAlign: 'right', marginTop: '20px' }}>
             <FlatButton

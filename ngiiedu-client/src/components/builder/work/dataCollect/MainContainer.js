@@ -25,40 +25,41 @@ import Avatar from 'material-ui/Avatar';
 
 import MapsEditorPanel from './MapsEditorPanel';
 import PropertiesPanel from './PropertiesPanel';
-import NewMapAlert from './NewMapAlert';
-import EditMapTitle from './EditMapTitle';
+import NewMap from './NewMap';
 import DeleteMap from './DeleteMap';
 import EditorPanel from './EditorPanel';
 import SelectTemplate from './SelectTemplate';
 import SelectMap from './SelectMap';
-import PointSymbolizer from './PointSymbolizer';
 
 class MainContainer extends React.Component {
 
   constructor(props){
     super(props);
+
+
+    // tabIndex : 설정변경위해 임시로 넣어줌. 서버에서 데이터받으면 수정해야할것 (삭제)
     this.state = {
       editMode: '',
       editorMode: false,
       openNewMap: false,
-      openEditTitle: false,
       openTemplate: false,
       openSelectMap: false,
-      subjectMap: [{title: "주제지도1", index: 0}],
-      storyMap: [],
+      openDeleteMap: false,
+      workSubData: [],
+      subjectMap: [],
+      template: 'tab',
       isSubjectMode: true,
-      editMapMode: true,
+      isStoryTabMode: false,
       tempTitle: '',
       tempIndex: 0,
-      storyMapIndex: 0,
-      storyTabIndex: 0,
-      subjectCount: 1,
-      storyCount: 4,
-      openDeleteMap: false,
-      stylePanel: false
+      tabIndex: 0,
+      tempTabIndex: 0,
+      tempIdx: 1
     }
+
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
     this.onChangeEditorMode = this.onChangeEditorMode.bind(this);
+
   }
 
   componentWillMount() {
@@ -67,17 +68,40 @@ class MainContainer extends React.Component {
   componentDidMount() {
 
     ajaxJson(
-      ['GET', apiSvr + '/modules/' + 20 + '/moduleWork/3/subWork.json'],
+      ['GET', apiSvr + '/courses/' + 12 + '/workSubData.json'],
       null,
       function (data) {
 
-        const storyMap = JSON.parse(JSON.stringify(data)).response.data;
-        console.log(storyMap);
+        const workSubData = JSON.parse(JSON.stringify(data)).response.data;
+        console.log(workSubData);
 
+        for (let i in workSubData) {
+          workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"});
+        }
+
+        //tab : 서버에서 데이터작업 되기전까지 임시데이터
+        for (let i in workSubData) {
+          if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+            for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+              // 템플릿 종류
+              workSubData[i].courseWorkSubOutputInfoList[j].template = "tab"
+
+              //탭
+              workSubData[i].courseWorkSubOutputInfoList[j].tab = [];
+              workSubData[i].courseWorkSubOutputInfoList[j].tab.push({title: "임시데이터", index: this.state.tabIndex++});
+            }
+          }
+        }
+
+        let subjectMap = workSubData.filter(val => (val.moduleWorkSubName == '주제지도 만들기'))[0].courseWorkSubOutputInfoList;
+        subjectMap.splice(0, 1);
 
         this.setState({
-          storyMap: storyMap
+          workSubData: workSubData,
+          subjectMap: subjectMap
         });
+        
+
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
@@ -99,54 +123,89 @@ class MainContainer extends React.Component {
     });
   }
 
-  addMapTitle(title) {
+  addMapTitle(title, template) {
 
-    if (this.state.isSubjectMode) {
-      const newObj = {
-        title: title,
-        index: this.state.subjectCount++
-      };
 
-      this.setState({
-        subjectMap: this.state.subjectMap.concat(newObj)
-      });
+    let { workSubData } = this.state;
 
-    } else {
-      const newObj = {
-        moduleWorkSubName: title,
-        moduleWorkSubSeq: this.state.storyCount++
-      };
-      this.setState({
-        storyMap: this.state.storyMap.concat(newObj)
-      });
-    }
-  }
+    if (this.state.isSubjectMode) {      
+      
+      for (let i in workSubData) {
+        if (workSubData[i].moduleWorkSubName == "주제지도 만들기") {          
+          
+          const newObj = {
+            outputName: title,
+            idx: workSubData[i].courseWorkSubOutputInfoList.length
+          };
 
-  editMapTitle(title) {
-
-    //주제지도
-    if (this.state.editMapMode) {
-
-      for (let i in this.state.subjectMap) {
-        if (i == this.state.tempIndex) {
-          let newMap = this.state.subjectMap;
-          newMap[i].title = title;
-          this.setState({
-            subjectMap: newMap
-          });
+          workSubData[i].courseWorkSubOutputInfoList.push(newObj);
         }
       }
 
-    // 스토리지도
+      this.setState({
+        workSubData: workSubData
+      });
+
     } else {
 
-      for (let i in this.state.storyMap) {
-        if (i == this.state.tempIndex) {
-          let newMap = this.state.storyMap;
-          newMap[i].moduleWorkSubName = title;
-          this.setState({
-            storyMap: newMap
-          });
+      for (let i in workSubData) {
+        if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {          
+          
+          const newObj = {
+            outputName: title,
+            idx: workSubData[i].courseWorkSubOutputInfoList.length,
+            tab: [{title: "임시데이터"}], 
+            template: template
+          };
+
+          workSubData[i].courseWorkSubOutputInfoList.push(newObj);
+        }
+      }
+
+      this.setState({
+        workSubData: workSubData
+      });
+
+    }
+  }
+
+  //주제지도
+  editMapTitle(title) {
+
+    let { workSubData } = this.state;
+
+    for (let i in workSubData) {
+      if (workSubData[i].moduleWorkSubName == "주제지도 만들기" ) {          
+        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == this.state.tempIndex) {
+            let temp = workSubData;
+            temp[i].courseWorkSubOutputInfoList[j].outputName = title;
+            this.setState({
+              workSubData: temp, 
+              tempIdx: 1
+            });
+          }
+        }
+      }
+    }      
+    
+  }
+
+  editMapSetting(title, template) {
+
+    let { workSubData, tempIndex, tempTabIndex } = this.state;
+    
+    for (let i in workSubData) {
+      if (workSubData[i].moduleWorkSubName == "스토리맵 만들기" ) {          
+        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == this.state.tempIndex) {
+            let temp = workSubData;
+            temp[i].courseWorkSubOutputInfoList[j].outputName = title;
+            temp[i].courseWorkSubOutputInfoList[j].template = template;
+            this.setState({
+              workSubData: temp
+            });
+          }
         }
       }
     }
@@ -155,66 +214,162 @@ class MainContainer extends React.Component {
 
   deleteMap() {
 
-    //주제지도
-    if (this.state.editMapMode) {
-      
-      for (let i in this.state.subjectMap) {
-        if (i == this.state.tempIndex) {
-          let newMap = this.state.subjectMap;
-          newMap.splice(i, 1);
-          this.setState({
-            subjectMap: newMap
-          });
+    let { workSubData, tempIndex, tempTabIndex } = this.state;
+
+    //스토리맵의 탭 삭제
+    if (this.state.isStoryTabMode) {
+
+      for (let i in workSubData) {
+        if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+          for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+            if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+              for (let k in workSubData[i].courseWorkSubOutputInfoList[j].tab) {
+                if (workSubData[i].courseWorkSubOutputInfoList[j].tab[k].index == tempTabIndex) {
+  
+                  let temp = workSubData;
+                  temp[i].courseWorkSubOutputInfoList[j].tab.splice(k, 1);
+  
+                  this.setState({
+                    workSubData: temp
+                  });
+  
+                }
+              }
+            }
+          }
         }
       }
+
+      this.setState({
+        isStoryTabMode: false
+      });
+
+      return;
+    }
+
+    //주제지도
+    if (this.state.isSubjectMode) {
+
+      for (let i in workSubData) {
+        if (workSubData[i].moduleWorkSubName == "주제지도 만들기" ) {          
+          for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+            if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+              let temp = workSubData;
+              temp[i].courseWorkSubOutputInfoList.splice(j,1);
+              this.setState({
+                workSubData: temp
+              });
+            }
+          }
+        }
+      }
+      
 
     // 스토리지도
     } else {
 
-      for (let i in this.state.storyMap) {
-        if (i == this.state.tempIndex) {
-          let newMap = this.state.storyMap;
-          newMap.splice(i, 1);
-          this.setState({
-            storyMap: newMap
-          });
+      for (let i in workSubData) {
+        if (workSubData[i].moduleWorkSubName == "스토리맵 만들기" ) {          
+          for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+            if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+              let temp = workSubData;
+              temp[i].courseWorkSubOutputInfoList.splice(j,1);
+              this.setState({
+                workSubData: temp
+              });
+            }
+          }
         }
       }
+
     }
   }
 
   newMap(title) {
-    if (title == "주제지도") 
+
+    if (title == "주제지도 만들기") 
       this.setState({ 
         isSubjectMode: true,
-        openNewMap: true
+        openNewMap: true,
+        tempTitle: ''
       });
     
     else 
       this.setState({ 
         isSubjectMode: false,
-        openTemplate: true
-      });
+        openTemplate: true,
+        tempTitle: ''
+      });    
+
+  }
+
+  addStoryTab(title, type) {
+
+    let { workSubData, tempIndex } = this.state;
+
+    for (let i in workSubData) {
+      if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+
+            let temp = { title: title, index: this.state.tabIndex++, type: type };
+            let newData = workSubData;
+            newData[i].courseWorkSubOutputInfoList[j].tab.push(temp);
+            this.setState({
+              workSubData: newData
+            });
+          }
+        }
+      }
+    }
+
+
+
+      
+  }
+
+  editStoryTab(title, type) {
+
+    let { workSubData, tempIndex, tempTabIndex } = this.state;
+
+    for (let i in workSubData) {
+      if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+            for (let k in workSubData[i].courseWorkSubOutputInfoList[j].tab) {
+              if (workSubData[i].courseWorkSubOutputInfoList[j].tab[k].index == tempTabIndex) {
+
+                let temp = workSubData;
+                temp[i].courseWorkSubOutputInfoList[j].tab[k].title = title;
+                temp[i].courseWorkSubOutputInfoList[j].tab[k].type = type;
+
+                this.setState({
+                  workSubData: temp
+                });
+
+              }
+            }
+          }
+        }
+      }
+    }
     
 
   }
 
-  addStoryTab(title) {
-
-
-      
-  }  
-
   newMapHandle() {
-    this.setState({
-      openNewMap: !this.state.openNewMap
-    });
-  }
 
-  editTitleHandle() {
-    this.setState({
-      openEditTitle: !this.state.openEditTitle
-    });
+    if (!this.state.openNewMap) {
+      this.setState({
+        openNewMap: !this.state.openNewMap
+      });
+
+    } else {
+      this.setState({
+        openNewMap: !this.state.openNewMap
+      });
+    }
+
   }
 
   deleteHandle() {
@@ -229,94 +384,38 @@ class MainContainer extends React.Component {
     });
   }
 
-  selectMapHandle() {
+  selectMapHandle(index) {
 
-    console.log(this);
+    
+    if (!this.state.openSelectMap) {
+      this.setState({
+        openSelectMap: !this.state.openSelectMap,
+        tempIndex: index,
+        tempTitle: '',
+        tempIdx: 1
+      });
+    } else {
+      this.setState({
+        openSelectMap: !this.state.openSelectMap,
+      });
+    }
+  }
 
+  //템플릿 설정 변경
+  changeTemplate(template) {
+    this.setState({ 
+      template: template
+    });
+  }
+
+  //스토리맵 탭 지도선택
+  changeTempIdx(idx) {
     this.setState({
-      openSelectMap: !this.state.openSelectMap
+      tempIdx: idx
     });
   }
 
   render() {
-
-    let subject = () => {
-      let array = [];
-
-      let newItem = <ListItem
-                      key={0}
-                      primaryText="새로 만들기"
-                      leftIcon={<IconAddCircleOutline />}
-                      onClick={() => this.newMap("주제지도")}
-                    />;
-
-      array.push(newItem);
-
-      if (this.state.subjectMap.length != 0) {
-        this.state.subjectMap.map((row, index) => (
-          array.push(
-            <ListItem
-              key={index+1}
-              primaryText={row.title}
-              leftIcon={<IconPlace />}
-              onClick={()=>this.setState({stylePanel:!this.state.stylePanel})}//임시용
-              rightIcon={
-                <IconMenu
-                  iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
-                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                  style={{display: 'flex', alignItems: 'center'}}
-                >
-                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openEditTitle: true, tempTitle: row.title, editMapMode: true, tempIndex: row.index})}/>
-                  <MenuItem primaryText="삭제" onClick={() => this.setState({openDeleteMap: true, tempTitle: row.title, editMapMode: true, tempIndex: row.index})}/>
-                </IconMenu>
-              }
-            />
-          )
-        ));
-      }
-
-      return array;
-    }
-
-    let story = () => {
-      let array = [];
-
-      let newItem = <ListItem
-                      key={0}
-                      primaryText="새로 만들기"
-                      leftIcon={<IconAddCircleOutline />}
-                      onClick={() => this.newMap("스토리지도")}
-                    />;
-
-      array.push(newItem);
-
-      if (this.state.storyMap.length != 0) {
-        this.state.storyMap.map((row, index) => (
-          array.push(
-            <ListItem
-              key={row.moduleWorkSubSeq}
-              primaryText={row.moduleWorkSubName}
-              rightIcon={
-                <IconMenu
-                  iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
-                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                  style={{display: 'flex', alignItems: 'center'}}
-                >
-                  <MenuItem primaryText="컨텐츠 입력" onClick={() => this.setState({editorMode: true})}/>
-                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openEditTitle: true, tempTitle: row.moduleWorkSubName, editMapMode: false, tempIndex: row.moduleWorkSubSeq-1})}/>
-                  <MenuItem primaryText="삭제" onClick={(index) => this.setState({openDeleteMap: true, tempTitle: row.moduleWorkSubName, editMapMode: false, tempIndex: row.moduleWorkSubSeq-1})}/>
-                </IconMenu>
-              }
-            />
-          )
-        ));
-      }
-
-      return array;
-    }
-
 
     return (
       <div>
@@ -379,18 +478,110 @@ class MainContainer extends React.Component {
           <div style={{ position: 'absolute', top: 60, bottom: 0, left: 0, right: 0 }}>
             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
               <List>
-                <ListItem
-                  primaryText="주제지도 만들기"
-                  initiallyOpen={true}
-                  primaryTogglesNestedList={true}
-                  nestedItems={subject()}
-                />
-                <ListItem
-                  primaryText="스토리맵 만들기"
-                  initiallyOpen={true}
-                  primaryTogglesNestedList={true}
-                  nestedItems={story()}
-                />
+                { this.state.workSubData.map((row, i) => (
+                  <ListItem
+                    key={row.idx}
+                    primaryText={row.moduleWorkSubName}
+                    initiallyOpen={true}
+                    primaryTogglesNestedList={true}
+                    nestedItems={
+                      row.courseWorkSubOutputInfoList.map((data, index) => {
+
+                        if (index == 0) {
+                          return (
+                              <ListItem
+                                key={0}
+                                primaryText="새로 만들기"
+                                leftIcon={<IconAddCircleOutline />}
+                                onClick={(i) => this.newMap(row.moduleWorkSubName)}
+                              />
+                          );
+                        }
+
+                        if (row.moduleWorkSubName == "주제지도 만들기") {
+                          return (
+                            <ListItem
+                              key={data.idx}
+                              primaryText={data.outputName}
+                              initiallyOpen={true}
+                              primaryTogglesNestedList={true}
+                              rightIcon={
+                                <IconMenu
+                                  iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
+                                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                  targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                  style={{display: 'flex', alignItems: 'center'}}
+                                >
+                                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openNewMap: true, tempTitle: data.outputName, tempIndex: data.idx })}/>
+                                  <MenuItem primaryText="삭제하기" onClick={() => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: true})}/>
+                                </IconMenu>
+                              }
+                            />
+                          );
+                        }
+
+
+
+                        return (
+                          <ListItem
+                            key={data.idx}
+                            primaryText={data.outputName}
+                            open={true}
+                            primaryTogglesNestedList={true}
+                            rightIcon={
+                              <IconMenu
+                                iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
+                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                style={{display: 'flex', alignItems: 'center'}}
+                              >
+                                <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.template })}/>
+                                <MenuItem primaryText="삭제하기" onClick={(i) => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: false})}/>
+                                <MenuItem primaryText="미리보기" />
+                              </IconMenu>
+                            }
+                            nestedItems={
+                              data.tab.map((r, j) => {
+
+                                if (j == 0) {
+                                  return (
+                                    <ListItem
+                                      key={1000-i}
+                                      primaryText="탭 추가하기"
+                                      leftIcon={<IconAddCircleOutline />}
+                                      onClick={(index) => this.selectMapHandle(data.idx)}
+                                    />
+                                  );
+                                }
+
+                                return (
+                                  <ListItem
+                                    key={j}
+                                    primaryText={r.title}
+                                    initiallyOpen={true}
+                                    primaryTogglesNestedList={true}
+                                    rightIcon={
+                                      <IconMenu
+                                        iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
+                                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                        targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                        style={{display: 'flex', alignItems: 'center'}}
+                                      >
+                                        <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, tempIdx: r.type })}/>
+                                        <MenuItem primaryText="컨텐츠 입력" onClick={() => this.setState({editorMode: true})}/>
+                                        <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, isStoryTabMode: true})}/>
+                                      </IconMenu>
+                                    }
+                                  />
+                                );
+                              })
+                            }
+                          />
+                        );
+                    })
+                    }
+                  />
+                ))}
               </List>
             </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 300 }}>
@@ -398,15 +589,10 @@ class MainContainer extends React.Component {
                 onChangeEditMode={this.onChangeEditMode}
               />
             </div>
-            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff' ,zIndex:1 }}>
-              {this.state.stylePanel==false?
-                <PropertiesPanel
-                  propertiesMode={this.state.editMode}
-                />
-                :
-                <PointSymbolizer styles={null} />
-              }
-        
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff' }}>
+              <PropertiesPanel
+                propertiesMode={this.state.editMode}
+              />
             </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300 }}>
               <EditorPanel
@@ -414,27 +600,31 @@ class MainContainer extends React.Component {
                 onChangeEditorMode={this.onChangeEditorMode}
               />
             </div>
-            <NewMapAlert 
+            <NewMap
               open={this.state.openNewMap}
+              title={this.state.tempTitle}
               newMapHandle={this.newMapHandle.bind(this)}
               addMap={this.addMapTitle.bind(this)}
+              editTitle={this.editMapTitle.bind(this)}
             />
             <SelectTemplate
               open={this.state.openTemplate}
               templateHandle={this.templateHandle.bind(this)}
               addMap={this.addMapTitle.bind(this)}
+              title={this.state.tempTitle}
+              editMapSetting={this.editMapSetting.bind(this)}
+              template={this.state.template}
+              changeTemplate={this.changeTemplate.bind(this)}
             />
             <SelectMap
               open={this.state.openSelectMap}
-              selectMapHandle={this.selectMapHandle.bind(this)}
-              subjectMap={this.state.subjectMap}
-              addStoryTab={this.addStoryTab.bind(this)}
-            />
-            <EditMapTitle
-              open={this.state.openEditTitle}
-              editMapHandle={this.editTitleHandle.bind(this)}
-              editTitle={this.editMapTitle.bind(this)}
               title={this.state.tempTitle}
+              selectMapHandle={this.selectMapHandle.bind(this)}
+              addStoryTab={this.addStoryTab.bind(this)}
+              editStoryTab={this.editStoryTab.bind(this)}
+              subjectMap={this.state.subjectMap}
+              value={this.state.tempIdx}
+              changeTempIdx={this.changeTempIdx.bind(this)}
             />
             <DeleteMap
               open={this.state.openDeleteMap}
