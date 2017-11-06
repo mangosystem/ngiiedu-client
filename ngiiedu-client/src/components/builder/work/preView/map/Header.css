@@ -1,0 +1,9 @@
+#prvHeader { position: fixed; top: 0; left: 0; width: 100%; height: 100px; z-index: 9; background-color: #05BCD3; }
+#prvHeader .inner { position: relative; width: 1024px; height: 100%; margin: 0 auto; }
+#prvHeader .inner.wide { width: 100%; }
+
+#prvHeader .tb_left { float: left; line-height: 60px; }
+#prvHeader .inner.wide .tb_left { margin-left: 10px; }
+
+#prvHeader .tb_right { float: right; line-height: 60px; }
+#prvHeader .inner.wide .tb_right { margin-right: 10px; }

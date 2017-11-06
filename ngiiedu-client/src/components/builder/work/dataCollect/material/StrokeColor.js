@@ -26,13 +26,11 @@ class StrokeColor extends React.Component {
 };
 
 StrokeColor.propTypes = {
-	color: React.PropTypes.string,
-	opacity: React.PropTypes.number
+	color: React.PropTypes.string
 };
 
 StrokeColor.defaultProps = {
-	color: '#3182bd',
-	opacity: 1
+	color: '#3182bd'
 };
 
 export default StrokeColor;

@@ -158,7 +158,7 @@ class MainContainer extends React.Component {
                     } else {
                       return (
                         <div style={{textAlign: 'center'}}>
-                          <Link to="/cm-admin/schoolSync">
+                          <Link to="/ngiiedu/cm-admin/schoolSync">
                             <RaisedButton
                               label={'확인'}
                               primary={true}

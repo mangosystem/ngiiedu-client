@@ -30,6 +30,8 @@ import DeleteMap from './DeleteMap';
 import EditorPanel from './EditorPanel';
 import SelectTemplate from './SelectTemplate';
 import SelectMap from './SelectMap';
+import PointSymbolizer from './PointSymbolizer';
+
 
 class MainContainer extends React.Component {
 
@@ -525,6 +527,8 @@ class MainContainer extends React.Component {
                                 >
                                   <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openNewMap: true, tempTitle: data.outputName, tempIndex: data.idx, mode: 'edit' })}/>
                                   <MenuItem primaryText="삭제하기" onClick={() => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: true})}/>
+                                  <MenuItem primaryText="미리보기" onClick={() => (window.location.href='/ngiiedu/map/preview/'+data.idx)}/>
+
                                 </IconMenu>
                               }
                             />
@@ -548,8 +552,8 @@ class MainContainer extends React.Component {
                               >
                                 <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.template, mode: 'edit' })}/>
                                 <MenuItem primaryText="삭제하기" onClick={(i) => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: false})}/>
-                                <MenuItem primaryText="미리보기" />
-                              </IconMenu>
+                                <MenuItem primaryText="미리보기" onClick={() => (window.location.href='/ngiiedu/storymap/preview/'+data.idx)}/>
+                                </IconMenu>
                             }
                             nestedItems={
                               data.tab.map((r, j) => {
@@ -600,12 +604,17 @@ class MainContainer extends React.Component {
                 onChangeEditMode={this.onChangeEditMode}
               />
             </div>
-            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff' }}>
-              <PropertiesPanel
-                propertiesMode={this.state.editMode}
-              />
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff',display:this.state.editorMode ? 'none' :'block' }}>
+              {this.state.stylePanel==false?
+                <PropertiesPanel
+                  propertiesMode={this.state.editMode}
+                />
+                :
+                <PointSymbolizer />
+              }
+            
             </div>
-            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300 }}>
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300,display:this.state.editorMode ? 'block' :'none' }}>
               <EditorPanel
                 editorMode={this.state.editorMode}
                 onChangeEditorMode={this.onChangeEditorMode}

@@ -117,10 +117,15 @@ class MainContainer extends React.Component {
                     if (this.state.stepIndex == 0) {
                       return (
                         <div >
-                        <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
+                          <SampleCheckContainer/>
                         </div>
                       )
-                  } else {
+                  } else if(this.state.stepIndex==1){
+                    return(
+                      <div>
+                        <CompleteContainer newRow={this.state.newRow} overlapRow={this.state.overlapRow}/>
+                      </div>
+                    )
                   }
                 })()}
 
@@ -141,7 +146,7 @@ class MainContainer extends React.Component {
                     } else {
                       return (
                         <div style={{textAlign: 'center',padding:20}}>
-                          <Link to="/cm-admin/schoolSync">
+                          <Link to="/ngiiedu/cm-admin/schoolSync">
                             <RaisedButton
                               label={'확인'}
                               primary={true}

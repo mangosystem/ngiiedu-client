@@ -13,6 +13,8 @@ import StrokeWidth from './material/StrokeWidth.js';
 import StrokeColor from './material/StrokeColor.js';
 import Reverse from './material/Reverse.js';
 
+
+import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 
@@ -42,7 +44,7 @@ class PointSymbolizer extends React.Component {
 
 			reverse: null,
 
-			column: []
+			column: ['컬럼1','컬럼2']
 		}
 
         this.onChangeColumn = this.onChangeColumn.bind(this);
@@ -60,6 +62,8 @@ class PointSymbolizer extends React.Component {
         this.handleChangeRangeSizeMax = this.handleChangeRangeSizeMax.bind(this);
         this.handleChangeFillPalette = this.handleChangeFillPalette.bind(this);
         this.handleChangeFillOpacity = this.handleChangeFillOpacity.bind(this);
+
+        this.editStyle = this.editStyle.bind(this);
         
 	}
 
@@ -291,6 +295,79 @@ class PointSymbolizer extends React.Component {
         })
     }
 
+    //editStyle
+    editStyle(){
+        let style={
+            styleType:null,
+            options:null,
+            isClassified:false,
+            geometryType:"MULTIPOLYGON"
+        }
+        if(this.state.styleType == 'SINGLE'){
+
+            let options ={
+                markerType: this.state.markerType==null ? Marker.defaultProps.value : this.state.markerType,
+                markerSize: this.state.markerSize==null ? MarkerSize.defaultProps.value : this.state.markerSize,
+                fillColor: this.state.fillColor==null ? this.state.defaultFillColor : this.state.fillColor,
+                fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
+                strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
+                strokeColor: this.state.strokeColor==null ? this.state.defaultStrokeColor : this.state.strokeColor,
+                strokeOpacity: this.state.strokeOpacity ==null ? 1 : this.state.strokeOpacity,
+            }
+
+            style.options = options;
+            style.styleType = 'SINGLE'
+            console.dir(style);
+
+        }else if(this.state.styleType == 'GRADUATED'){
+            let option = {
+                columnName: this.state.columnName ,//맨붕
+                classification:this.state.classification==null ? Classification.defaultProps.value : this.state.classification,
+                classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
+                fillPalette: this.state.fillPalette==null ? FillPalette.defaultProps.fillPalette : this.state.fillPalette,
+                fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
+                strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
+                strokeColor: this.state.strokeColor==null ? this.state.defaultStrokeColor : this.state.strokeColor,
+                strokeOpacity: this.state.strokeOpacity ==null ? 1 : this.state.strokeOpacity,
+                reverse: this.state.reverse ==null ? Reverse.defaultProps.value : this.state.reverse
+            
+            }
+
+            style.options = option;
+            style.styleType = 'GRADUATED';
+            console.log(style);
+
+        }else if(this.state.styleType == 'CATEGORIES'){
+            let option = {
+                columnName: this.state.columnName ,//맨붕
+                strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
+                strokeColor: this.state.strokeColor==null ? this.state.defaultStrokeColor : this.state.strokeColor,
+                strokeOpacity: this.state.strokeOpacity ==null ? 1 : this.state.strokeOpacity,
+            
+            }
+            style.options = option;
+            style.styleType = 'CATEGORIES';
+            console.log(style);
+
+        }else if(this.state.styleType == 'BUBBLE'){
+            let option = {
+                columnName: this.state.columnName ,//맨붕
+                classification:this.state.classification==null ? Classification.defaultProps.value : this.state.classification,
+                classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
+                fillPalette: this.state.fillPalette==null ? FillPalette.defaultProps.fillPalette : this.state.fillPalette,
+                fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
+                minSize : this.state.minSize==null ? RangeSize.defaultProps.minSize : this.state.minSize,
+                maxSize : this.state.maxSize==null ? RangeSize.defaultProps.maxSize : this.state.maxSize,
+            }
+            style.options = option;
+            style.styleType = 'BUBBLE';
+            console.log(style);
+            
+        }else if(this.state.styleType == 'HEATMAP'){
+
+        }
+    }
+
 	render() {
 
 		let style = null;
@@ -516,7 +593,16 @@ class PointSymbolizer extends React.Component {
                 </Paper>
                 {style}
                 
-                
+                <RaisedButton 
+                    label="적 용" 
+                    style={{
+                        marginTop:'15%',
+                        marginLeft:'15%',
+                        width:'70%'
+                    }}
+                    onClick={this.editStyle}
+                />
+
             </div>
 
 		)

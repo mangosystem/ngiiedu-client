@@ -27,13 +27,11 @@ class FillColor extends React.Component {
 };
 
 FillColor.propTypes = {
-	color: React.PropTypes.string,
-	opacity: React.PropTypes.number
+	color: React.PropTypes.string
 };
 
 FillColor.defaultProps = {
-	color: '#3182bd',
-	opacity: 1
+	color: '#3182bd'
 };
 
 export default FillColor;

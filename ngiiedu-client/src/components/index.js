@@ -46,7 +46,9 @@ import CourseTeamContainer from './courses/team/MainContainer';
 import CourseSettingContainer from './courses/setting/MainContainer';
 
 import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
-// import StoryMapPreview from './builder/work/storyMap/MainContainer';
+import StoryMapPreview from './builder/work/preView/storyMap/MainContainer';
+import MapPreview from './builder/work/preView/map/MainContainer';
+
 
 const contextPath = '/ngiiedu';
 
@@ -204,11 +206,13 @@ class App extends Component {
             				<WorkFrameDataCollect />
             			</Route>
 
-                        {
-            			// <Route path="/ngiiedu/course/:COURSEID/preview/:storyMapId">
-            			// 	<StoryMapPreview />
-            			// </Route>
-                        }
+            			<Route path="/ngiiedu/storymap/preview/:storyMapId">
+            			  <StoryMapPreview />
+            			</Route>
+
+                  <Route path="/ngiiedu/map/preview/:mapId">
+            			  <MapPreview />
+            			</Route>
 
             			<Route component={Error404} />
             		</Switch>
