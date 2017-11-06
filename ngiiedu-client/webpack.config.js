@@ -5,9 +5,19 @@ module.exports = {
 		entry: './src/index.js',
 
 		output: {
-			path: __dirname + '/webapps',
+			// path: __dirname + '/webapps',
+			path: '/Users/hanjin/git/ngiiedu-server/ngiiedu/src/main/webapp/assets/dist',
 			filename: 'bundle.js'
 		},
+
+		// plugins: [
+		// 	// UglifyJsPlugin
+		// 	new webpack.optimize.UglifyJsPlugin({
+		// 	  compress: true,
+		// 	  warnings: false,
+		// 	  except: ['$super', '$', 'exports', 'require']
+		// 	})
+		// ],
 
 		devServer: {
 			// inline: true,

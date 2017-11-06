@@ -5,7 +5,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
-import {BrowserRouter, Router, Route, Switch } from 'react-router-dom';
+import {BrowserRouter, Router, Route, Switch, Link } from 'react-router-dom';
 
 import IconSchool from 'material-ui/svg-icons/social/school';
 import IconSync from 'material-ui/svg-icons/notification/sync';
@@ -33,85 +33,97 @@ class LeftMenu extends React.Component {
             <aside>
                 <Paper className="mui-paper">
                     <Menu desktop className="aside-menu">
-                    <Subheader>학교관리</Subheader>
-                    <MenuItem
-                        primaryText="학교목록"
-                        href="/ngiiedu/cm-admin/school"
-                        leftIcon={<IconSchool />}
-                        className={this.props.activeMenu == 'schoolList' ? 'aml' : 'uml'}
-                    />
-                    <MenuItem
-                        primaryText="동기화"
-                        href="/ngiiedu/cm-admin/schoolSync"
-                        leftIcon={<IconSync />}
-                        className={this.props.activeMenu == 'schoolSync' ? 'aml' : 'uml'}
-                    />
+                        <Subheader>학교관리</Subheader>
+                        <Link to={contextPath + "/cm-admin/school"}>
+                            <MenuItem
+                                primaryText="학교목록"
+                                leftIcon={<IconSchool />}
+                                className={this.props.activeMenu == 'schoolList' ? 'aml' : 'uml'}
+                            />
+                        </Link>
+                        <Link to={contextPath + "/cm-admin/schoolSync"}>
+                            <MenuItem
+                                primaryText="동기화"
+                                leftIcon={<IconSync />}
+                                className={this.props.activeMenu == 'schoolSync' ? 'aml' : 'uml'}
+                            />
+                        </Link>
                     </Menu>
                 </Paper>
                 <Paper className="mui-paper">
                     <Menu desktop className="aside-menu">
-                    <MenuItem
-                        primaryText="회원관리"
-                        href="/ngiiedu/cm-admin/user"
-                        leftIcon={<IconAccountBox />}
-                        className={this.props.activeMenu == 'user' ? 'aml' : 'uml'}
-                    />
+                        <Link to={contextPath + "/cm-admin/user"}>
+                            <MenuItem
+                                primaryText="회원관리"
+                                leftIcon={<IconAccountBox />}
+                                className={this.props.activeMenu == 'user' ? 'aml' : 'uml'}
+                            />
+                        </Link>
                     </Menu>
                 </Paper>
                 <Paper className="mui-paper">
                     <Menu desktop className="aside-menu">
-                    <MenuItem
-                        primaryText="수업관리"
-                        href="/ngiiedu/cm-admin/course"
-                        leftIcon={<IconWeb />}
-                        className={this.props.activeMenu == 'course' ? 'aml' : 'uml'}
-                    />
+                        <Link to={contextPath + "/cm-admin/course"}>
+                            <MenuItem
+                                primaryText="수업관리"
+                                leftIcon={<IconWeb />}
+                                className={this.props.activeMenu == 'course' ? 'aml' : 'uml'}
+                            />
+                        </Link>
                     </Menu>
                 </Paper>
                 <Paper className="mui-paper">
                     <Menu desktop className="aside-menu">
-                    <Subheader>사용자지원</Subheader>
-                    <MenuItem
-                        primaryText="메인"
-                        href="/ngiiedu/cm-admin/support"
-                        leftIcon={<IconHome />}
-                        className={this.props.activeMenu == 'support' ? 'aml' : 'uml'}
-                    />
-                    <MenuItem
-                        primaryText="자료실 관리"
-                        href="/ngiiedu/cm-admin/supportPds"
-                        leftIcon={<IconFolderShared />}
-                        className={this.props.activeMenu == 'supportPds' ? 'aml' : 'uml'}
-                    />
-                    <MenuItem
-                        primaryText="FAQ 관리"
-                        href="/ngiiedu/cm-admin/supportFaq"
-                        leftIcon={<IconHelp />}
-                        className={this.props.activeMenu == 'supportFaq' ? 'aml' : 'uml'}
-                    />
-                    <MenuItem
-                        primaryText="Q&A 관리"
-                        href="/ngiiedu/cm-admin/supportQna"
-                        leftIcon={<IconHelpOutLine />}
-                        className={this.props.activeMenu == 'supportQna' ? 'aml' : 'uml'}
-                    />
+                        <Subheader>사용자지원</Subheader>
+                        <Link to={contextPath + "/cm-admin/support"}>
+                            <MenuItem
+                                primaryText="메인"
+                                leftIcon={<IconHome />}
+                                className={this.props.activeMenu == 'support' ? 'aml' : 'uml'}
+                            />
+                        </Link>
+                        <Link to={contextPath + "/cm-admin/supportPds"}>
+                            <MenuItem
+                                primaryText="자료실 관리"
+                                leftIcon={<IconFolderShared />}
+                                className={this.props.activeMenu == 'supportPds' ? 'aml' : 'uml'}
+                            />
+                        </Link>
+                        <Link to={contextPath + "/cm-admin/supportFaq"}>
+                            <MenuItem
+                                primaryText="FAQ 관리"
+                                leftIcon={<IconHelp />}
+                                className={this.props.activeMenu == 'supportFaq' ? 'aml' : 'uml'}
+                            />
+                        </Link>
+                        <Link to={contextPath + "/cm-admin/supportQna"}>
+                            <MenuItem
+                                primaryText="Q&A 관리"
+                                leftIcon={<IconHelpOutLine />}
+                                className={this.props.activeMenu == 'supportQna' ? 'aml' : 'uml'}
+                            />
+                        </Link>
                     </Menu>
                 </Paper>
                 <Paper className="mui-paper">
                     <Menu desktop className="aside-menu">
-                    <Subheader>수업모듈</Subheader>
-                    <MenuItem
-                        primaryText="수업모듈 관리"
-                        href="/ngiiedu/cm-admin/module"
-                        leftIcon={<IconSettings />}
-                        className={this.props.activeMenu == 'module' ? 'aml' : 'uml'}
-                    />
-                    <MenuItem
-                        primaryText="수업모듈 생성도구"
-                        href="/ngiiedu/cm-admin/moduleBuilder"
-                        leftIcon={<IconBuild />}
-                        className={this.props.activeMenu == 'moduleBuilder' ? 'aml' : 'uml'}
-                    />
+                        <Subheader>수업모듈</Subheader>
+                        <Link to={contextPath + "/cm-admin/module"}>
+                            <MenuItem
+                                primaryText="수업모듈 관리"
+                                href="/ngiiedu/cm-admin/module"
+                                leftIcon={<IconSettings />}
+                                className={this.props.activeMenu == 'module' ? 'aml' : 'uml'}
+                            />
+                        </Link>
+                        <Link to={contextPath + "/cm-admin/moduleBuilder"}>
+                            <MenuItem
+                                primaryText="수업모듈 생성도구"
+                                href="/ngiiedu/cm-admin/moduleBuilder"
+                                leftIcon={<IconBuild />}
+                                className={this.props.activeMenu == 'moduleBuilder' ? 'aml' : 'uml'}
+                            />
+                        </Link>
                     </Menu>
                 </Paper>
             </aside>

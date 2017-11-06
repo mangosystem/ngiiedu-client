@@ -63,13 +63,14 @@ class Header extends React.Component {
           <div style={{flex: 4}}>
           </div>
 
-
           <div style={{flex: 1, marginRight: 0}}>
             <div style={{display: 'flex', justifyContent: 'flex-end'}}>
               <CourseJoinModal
                 isOpen={this.state.isOpenJoinCourse}
                 onChangeOpen={this.onChangeCourseOpen}
               />
+
+              {/*
               <Badge
                 badgeContent={10}
                 secondary={true}
@@ -80,6 +81,7 @@ class Header extends React.Component {
                   <IconNotifications  />
                 </IconButton>
               </Badge>
+              */}
 
               {/* stevie, veronika, jenny */}
               <Avatar
@@ -97,11 +99,11 @@ class Header extends React.Component {
                   targetOrigin={{horizontal: 'right', vertical: 'top'}}
                 >
                   <MenuItem primaryText="회원정보" />
-                  <MenuItem primaryText="수업목록" href="/ngiiedu/course" />
-                  <MenuItem primaryText="수업 참여하기" href="#"
-                    onClick={this.onChangeCourseOpen}
+                  <MenuItem primaryText="수업목록" href={contextPath + "/course"} />
+                  <MenuItem primaryText="수업 참여하기" onClick={this.onChangeCourseOpen}
                   />
-                  <MenuItem primaryText="수업 만들기" href="/ngiiedu/courseCreate" />
+                  <MenuItem primaryText="수업 만들기" href={contextPath + "/courseCreate"} />
+                  <MenuItem primaryText="로그아웃" href={contextPath + "/logout"} />
               </IconMenu>
               <IconButton style={{width: 50, height: 50, marginTop: 5, marginBottom: 5}}>
                 <IconHelpOutline />

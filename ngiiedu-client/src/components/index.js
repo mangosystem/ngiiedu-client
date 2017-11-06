@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Header from './common/layout/Header.js';
 import Footer from './common/layout/Footer.js';
 
-import {BrowserRouter, Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Router, Route, Switch, Redirect} from 'react-router-dom';
 
 // 미인증 사용자
 // import UserJoinContainer from './users/join/MainContainer';
@@ -45,7 +45,7 @@ import CourseMemberContainer from './courses/member/MainContainer';
 import CourseTeamContainer from './courses/team/MainContainer';
 import CourseSettingContainer from './courses/setting/MainContainer';
 
-// import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
+import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
 // import StoryMapPreview from './builder/work/storyMap/MainContainer';
 
 const contextPath = '/ngiiedu';
@@ -64,12 +64,7 @@ class App extends Component {
             <BrowserRouter>
             	<div id="wrap">
             		<Switch>
-            			<Route exact path={contextPath + "/cm-admin"}>
-            				<div>
-            					<Header />
-            					<SchoolListMainContainer />
-            				</div>
-            			</Route>
+                        <Redirect exact from={contextPath + "/cm-admin"} to={contextPath + "/cm-admin/school"} />
             			<Route path={contextPath + "/cm-admin/school"}>
             				<div>
             					<Header />
@@ -147,13 +142,7 @@ class App extends Component {
             				</div>
             			</Route>
 
-                        <Route exact path={contextPath}>
-            				<div>
-            					<Header />
-            					<CourseListContainer />
-            					<Footer />
-            				</div>
-            			</Route>
+                        <Redirect exact from={contextPath} to={contextPath + "/course"} />
             			<Route path={contextPath + "/courseCreate"}>
             				<div>
             					<Header />
@@ -182,7 +171,6 @@ class App extends Component {
             					<Footer />
             				</div>
             			</Route>
-
             			<Route exact path={contextPath + "/course/:COURSEID/work"}>
             				<div>
             					<Header />
@@ -211,11 +199,12 @@ class App extends Component {
             					<Footer />
             				</div>
             			</Route>
+                        
+            			<Route path={contextPath + "/course/:COURSEID/work/:workId"}>
+            				<WorkFrameDataCollect />
+            			</Route>
 
                         {
-            			// <Route path="/ngiiedu/course/:COURSEID/work/:workId">
-            			// 	<WorkFrameDataCollect />
-            			// </Route>
             			// <Route path="/ngiiedu/course/:COURSEID/preview/:storyMapId">
             			// 	<StoryMapPreview />
             			// </Route>
