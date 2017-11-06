@@ -382,6 +382,10 @@ class MainContainer extends React.Component {
   }
 
   templateHandle() {
+    if (this.state.template != 'tab') {
+      this.setState({ template: 'tab' });
+    }
+
     this.setState({
       openTemplate: !this.state.openTemplate
     });
