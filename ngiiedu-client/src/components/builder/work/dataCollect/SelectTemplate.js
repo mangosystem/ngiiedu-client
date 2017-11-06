@@ -54,7 +54,7 @@ class SelectTemplate extends React.Component {
               onClick={this.props.templateHandle}
             />,
             <FlatButton
-              label={this.props.title == ''? "확인" : "변경"}
+              label={this.props.mode == 'add'? "확인" : "변경"}
               backgroundColor={cyan500}
               style={{color: 'white'}}
               onClick={this.addMapTitle.bind(this)}

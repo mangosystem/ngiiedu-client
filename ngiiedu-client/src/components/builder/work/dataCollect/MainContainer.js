@@ -74,16 +74,19 @@ class MainContainer extends React.Component {
       function (data) {
 
         const workSubData = JSON.parse(JSON.stringify(data)).response.data;
-        console.log(workSubData);
 
         for (let i in workSubData) {
-          workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"});
+          workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"}); 
         }
 
+        console.log(workSubData);
+        
         //tab : 서버에서 데이터작업 되기전까지 임시데이터
         for (let i in workSubData) {
+          
           if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
-            for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+            
+            for (let j in workSubData[i].courseWorkSubOutputInfoList) {              
               // 템플릿 종류
               workSubData[i].courseWorkSubOutputInfoList[j].template = "tab"
 
@@ -91,24 +94,21 @@ class MainContainer extends React.Component {
               workSubData[i].courseWorkSubOutputInfoList[j].tab = [];
               workSubData[i].courseWorkSubOutputInfoList[j].tab.push({title: "임시데이터", index: this.state.tabIndex++});
             }
-          }
+          } 
         }
-
+        
         let subjectMap = workSubData.filter(val => (val.moduleWorkSubName == '주제지도 만들기'))[0].courseWorkSubOutputInfoList;
-        subjectMap.splice(0, 1);
-
+        
         this.setState({
           workSubData: workSubData,
           subjectMap: subjectMap
-        });
-        
+        });      
 
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
       }.bind(this)
     );
-
 
   }
 
@@ -391,6 +391,7 @@ class MainContainer extends React.Component {
 
     
     if (!this.state.openSelectMap) {
+
       this.setState({
         openSelectMap: !this.state.openSelectMap,
         tempIndex: index,
@@ -398,6 +399,8 @@ class MainContainer extends React.Component {
         tempIdx: 1,
         mode: 'add'
       });
+
+
     } else {
       this.setState({
         openSelectMap: !this.state.openSelectMap,

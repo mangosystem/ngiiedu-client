@@ -74,9 +74,11 @@ class SelectMap extends React.Component {
                         value={this.props.value}
                         onChange={this.handleChange.bind(this)}
                     >
-                        { this.props.subjectMap.map((row, index) => (
-                            <MenuItem key={row.idx} value={row.idx} primaryText={row.outputName} />
-                        ))}
+                        { this.props.subjectMap.map((row, index) => {
+                            if (index == 0) return;
+                            return (
+                                <MenuItem key={row.idx} value={row.idx} primaryText={row.outputName} />
+                        )})}
                     </SelectField>
                     <br />
                     <TextField
