@@ -33,7 +33,7 @@ class SelectMap extends React.Component {
         const title = $('#title').val();
         const value = this.props.value;
 
-        if (this.props.title == '') {
+        if (this.props.mode == 'add') {
             this.props.addStoryTab(title, value);
         } else {
             this.props.editStoryTab(title, value);
@@ -62,7 +62,7 @@ class SelectMap extends React.Component {
         return (
             <div>
                 <Dialog
-                    title="스토리맵 만들기"
+                    title={this.props.mode == 'add' ? "스토리맵 만들기" : "스토리맵 수정하기"}
                     actions={actions}
                     open={this.props.open}
                     autoScrollBodyContent={false}

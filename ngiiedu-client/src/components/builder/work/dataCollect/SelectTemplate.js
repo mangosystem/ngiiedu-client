@@ -36,7 +36,7 @@ class SelectTemplate extends React.Component {
 
         const template = this.props.template;
         
-        if (this.props.title == '') {
+        if (this.props.mode == 'add') {
             this.props.addMap(title, template);
         } else {
             this.props.editMapSetting(title, template);
@@ -79,7 +79,7 @@ class SelectTemplate extends React.Component {
         return (
             <div>
                 <Dialog
-                    title={this.props.title == ''? "스토리맵 만들기" : "스토리맵 수정하기"}
+                    title={this.props.mode == 'add'? "스토리맵 만들기" : "스토리맵 수정하기"}
                     actions={actions}
                     open={this.props.open}
                     autoScrollBodyContent={false}
@@ -111,6 +111,7 @@ class SelectTemplate extends React.Component {
                             defaultValue={this.props.title}
                             fullWidth={true}
                             floatingLabelFixed={true}
+                            autoFocus
                         />
                     </div>                    
                 </Dialog>

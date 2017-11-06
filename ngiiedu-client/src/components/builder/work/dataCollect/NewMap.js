@@ -18,7 +18,7 @@ class NewMapAlert extends React.Component {
     addMapTitle() {
         const title = $('#mapTitle').val();
 
-        if (this.props.title == '') {
+        if (this.props.mode == 'add') {
             this.props.addMap(title);
         } else {
             this.props.editTitle(title);
@@ -46,7 +46,7 @@ class NewMapAlert extends React.Component {
         return (
             <div>
                 <Dialog
-                    title={this.props.title == '' ? "주제지도 만들기" : "이름 변경"}
+                    title={this.props.mode == 'add' ? "주제지도 만들기" : "이름 변경"}
                     actions={actions}
                     open={this.props.open}
                     autoScrollBodyContent={false}

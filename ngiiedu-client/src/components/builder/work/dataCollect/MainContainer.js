@@ -40,6 +40,7 @@ class MainContainer extends React.Component {
     // tabIndex : 설정변경위해 임시로 넣어줌. 서버에서 데이터받으면 수정해야할것 (삭제)
     this.state = {
       editMode: '',
+      mode: '',
       editorMode: false,
       openNewMap: false,
       openTemplate: false,
@@ -291,14 +292,16 @@ class MainContainer extends React.Component {
       this.setState({ 
         isSubjectMode: true,
         openNewMap: true,
-        tempTitle: ''
+        tempTitle: '',
+        mode: 'add'
       });
     
     else 
       this.setState({ 
         isSubjectMode: false,
         openTemplate: true,
-        tempTitle: ''
+        tempTitle: '',
+        mode: 'add'
       });    
 
   }
@@ -392,7 +395,8 @@ class MainContainer extends React.Component {
         openSelectMap: !this.state.openSelectMap,
         tempIndex: index,
         tempTitle: '',
-        tempIdx: 1
+        tempIdx: 1,
+        mode: 'add'
       });
     } else {
       this.setState({
@@ -512,7 +516,7 @@ class MainContainer extends React.Component {
                                   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                                   style={{display: 'flex', alignItems: 'center'}}
                                 >
-                                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openNewMap: true, tempTitle: data.outputName, tempIndex: data.idx })}/>
+                                  <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openNewMap: true, tempTitle: data.outputName, tempIndex: data.idx, mode: 'edit' })}/>
                                   <MenuItem primaryText="삭제하기" onClick={() => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: true})}/>
                                 </IconMenu>
                               }
@@ -535,7 +539,7 @@ class MainContainer extends React.Component {
                                 targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                                 style={{display: 'flex', alignItems: 'center'}}
                               >
-                                <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.template })}/>
+                                <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.template, mode: 'edit' })}/>
                                 <MenuItem primaryText="삭제하기" onClick={(i) => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: false})}/>
                                 <MenuItem primaryText="미리보기" />
                               </IconMenu>
@@ -567,7 +571,7 @@ class MainContainer extends React.Component {
                                         targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                                         style={{display: 'flex', alignItems: 'center'}}
                                       >
-                                        <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, tempIdx: r.type })}/>
+                                        <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, tempIdx: r.type, mode: 'edit' })}/>
                                         <MenuItem primaryText="컨텐츠 입력" onClick={() => this.setState({editorMode: true})}/>
                                         <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, isStoryTabMode: true})}/>
                                       </IconMenu>
@@ -606,6 +610,7 @@ class MainContainer extends React.Component {
               newMapHandle={this.newMapHandle.bind(this)}
               addMap={this.addMapTitle.bind(this)}
               editTitle={this.editMapTitle.bind(this)}
+              mode={this.state.mode}
             />
             <SelectTemplate
               open={this.state.openTemplate}
@@ -615,6 +620,7 @@ class MainContainer extends React.Component {
               editMapSetting={this.editMapSetting.bind(this)}
               template={this.state.template}
               changeTemplate={this.changeTemplate.bind(this)}
+              mode={this.state.mode}
             />
             <SelectMap
               open={this.state.openSelectMap}
@@ -625,6 +631,7 @@ class MainContainer extends React.Component {
               subjectMap={this.state.subjectMap}
               value={this.state.tempIdx}
               changeTempIdx={this.changeTempIdx.bind(this)}
+              mode={this.state.mode}
             />
             <DeleteMap
               open={this.state.openDeleteMap}
