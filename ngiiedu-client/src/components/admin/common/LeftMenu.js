@@ -111,7 +111,6 @@ class LeftMenu extends React.Component {
                         <Link to={contextPath + "/cm-admin/module"}>
                             <MenuItem
                                 primaryText="수업모듈 관리"
-                                href="/ngiiedu/cm-admin/module"
                                 leftIcon={<IconSettings />}
                                 className={this.props.activeMenu == 'module' ? 'aml' : 'uml'}
                             />
@@ -119,7 +118,6 @@ class LeftMenu extends React.Component {
                         <Link to={contextPath + "/cm-admin/moduleBuilder"}>
                             <MenuItem
                                 primaryText="수업모듈 생성도구"
-                                href="/ngiiedu/cm-admin/moduleBuilder"
                                 leftIcon={<IconBuild />}
                                 className={this.props.activeMenu == 'moduleBuilder' ? 'aml' : 'uml'}
                             />
