@@ -94,3 +94,9 @@ export const actionCourseId = (courseId) => ({
     type: types.COURSE_ID,
     courseId
 })
+
+// 로그인 정보 받아오기
+export const actionLoginInfo = (loginStatus) => ({
+    type: types.LOGIN_INFO,
+    loginStatus
+})

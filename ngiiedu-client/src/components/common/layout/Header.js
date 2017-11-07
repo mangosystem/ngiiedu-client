@@ -2,6 +2,11 @@ import React from 'react';
 
 import { withRouter } from "react-router-dom";
 import { Link } from 'react-router-dom';
+//redux
+//store에 연결
+import { connect } from 'react-redux';
+//action 객체사용
+import { actionLoginInfo }  from '../../../actions/index';
 
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
@@ -45,10 +50,25 @@ class Header extends React.Component {
     });
   }
 
+  componentDidMount(){
+
+    this.props.loginRedux({
+      userId:userId,
+      userName:userName,
+      userDivision:userDivision
+    });
+
+    console.log(userId);
+    console.log(userName);
+    console.log(userDivision);
+
+  }
+ 
+
   render() {
     return (
       <header id="header">
-        <div className={this.props.wide ? "inner wide" : "inner"} style={{display: 'flex'}}>
+        <div className={this.props.wide ? "inner wide" : "inner"} style={{display: 'flex'}} >
 
           <div style={{flex: 1, marginLeft: 0, paddingTop: 20, paddingBottom: 20}}>
             <Link to="/ngiiedu/course"><h3>NGII-EDU LOGO</h3></Link>
@@ -112,6 +132,27 @@ class Header extends React.Component {
     );
   }
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  
+  loginRedux: (loginStatus,) => {
+    dispatch(actionLoginInfo(loginStatus));
+  }
+});
+
+
+let mapStateToProps = (state) => {
+  return {
+    loginStatus: state.loginInfo.loginStatus,
+  };
+}
+  
+
+Header = connect(
+  mapStateToProps,
+    mapDispatchToProps
+)(Header);
+
 
 Header.propTypes = {
 	wide: React.PropTypes.bool
