@@ -125,29 +125,29 @@ class MapsEditorPanel extends React.Component {
     map.addLayer(layers.vector);
 
     //컬럼명 받아오기
-    ajaxJson(
-        ['GET', 'http://localhost:8080/geoserver/wfs?request=describeFeatureType&typename=mnd:kob_pa_sid'],
-        null,
-        function (data) {
-  
-        }.bind(this),
-        function (xhr, status, err) {
-          alert('Error');
-        }.bind(this)
-      );
 
-      $.ajax({
-        type:'GET',
-        url: 'http://localhost:8080/geoserver/wfs?request=describeFeatureType&typename=mnd:kob_pa_sid.json',
-        dataType: 'json',
+    //   $.ajax({
+    //     type:'GET',
+    //     url: 'http://localhost:8080/geoserver/wfs?',//request=describeFeatureType&typename=mnd:kob_pa_sid',
+    //     data:{
+    //         service:'WFS',
+    //         version:'1.1.0',
+    //         request:'describeFeatureType',
+    //         typename:'mnd:kob_pa_sid',
+    //         outputFormat:'text/javascript',
+    //         format_options: 'callback:getJson'
+            
+    //     },
+    //     jsonpCallback: 'getJson',
         
-        success: function(res) {
-            console.dir(res);
-        }.bind(this),
-        error: function(xhr, status, err) {
-            console.error(status, err.toString());
-        }.bind(this)
-      });
+    //     dataType: 'jsonp', //specify jsonp
+    //     success: function(res) {
+    //         console.dir(res.featureTypes[0].properties[0].name)
+    //     }.bind(this),
+    //     error: function(xhr, status, err) {
+    //         console.error(status, err.toString());
+    //     }.bind(this)
+    //   });
 
   }
 

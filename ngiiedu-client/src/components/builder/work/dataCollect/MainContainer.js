@@ -57,12 +57,14 @@ class MainContainer extends React.Component {
       tempIndex: 0,
       tabIndex: 0,
       tempTabIndex: 0,
-      tempIdx: 1
+      tempIdx: 1,
+      stylePanel:false
     }
 
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
     this.onChangeEditorMode = this.onChangeEditorMode.bind(this);
-
+    this.handleChangeStylePanel = this.handleChangeStylePanel.bind(this);
+    
   }
 
   componentWillMount() {
@@ -430,6 +432,20 @@ class MainContainer extends React.Component {
     });
   }
 
+  //style창 열기
+  openStylePanel(){
+    this.setState({
+      stylePanel:true
+    })  
+  }
+
+  //style창 닫기
+  handleChangeStylePanel(){
+    this.setState({
+      stylePanel:false
+    })
+  }
+
   render() {
 
     return (
@@ -520,6 +536,7 @@ class MainContainer extends React.Component {
                               primaryText={data.outputName}
                               initiallyOpen={true}
                               primaryTogglesNestedList={true}
+                              onClick={this.openStylePanel.bind(this)}
                               rightIcon={
                                 <IconMenu
                                   iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
@@ -612,7 +629,9 @@ class MainContainer extends React.Component {
                   propertiesMode={this.state.editMode}
                 />
                 :
-                <PointSymbolizer />
+                <PointSymbolizer 
+                  closePanel={this.handleChangeStylePanel}
+                />
               }
             
             </div>

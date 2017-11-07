@@ -596,11 +596,21 @@ class PointSymbolizer extends React.Component {
                 <RaisedButton 
                     label="적 용" 
                     style={{
-                        marginTop:'15%',
-                        marginLeft:'15%',
-                        width:'70%'
+                        marginTop:'10%',
+                        marginLeft:'10%',
+                        width:'30%'
                     }}
                     onClick={this.editStyle}
+                />
+
+                <RaisedButton 
+                    label="취 소" 
+                    style={{
+                        marginTop:'10%',
+                        marginLeft:'10%',
+                        width:'30%'
+                    }}
+                    onClick={this.props.closePanel}
                 />
 
             </div>
