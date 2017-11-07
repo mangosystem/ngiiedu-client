@@ -604,8 +604,8 @@ class MainContainer extends React.Component {
                 onChangeEditMode={this.onChangeEditMode}
               />
             </div>
-            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff',display:this.state.editorMode ? 'none' :'block' }}>
-              {this.state.stylePanel==false?
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff', display:this.state.editorMode ? 'none' :'block' }}>
+              {this.state.stylePanel == false ?
                 <PropertiesPanel
                   propertiesMode={this.state.editMode}
                 />
@@ -614,7 +614,7 @@ class MainContainer extends React.Component {
               }
             
             </div>
-            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300,display:this.state.editorMode ? 'block' :'none' }}>
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff', display:this.state.editorMode ? 'block' :'none' }}>
               <EditorPanel
                 editorMode={this.state.editorMode}
                 onChangeEditorMode={this.onChangeEditorMode}

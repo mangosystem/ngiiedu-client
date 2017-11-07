@@ -31,23 +31,17 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       isOpenJoinCourse: false
     }
 
-    this.onClickJoinCourse = this.onClickJoinCourse.bind(this);
     this.onChangeCourseOpen = this.onChangeCourseOpen.bind(this);
   }
 
-  onClickJoinCourse(evt) {
+  onChangeCourseOpen(){
     this.setState({
-      isOpenJoinCourse: true
-    });
-  }
-
-  onChangeCourseOpen(value){
-    this.setState({
-      isOpenJoinCourse: value
+      isOpenJoinCourse: !this.state.isOpenJoinCourse
     });
   }
 
@@ -100,7 +94,7 @@ class Header extends React.Component {
                 >
                   <MenuItem primaryText="회원정보" />
                   <MenuItem primaryText="수업목록" href={contextPath + "/course"} />
-                  <MenuItem primaryText="수업 참여하기" onClick={this.onChangeCourseOpen}
+                  <MenuItem primaryText="수업 참여하기" onClick={() => this.setState({ isOpenJoinCourse: true })}
                   />
                   <MenuItem primaryText="수업 만들기" href={contextPath + "/courseCreate"} />
                   <MenuItem primaryText="로그아웃" href={contextPath + "/logout"} />

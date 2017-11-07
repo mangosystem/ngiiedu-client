@@ -16,11 +16,9 @@ class ModalContainer extends React.Component {
 		super(props);
 
 		this.state = {
-			// 모달
-			isOpen: false,
-
 			// 수업코드 앞자리, 뒷자리
-			frontKey: '', backKey: ''
+			frontKey: '', 
+			backKey: ''
 		}
 
 		this.onClickClose = this.onClickClose.bind(this);
@@ -29,19 +27,14 @@ class ModalContainer extends React.Component {
 		this.onClickKeyValid = this.onClickKeyValid.bind(this);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		this.setState({
-			isOpen: nextProps.isOpen
-		});
-	}
-
 	onClickClose() {
+
 		this.setState({
-			isOpen: false,
 			frontKey: '',
 			backKey: ''
 		});
-		this.props.onChangeOpen(false);
+
+		this.props.onChangeOpen();
 	}
 
 	onChangeFrontKey(evt, value) {
@@ -79,7 +72,7 @@ class ModalContainer extends React.Component {
 		return (
 			<div>
 			<Dialog
-				open={this.state.isOpen}
+				open={this.props.isOpen}
 				title="수업참여하기"
 				modal={true}
 				bodyStyle={{textAlign: 'center'}}
