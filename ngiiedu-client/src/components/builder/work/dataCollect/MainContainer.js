@@ -328,7 +328,9 @@ class MainContainer extends React.Component {
       }
     }
 
-
+    this.setState({
+      editorMode: true
+    });
 
       
   }
@@ -583,7 +585,7 @@ class MainContainer extends React.Component {
                                         style={{display: 'flex', alignItems: 'center'}}
                                       >
                                         <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, tempIdx: r.type, mode: 'edit' })}/>
-                                        <MenuItem primaryText="컨텐츠 입력" onClick={() => this.setState({editorMode: true})}/>
+                                        <MenuItem primaryText="컨텐츠 입력" onClick={() => this.setState({editorMode: true })}/>
                                         <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, isStoryTabMode: true})}/>
                                       </IconMenu>
                                     }

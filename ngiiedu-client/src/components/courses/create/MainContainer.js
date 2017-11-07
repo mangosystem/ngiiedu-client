@@ -12,6 +12,9 @@ import Step2Work from './Step2Work';
 import Step3Info from './Step3Info';
 import Step4Complete from './Step4Complete';
 
+import { withRouter } from "react-router-dom";
+
+
 class MainContainer extends React.Component {
 
 	constructor() {
@@ -33,7 +36,9 @@ class MainContainer extends React.Component {
 				schoolName: '',
 				studentGrade: '',
 				studentClass: ''
-			}
+			},
+
+			courseId: ''
 		};
 
 		this.handleNextStep = this.handleNextStep.bind(this);
@@ -116,9 +121,13 @@ class MainContainer extends React.Component {
 				courseMetadata: JSON.stringify(state.courseMetadata)
 			},
 			function(res) {
+
+				const courseData = JSON.parse(JSON.stringify(res)).response.data;
+
 				this.setState({
 					stepIndex: 3,
-					finished: true
+					finished: true,
+					courseId: courseData.idx
 				});
 
 			}.bind(this),
@@ -128,8 +137,10 @@ class MainContainer extends React.Component {
 		);
 	}
 
-	onClickCoursePage(courseId) {
+	onClickCoursePage() {
 		// browserHistory.push('/course/' + courseId);
+		const courseId = this.state.courseId;
+		this.props.history.push("/ngiiedu/course/" + courseId);
 	}
 
 	render() {
@@ -233,4 +244,4 @@ class MainContainer extends React.Component {
 	}
 }
 
-export default MainContainer;
+export default withRouter(MainContainer);

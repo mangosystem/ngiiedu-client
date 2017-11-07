@@ -51,14 +51,14 @@ class EditorPanel extends React.Component {
         <Paper zDepth={0} style={{paddingBottom: 10, fontSize: 15, borderBottom: '1px solid #eee'}}>
           <h2>컨텐츠 입력</h2>
         </Paper>
-        <Paper zDepth={0} style={{ width: '270px' }}>
+        <Paper zDepth={0} style={{ width: '270px', height: '90%' }}>
           <textarea 
             name="ir1" 
             id="ir1" 
             rows="50" 
             cols="35" 
             defaultValue="에디터에 기본으로 삽입할 글(수정 모드)이 없다면 이 value 값을 지정하지 않으시면 됩니다."
-            style={{ minWidth: '260px', maxHeight: '800px' }}
+            style={{ minWidth: '260px', height: '600px', MaxHeight: '600px' }}
           ></textarea>
           <div style={{ textAlign: 'right', marginTop: '20px' }}>
             <FlatButton
