@@ -6,6 +6,12 @@ import Footer from './common/layout/Footer.js';
 
 import {BrowserRouter, Router, Route, Switch, Redirect} from 'react-router-dom';
 
+//redux
+//store에 연결
+import { connect } from 'react-redux';
+//action 객체사용
+import { actionLoginInfo }  from '../actions/index';
+
 // 미인증 사용자
 import UserJoinContainer from './users/join/MainContainer';
 // import UserLoginContainer from './users/login/MainContainer';
@@ -70,77 +76,77 @@ class App extends Component {
             			<Route path={contextPath + "/cm-admin/school"}>
             				<div>
             					<Header />
-            					<SchoolListMainContainer />
+            					<SchoolListMainContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
             			<Route exact path={contextPath + "/cm-admin/schoolSync"}>
             				<div>
             					<Header />
-            					<SchoolsSyncContainer />
+            					<SchoolsSyncContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
             			<Route path={contextPath + "/cm-admin/schoolSync/api"}>
             				<div>
             					<Header />
-            					<SchoolsSyncApiContainer />
+            					<SchoolsSyncApiContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
             			<Route path={contextPath + "/cm-admin/schoolSync/file"}>
             				<div>
             					<Header />
-            					<SchoolsSyncFileContainer />
+            					<SchoolsSyncFileContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
 
             			<Route path={contextPath + "/cm-admin/user"}>
             				<div>
             					<Header />
-            					<UsersManageContainer />
+            					<UsersManageContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
 
             			<Route path={contextPath + "/cm-admin/course"}>
             				<div>
             					<Header />
-            					<CourseContainer />
+            					<CourseContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
 
             			<Route path={contextPath + "/cm-admin/support"}>
             				<div>
             					<Header />
-            					<SupportContainer />
+            					<SupportContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
             			<Route path={contextPath + "/cm-admin/supportPds"}>
             				<div>
             					<Header />
-            					<SupportPdsContainer />
+            					<SupportPdsContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
             			<Route path={contextPath + "/cm-admin/supportFaq"}>
             				<div>
             					<Header />
-            					<SupportFaqContainer />
+            					<SupportFaqContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
             			<Route path={contextPath + "/cm-admin/supportQna"}>
             				<div>
             					<Header />
-            					<SupportQnaContainer />
+            					<SupportQnaContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
 
             			<Route path={contextPath + "/cm-admin/module"}>
             				<div>
             					<Header />
-            					<ModuleContainer />
+            					<ModuleContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
             			<Route path={contextPath + "/cm-admin/moduleBuilder"}>
             				<div>
             					<Header />
-            					<ModuleBuilderContainer />
+            					<ModuleBuilderContainer loginStatus={this.props.loginStatus}/>
             				</div>
             			</Route>
 
@@ -148,7 +154,7 @@ class App extends Component {
             			<Route path={contextPath + "/courseCreate"}>
             				<div>
             					<Header />
-            					<CourseCreateContainer />
+            					<CourseCreateContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
@@ -156,7 +162,7 @@ class App extends Component {
                         <Route exact path={contextPath + "/join"}>
             				<div>
             					<Header />
-            					<UserJoinContainer />
+            					<UserJoinContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
@@ -164,63 +170,63 @@ class App extends Component {
             			<Route exact path={contextPath + "/course"}>
             				<div>
             					<Header />
-            					<CourseListContainer />
+            					<CourseListContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
             			<Route exact path={contextPath + "/course/:COURSEID"}>
             				<div>
             					<Header />
-            					<CourseInfoContainer />
+            					<CourseInfoContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/data"}>
             				<div>
             					<Header />
-            					<CourseDataContainer />
+            					<CourseDataContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
             			<Route exact path={contextPath + "/course/:COURSEID/work"}>
             				<div>
             					<Header />
-            					<CourseWorkContainer />
+            					<CourseWorkContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/member"}>
             				<div>
             					<Header />
-            					<CourseMemberContainer />
+            					<CourseMemberContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/team"}>
             				<div>
             					<Header />
-            					<CourseTeamContainer />
+            					<CourseTeamContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/setting"}>
             				<div>
             					<Header />
-            					<CourseSettingContainer />
+            					<CourseSettingContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
 
             			<Route path={contextPath + "/course/:COURSEID/work/:workId"}>
-            				<WorkFrameDataCollect />
+            				<WorkFrameDataCollect loginStatus={this.props.loginStatus}/>
             			</Route>
 
-            			<Route path="/ngiiedu/storymap/preview/:storyMapId">
-            			  <StoryMapPreview />
+            			<Route path={contextPath +"/storymap/preview/:storyMapId"}>
+            			  <StoryMapPreview loginStatus={this.props.loginStatus}/>
             			</Route>
 
-                  <Route path="/ngiiedu/map/preview/:mapId">
-            			  <MapPreview />
+                  		<Route path={contextPath +"/map/preview/:mapId"}>
+            			  <MapPreview loginStatus={this.props.loginStatus}/>
             			</Route>
 
             			<Route component={Error404} />
@@ -230,5 +236,17 @@ class App extends Component {
         );
     }
 }
+
+let mapStateToProps = (state) => {
+	return {
+		loginStatus: state.loginInfo.loginStatus,
+	};
+}
+
+
+App = connect(
+	mapStateToProps	  
+)(App);
+
 
 export default App;

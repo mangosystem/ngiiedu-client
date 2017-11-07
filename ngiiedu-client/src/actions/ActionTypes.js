@@ -29,3 +29,7 @@ export const UPDATE_SCHOOL = "UPDATE_SCHOOL";
 export const SEARCH_COURSE = "SEARCH_COURSE";
 //course id
 export const COURSE_ID = "COURSE_ID";
+
+
+//login info
+export const LOGIN_INFO = "LOGIN_INFO";

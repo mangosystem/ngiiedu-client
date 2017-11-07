@@ -4,6 +4,7 @@ import user from './user';
 import schoolsSync from './schoolsSync.js';
 import schoolList from './schoolList.js';
 import courseList from './courseList.js';
+import loginInfo from './loginInfo.js';
 
 import { combineReducers } from 'redux';
 
@@ -14,7 +15,8 @@ const reducers = combineReducers({
     user,
     schoolsSync,
     schoolList,
-    courseList
+    courseList,
+    loginInfo
 });
 
 export default reducers;
