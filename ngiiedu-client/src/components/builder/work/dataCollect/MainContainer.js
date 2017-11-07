@@ -494,7 +494,7 @@ class MainContainer extends React.Component {
                     targetOrigin={{horizontal: 'right', vertical: 'top'}}
                   >
                     <MenuItem primaryText="회원정보" />
-                    <MenuItem primaryText="수업목록" />
+                    <MenuItem primaryText="수업목록" href={contextPath + "/course"}/>
                 </IconMenu>
                 <IconButton style={{width: 50, height: 50, marginTop: 5, marginBottom: 5}}>
                   <IconHelpOutline />

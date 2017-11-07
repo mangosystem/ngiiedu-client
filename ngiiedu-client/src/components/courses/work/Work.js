@@ -62,8 +62,10 @@ class Work extends React.Component {
 
   //수업 과정 들어가기
   enterWork(id){
-    alert('수업 과정 아이디 : '+id+', 수업 과정 들어가기');
-    //window.location.href='수업 과정 url'
+    let courseId = this.props.match.params.COURSEID;
+    
+    //alert('수업 과정 아이디 : '+id+', 수업 과정 들어가기');
+    this.props.history.push("/ngiiedu/course/" + courseId + "/work/" + id);
   };
 
   componentWillMount() {
