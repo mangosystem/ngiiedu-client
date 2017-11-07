@@ -24,7 +24,7 @@ class EditorPanel extends React.Component {
     nhn.husky.EZCreator.createInIFrame({
         oAppRef: oEditors,
         elPlaceHolder: "ir1",
-        sSkinURI: "/assets/cdn/editor/SmartEditor2Skin.html",
+        sSkinURI: "/ngiiedu/assets/cdn/editor/SmartEditor2Skin.html",
         fCreator: "createSEditor2"
     });
 
