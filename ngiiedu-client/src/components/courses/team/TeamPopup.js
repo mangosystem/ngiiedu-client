@@ -188,10 +188,7 @@ class TeamPopup extends React.Component {
                                                 <ToggleRadioButtonChecked color={grey500} style={{fill: "#A9BCF5"}}/>
                                             }
                                             uncheckedIcon={
-                                                index<this.props.checkIndex? 
                                                     <ToggleRadioButtonUnchecked color={grey500} style={{fill: "#E6E6E6"}}/> 
-                                                    :  
-                                                    <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
                                             }
                                             onClick ={(event, isInputChecked) => this.checkedChange(event, isInputChecked, row2.userId)}
                                         />

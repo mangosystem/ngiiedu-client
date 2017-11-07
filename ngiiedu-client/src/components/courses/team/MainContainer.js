@@ -57,6 +57,7 @@ class MainContainer extends React.Component {
 
   
   handleClose(summit,teamId,teamName,selectedUserId){
+
     if(summit){
       if(teamName==null){
         alert('팀명을 입력하세요');
@@ -77,8 +78,6 @@ class MainContainer extends React.Component {
           },
           async: false,
           success: function(res) {
-            console.log("팀생성" + teamName);
-            console.dir(res);
             teamId = res.response.data.idx;
           }.bind(this),
           error: function(xhr, status, err) {
@@ -100,7 +99,6 @@ class MainContainer extends React.Component {
               memberId:selectedUserId[i]
             },
             success: function(res) {
-              console.log("팀멤버 추가"+selectedUserId[i]);
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -113,7 +111,6 @@ class MainContainer extends React.Component {
       ///{courseId}/team/{teamId}/member/{memberId}
       // console.log(this.state.selectedUserId);
       for(var i = 0 ; i <this.state.selectedUserId.length;i++){
-        console.log(this.state.selectedUserId[i])
         if(selectedUserId.indexOf(this.state.selectedUserId[i])==-1){
           $.ajax({
             method:'POST',
@@ -122,7 +119,6 @@ class MainContainer extends React.Component {
             data:{_method__ : 'DELETE'},
             async: false,
             success: function(res) {
-              console.log("팀멤버 삭제"+this.state.selectedUserId[i]);
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(status, err.toString());
@@ -156,7 +152,6 @@ class MainContainer extends React.Component {
       ['DELETE',apiSvr+'/courses/'+courseId+'/team/'+teamId+'.json'],
       null,
       function(res){
-          console.log('deleteTeam : '+teamId);
           this.ajaxCall();
       }.bind(this)
     )
@@ -170,6 +165,7 @@ class MainContainer extends React.Component {
     //배열 재배치 
     //미분류 -> 현재 선택한 팀 순서
     //선택 비선택 변수 설정
+    
     var checkIndex = 1;
     var tempArr =[];
     let member = [];
@@ -187,8 +183,6 @@ class MainContainer extends React.Component {
       selectedTeamName = this.state.teams[seq].teamName;
       for(var i = 0 ; i<member.length;i++){
         if(member[i][0].teamId == selectedTeamId){
-          console.dir("member[i][0].teamId: " + member[i][0].teamId);
-          console.dir(member[i][0].teamId)
           selectedTeamMember = member[i];
           tempArr.push(selectedTeamMember);
           member.splice(i,1);
