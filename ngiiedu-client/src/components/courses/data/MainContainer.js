@@ -205,6 +205,29 @@ class MainContainer extends React.Component {
                   </div>
                 </Paper>
               ))}
+              {(() => {
+                if (this.state.groupedByDivision.length == 0) {
+                  return(
+                    <Paper>
+                      <div  style={{padding: '20px'}}>
+                        <div style={divStyle}>
+                          <div style={titleStyle}>관련 데이터</div>
+                        </div>
+                        <br />
+                        <Table selectable={false}>
+                          <TableBody displayRowCheckbox={false}>
+                            <TableRow colSpan="4">
+                              <TableRowColumn style={{fontSize: '1.05em'}}>
+                                다운로드 가능한 데이터가 없습니다.
+                              </TableRowColumn>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </Paper>
+                  );
+                }
+              })()}
             </section>
           </div>
         </div>
