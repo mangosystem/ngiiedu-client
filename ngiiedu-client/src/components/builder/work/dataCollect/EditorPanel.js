@@ -25,10 +25,7 @@ class EditorPanel extends React.Component {
         oAppRef: oEditors,
         elPlaceHolder: "ir1",
         sSkinURI: "/assets/cdn/editor/SmartEditor2Skin.html",
-        fCreator: "createSEditor2",
-        htParams : { 
-          bUseVerticalResizer : false     
-        }
+        fCreator: "createSEditor2"
     });
 
   }

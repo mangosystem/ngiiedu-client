@@ -616,7 +616,7 @@ class MainContainer extends React.Component {
               }
             
             </div>
-            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff', display:this.state.editorMode ? 'block' :'none' }}>
+            <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff', overflow: 'auto', display:this.state.editorMode ? 'block' :'none' }}>
               <EditorPanel
                 editorMode={this.state.editorMode}
                 onChangeEditorMode={this.onChangeEditorMode}
