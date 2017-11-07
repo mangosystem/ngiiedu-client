@@ -48,13 +48,37 @@ class MainContainer extends React.Component {
 
         const $form = $('#join');
 
+        let userDivision = '2';
         if (this.state.authkeyCheck) {
-            const userDivision = $('<input type="hidden" name="userDivision" value="1" />');
-            userDivision.appendTo($form);
+            // const userDivision = $('<input type="hidden" name="userDivision" value="1" />');
+            // userDivision.appendTo($form);
+            userDivision = '1';
         }
 
-        this.props.history.push("/");
-        $form.submit();
+        // this.props.history.push("./login");
+        // $form.submit();
+
+        ajaxJson(
+            ['POST', apiSvr+'/users.json'],
+            {
+                userid: $('form[id=join] input[name=userid]').val(),
+                password: $('form[id=join] input[name=password]').val(),
+                userName: $('form[id=join] input[name=userName]').val(),
+                userEmail: $('form[id=join] input[name=userEmail]').val(),
+                schoolName: $('form[id=join] input[name=schoolName]').val(),
+                userDivision: userDivision
+            }, function(res) {
+                if (res.response.code == 200) {
+                    alert('가입이 완료되었습니다. 로그인 페이지로 이동합니다.')
+                    document.location = './login';
+                } else {
+                    alert('가입시 오류가 발생하였습니다. 다시 시도해 주세요!')
+                }
+            }.bind(this),
+            function(xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
     }
 
     checkID(value) {
@@ -225,7 +249,7 @@ class MainContainer extends React.Component {
                     <h3 style={{textAlign: 'center'}}>회원가입</h3>
                     <p style={{textAlign: 'center', fontSize: '11px'}}>로그인정보 및 가입정보를 입력하세요.</p>
                     <p style={{textAlign: 'right', fontSize: '10px'}}>*표시는 필수입력 사항입니다.</p>
-                    <form action="http://localhost:8080/ngiiedu/api/v1/users.json" method="post" id="join">
+                    <form method="post" id="join">
                         <div style={{maxWidth: '60%', textAlign: 'center', margin: 'auto'}}>
                             <TextField
                                 name="userid"

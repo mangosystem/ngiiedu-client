@@ -37,7 +37,7 @@ class CourseList extends React.Component {
     componentDidMount() {
         let params = null;
         ajaxJson(
-            ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListJoin.json'],
+            ['GET', apiSvr + '/courses/list/courseInfoListJoin.json'],
             params,
             function (res) {
                 this.setState({
@@ -50,7 +50,7 @@ class CourseList extends React.Component {
         );
 
         ajaxJson(
-            ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListOwn.json'],
+            ['GET', apiSvr + '/courses/list/courseInfoListOwn.json'],
             params,
             function (res) {
                 this.setState({
@@ -67,7 +67,7 @@ class CourseList extends React.Component {
         // 검색
         let params = ({ 'keyword': '%' + nextProps.keyword + '%' });
         ajaxJson(
-            ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListJoin.json'],
+            ['GET', apiSvr + '/courses/list/courseInfoListJoin.json'],
             params,
             function (res) {
                 this.setState({
@@ -80,7 +80,7 @@ class CourseList extends React.Component {
         );
 
         ajaxJson(
-            ['GET', apiSvr + '/courses/list/' + this.state.userid + '/courseInfoListOwn.json'],
+            ['GET', apiSvr + '/courses/list/courseInfoListOwn.json'],
             params,
             function (res) {
                 this.setState({
@@ -96,9 +96,7 @@ class CourseList extends React.Component {
     render() {
         return (
             <div>
-                <Card
-                // expanded={true}
-                >
+                <Card>
                     <CardHeader
                         title="내가 참여한 수업"
                         style={{
@@ -108,7 +106,7 @@ class CourseList extends React.Component {
                     <CardText>
                         <div>
                             <Table
-                                height={'300px'}
+                                height={'200px'}
                             >
                                 <TableHeader displaySelectAll={false}>
                                 </TableHeader>
@@ -158,7 +156,7 @@ class CourseList extends React.Component {
                     <CardText>
                         <div>
                             <Table
-                                height={'300px'}
+                                height={'200px'}
                             >
                                 <TableHeader displaySelectAll={false}>
                                 </TableHeader>

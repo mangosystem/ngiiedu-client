@@ -9,7 +9,9 @@ class MainContainer extends React.Component {
         return (
             <main id="main">
 				<div className="inner">
-                    <SearchCourse/>
+                    {
+                    // <SearchCourse/>
+                    }
                     <CourseList/>
                     <CourseInfoModal/>
                 </div>

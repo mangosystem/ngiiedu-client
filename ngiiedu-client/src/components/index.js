@@ -7,7 +7,7 @@ import Footer from './common/layout/Footer.js';
 import {BrowserRouter, Router, Route, Switch, Redirect} from 'react-router-dom';
 
 // 미인증 사용자
-// import UserJoinContainer from './users/join/MainContainer';
+import UserJoinContainer from './users/join/MainContainer';
 // import UserLoginContainer from './users/login/MainContainer';
 
 // 인증 사용자
@@ -152,6 +152,15 @@ class App extends Component {
             					<Footer />
             				</div>
             			</Route>
+
+                        <Route exact path={contextPath + "/join"}>
+            				<div>
+            					<Header />
+            					<UserJoinContainer />
+            					<Footer />
+            				</div>
+            			</Route>
+
             			<Route exact path={contextPath + "/course"}>
             				<div>
             					<Header />
@@ -201,7 +210,7 @@ class App extends Component {
             					<Footer />
             				</div>
             			</Route>
-                        
+
             			<Route path={contextPath + "/course/:COURSEID/work/:workId"}>
             				<WorkFrameDataCollect />
             			</Route>

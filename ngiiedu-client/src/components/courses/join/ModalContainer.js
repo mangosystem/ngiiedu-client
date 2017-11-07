@@ -60,26 +60,19 @@ class ModalContainer extends React.Component {
 
 		let key = this.state.frontKey + this.state.backKey;
 
-		//CAPTOZ
-
 		ajaxJson(
-      ['POST', apiSvr+'/courses/' + key + '/member.json'],
-      {
-				userId: 5
-			},
-      function(res) {
+	      	['POST', apiSvr+'/courses/' + key + '/member.json'],
+	      	function(res) {
 				if (res.response.code == 200) {
 					if(res.response.data.status == 'CJS01') {
 						alert('수업참여 신청을 완료하였습니다. 승인 후 사용할 수 있습니다.');
 					}
 					this.onClickClose();
-
 				} else {
 					alert(res.response.message);
 				}
-
-      }.bind(this), null
-    );
+	      	}.bind(this), null
+		);
 	}
 
 	render() {
