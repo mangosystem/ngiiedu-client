@@ -17,15 +17,32 @@ import IconWeb from 'material-ui/svg-icons/av/web';
 import IconSettings from 'material-ui/svg-icons/action/settings';
 import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 import IconMoreVert from 'material-ui/svg-icons/navigation/more-vert';
+import EditorFormatListNumbered from 'material-ui/svg-icons/editor/format-list-numbered';
+
 
 class MenuPanel extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            courseId:''
+            courseId:'',
+            workList:[]
+            
         }
     }
+
+    componentDidMount() {
+        let courseId = this.props.match.params.COURSEID;
+        ajaxJson(
+          ['GET',apiSvr+'/courses/'+courseId+'/work.json'],
+          null,
+          function(res){
+            this.setState({
+              workList:res.response.data
+            });
+        }.bind(this)
+        );
+    };
 
     componentWillMount() {
         // alert('생성자, 참여자 구분하여 UI 구성');
@@ -95,14 +112,20 @@ class MenuPanel extends React.Component {
                     </Menu>
                 </Paper>
                 <Paper className="mui-paper">
-                    <Menu desktop className="aside-menu">
-                        <Subheader>활동</Subheader>
-                        <MenuItem primaryText="과정1" />
-                        <MenuItem primaryText="과정2" />
-                        <MenuItem primaryText="과정3" />
-                        <MenuItem primaryText="..." />
-                    </Menu>
-                </Paper>
+                <Menu desktop className="aside-menu">
+                    <Subheader>활동</Subheader>
+                    {this.state.workList.map((row,index)=>(
+                        <Link to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.moduleWorkId}>
+                            <MenuItem
+                                primaryText={row.moduleWorkCourseType}
+                                leftIcon={<EditorFormatListNumbered />}
+                                className={this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.moduleWorkId ? 'aml' : 'uml'}
+                            />
+                        </Link>
+                    ))}
+                    
+                </Menu>
+            </Paper>
             </aside>
         );
     }

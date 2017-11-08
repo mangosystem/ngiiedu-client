@@ -50,10 +50,12 @@ import CourseWorkContainer from './courses/work/MainContainer';
 import CourseMemberContainer from './courses/member/MainContainer';
 import CourseTeamContainer from './courses/team/MainContainer';
 import CourseSettingContainer from './courses/setting/MainContainer';
+import CourseActivityContainer from './courses/activity/MainContainer';
 
 import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
 import StoryMapPreview from './builder/work/preView/storyMap/MainContainer';
 import MapPreview from './builder/work/preView/map/MainContainer';
+
 
 
 const contextPath = '/ngiiedu';
@@ -213,6 +215,14 @@ class App extends Component {
             				<div>
             					<Header />
             					<CourseSettingContainer loginStatus={this.props.loginStatus}/>
+            					<Footer />
+            				</div>
+            			</Route>
+
+						<Route path={contextPath + "/course/:COURSEID/activity/:ACTIVITYID"}>
+            				<div>
+            					<Header />
+            					<CourseActivityContainer loginStatus={this.props.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>

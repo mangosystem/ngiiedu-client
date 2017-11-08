@@ -96,6 +96,8 @@ class MainContainer extends React.Component {
   }
 
   componentDidMount() {
+      //ajax 처리 및 props 전달 필요
+      
   }
 
   layerLoad(layerName){

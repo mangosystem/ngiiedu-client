@@ -63,13 +63,16 @@ class MainContainer extends React.Component {
       stylePanel:false,
       stylePanelColumn:[],
       stylePanelOptions:{},
-      selectedLayerId:null
+      selectedLayerId:null,
+      raster: null,
+      vecter: null
     }
 
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
     this.onChangeEditorMode = this.onChangeEditorMode.bind(this);
     this.handleChangeStylePanel = this.handleChangeStylePanel.bind(this);
     this.openStylePanel = this.openStylePanel.bind(this);
+    this.layerLoad = this.layerLoad.bind(this);
     
   }
 
@@ -477,7 +480,7 @@ class MainContainer extends React.Component {
   openStylePanel(layerId){
     console.log('layerId'+layerId)
     //임시
-    layerId='d=r7oFXBrCYl'
+    layerId='d=KjCXc4dmy9'
     ajaxJson(
       ['GET', apiSvr + '/pngo/dataset/column/list.json?pinogioOutputId='+layerId],
       null,
@@ -520,6 +523,8 @@ class MainContainer extends React.Component {
       stylePanelOptions:styleData,
       selectedLayerId : layerId
     })  
+
+    this.layerLoad(layerId);
   }
 
   //style창 닫기
@@ -528,6 +533,27 @@ class MainContainer extends React.Component {
       stylePanel:false
     })
   }
+
+  //레이어 wms 불러오기 
+  layerLoad(layerName){
+    console.log(layerName);
+    let raster = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+          ratio: 1,
+          url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+          params: {
+            'FORMAT': 'image/png',
+            'VERSION': '1.3.0',
+            'STYLES': '',
+            'LAYERS': 'pinogio:'+layerName,
+          }
+        })
+      });
+
+      this.setState({
+          raster: raster,
+      });
+    }
 
   render() {
 
@@ -703,7 +729,9 @@ class MainContainer extends React.Component {
             </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 300 }}>
               <MapsEditorPanel
+                layerId={this.state.selectedLayerId}
                 onChangeEditMode={this.onChangeEditMode}
+                raster={this.state.raster}
               />
             </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff', display:this.state.editorMode ? 'none' :'block' }}>
