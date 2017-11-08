@@ -22,7 +22,7 @@ var _TextField2 = _interopRequireDefault(_TextField);
 
 var _transformers = require('../../../../node_modules/material-ui-color-picker/lib/transformers');
 
-var _PickerDialog = require('../../../../node_modules/material-ui-color-picker/lib/components/PickerDialog');
+var _PickerDialog = require('./PickerDialog');
 
 var _PickerDialog2 = _interopRequireDefault(_PickerDialog);
 

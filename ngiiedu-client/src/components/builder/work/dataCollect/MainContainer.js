@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { withRouter } from "react-router-dom";
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
@@ -59,16 +60,21 @@ class MainContainer extends React.Component {
       tempTabIndex: 0,
       tempIdx: 1,
       tempDescription: '',
-      stylePanel:false
+      stylePanel:false,
+      stylePanelColumn:[],
+      stylePanelOptions:{},
+      selectedLayerId:null
     }
 
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
     this.onChangeEditorMode = this.onChangeEditorMode.bind(this);
     this.handleChangeStylePanel = this.handleChangeStylePanel.bind(this);
+    this.openStylePanel = this.openStylePanel.bind(this);
     
   }
 
   componentWillMount() {
+    console.log(this.props)
   }
 
   componentDidMount() {
@@ -468,9 +474,51 @@ class MainContainer extends React.Component {
   }
 
   //style창 열기
-  openStylePanel(){
+  openStylePanel(layerId){
+    console.log('layerId'+layerId)
+    //임시
+    layerId='d=r7oFXBrCYl'
+    ajaxJson(
+      ['GET', apiSvr + '/pngo/dataset/column/list.json?pinogioOutputId='+layerId],
+      null,
+      function (data) {
+        console.dir(data)
+        let column =data.response.data.data
+      
+        this.setState({
+          stylePanelColumn:column
+        })
+
+        console.dir(data.response.data.data);
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
+
+    var styleData ={
+      "styleType":"GRADUATED",
+      "options":{
+          "columnName":"pino_id",
+          "classification":"EQ",
+          "classesNumber":3,
+          "fillPalette":"Blues",
+          "fillOpacity":0.5,
+          "strokeWidth":2,
+          "strokeColor":"#CB178C",
+          "strokeOpacity":0.5,
+          "reverse":false
+      },
+      "isClassified":false,
+      "geometryType":"MULTIPOLYGON"
+  }
+
+    
+
     this.setState({
-      stylePanel:true
+      stylePanel:true,
+      stylePanelOptions:styleData,
+      selectedLayerId : layerId
     })  
   }
 
@@ -571,7 +619,7 @@ class MainContainer extends React.Component {
                               primaryText={data.outputName}
                               initiallyOpen={true}
                               primaryTogglesNestedList={true}
-                              onClick={this.openStylePanel.bind(this)}
+                              onClick={(value)=>this.openStylePanel(data.pinogioOutputId)}
                               rightIcon={
                                 <IconMenu
                                   iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
@@ -666,6 +714,9 @@ class MainContainer extends React.Component {
                 :
                 <PointSymbolizer 
                   closePanel={this.handleChangeStylePanel}
+                  column={this.state.stylePanelColumn}
+                  styles={this.state.stylePanelOptions}
+                  layerId={this.state.selectedLayerId}
                 />
               }
             
@@ -720,4 +771,4 @@ class MainContainer extends React.Component {
   }
 };
 
-export default MainContainer;
+export default withRouter(MainContainer);

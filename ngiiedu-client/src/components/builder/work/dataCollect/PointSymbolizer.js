@@ -17,6 +17,8 @@ import Reverse from './material/Reverse.js';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
+import { cyan500 } from 'material-ui/styles/colors';
+
 
 class PointSymbolizer extends React.Component {
 
@@ -44,7 +46,11 @@ class PointSymbolizer extends React.Component {
 
 			reverse: null,
 
-			column: ['컬럼1','컬럼2']
+            column: ['컬럼1','컬럼2'],
+            layerId:null,
+
+            // randomFillColor:null,
+            // randomStrokeColor:null
 		}
 
         this.onChangeColumn = this.onChangeColumn.bind(this);
@@ -64,33 +70,60 @@ class PointSymbolizer extends React.Component {
         this.handleChangeFillOpacity = this.handleChangeFillOpacity.bind(this);
 
         this.editStyle = this.editStyle.bind(this);
+        this.styleTypeChange = this.styleTypeChange.bind(this);
         
 	}
+///
+// componentDidMount() { console.log('componentDidMount'); }
+//   shouldComponentUpdate(nextProps, nextState) { console.log('shouldComponentUpdate'); return true / false; } 
+//   componentWillUpdate(nextProps, nextState) { console.log('componentWillUpdate'); } 
+//   componentDidUpdate(prevProps, prevState) { console.log('componentDidUpdate'); } 
+//   componentWillUnmount() { console.log('componentWillUnmount'); } 
+
+
+///
+
 
 	componentWillReceiveProps(nextProps) {
-		console.debug('PointSymbolizer componentWillReceiveProps');
-	}
-
-	componentWillMount() {
-        console.debug('PointSymbolizer componentWillMount');
+        console.debug('PointSymbolizer componentWillReceiveProps');
         
-        //defaultRandomColor
-        var letters = '0123456789ABCDEF';
-        var defaultFillColor = '#';
-        var defaultStrokeColor = '#';
-        for (var i = 0; i < 6; i++) {
-            defaultFillColor += letters[Math.floor(Math.random() * 16)];
-            defaultStrokeColor += letters[Math.floor(Math.random() * 16)];
-        }        
-
-        this.setState({
-            defaultFillColor: defaultFillColor,
-            defaultStrokeColor: defaultStrokeColor
-        })
-
-		if (this.props.styles != null) {
+        console.dir(this.props.styles);
+        if (this.props.styles != null) {
+            this.setState({
+                styleType: this.props.styles.styleType != undefined ? this.props.styles.styleType : 'SINGLE',
+            })
 			let options = this.props.styles.options;
 			if (options != undefined) {
+                
+                if(options.fillColor != undefined &&options.fillOpacity != undefined ){
+                    var color = options.fillColor.replace('#','');
+                    var r = parseInt(color.substring(0,2), 16);
+                    var g = parseInt(color.substring(2,4), 16);
+                    var b = parseInt(color.substring(4,6), 16);
+                    
+                    var result = 'rgba('+r+','+g+','+b+','+options.fillOpacity+')';
+        
+                    this.setState({
+                        defaultFillColor:result
+                    })
+        
+                }
+
+                if(options.strokeColor != undefined &&options.strokeOpacity != undefined ){
+                    var color = options.strokeColor.replace('#','');
+                    var r = parseInt(color.substring(0,2), 16);
+                    var g = parseInt(color.substring(2,4), 16);
+                    var b = parseInt(color.substring(4,6), 16);
+                    
+                    var result = 'rgba('+r+','+g+','+b+','+options.strokeOpacity+')';
+        
+                    this.setState({
+                        defaultStrokeColor:result
+                    })
+        
+                }
+
+
 				this.setState({
 					markerType: options.markerType != undefined ? options.markerType : null,
 					markerSize: options.markerSize != undefined ? options.markerSize : null,
@@ -117,6 +150,27 @@ class PointSymbolizer extends React.Component {
 				column: this.props.column
 			});
 		}
+
+	}
+
+	componentWillMount() {
+        console.debug('PointSymbolizer componentWillMount');
+        
+        //defaultRandomColor
+        // var letters = '0123456789ABCDEF';
+        // var defaultFillColor = '#';
+        // var defaultStrokeColor = '#';
+        // for (var i = 0; i < 6; i++) {
+        //     defaultFillColor += letters[Math.floor(Math.random() * 16)];
+        //     defaultStrokeColor += letters[Math.floor(Math.random() * 16)];
+        // }        
+
+        // this.setState({
+        //     randomFillColor: defaultFillColor,
+        //     randomStrokeColor: defaultStrokeColor
+        // })
+
+		
 	}
 
     //Marker
@@ -125,6 +179,7 @@ class PointSymbolizer extends React.Component {
         this.setState({
             markerType:value
         })
+
     }
 
     //MarkerSize
@@ -308,7 +363,7 @@ class PointSymbolizer extends React.Component {
             let options ={
                 markerType: this.state.markerType==null ? Marker.defaultProps.value : this.state.markerType,
                 markerSize: this.state.markerSize==null ? MarkerSize.defaultProps.value : this.state.markerSize,
-                fillColor: this.state.fillColor==null ? this.state.defaultFillColor : this.state.fillColor,
+                fillColor: this.state.fillColor==null ? FillColor.defaultProps.color : this.state.fillColor,
                 fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
                 strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
                 strokeColor: this.state.strokeColor==null ? this.state.defaultStrokeColor : this.state.strokeColor,
@@ -321,13 +376,13 @@ class PointSymbolizer extends React.Component {
 
         }else if(this.state.styleType == 'GRADUATED'){
             let option = {
-                columnName: this.state.columnName ,//맨붕
+                columnName: this.state.columnName ==null? this.props.column[0] : this.state.columnName,
                 classification:this.state.classification==null ? Classification.defaultProps.value : this.state.classification,
                 classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
                 fillPalette: this.state.fillPalette==null ? FillPalette.defaultProps.fillPalette : this.state.fillPalette,
                 fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
                 strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
-                strokeColor: this.state.strokeColor==null ? this.state.defaultStrokeColor : this.state.strokeColor,
+                strokeColor: this.state.strokeColor==null ? StrokeColor.defaultProps.color : this.state.strokeColor,
                 strokeOpacity: this.state.strokeOpacity ==null ? 1 : this.state.strokeOpacity,
                 reverse: this.state.reverse ==null ? Reverse.defaultProps.value : this.state.reverse
             
@@ -339,9 +394,9 @@ class PointSymbolizer extends React.Component {
 
         }else if(this.state.styleType == 'CATEGORIES'){
             let option = {
-                columnName: this.state.columnName ,//맨붕
+                columnName: this.state.columnName ==null? this.props.column[0] : this.state.columnName,
                 strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
-                strokeColor: this.state.strokeColor==null ? this.state.defaultStrokeColor : this.state.strokeColor,
+                strokeColor: this.state.strokeColor==null ? StrokeColor.defaultProps.color : this.state.strokeColor,
                 strokeOpacity: this.state.strokeOpacity ==null ? 1 : this.state.strokeOpacity,
             
             }
@@ -351,7 +406,7 @@ class PointSymbolizer extends React.Component {
 
         }else if(this.state.styleType == 'BUBBLE'){
             let option = {
-                columnName: this.state.columnName ,//맨붕
+                columnName: this.state.columnName ==null? this.props.column[0] : this.state.columnName,
                 classification:this.state.classification==null ? Classification.defaultProps.value : this.state.classification,
                 classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
                 fillPalette: this.state.fillPalette==null ? FillPalette.defaultProps.fillPalette : this.state.fillPalette,
@@ -368,8 +423,35 @@ class PointSymbolizer extends React.Component {
         }
     }
 
-	render() {
+    styleTypeChange(styleType){
+        var options = this.props.styles.options
+        this.setState({
+            fillColor:options.fillColor !=undefined ? options.fillColor: undefined ,
+            fillOpacity:options.fillOpacity !=undefined ? options.fillOpacity: undefined ,
+            strokeColor:options.strokeColor !=undefined ? options.strokeColor: undefined ,
+            strokeOpacity:options.strokeOpacity !=undefined ? options.strokeOpacity: undefined ,
+            styleType:styleType
+        })
+    }
 
+	render() {
+        let styleStyle={
+            selected:{
+                boxSizing: 'content-box',
+                height:100,
+                minWidth:70,
+                backgroundColor:'#F6EFEF',
+                border: '3px solid',
+                borderColor: cyan500
+            },
+            unSelected:{
+                boxSizing: 'content-box',
+                height:100,
+                minWidth:70,
+                backgroundColor:'#F6EFEF',
+            }
+
+        }
 		let style = null;
 
 		if (this.state.styleType == 'SINGLE') {
@@ -394,21 +476,39 @@ class PointSymbolizer extends React.Component {
                         handleChange={this.handleChangeMarkerSize}
                     />
                     <Divider style={{marginTop:1}}/>
-                    
-                    <FillColor
-                        defaultColor={this.state.defaultFillColor}
-                        color={this.state.fillColor}
-                        opacity={this.state.fillOpacity}
-                        handleChange={this.handleChangeFillColor}
-                    />
+                    {
+                        this.state.defaultFillColor != null ?
+                            <FillColor
+                                defaultColor={this.state.defaultFillColor}
+                                color={this.state.fillColor}
+                                opacity={this.state.fillOpacity}
+                                handleChange={this.handleChangeFillColor}
+                            />
+                            :
+                            <FillColor
+                                defaultColor={'#3182bd'}
+                                color={this.state.fillColor}
+                                opacity={this.state.fillOpacity}
+                                handleChange={this.handleChangeFillColor}
+                            />
+                    }
                     <Divider style={{marginTop:1}}/>
-                    
-                    <StrokeColor
-                        defaultColor={this.state.defaultStrokeColor}
-                        color={this.state.strokeColor}
-                        opacity={this.state.strokeOpacity}
-                        handleChange={this.handleChangeStrokeColor}
-                    />
+                    {
+                        this.state.defaultStrokeColor != null?
+                        <StrokeColor
+                            defaultColor={this.state.defaultStrokeColor}
+                            color={this.state.strokeColor}
+                            opacity={this.state.strokeOpacity}
+                            handleChange={this.handleChangeStrokeColor}
+                        />
+                        :
+                        <StrokeColor
+                            defaultColor={'#3182bd'}
+                            color={this.state.strokeColor}
+                            opacity={this.state.strokeOpacity}
+                            handleChange={this.handleChangeStrokeColor}
+                        />
+                    }
 
                     <Divider style={{marginTop:1}}/>
                     
@@ -427,9 +527,8 @@ class PointSymbolizer extends React.Component {
 			// outlineOpacity, outlineWidth, outlineColor, reverse
 			style = (
 				<Paper zDepth={0} style={{fontSize:13}}>
-                     
                     <Column
-                        column={this.state.column}
+                        column={this.props.column}
                         value={this.state.columnName}
                         onChange={this.onChangeColumn}
                         handleChange={this.handleChangeColumn}
@@ -464,12 +563,22 @@ class PointSymbolizer extends React.Component {
                     />
                     <Divider style={{marginTop:1}}/>
                     
-                    <StrokeColor
-                        defaultColor={this.state.defaultStrokeColor}
-                        color={this.state.strokeColor}
-                        opacity={this.state.strokeOpacity}
-                        handleChange={this.handleChangeStrokeColor}
-                    />
+                    {
+                        this.state.defaultStrokeColor != null?
+                        <StrokeColor
+                            defaultColor={this.state.defaultStrokeColor}
+                            color={this.state.strokeColor}
+                            opacity={this.state.strokeOpacity}
+                            handleChange={this.handleChangeStrokeColor}
+                        />
+                        :
+                        <StrokeColor
+                            defaultColor={'#3182bd'}
+                            color={this.state.strokeColor}
+                            opacity={this.state.strokeOpacity}
+                            handleChange={this.handleChangeStrokeColor}
+                        />
+                    }
                     <Divider style={{marginTop:1}}/>
 
                     <Reverse 
@@ -500,16 +609,27 @@ class PointSymbolizer extends React.Component {
                     />
                     <Divider style={{marginTop:1}}/>
 
-                    <StrokeColor
-                        defaultColor={this.state.defaultStrokeColor}
-                        color={this.state.strokeColor}
-                        opacity={this.state.strokeOpacity}
-                        handleChange={this.handleChangeStrokeColor}
-                    />
+                    {
+                        this.state.defaultStrokeColor != null?
+                        <StrokeColor
+                            defaultColor={this.state.defaultStrokeColor}
+                            color={this.state.strokeColor}
+                            opacity={this.state.strokeOpacity}
+                            handleChange={this.handleChangeStrokeColor}
+                        />
+                        :
+                        <StrokeColor
+                            defaultColor={'#3182bd'}
+                            color={this.state.strokeColor}
+                            opacity={this.state.strokeOpacity}
+                            handleChange={this.handleChangeStrokeColor}
+                        />
+                        
+                    }
 
                 </Paper>
 			);
-
+            
 		} else if (this.state.styleType == 'BUBBLE') {
 			style = (
 				<Paper zDepth={0} style={{fontSize:13}}>
@@ -561,7 +681,7 @@ class PointSymbolizer extends React.Component {
             )
 		}
 
-       
+      
 
 		return (
             <div style={{paddingTop:10,paddingLeft:10,paddingRight:10}}>
@@ -569,30 +689,39 @@ class PointSymbolizer extends React.Component {
                     <h2>스타일 도구</h2>
                 </Paper>   
 
-                <Paper zDepth={0} style={{paddingBottom: 10,display:'flex',widht:'100%',overflowY:'auto',fontSize:12}}>
-                    <div style={{height:100,minWidth:70,backgroundColor:'#F6EFEF'}} onClick={()=>this.setState({styleType:'SINGLE'})}>
-                        <img src='/assets/images/single.png' style={{width:70,height:70}}></img>
+                <Paper zDepth={0} style={{padding:3,paddingBottom: 10,display:'flex',widht:100,overflowY:'auto',fontSize:12,height:135}}>
+                    <Paper style={this.state.styleType=='SINGLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('SINGLE') }>
+                        <img src="/assets/images/single.png" style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단일심볼</div>
-                    </div>
-                    <div style={{height:100,minWidth:70,backgroundColor:'#F6EFEF',marginLeft:10}} onClick={()=>this.setState({styleType:'GRADUATED'})}>
+                    </Paper>
+                    <Paper style={this.state.styleType=='GRADUATED'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('GRADUATED') }>
                         <img src='/assets/images/graduated.png' style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단계구분</div>
-                    </div>
-                    <div style={{height:100,minWidth:70,backgroundColor:'#F6EFEF',marginLeft:10}} onClick={()=>this.setState({styleType:'CATEGORIES'})}>
+                    </Paper>
+                    <Paper style={this.state.styleType=='CATEGORIES'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('CATEGORIES') }>
                         <img src='/assets/images/categories.png' style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>분류값사용</div>
-                    </div>
-                    <div style={{height:100,minWidth:70,backgroundColor:'#F6EFEF',marginLeft:10}} onClick={()=>this.setState({styleType:'BUBBLE'})}>
+                    </Paper>
+                    <Paper style={this.state.styleType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('BUBBLE') }>
                         <img src='/assets/images/bubble.png' style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>거품형지도</div>
-                    </div>
-                    <div style={{height:100,minWidth:70,backgroundColor:'#F6EFEF',marginLeft:10}} onClick={()=>this.setState({styleType:'HEATMAP'})}>
+                    </Paper>
+                    <Paper style={this.state.styleType=='HEATMAP'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('HEATMAP') }>
                         <img src='/assets/images/heatmap.png' style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>온도지도</div>
-                    </div>
+                    </Paper>
                 </Paper>
                 {style}
                 
+                <RaisedButton 
+                    label="취 소" 
+                    style={{
+                        marginTop:'10%',
+                        marginLeft:'10%',
+                        width:'30%'
+                    }}
+                    onClick={this.props.closePanel}
+                />
                 <RaisedButton 
                     label="적 용" 
                     style={{
@@ -603,15 +732,6 @@ class PointSymbolizer extends React.Component {
                     onClick={this.editStyle}
                 />
 
-                <RaisedButton 
-                    label="취 소" 
-                    style={{
-                        marginTop:'10%',
-                        marginLeft:'10%',
-                        width:'30%'
-                    }}
-                    onClick={this.props.closePanel}
-                />
 
             </div>
 
@@ -621,7 +741,8 @@ class PointSymbolizer extends React.Component {
 };
 
 PointSymbolizer.defaultProps = {
-    styleType :'SINGLE'
+    styleType :'SINGLE',
+    layerId : null
 }
 
 export default PointSymbolizer;

@@ -13,6 +13,7 @@ class Column extends React.Component {
     }
 
 	componentWillMount() {
+		console.log('column componentWillMount');
         let column = [];
         
 		this.props.column.map((value) => {
@@ -41,13 +42,16 @@ class Column extends React.Component {
                 </Paper>
 				<Paper zDepth={0} style={{width:'50%'}}>
 				
-				<DropDownMenu value={this.props.value == null ? this.state.column[0].value : this.props.value} 
+				<DropDownMenu value={this.props.value == null ? (this.state.column.length==0 ? null : this.state.column[0].value) : this.props.value} 
 					onChange={this.props.handleChange} 
 					style={{width: '100%'}}
 					underlineStyle={{display:'none'}}
 					labelStyle={{paddingLeft:10}}
 				>
-                    {this.state.column.map((row,index)=>(
+                    {this.state.column.length==0 ? 
+						<MenuItem  value={null} primaryText={'없음'}/>
+						:
+						this.state.column.map((row,index)=>(
                         <MenuItem key={index} value={row.value} primaryText={row.text}/>
                     ))}
 				</DropDownMenu>
