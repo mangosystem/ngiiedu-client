@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 
-class MapsEditorPanel extends React.Component {
+class MapsPreviewPanel extends React.Component {
 
   constructor(props){
     super(props);
@@ -36,7 +36,7 @@ class MapsEditorPanel extends React.Component {
           altShiftDragRotate: false, doubleClickZoom: true,
           dragPan: true, pinchRotate: false,
           pinchZoom: false, keyboard: false,
-          mouseWheelZoom: false, shiftDragZoom: true
+          mouseWheelZoom: true, shiftDragZoom: true
         })
       }),
 
@@ -47,82 +47,107 @@ class MapsEditorPanel extends React.Component {
 
   }
 
+  componentWillReceiveProps(nextProp){
+    console.log('componentWillReceiveProps : ')
+    console.dir(nexProps.raster)
+    this.setState({
+      layers: {
+        raster: nexProps.raster,
+        // vector: vector
+      }
+    });
+      
+  }
+
   componentWillMount() {
-
-    let raster = new ol.layer.Image({
-      source: new ol.source.ImageWMS({
-        ratio: 1,
-        url: 'http://localhost:8080/geoserver/mnd/wms',
-        // url: 'http://1.234.82.19:8083/geoserver/ngiiedu/wms',
-        params: {
-          'FORMAT': 'image/png',
-          'VERSION': '1.3.0',
-          'STYLES': '',
-          'LAYERS': 'mnd:kob_pa_emd',
-        }
-      })
+    console.log('componentWillReceiveProps : ')
+    console.dir(this.props.raster)
+    this.setState({
+      layers: {
+        raster: this.props.raster,
+        // vector: vector
+      }
     });
+    
+    
+    // let raster = new ol.layer.Image({
+    //   source: new ol.source.ImageWMS({
+    //     ratio: 1,
+    //     url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+    //     params: {
+    //       'FORMAT': 'image/png',
+    //       'VERSION': '1.3.0',
+    //       'STYLES': '',
+    //       'LAYERS': 'pinogio:'+this.props.layerId,
+    //       // 'LAYERS': 'pinogio:d=KjCXc4dmy9',
+    //     }
+    //   })
+    // });
 
-    let vector = new ol.layer.Vector({
-      visible: false,
-      style: new ol.style.Style({
-				fill: new ol.style.Fill({ color: '#333' }),
-				stroke: new ol.style.Stroke({ color: 'rgba(255, 122, 74, 1)', width: 5 }),
-				image: new ol.style.Circle({
-          fill: new ol.style.Fill({ color: '#888' }),
-          stroke: new ol.style.Stroke({ color: '#555', width: 5 }),
-          radius: 10
-        })
-			}),
-      source: new ol.source.Vector({
-	      format: new ol.format.GeoJSON(),
-				loader: function(extent, resolution, projection) {
-          // let url = 'http://localhost:8080/geoserver/mnd/wms?request=GetFeature' +
-					let url = 'http://1.234.82.19:8083/geoserver/ngiiedu/wfs?request=GetFeature' +
-						'&version=1.0.0' +
-						'&typeName=ngiiedu:dataset_test1' +
-						'&srsName=EPSG:3857' +
-						'&bbox=' + extent.join(',') + ',' + 'urn:ogc:def:crs:EPSG:3857' +
-						'&outputFormat=text/javascript' +
-						'&format_options=callback:loadFeatures';
+    // console.dir(raster)
+    
+    // let vector = new ol.layer.Vector({
+    //   visible: false,
+    //   style: new ol.style.Style({
+		// 		fill: new ol.style.Fill({ color: '#333' }),
+		// 		stroke: new ol.style.Stroke({ color: 'rgba(255, 122, 74, 1)', width: 5 }),
+		// 		image: new ol.style.Circle({
+    //       fill: new ol.style.Fill({ color: '#888' }),
+    //       stroke: new ol.style.Stroke({ color: '#555', width: 5 }),
+    //       radius: 10
+    //     })
+		// 	}),
+    //   source: new ol.source.Vector({
+	  //     format: new ol.format.GeoJSON(),
+		// 		loader: function(extent, resolution, projection) {
+    //       // let url = 'http://localhost:8080/geoserver/mnd/wms?request=GetFeature' +
+		// 			let url = 'http://1.234.82.19:8083/geoserver/pinogio/wfs?request=GetFeature' +
+		// 				'&version=1.0.0' +
+		// 				'&typeName=pinogio:d=KjCXc4dmy9' +
+		// 				'&srsName=EPSG:3857' +
+		// 				'&bbox=' + extent.join(',') + ',' + 'urn:ogc:def:crs:EPSG:3857' +
+		// 				'&outputFormat=text/javascript' +
+		// 				'&format_options=callback:loadFeatures';
 
-					$.ajax({
-						url: url,
-						method: 'GET',
-						jsonpCallback: 'loadFeatures',
-						dataType: 'jsonp',
-						success: function(response) {
-              let feature = new ol.format.GeoJSON().readFeatures(response);
+		// 			$.ajax({
+		// 				url: url,
+		// 				method: 'GET',
+		// 				jsonpCallback: 'loadFeatures',
+		// 				dataType: 'jsonp',
+		// 				success: function(response) {
+    //           let feature = new ol.format.GeoJSON().readFeatures(response);
 
-              console.log(feature);
+    //           console.log(feature);
 
-              vector.getSource().addFeatures(feature);
-            }
-					});
-				}.bind(this),
-	      strategy: ol.loadingstrategy.bbox
-	    })
-    });
+    //           vector.getSource().addFeatures(feature);
+    //         }
+		// 			});
+		// 		}.bind(this),
+	  //     strategy: ol.loadingstrategy.bbox
+	  //   })
+    // });
 
     
 
-    this.setState({
-      layers: {
-        raster: raster,
-        vector: vector
-      }
-    });
-
+    // this.setState({
+      // layers: {
+    //     raster: raster,
+        // vector: vector
+      // }
+    // });
+    
   }
-
+  
   componentDidMount() {
+    // map.addLayer(layers.vector);
     let { map } = this.state;
-    let { layers } = this.state;
-
+    let layers = this.state.layers;
+    let { interactions } = this.state;
+    
+  
     map.setTarget('mapView');
-
-    map.addLayer(layers.raster);
-    map.addLayer(layers.vector);
+  
+    map.addLayer(this.props.raster);
 
     //컬럼명 받아오기
 
@@ -158,7 +183,7 @@ class MapsEditorPanel extends React.Component {
         <div id="mapView" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
         
         <div style={{position:'absolute',right:200,bottom:200,zIndex:1}}>
-        <img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=mnd:kob_pa_emd"/>
+        <img src="http://1.234.82.19:8083/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:d=KjCXc4dmy9"/>
         </div>
         </div>
     </div>
@@ -167,4 +192,4 @@ class MapsEditorPanel extends React.Component {
   }
 };
 
-export default MapsEditorPanel;
+export default MapsPreviewPanel;

@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 
-class MapsEditorPanel extends React.Component {
+class MapsPreviewPanel extends React.Component {
 
   constructor(props){
     super(props);
@@ -41,101 +41,59 @@ class MapsEditorPanel extends React.Component {
       }),
 
       layers: {
-        raster: null, vector: null
+        raster: null
       }
     };
 
   }
 
   componentWillMount() {
-
-    let raster = new ol.layer.Image({
-      source: new ol.source.ImageWMS({
-        ratio: 1,
-        // url: 'http://localhost:8080/geoserver/mnd/wms',
-        url: 'http://1.234.82.19:8083/geoserver/ngiiedu/wms',
-        params: {
-          'FORMAT': 'image/png',
-          'VERSION': '1.3.0',
-          'STYLES': '',
-          'LAYERS': 'mnd:kob_pa_emd',
-        }
-      })
-    });
-
-    let vector = new ol.layer.Vector({
-      visible: false,
-      style: new ol.style.Style({
-				fill: new ol.style.Fill({ color: '#333' }),
-				stroke: new ol.style.Stroke({ color: 'rgba(255, 122, 74, 1)', width: 5 }),
-				image: new ol.style.Circle({
-          fill: new ol.style.Fill({ color: '#888' }),
-          stroke: new ol.style.Stroke({ color: '#555', width: 5 }),
-          radius: 10
-        })
-			}),
-      source: new ol.source.Vector({
-	      format: new ol.format.GeoJSON(),
-				loader: function(extent, resolution, projection) {
-          // let url = 'http://localhost:8080/geoserver/mnd/wms?request=GetFeature' +
-					let url = 'http://1.234.82.19:8083/geoserver/ngiiedu/wfs?request=GetFeature' +
-						'&version=1.0.0' +
-						'&typeName=ngiiedu:dataset_test1' +
-						'&srsName=EPSG:3857' +
-						'&bbox=' + extent.join(',') + ',' + 'urn:ogc:def:crs:EPSG:3857' +
-						'&outputFormat=text/javascript' +
-						'&format_options=callback:loadFeatures';
-
-					$.ajax({
-						url: url,
-						method: 'GET',
-						jsonpCallback: 'loadFeatures',
-						dataType: 'jsonp',
-						success: function(response) {
-              let feature = new ol.format.GeoJSON().readFeatures(response);
-
-              console.log(feature);
-
-              vector.getSource().addFeatures(feature);
-            }
-					});
-				}.bind(this),
-	      strategy: ol.loadingstrategy.bbox
-	    })
-    });
-
-    
-
+    //초기 데이터 지정
+    let raster=this.props.raster;
     this.setState({
       layers: {
-        raster: raster,
-        vector: vector
+        raster: raster
       }
-    });
-
+    })
+    
   }
+  
 
   componentDidMount() {
+    //초기 맵 지정
     let { map } = this.state;
     let { layers } = this.state;
-
-    map.setTarget('mapView');
-
+    console.dir(layers)
     map.addLayer(layers.raster);
-    map.addLayer(layers.vector);
-
+    map.setTarget('mapView');
   }
 
+  componentWillReceiveProps(nextProps){
+    console.log("componentWillReceiveProps: ");
+    console.dir(this.props.raster)
+
+    //새로받은 레이어를 비교
+    if(this.props.raster != null){
+      let { map } = this.state;
+      //기존 레이어를 삭제
+      map.removeLayer(this.props.raster);
+      //새로운 레이어를 추가
+      map.addLayer(nextProps.raster);
+    }
+}
+  
+  
 
   render() {
     return (
+      
       <div id="mapView" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
-        <div style={{position:'absolute',right:200,bottom:200,zIndex:1}}>
-          <img src="http://localhost:8080/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=mnd:kob_pa_emd"/>
+        <div style={{position:'absolute',right:200,bottom:200,zIndex:1}} >
+          <img src="http://1.234.82.19:8083/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:d=KjCXc4dmy9"/>
         </div>
       </div>
     );
   }
 };
 
-export default MapsEditorPanel;
+export default MapsPreviewPanel;

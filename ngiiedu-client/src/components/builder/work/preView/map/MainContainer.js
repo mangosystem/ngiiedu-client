@@ -14,8 +14,8 @@ class MainContainer extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        viewStyle:'ACCORDION', //TAP,ACCORDION 
-        // viewStyle:'TAP', //TAP,ACCORDION 
+        selectedLayerId :'d=KjCXc4dmy9',
+        raster : null,
         mapData:{
             title:'피노지오결과물id'
         },
@@ -26,10 +26,26 @@ class MainContainer extends React.Component {
   
 
   componentWillMount() {
+    let raster = new ol.layer.Image({
+      source: new ol.source.ImageWMS({
+        ratio: 1,
+        url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+        params: {
+          'FORMAT': 'image/png',
+          'VERSION': '1.3.0',
+          'STYLES': '',
+          'LAYERS': 'pinogio:'+this.state.selectedLayerId,
+          // 'LAYERS': 'pinogio:d=KjCXc4dmy9',
+        }
+      })
+    });
+
+    this.setState({
+      raster:raster
+    })
+
   }
 
-  componentDidMount() {
-  }
 
   render() {
    
@@ -45,9 +61,10 @@ class MainContainer extends React.Component {
           </div>
         </header>
         <main>
-            <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0,right:0 }}>
+            <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0,right:0 }}>
                 <MapsPreviewPanel 
-                    LayerName={this.state.selectedLayerName}
+                    layerName={this.state.selectedLayerId}
+                    raster={this.state.raster}
                 />
             </div>
         </main>

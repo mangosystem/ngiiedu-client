@@ -16,12 +16,12 @@ class MainContainer extends React.Component {
     this.state={
         viewStyle:'ACCORDION', //TAP,ACCORDION 
         // viewStyle:'TAP', //TAP,ACCORDION 
-        storyMapData:{
+        storyMapData:{ 
             title:'모바일 기기를 활용한 우리 지역 소음원 현장 조사',
             selectedLayerName:'ngiiedu:dataset_test1',
             step:[
                 {   
-                    layerName:'ngiiedu:dataset_test1',
+                    layerName:'d=KjCXc4dmy9',
                     tapTitle:'데이터 수집방법',
                     content:'내용1',
                 },
@@ -42,37 +42,80 @@ class MainContainer extends React.Component {
                 },
             ],
         },
-        selectedMenuIndex : 0
+        selectedMenuIndex : 0,
+        raster:null
     }
 
     this.handleChangeTap = this.handleChangeTap.bind(this);
     this.handleChangeAccordion = this.handleChangeAccordion.bind(this);
+    this.layerLoad = this.layerLoad.bind(this);
   }
 
-    handleChangeTap(index){
+    handleChangeTap(layerName,index){
+        if(index==this.state.selectedMenuIndex){
+            // index=-1;
+        }else{
+            this.layerLoad(layerName);
+            
+    
+            this.setState({
+                selectedLayerName:layerName
+            })
+        }
+        
         this.setState({
             selectedMenuIndex:index
         })
 
     }
 
-  handleChangeAccordion(index){
+  handleChangeAccordion(layerName,index){
     if(index==this.state.selectedMenuIndex){
-        index=-1;
+        // index=-1;
+    }else{
+        this.layerLoad(layerName);
+        
+
+        this.setState({
+            selectedLayerName:layerName
+        })
     }
     
     this.setState({
         selectedMenuIndex:index
     })
 
-    console.log(index);
 
 }
 
   componentWillMount() {
+
+    if(this.state.storyMapData.step.length !=0){
+        this.layerLoad(this.state.storyMapData.step[0].layerName);
+    }
   }
 
   componentDidMount() {
+  }
+
+  layerLoad(layerName){
+      console.log(layerName);
+    let raster = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+          ratio: 1,
+          url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+          params: {
+            'FORMAT': 'image/png',
+            'VERSION': '1.3.0',
+            'STYLES': '',
+            'LAYERS': 'pinogio:'+layerName,
+          }
+        })
+      });
+
+      this.setState({
+          raster: raster,
+      });
   }
 
   render() {
@@ -101,7 +144,7 @@ class MainContainer extends React.Component {
                 {this.state.storyMapData.step.map((row,index) => (
                     <Tab label={row.tapTitle}
                         key={index}
-                        onActive={()=>this.handleChangeTap(index)}
+                        onActive={(layerName)=>this.handleChangeTap(row.layerName,index)}
                     >
                     <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
                         {row.content}
@@ -116,7 +159,7 @@ class MainContainer extends React.Component {
                     <Card 
                     key={index}
                     expanded={this.state.selectedMenuIndex==index}
-                    onExpandChange={()=>this.handleChangeAccordion(index)}
+                    onExpandChange={(layerName)=>this.handleChangeAccordion(row.layerName,index)}
                 >
                     <CardHeader
                     title={row.tapTitle}
@@ -134,7 +177,8 @@ class MainContainer extends React.Component {
             }
             <div style={{ position: 'absolute', top:this.state.viewStyle=='TAP'? 50 : 0, bottom: 0, left: 300,right:0 }}>
                 <MapsPreviewPanel 
-                    LayerName={this.state.selectedLayerName}
+                    layerId={this.state.selectedLayerName}
+                    raster={this.state.raster}
                 />
             </div>
             
