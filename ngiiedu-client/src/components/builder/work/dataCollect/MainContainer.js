@@ -55,9 +55,10 @@ class MainContainer extends React.Component {
       isStoryTabMode: false,
       tempTitle: '',
       tempIndex: 0,
-      tabIndex: 0,
+      tabIndex: 20,
       tempTabIndex: 0,
       tempIdx: 1,
+      tempDescription: '',
       stylePanel:false
     }
 
@@ -78,29 +79,32 @@ class MainContainer extends React.Component {
       function (data) {
 
         const workSubData = JSON.parse(JSON.stringify(data)).response.data;
-
-        for (let i in workSubData) {
-          workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"}); 
-        }
-
-        console.log(workSubData);
-        
+      
         //tab : 서버에서 데이터작업 되기전까지 임시데이터
         for (let i in workSubData) {
           
           if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
             
             for (let j in workSubData[i].courseWorkSubOutputInfoList) {              
+              
               // 템플릿 종류
               workSubData[i].courseWorkSubOutputInfoList[j].template = "tab"
-
-              //탭
-              workSubData[i].courseWorkSubOutputInfoList[j].tab = [];
-              workSubData[i].courseWorkSubOutputInfoList[j].tab.push({title: "임시데이터", index: this.state.tabIndex++});
+              
+              //탭              
+              workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items.unshift({ title: "임시데이터" });
+                           
+              //workSubData[i].courseWorkSubOutputInfoList[j].tab = [];
+              //workSubData[i].courseWorkSubOutputInfoList[j].tab.push({title: "임시데이터", index: this.state.tabIndex++});
             }
           } 
         }
+
+        for (let i in workSubData) {
+          workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"}); 
+        }
         
+        console.log(workSubData);
+
         let subjectMap = workSubData.filter(val => (val.moduleWorkSubName == '주제지도 만들기'))[0].courseWorkSubOutputInfoList;
         
         this.setState({
@@ -228,11 +232,11 @@ class MainContainer extends React.Component {
         if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
           for (let j in workSubData[i].courseWorkSubOutputInfoList) {
             if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
-              for (let k in workSubData[i].courseWorkSubOutputInfoList[j].tab) {
-                if (workSubData[i].courseWorkSubOutputInfoList[j].tab[k].index == tempTabIndex) {
+              for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
+                if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
   
                   let temp = workSubData;
-                  temp[i].courseWorkSubOutputInfoList[j].tab.splice(k, 1);
+                  temp[i].courseWorkSubOutputInfoList[j].pngoData.items.splice(k, 1);
   
                   this.setState({
                     workSubData: temp
@@ -319,11 +323,12 @@ class MainContainer extends React.Component {
         for (let j in workSubData[i].courseWorkSubOutputInfoList) {
           if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
 
-            let temp = { title: title, index: this.state.tabIndex++, type: type };
+            let temp = { title: title, id: this.state.tabIndex++, type: type, description: "" };
             let newData = workSubData;
-            newData[i].courseWorkSubOutputInfoList[j].tab.push(temp);
+            newData[i].courseWorkSubOutputInfoList[j].pngoData.items.push(temp);
             this.setState({
-              workSubData: newData
+              workSubData: newData,
+              tempTabIndex: temp.id
             });
           }
         }
@@ -331,7 +336,8 @@ class MainContainer extends React.Component {
     }
 
     this.setState({
-      editorMode: true
+      editorMode: true,
+      tempDescription: ""
     });
 
       
@@ -345,12 +351,12 @@ class MainContainer extends React.Component {
       if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
         for (let j in workSubData[i].courseWorkSubOutputInfoList) {
           if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
-            for (let k in workSubData[i].courseWorkSubOutputInfoList[j].tab) {
-              if (workSubData[i].courseWorkSubOutputInfoList[j].tab[k].index == tempTabIndex) {
+            for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
+              if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
 
                 let temp = workSubData;
-                temp[i].courseWorkSubOutputInfoList[j].tab[k].title = title;
-                temp[i].courseWorkSubOutputInfoList[j].tab[k].type = type;
+                temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].title = title;
+                temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].type = type;
 
                 this.setState({
                   workSubData: temp
@@ -363,6 +369,35 @@ class MainContainer extends React.Component {
       }
     }
     
+
+  }
+
+  modifyDescription(contents) {
+
+    let { workSubData, tempIndex, tempTabIndex } = this.state;
+
+    this.setState({ tempDescription: contents });
+    
+    for (let i in workSubData) {
+      if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+            for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
+              if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
+
+                let temp = workSubData;
+                temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].description = contents;
+
+                this.setState({
+                  workSubData: temp
+                });
+
+              }
+            }
+          }
+        }
+      }
+    }
 
   }
 
@@ -575,7 +610,7 @@ class MainContainer extends React.Component {
                                 </IconMenu>
                             }
                             nestedItems={
-                              data.tab.map((r, j) => {
+                              data.pngoData.items.map((r, j) => {
 
                                 if (j == 0) {
                                   return (
@@ -601,9 +636,9 @@ class MainContainer extends React.Component {
                                         targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                                         style={{display: 'flex', alignItems: 'center'}}
                                       >
-                                        <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, tempIdx: r.type, mode: 'edit' })}/>
-                                        <MenuItem primaryText="컨텐츠 입력" onClick={() => this.setState({editorMode: true })}/>
-                                        <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.index, isStoryTabMode: true})}/>
+                                        <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, tempIdx: r.type, mode: 'edit' })}/>
+                                        <MenuItem primaryText="컨텐츠 입력" onClick={(index, j) => this.setState({editorMode: true, tempDescription: r.description, tempIndex: data.idx, tempTabIndex: r.id })}/>
+                                        <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, isStoryTabMode: true})}/>
                                       </IconMenu>
                                     }
                                   />
@@ -639,6 +674,8 @@ class MainContainer extends React.Component {
               <EditorPanel
                 editorMode={this.state.editorMode}
                 onChangeEditorMode={this.onChangeEditorMode}
+                description={this.state.tempDescription}
+                modifyDescription={this.modifyDescription.bind(this)}
               />
             </div>
             <NewMap

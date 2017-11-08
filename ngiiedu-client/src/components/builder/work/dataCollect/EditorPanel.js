@@ -15,21 +15,63 @@ class EditorPanel extends React.Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      oEditors: []
+    };
+
+  }
+
+  componentWillReceiveProps(nextProps){
+
+    const { oEditors } = this.state;
+
+    if (oEditors.getById) {
+      oEditors.getById["smarteditor"].exec("SET_IR", [""]); //내용초기화 
+      oEditors.getById["smarteditor"].exec("PASTE_HTML", [nextProps.description]);
+    }
+
   }
   
   componentDidMount() {
-
-    var oEditors = [];  
+    
+    var oEditors = this.state.oEditors;
     
     nhn.husky.EZCreator.createInIFrame({
         oAppRef: oEditors,
-        elPlaceHolder: "ir1",
+        elPlaceHolder: "smarteditor",
         sSkinURI: "/ngiiedu/assets/cdn/editor/SmartEditor2Skin.html",
+        // sSkinURI: "/assets/cdn/editor/SmartEditor2Skin.html",
         fCreator: "createSEditor2"
     });
-
+    
   }
 
+  submit() {
+
+    var oEditors = this.state.oEditors;
+
+    oEditors.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
+
+    this.validation();
+    //this.props.modifyDescription(contents);
+    
+    
+  }
+  
+  
+  validation() {
+    
+    var oEditors = this.state.oEditors;
+    
+    var contents = $.trim(oEditors[0].getContents()); 
+    
+    console.log("validation() : ");
+    console.log(contents);
+    
+    this.props.modifyDescription(contents);
+    this.props.onChangeEditorMode();
+
+  }
 
   render() {
 
@@ -50,11 +92,11 @@ class EditorPanel extends React.Component {
         </Paper>
         <Paper zDepth={0} style={{ width: '270px', height: '90%' }}>
           <textarea 
-            name="ir1" 
-            id="ir1" 
+            name="smarteditor" 
+            id="smarteditor" 
             rows="50" 
             cols="35" 
-            defaultValue="에디터에 기본으로 삽입할 글(수정 모드)이 없다면 이 value 값을 지정하지 않으시면 됩니다."
+            defaultValue={this.props.description}
             style={{ minWidth: '260px', height: '600px', MaxHeight: '600px' }}
           ></textarea>
           <div style={{ textAlign: 'right', marginTop: '20px' }}>
@@ -66,6 +108,7 @@ class EditorPanel extends React.Component {
               label="적용"
               backgroundColor={cyan500}
               style={{color: 'white'}}
+              onClick={this.validation.bind(this)}
             />
           </div>
         </Paper>
