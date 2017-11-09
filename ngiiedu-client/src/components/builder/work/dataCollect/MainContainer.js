@@ -88,7 +88,7 @@ class MainContainer extends React.Component {
     const sortingField = "id";
 
     ajaxJson(
-      ['GET', apiSvr + '/courses/' + 12 + '/workSubData.json'],
+      ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
       null,
       function (data) {
 
@@ -101,9 +101,6 @@ class MainContainer extends React.Component {
           if (workSubData[i].outputType == "maps") {
             
             for (let j in workSubData[i].courseWorkSubOutputInfoList) {              
-              
-              // 템플릿 종류
-              //workSubData[i].courseWorkSubOutputInfoList[j].template = "tab"
 
               let metadata = JSON.parse(workSubData[i].courseWorkSubOutputInfoList[j].pngoData.metadata);
               workSubData[i].courseWorkSubOutputInfoList[j].pngoData.metadata = metadata;
@@ -124,22 +121,21 @@ class MainContainer extends React.Component {
         
         console.log(workSubData);
 
-        if (Array.isArray(workSubData)) {
+        try {
           let subjectMap = workSubData.filter(val => (val.outputType == 'layer'))[0].courseWorkSubOutputInfoList;
           
           this.setState({
-            workSubData: workSubData,
             subjectMap: subjectMap
           });
-        } else {
+        } catch (error) {
           
-          let tempData = [];
-
-          this.setState({
-            workSubData: workSubData
-          });
-
         }
+
+        this.setState({
+          workSubData: workSubData
+        });
+
+        
 
         
         
