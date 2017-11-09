@@ -58,7 +58,6 @@ class SelectMap extends React.Component {
             />
         ];
 
-
         return (
             <div>
                 <Dialog

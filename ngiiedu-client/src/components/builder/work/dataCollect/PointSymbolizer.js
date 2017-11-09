@@ -723,23 +723,23 @@ class PointSymbolizer extends React.Component {
 
                 <Paper zDepth={0} style={{padding:3,paddingBottom: 10,display:'flex',widht:100,overflowY:'auto',fontSize:12,height:135}}>
                     <Paper style={this.state.styleType=='SINGLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('SINGLE') }>
-                        <img src="/ngiiedu/assets/images/single.png" style={{width:70,height:70}}></img>
+                        <img src="/ngiiedu/assets/images/single.png" style={{width:70,height:70}} alt="SINGLE"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단일심볼</div>
                     </Paper>
                     <Paper style={this.state.styleType=='GRADUATED'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('GRADUATED') }>
-                        <img src='/ngiiedu/assets/images/graduated.png' style={{width:70,height:70}}></img>
+                        <img src='/ngiiedu/assets/images/graduated.png' style={{width:70,height:70}} alt="GRADUATED"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단계구분</div>
                     </Paper>
                     <Paper style={this.state.styleType=='CATEGORIES'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('CATEGORIES') }>
-                        <img src='/ngiiedu/assets/images/categories.png' style={{width:70,height:70}}></img>
+                        <img src='/ngiiedu/assets/images/categories.png' style={{width:70,height:70}} alt="CATEGORIES"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>분류값사용</div>
                     </Paper>
                     <Paper style={this.state.styleType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('BUBBLE') }>
-                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}}></img>
+                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="BUBBLE"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>거품형지도</div>
                     </Paper>
                     <Paper style={this.state.styleType=='HEATMAP'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('HEATMAP') }>
-                        <img src='/ngiiedu/assets/images/heatmap.png' style={{width:70,height:70}}></img>
+                        <img src='/ngiiedu/assets/images/heatmap.png' style={{width:70,height:70}} alt="HEATMAP"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>온도지도</div>
                     </Paper>
                 </Paper>

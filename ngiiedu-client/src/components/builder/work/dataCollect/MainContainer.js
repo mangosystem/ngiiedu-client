@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { withRouter } from "react-router-dom";
+
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
@@ -58,8 +58,10 @@ class MainContainer extends React.Component {
       tempIndex: 0,
       tabIndex: 20,
       tempTabIndex: 0,
-      tempIdx: 1,
+      tempIdx: 2,
       tempDescription: '',
+      tempMapsId: "",
+      tempOutputTypeIdx: 0,
       stylePanel:false,
       stylePanelColumn:[],
       stylePanelOptions:{},
@@ -77,10 +79,13 @@ class MainContainer extends React.Component {
   }
 
   componentWillMount() {
-    console.log(this.props)
   }
 
   componentDidMount() {
+
+    const courseId = this.props.match.params.COURSEID;
+    const workId = this.props.match.params.workId;
+    const sortingField = "id";
 
     ajaxJson(
       ['GET', apiSvr + '/courses/' + 12 + '/workSubData.json'],
@@ -88,38 +93,56 @@ class MainContainer extends React.Component {
       function (data) {
 
         const workSubData = JSON.parse(JSON.stringify(data)).response.data;
+        let tempIdx = 0;
       
         //tab : 서버에서 데이터작업 되기전까지 임시데이터
         for (let i in workSubData) {
           
-          if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+          if (workSubData[i].outputType == "maps") {
             
             for (let j in workSubData[i].courseWorkSubOutputInfoList) {              
               
               // 템플릿 종류
-              workSubData[i].courseWorkSubOutputInfoList[j].template = "tab"
+              //workSubData[i].courseWorkSubOutputInfoList[j].template = "tab"
+
+              let metadata = JSON.parse(workSubData[i].courseWorkSubOutputInfoList[j].pngoData.metadata);
+              workSubData[i].courseWorkSubOutputInfoList[j].pngoData.metadata = metadata;
+              workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items.sort((a, b) => {
+                return a[sortingField] - b[sortingField];
+              });
               
-              //탭              
+              //탭
               workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items.unshift({ title: "임시데이터" });
                            
-              //workSubData[i].courseWorkSubOutputInfoList[j].tab = [];
-              //workSubData[i].courseWorkSubOutputInfoList[j].tab.push({title: "임시데이터", index: this.state.tabIndex++});
             }
           } 
         }
-
+        
         for (let i in workSubData) {
           workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"}); 
         }
         
         console.log(workSubData);
 
-        let subjectMap = workSubData.filter(val => (val.moduleWorkSubName == '주제지도 만들기'))[0].courseWorkSubOutputInfoList;
+        if (Array.isArray(workSubData)) {
+          let subjectMap = workSubData.filter(val => (val.outputType == 'layer'))[0].courseWorkSubOutputInfoList;
+          
+          this.setState({
+            workSubData: workSubData,
+            subjectMap: subjectMap
+          });
+        } else {
+          
+          let tempData = [];
+
+          this.setState({
+            workSubData: workSubData
+          });
+
+        }
+
         
-        this.setState({
-          workSubData: workSubData,
-          subjectMap: subjectMap
-        });      
+        
 
       }.bind(this),
       function (xhr, status, err) {
@@ -144,45 +167,108 @@ class MainContainer extends React.Component {
   addMapTitle(title, template) {
 
 
-    let { workSubData } = this.state;
+    let { workSubData, tempOutputTypeIdx } = this.state;
 
-    if (this.state.isSubjectMode) {      
+    //주제지도 만들기
+    if (this.state.isSubjectMode) {
+
+      let idx = 0;
       
-      for (let i in workSubData) {
-        if (workSubData[i].moduleWorkSubName == "주제지도 만들기") {          
-          
-          const newObj = {
-            outputName: title,
-            idx: workSubData[i].courseWorkSubOutputInfoList.length
-          };
+      ajaxJson(
+        ['POST', apiSvr + '/coursesWork/layers.json'],
+        {
+          courseWorkSubId : tempOutputTypeIdx,
+          title,
+          sources: JSON.stringify({"inputDataset":{"filter":[],"datasetId":"d=r7oFXBrCYl","type":"dataset"}})
+        },
+        function (data) {
 
-          workSubData[i].courseWorkSubOutputInfoList.push(newObj);
-        }
-      }
+          const result = JSON.parse(JSON.stringify(data)).response.data.data;
+          const pinogioOutputId = result.layerId;
+          idx = JSON.parse(JSON.stringify(data)).response.data.worksOutputId;
 
-      this.setState({
-        workSubData: workSubData
-      });
+          for (let i in workSubData) {
+            if (workSubData[i].outputType == "layer") {
+                        
+              const newObj = {
+                outputName: title,
+                idx: idx,
+                pngoData: result,
+                pinogioOutputId
+              };
+    
+              workSubData[i].courseWorkSubOutputInfoList.push(newObj);
+            }
+          }
 
+          this.setState({
+            workSubData: workSubData
+          });
+
+        }.bind(this),
+        function (xhr, status, err) {
+          alert('Error');
+        }.bind(this)
+      );
+      
+
+
+
+    //스토리맵 만들기
     } else {
 
-      for (let i in workSubData) {
-        if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {          
-          
-          const newObj = {
-            outputName: title,
-            idx: workSubData[i].courseWorkSubOutputInfoList.length,
-            tab: [{title: "임시데이터"}], 
-            template: template
-          };
+      let courseWorkSubId = tempOutputTypeIdx;
+      let maps_type = "SERIES";
+      let privacy = "PUBLIC";
+      let metadata = JSON.stringify({ "type": template });
+      let idx = 0;
 
-          workSubData[i].courseWorkSubOutputInfoList.push(newObj);
-        }
-      }
+      ajaxJson(
+        ['POST', apiSvr + '/coursesWork/maps.json'],
+        {
+          courseWorkSubId,
+          title,
+          maps_type,
+          privacy,
+          metadata
+        },
+        function (data) {
 
-      this.setState({
-        workSubData: workSubData
-      });
+          const result = JSON.parse(JSON.stringify(data)).response.data.data;
+          result.metadata.type = template;
+          const pinogioOutputId = result.mapsId;
+          result.items = [{title: "임시데이터"}];
+
+          idx = JSON.parse(JSON.stringify(data)).response.data.worksOutputId;
+
+          for (let i in workSubData) {
+            if (workSubData[i].outputType == "maps") {          
+              
+              const newObj = {
+                outputName: title,
+                idx: idx,
+                pngoData: result,
+                pinogioOutputId
+              };
+    
+              workSubData[i].courseWorkSubOutputInfoList.push(newObj);
+            }
+          }
+
+          console.log(workSubData);
+
+          this.setState({
+            workSubData: workSubData
+          });
+
+        }.bind(this),
+        function (xhr, status, err) {
+          alert('Error');
+        }.bind(this)
+      );
+
+
+
 
     }
   }
@@ -190,13 +276,15 @@ class MainContainer extends React.Component {
   //주제지도
   editMapTitle(title) {
 
-    let { workSubData } = this.state;
+    let { workSubData, tempIndex } = this.state;
+    let layersId = "";
 
     for (let i in workSubData) {
-      if (workSubData[i].moduleWorkSubName == "주제지도 만들기" ) {          
+      if (workSubData[i].outputType == "layer" ) {          
         for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == this.state.tempIndex) {
+          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
             let temp = workSubData;
+            layersId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
             temp[i].courseWorkSubOutputInfoList[j].outputName = title;
             this.setState({
               workSubData: temp, 
@@ -205,21 +293,36 @@ class MainContainer extends React.Component {
           }
         }
       }
-    }      
+    }
+
+    ajaxJson(
+      ['PUT', apiSvr + '/coursesWork/layers/' + layersId + '/metadata.json'],
+      {
+        title
+      },
+      function (data) {
+        console.log(data);
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
     
   }
 
   editMapSetting(title, template) {
 
     let { workSubData, tempIndex, tempTabIndex } = this.state;
+    let layersId = "";
     
     for (let i in workSubData) {
-      if (workSubData[i].moduleWorkSubName == "스토리맵 만들기" ) {          
+      if (workSubData[i].outputType == "maps" ) {          
         for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == this.state.tempIndex) {
+          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
             let temp = workSubData;
+            layersId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
             temp[i].courseWorkSubOutputInfoList[j].outputName = title;
-            temp[i].courseWorkSubOutputInfoList[j].template = template;
+            temp[i].courseWorkSubOutputInfoList[j].pngoData.metadata.type = template ;
             this.setState({
               workSubData: temp
             });
@@ -227,6 +330,28 @@ class MainContainer extends React.Component {
         }
       }
     }
+
+    let maps_type = "SERIES";
+    let privacy = "PUBLIC";
+    let metadata = JSON.stringify({ "type": template });
+
+    ajaxJson(
+      ['PUT', apiSvr + '/coursesWork/maps/' + layersId + '.json'],
+      {
+        title,
+        maps_type,
+        privacy,
+        metadata
+      },
+      function (data) {
+        console.log(data);
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
+
+
 
   }
 
@@ -237,10 +362,15 @@ class MainContainer extends React.Component {
     //스토리맵의 탭 삭제
     if (this.state.isStoryTabMode) {
 
+      let mapsId = "";
+
       for (let i in workSubData) {
-        if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+        if (workSubData[i].outputType == "maps") {
           for (let j in workSubData[i].courseWorkSubOutputInfoList) {
             if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+
+              mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+
               for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
                 if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
   
@@ -258,6 +388,21 @@ class MainContainer extends React.Component {
         }
       }
 
+
+      ajaxJson(
+        ['DELETE', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
+        null,
+        function (data) {
+
+        }.bind(this),
+        function (xhr, status, err) {
+          alert('Error');
+        }.bind(this)
+      );
+
+
+
+
       this.setState({
         isStoryTabMode: false
       });
@@ -268,11 +413,14 @@ class MainContainer extends React.Component {
     //주제지도
     if (this.state.isSubjectMode) {
 
+      let mapsId = "";
+
       for (let i in workSubData) {
-        if (workSubData[i].moduleWorkSubName == "주제지도 만들기" ) {          
+        if (workSubData[i].outputType == "layer" ) {          
           for (let j in workSubData[i].courseWorkSubOutputInfoList) {
             if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
               let temp = workSubData;
+              mapsId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
               temp[i].courseWorkSubOutputInfoList.splice(j,1);
               this.setState({
                 workSubData: temp
@@ -281,16 +429,32 @@ class MainContainer extends React.Component {
           }
         }
       }
+
+
+      // DB 데이터에서 삭제
+      ajaxJson(
+        ['DELETE', apiSvr + '/coursesWork/layers/' + mapsId + '.json'],
+        { works_output_id: tempIndex },
+        function (data) {
+        }.bind(this),
+        function (xhr, status, err) {
+          alert('Error');
+        }.bind(this)
+      );
       
 
     // 스토리지도
     } else {
 
+      let mapsId = "";
+
+      // state에서 삭제
       for (let i in workSubData) {
-        if (workSubData[i].moduleWorkSubName == "스토리맵 만들기" ) {          
+        if (workSubData[i].outputType == "maps" ) {          
           for (let j in workSubData[i].courseWorkSubOutputInfoList) {
             if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
               let temp = workSubData;
+              mapsId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
               temp[i].courseWorkSubOutputInfoList.splice(j,1);
               this.setState({
                 workSubData: temp
@@ -300,16 +464,31 @@ class MainContainer extends React.Component {
         }
       }
 
+      //console.log(mapsId);
+
+      // DB 데이터에서 삭제
+      ajaxJson(
+        ['DELETE', apiSvr + '/coursesWork/maps/' + mapsId + '.json'],
+        { works_output_id: tempIndex },
+        function (data) {
+        }.bind(this),
+        function (xhr, status, err) {
+          alert('Error');
+        }.bind(this)
+      );
+
+
     }
   }
 
-  newMap(title) {
+  newMap(outputType, idx) {
 
-    if (title == "주제지도 만들기") 
+    if (outputType == "layer") 
       this.setState({ 
         isSubjectMode: true,
         openNewMap: true,
         tempTitle: '',
+        tempOutputTypeIdx: idx,
         mode: 'add'
       });
     
@@ -318,6 +497,7 @@ class MainContainer extends React.Component {
         isSubjectMode: false,
         openTemplate: true,
         tempTitle: '',
+        tempOutputTypeIdx: idx,
         mode: 'add'
       });    
 
@@ -325,14 +505,31 @@ class MainContainer extends React.Component {
 
   addStoryTab(title, type) {
 
-    let { workSubData, tempIndex } = this.state;
+    let { workSubData, tempIndex, tempMapsId } = this.state;
+
+    let id = 0;
+
+    // DB 데이터에 추가
+    ajaxJson(
+      ['POST', apiSvr + '/coursesWork/maps/' + tempMapsId + "/item" + '.json'],
+      { title: title },
+      function (data) {
+        const result = JSON.parse(JSON.stringify(data)).response.data.data;
+        
+        id = result.id;
+
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
 
     for (let i in workSubData) {
-      if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+      if (workSubData[i].outputType == "maps") {
         for (let j in workSubData[i].courseWorkSubOutputInfoList) {
           if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
 
-            let temp = { title: title, id: this.state.tabIndex++, type: type, description: "" };
+            let temp = { title: title, id: id, type: type, description: "" };
             let newData = workSubData;
             newData[i].courseWorkSubOutputInfoList[j].pngoData.items.push(temp);
             this.setState({
@@ -355,15 +552,21 @@ class MainContainer extends React.Component {
   editStoryTab(title, type) {
 
     let { workSubData, tempIndex, tempTabIndex } = this.state;
+    let mapsId = "";
+    let description = "";
 
     for (let i in workSubData) {
-      if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+      if (workSubData[i].outputType == "maps") {
         for (let j in workSubData[i].courseWorkSubOutputInfoList) {
           if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+
+            mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+
             for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
               if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
 
                 let temp = workSubData;
+                description = temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].description;
                 temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].title = title;
                 temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].type = type;
 
@@ -377,6 +580,21 @@ class MainContainer extends React.Component {
         }
       }
     }
+
+
+    // DB 데이터 수정
+    ajaxJson(
+      ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
+      { title: title, description: description },
+      function (data) {
+        const result = JSON.parse(JSON.stringify(data)).response.data;
+        console.log(result);
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
+
     
 
   }
@@ -384,17 +602,23 @@ class MainContainer extends React.Component {
   modifyDescription(contents) {
 
     let { workSubData, tempIndex, tempTabIndex } = this.state;
+    let mapsId = "";
+    let title = "";
 
     this.setState({ tempDescription: contents });
     
     for (let i in workSubData) {
-      if (workSubData[i].moduleWorkSubName == "스토리맵 만들기") {
+      if (workSubData[i].outputType == "maps") {
         for (let j in workSubData[i].courseWorkSubOutputInfoList) {
           if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+
+            mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+
             for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
               if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
 
                 let temp = workSubData;
+                title = temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].title;
                 temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].description = contents;
 
                 this.setState({
@@ -407,6 +631,18 @@ class MainContainer extends React.Component {
         }
       }
     }
+
+    // DB 데이터 수정
+    ajaxJson(
+      ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
+      { title: title, description: contents },
+      function (data) {
+
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
 
   }
 
@@ -441,17 +677,20 @@ class MainContainer extends React.Component {
     });
   }
 
-  selectMapHandle(index) {
+  selectMapHandle(index, mapsId) {
 
     
     if (!this.state.openSelectMap) {
+
+      let subjectMap = this.state.subjectMap;
 
       this.setState({
         openSelectMap: !this.state.openSelectMap,
         tempIndex: index,
         tempTitle: '',
-        tempIdx: 1,
-        mode: 'add'
+        tempIdx: subjectMap[1].idx,
+        mode: 'add',
+        tempMapsId: mapsId
       });
 
 
@@ -635,12 +874,12 @@ class MainContainer extends React.Component {
                                 key={0}
                                 primaryText="새로 만들기"
                                 leftIcon={<IconAddCircleOutline />}
-                                onClick={(i) => this.newMap(row.moduleWorkSubName)}
+                                onClick={(i) => this.newMap(row.outputType, row.idx)}
                               />
                           );
                         }
 
-                        if (row.moduleWorkSubName == "주제지도 만들기") {
+                        if (row.outputType == "layer") {
                           return (
                             <ListItem
                               key={data.idx}
@@ -680,7 +919,7 @@ class MainContainer extends React.Component {
                                 targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                                 style={{display: 'flex', alignItems: 'center'}}
                               >
-                                <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.template, mode: 'edit' })}/>
+                                <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.pngoData.metadata.type, mode: 'edit' })}/>
                                 <MenuItem primaryText="삭제하기" onClick={(i) => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: false})}/>
                                 <MenuItem primaryText="미리보기" onClick={() => (window.location.href='/ngiiedu/storymap/preview/'+data.idx)}/>
                                 </IconMenu>
@@ -694,7 +933,7 @@ class MainContainer extends React.Component {
                                       key={1000-i}
                                       primaryText="탭 추가하기"
                                       leftIcon={<IconAddCircleOutline />}
-                                      onClick={(index) => this.selectMapHandle(data.idx)}
+                                      onClick={(index) => this.selectMapHandle(data.idx, data.pinogioOutputId)}
                                     />
                                   );
                                 }

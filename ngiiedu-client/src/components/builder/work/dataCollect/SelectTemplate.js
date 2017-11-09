@@ -47,7 +47,6 @@ class SelectTemplate extends React.Component {
 
     render() {
 
-
         const actions = [
             <FlatButton
               label="취소"
