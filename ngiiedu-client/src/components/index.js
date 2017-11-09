@@ -231,11 +231,11 @@ class App extends Component {
             				<WorkFrameDataCollect loginStatus={this.props.loginStatus}/>
             			</Route>
 
-            			<Route path={contextPath +"/storymap/preview/:storyMapId"}>
+            			<Route path={contextPath +"/storymap/preview/:LAYERID"}>
             			  <StoryMapPreview loginStatus={this.props.loginStatus}/>
             			</Route>
 
-                  		<Route path={contextPath +"/map/preview/:mapId"}>
+                  		<Route path={contextPath +"/map/preview/:LAYERID"}>
             			  <MapPreview loginStatus={this.props.loginStatus}/>
             			</Route>
 

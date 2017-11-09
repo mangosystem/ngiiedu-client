@@ -5,6 +5,8 @@ import Paper from 'material-ui/Paper';
 
 import MenuPanel from '../common/MenuPanel.js';
 import Work from './Work.js'
+import CheckUserAuthority from '../common/CheckUserAuthority.js';
+
 
 class MainContainer extends React.Component {
 
@@ -21,6 +23,19 @@ class MainContainer extends React.Component {
     // alert('생성자, 참여자 구분하여 UI 구성');
     // console.log(this.props.match.params.COURSEID);
   }
+
+  
+  componentDidMount() {
+    
+      //권한확인 코드
+      var courseId = this.props.match.params.COURSEID;
+      let authority = CheckUserAuthority(courseId);
+      this.setState({
+        isOwner:authority.isOwner,
+        isMember:authority.isMember
+      })
+  
+    }
 
   render() {
     return (

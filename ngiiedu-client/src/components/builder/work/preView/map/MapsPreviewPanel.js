@@ -47,98 +47,32 @@ class MapsPreviewPanel extends React.Component {
 
   }
 
-  componentWillReceiveProps(nextProp){
+  componentWillReceiveProps(nexProps){
     console.log('componentWillReceiveProps : ')
     console.dir(nexProps.raster)
     this.setState({
       layers: {
         raster: nexProps.raster,
-        // vector: vector
       }
     });
-      
-  }
 
-  componentWillMount() {
-    console.log('componentWillReceiveProps : ')
-    console.dir(this.props.raster)
-    this.setState({
-      layers: {
-        raster: this.props.raster,
-        // vector: vector
-      }
+    let {map} = this.state;
+    let wkt = nexProps.bounds;
+    let format = new ol.format.WKT();
+    let feature = format.readFeature(wkt, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857'
     });
-    
-    
-    // let raster = new ol.layer.Image({
-    //   source: new ol.source.ImageWMS({
-    //     ratio: 1,
-    //     url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
-    //     params: {
-    //       'FORMAT': 'image/png',
-    //       'VERSION': '1.3.0',
-    //       'STYLES': '',
-    //       'LAYERS': 'pinogio:'+this.props.layerId,
-    //       // 'LAYERS': 'pinogio:d=KjCXc4dmy9',
-    //     }
-    //   })
-    // });
-
-    // console.dir(raster)
-    
-    // let vector = new ol.layer.Vector({
-    //   visible: false,
-    //   style: new ol.style.Style({
-		// 		fill: new ol.style.Fill({ color: '#333' }),
-		// 		stroke: new ol.style.Stroke({ color: 'rgba(255, 122, 74, 1)', width: 5 }),
-		// 		image: new ol.style.Circle({
-    //       fill: new ol.style.Fill({ color: '#888' }),
-    //       stroke: new ol.style.Stroke({ color: '#555', width: 5 }),
-    //       radius: 10
-    //     })
-		// 	}),
-    //   source: new ol.source.Vector({
-	  //     format: new ol.format.GeoJSON(),
-		// 		loader: function(extent, resolution, projection) {
-    //       // let url = 'http://localhost:8080/geoserver/mnd/wms?request=GetFeature' +
-		// 			let url = 'http://1.234.82.19:8083/geoserver/pinogio/wfs?request=GetFeature' +
-		// 				'&version=1.0.0' +
-		// 				'&typeName=pinogio:d=KjCXc4dmy9' +
-		// 				'&srsName=EPSG:3857' +
-		// 				'&bbox=' + extent.join(',') + ',' + 'urn:ogc:def:crs:EPSG:3857' +
-		// 				'&outputFormat=text/javascript' +
-		// 				'&format_options=callback:loadFeatures';
-
-		// 			$.ajax({
-		// 				url: url,
-		// 				method: 'GET',
-		// 				jsonpCallback: 'loadFeatures',
-		// 				dataType: 'jsonp',
-		// 				success: function(response) {
-    //           let feature = new ol.format.GeoJSON().readFeatures(response);
-
-    //           console.log(feature);
-
-    //           vector.getSource().addFeatures(feature);
-    //         }
-		// 			});
-		// 		}.bind(this),
-	  //     strategy: ol.loadingstrategy.bbox
-	  //   })
-    // });
-
-    
-
-    // this.setState({
-      // layers: {
-    //     raster: raster,
-        // vector: vector
-      // }
-    // });
-    
+    map.getView().fit(
+        feature.getGeometry().getExtent(),
+        map.getSize()
+    );  
   }
+
+
   
   componentDidMount() {
+    console.log('componentDidMount')
     // map.addLayer(layers.vector);
     let { map } = this.state;
     let layers = this.state.layers;
@@ -149,30 +83,6 @@ class MapsPreviewPanel extends React.Component {
   
     map.addLayer(this.props.raster);
 
-    //컬럼명 받아오기
-
-    //   $.ajax({
-    //     type:'GET',
-    //     url: 'http://localhost:8080/geoserver/wfs?',//request=describeFeatureType&typename=mnd:kob_pa_sid',
-    //     data:{
-    //         service:'WFS',
-    //         version:'1.1.0',
-    //         request:'describeFeatureType',
-    //         typename:'mnd:kob_pa_sid',
-    //         outputFormat:'text/javascript',
-    //         format_options: 'callback:getJson'
-            
-    //     },
-    //     jsonpCallback: 'getJson',
-        
-    //     dataType: 'jsonp', //specify jsonp
-    //     success: function(res) {
-    //         console.dir(res.featureTypes[0].properties[0].name)
-    //     }.bind(this),
-    //     error: function(xhr, status, err) {
-    //         console.error(status, err.toString());
-    //     }.bind(this)
-    //   });
 
   }
 
@@ -182,8 +92,8 @@ class MapsPreviewPanel extends React.Component {
     <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} >
         <div id="mapView" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
         
-        <div style={{position:'absolute',right:200,bottom:200,zIndex:1}}>
-        <img src="http://1.234.82.19:8083/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:d=KjCXc4dmy9"/>
+        <div style={{position:'absolute',right:100,bottom:100,zIndex:1}}>
+        <img src={"http://1.234.82.19:8083/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:"+this.props.layerName}/>
         </div>
         </div>
     </div>

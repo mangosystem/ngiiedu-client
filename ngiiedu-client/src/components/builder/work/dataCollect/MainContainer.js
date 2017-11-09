@@ -484,7 +484,8 @@ class MainContainer extends React.Component {
     // layerId='l=AnyangDong'
 
     ajaxJson(
-      ['GET', apiSvr + '/pngo/dataset/column/list.json?pinogioOutputId='+layerId],
+      // ['GET', apiSvr + '/pngo/dataset/column/list.json?pinogioOutputId='+layerId],
+      ['GET', apiSvr + '/coursesWork/layers/'+layerId+'/column.json'],
       null,
       function (data) {
         let column =data.response.data.data
@@ -656,7 +657,7 @@ class MainContainer extends React.Component {
                                 >
                                   <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openNewMap: true, tempTitle: data.outputName, tempIndex: data.idx, mode: 'edit' })}/>
                                   <MenuItem primaryText="삭제하기" onClick={() => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: true})}/>
-                                  <MenuItem primaryText="미리보기" onClick={() => (window.location.href='/ngiiedu/map/preview/'+data.idx)}/>
+                                  <MenuItem primaryText="미리보기" onClick={() => (window.location.href='/ngiiedu/map/preview/'+data.pngData.layerId)}/>
 
                                 </IconMenu>
                               }

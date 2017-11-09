@@ -16,6 +16,7 @@ import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 
 import MenuPanel from '../common/MenuPanel.js';
 import AuthkeyInfo from './AuthkeyInfo';
+import CheckUserAuthority from '../common/CheckUserAuthority.js';
 
 class MainContainer extends React.Component {
 
@@ -68,6 +69,15 @@ class MainContainer extends React.Component {
 				console.error(status, err.toString());
 			}.bind(this)
     );
+
+    
+    //권한확인 코드
+    var courseId = this.props.match.params.COURSEID;
+    let authority = CheckUserAuthority(courseId);
+    this.setState({
+      isOwner:authority.isOwner,
+      isMember:authority.isMember
+    })
 
     
   }

@@ -12,6 +12,9 @@ import MenuItem from 'material-ui/MenuItem';
 
 
 import MenuPanel from '../common/MenuPanel.js';
+import CheckUserAuthority from '../common/CheckUserAuthority.js';
+
+
 
 import {
   Table,
@@ -38,7 +41,8 @@ class MainContainer extends React.Component {
       CJS01 : [],
       CJS02 : [],
       CJS03 : [],
-      CJS04 : []
+      CJS04 : [],
+      redux : React.PropTypes.object
       
 
      
@@ -62,7 +66,7 @@ class MainContainer extends React.Component {
         status:status
       },
       function(res){
-        console.dir(res);
+        // console.dir(res);
         this.ajaxCall();
       }.bind(this)
     )
@@ -83,7 +87,7 @@ class MainContainer extends React.Component {
       null,
       function(res){
         var data = res.response.data;
-        console.dir(data);
+        // console.dir(data);
         var CJS01=[];
         var CJS02=[];
         var CJS03=[];
@@ -116,8 +120,19 @@ class MainContainer extends React.Component {
 
   componentDidMount() {
     this.ajaxCall();
-    
+
+    // import CheckUserAuthority from '../common/CheckUserAuthority.js';
+    //권한확인 코드
+    var courseId = this.props.match.params.COURSEID;
+    let authority = CheckUserAuthority(courseId);
+    this.setState({
+      isOwner:authority.isOwner,
+      isMember:authority.isMember
+    })
+
   }
+
+  
 
   render() {
     return (
@@ -255,5 +270,8 @@ class MainContainer extends React.Component {
     );
   }
 };
+
+
+
 
 export default withRouter(MainContainer);

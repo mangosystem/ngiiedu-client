@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 
+import CheckUserAuthority from '../common/CheckUserAuthority.js';
 import Setting from './Setting.js'
 import MenuPanel from '../common/MenuPanel.js';
 
@@ -15,6 +16,18 @@ class MainContainer extends React.Component {
       isOwner: true,
       isMember: false
     }
+  }
+
+  componentDidMount() {
+
+    //권한확인 코드
+    var courseId = this.props.match.params.COURSEID;
+    let authority = CheckUserAuthority(courseId);
+    this.setState({
+      isOwner:authority.isOwner,
+      isMember:authority.isMember
+    })
+
   }
 
   componentWillMount() {

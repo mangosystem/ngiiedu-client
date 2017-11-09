@@ -55,7 +55,8 @@ class Header extends React.Component {
     this.props.loginRedux({
       userId:userId,
       userName:userName,
-      userDivision:userDivision
+      userDivision:userDivision,
+      userIdx:userIdx
     });
 
     console.log(userId);

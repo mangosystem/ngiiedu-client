@@ -1,6 +1,8 @@
 import React from 'react';
 
 import MapsPreviewPanel from './MapsPreviewPanel';
+import { withRouter } from "react-router-dom";
+
 
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {List, ListItem} from 'material-ui/List';
@@ -14,18 +16,18 @@ class MainContainer extends React.Component {
   constructor(props){
     super(props);
     this.state={
-        selectedLayerId :'d=KjCXc4dmy9',
+        selectedLayerId :'',
         raster : null,
-        mapData:{
-            title:'피노지오결과물id'
-        },
+        title:'',
+        bounds:''
+        
     }
-
   }
 
   
 
   componentWillMount() {
+    let layerId = this.props.match.params.LAYERID;
     let raster = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
@@ -34,7 +36,7 @@ class MainContainer extends React.Component {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
           'STYLES': '',
-          'LAYERS': 'pinogio:'+this.state.selectedLayerId,
+          'LAYERS': 'pinogio:'+layerId,
           // 'LAYERS': 'pinogio:d=KjCXc4dmy9',
         }
       })
@@ -46,6 +48,25 @@ class MainContainer extends React.Component {
 
   }
 
+  componentDidMount(){
+      // 제목 받아오기 //bounds
+      let layerId = this.props.match.params.LAYERID;
+      ajaxJson(
+        ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
+        this.state.addDataObj,
+        function(res){
+          console.log('bounds :' +  res.response.data.data.bounds )
+            this.setState({
+                title:res.response.data.data.title,
+                bounds:res.response.data.data.bounds
+            });
+        }.bind(this),
+        function(e){
+            alert(e);
+        }
+    );
+  }
+
 
   render() {
    
@@ -55,7 +76,7 @@ class MainContainer extends React.Component {
           <div className="inner wide" style={{display: 'flex'}}>
             <div style={{flex: 1, paddingTop: 25, paddingBottom: 18}}>
               <div style={{fontSize: 30, textAlign:'center'}}>
-                    {this.state.mapData.title}
+                    {this.state.title}
               </div>
             </div>
           </div>
@@ -63,8 +84,9 @@ class MainContainer extends React.Component {
         <main>
             <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0,right:0 }}>
                 <MapsPreviewPanel 
-                    layerName={this.state.selectedLayerId}
+                    layerName={this.props.match.params.LAYERID}
                     raster={this.state.raster}
+                    bounds={this.state.bounds}
                 />
             </div>
         </main>
@@ -73,4 +95,4 @@ class MainContainer extends React.Component {
   }
 };
 
-export default MainContainer;
+export default withRouter(MainContainer);

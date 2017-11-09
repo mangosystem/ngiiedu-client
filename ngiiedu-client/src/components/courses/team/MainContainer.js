@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import MenuPanel from '../common/MenuPanel.js';
 import TeamPopup from './TeamPopup.js';
 import DeletePopup from './DeletePopup.js';
+import CheckUserAuthority from '../common/CheckUserAuthority.js';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
@@ -280,6 +281,15 @@ class MainContainer extends React.Component {
   
   componentDidMount() {
     this.ajaxCall();
+
+    
+    //권한확인 코드
+    var courseId = this.props.match.params.COURSEID;
+    let authority = CheckUserAuthority(courseId);
+    this.setState({
+      isOwner:authority.isOwner,
+      isMember:authority.isMember
+    })
   }    
 
   render() {
