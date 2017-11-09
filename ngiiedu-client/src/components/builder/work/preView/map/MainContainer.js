@@ -53,7 +53,7 @@ class MainContainer extends React.Component {
       let layerId = this.props.match.params.LAYERID;
       ajaxJson(
         ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
-        this.state.addDataObj,
+        null,
         function(res){
           console.log('bounds :' +  res.response.data.data.bounds )
             this.setState({

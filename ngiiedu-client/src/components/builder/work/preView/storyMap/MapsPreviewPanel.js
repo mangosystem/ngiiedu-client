@@ -48,13 +48,13 @@ class MapsPreviewPanel extends React.Component {
   }
 
   componentWillMount() {
-    //초기 데이터 지정
-    let raster=this.props.raster;
-    this.setState({
-      layers: {
-        raster: raster
-      }
-    })
+    // //초기 데이터 지정
+    // let raster=this.props.raster;
+    // this.setState({
+    //   layers: {
+    //     raster: raster
+    //   }
+    // })
     
   }
   
@@ -63,22 +63,39 @@ class MapsPreviewPanel extends React.Component {
     //초기 맵 지정
     let { map } = this.state;
     let { layers } = this.state;
-    console.dir(layers)
-    map.addLayer(layers.raster);
+    // console.dir(layers)
+    // map.addLayer(layers.raster);
     map.setTarget('mapView');
   }
 
   componentWillReceiveProps(nextProps){
     console.log("componentWillReceiveProps: ");
-    console.dir(this.props.raster)
+    console.dir(nextProps)
 
     //새로받은 레이어를 비교
-    if(this.props.raster != null){
+    if(this.props.raster != nextProps.raster){
       let { map } = this.state;
       //기존 레이어를 삭제
       map.removeLayer(this.props.raster);
       //새로운 레이어를 추가
       map.addLayer(nextProps.raster);
+
+      // console.log('전달받은 bound : '+nextProps.bounds)
+      //제발 되길 바라며 ..
+      if(nextProps.bounds !=null){
+        // console.log(nextProps.bounds)
+        let wkt = nextProps.bounds;
+        let format = new ol.format.WKT();
+        let feature = format.readFeature(wkt, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857'
+        });
+        map.getView().fit(
+            feature.getGeometry().getExtent(),
+            map.getSize()
+        );  
+      }
+   
     }
 }
   
@@ -88,8 +105,8 @@ class MapsPreviewPanel extends React.Component {
     return (
       
       <div id="mapView" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
-        <div style={{position:'absolute',right:200,bottom:200,zIndex:1}} >
-          <img src="http://1.234.82.19:8083/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:d=KjCXc4dmy9"/>
+        <div style={{position:'absolute',right:100,bottom:100,zIndex:1}} >
+          <img src={"http://1.234.82.19:8083/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:"+this.props.layerId}/>
         </div>
       </div>
     );

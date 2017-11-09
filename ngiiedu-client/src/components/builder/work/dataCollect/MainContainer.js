@@ -768,13 +768,12 @@ class MainContainer extends React.Component {
       null,
       function (data) {
         let column =data.response.data.data
-        
         this.setState({
           stylePanelColumn:column
         })
         
-        // console.log('ajaxcolumn')
-        // console.dir(data.response.data.data);
+        console.log('ajaxcolumn')
+        console.dir(data.response.data.data);
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');

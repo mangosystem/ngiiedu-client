@@ -449,7 +449,7 @@ class PointSymbolizer extends React.Component {
     }
 
     styleTypeChange(styleType){
-        var options = this.props.styles.options
+        // var options = this.props.styles.options
         this.setState({
             // fillColor:options.fillColor !=undefined ? options.fillColor: FillColor.defaultProps.color ,
             // fillOpacity:options.fillOpacity !=undefined ? options.fillOpacity: 1 ,
