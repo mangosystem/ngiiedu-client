@@ -85,8 +85,8 @@ class PointSymbolizer extends React.Component {
 
 
 	componentWillReceiveProps(nextProps) {
-        console.debug('PointSymbolizer componentWillReceiveProps');
-        
+        console.log('PointSymbolizer componentWillReceiveProps');
+        console.dir(nextProps.column)
         console.dir(this.props.styles);
         if (this.props.styles != null) {
             this.setState({
@@ -143,12 +143,12 @@ class PointSymbolizer extends React.Component {
 
 					reverse: options.reverse != undefined ? options.reverse : Reverse.defaultProps.value,
 
-					column: this.props.column
+					column: nextProps.column
 				});
 			}
 		} else {
 			this.setState({
-				column: this.props.column
+				column: nextProps.column
 			});
 		}
         

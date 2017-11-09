@@ -772,8 +772,8 @@ class MainContainer extends React.Component {
           stylePanelColumn:column
         })
         
-        console.log('ajaxcolumn')
-        console.dir(data.response.data.data);
+        // console.log('ajaxcolumn')
+        // console.dir(data.response.data.data);
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
