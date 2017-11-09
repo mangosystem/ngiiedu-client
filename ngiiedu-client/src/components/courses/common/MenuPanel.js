@@ -115,7 +115,7 @@ class MenuPanel extends React.Component {
                 <Menu desktop className="aside-menu">
                     <Subheader>활동</Subheader>
                     {this.state.workList.map((row,index)=>(
-                        <Link to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.moduleWorkId}>
+                        <Link key={index} to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.moduleWorkId}>
                             <MenuItem
                                 primaryText={row.moduleWorkCourseType}
                                 leftIcon={<EditorFormatListNumbered />}
