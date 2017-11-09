@@ -143,7 +143,6 @@ class MapsEditorPanel extends React.Component {
 
     this.setState({
       layers: {
-        raster: raster,
         vector: vector
       },
       interactions: {
@@ -160,7 +159,7 @@ class MapsEditorPanel extends React.Component {
 
     map.setTarget('mapView');
 
-    map.addLayer(layers.raster);
+    // map.addLayer(layers.raster);
     map.addLayer(layers.vector);
 
     map.addInteraction(interactions.snap);
