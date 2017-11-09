@@ -440,7 +440,7 @@ class PointSymbolizer extends React.Component {
               this.setState({
                 workList:res.response.data
               });
-
+              this.props.raster.getSource().updateParams({_:Date.now()});
               
             }.bind(this)
           );

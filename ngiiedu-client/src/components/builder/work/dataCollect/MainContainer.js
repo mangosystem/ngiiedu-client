@@ -42,6 +42,34 @@ class MainContainer extends React.Component {
 
     // tabIndex : 설정변경위해 임시로 넣어줌. 서버에서 데이터받으면 수정해야할것 (삭제)
     this.state = {
+      
+      map: new ol.Map({
+        view: new ol.View({
+          center: [14162252.600956, 4353853.130726],
+          zoom: 7,
+          minZoom: 1,	maxZoom: 18
+        }),
+        layers: [
+          new ol.layer.Tile({
+            // source: new ol.source.OSM()
+            // source:new ol.source.Stamen({layer:"toner"})
+            // source:new ol.source.Stamen({layer:"watercolor"})
+            source: new ol.source.XYZ({
+              url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
+            })
+          })
+        ],
+        controls: ol.control.defaults({
+          zoom: true, rotate: false, attribution: true
+        }),
+        interactions: ol.interaction.defaults({
+          altShiftDragRotate: false, doubleClickZoom: true,
+          dragPan: true, pinchRotate: false,
+          pinchZoom: false, keyboard: false,
+          mouseWheelZoom: false, shiftDragZoom: true
+        })
+      }),
+
       editMode: '',
       mode: '',
       editorMode: false,
@@ -66,8 +94,22 @@ class MainContainer extends React.Component {
       stylePanelColumn:[],
       stylePanelOptions:{},
       selectedLayerId:null,
-      raster: null,
-      vecter: null
+      layers:{
+        raster: null,
+        vector: null
+      },
+      interactions:{
+
+      },
+
+      selecteProperites:{},
+      rowId:'',
+      datasetId:'',
+      geometry:null,
+      editingFeature:false,
+      addButton:false,
+      delButton:true,
+      layerName:''
     }
 
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
@@ -75,6 +117,10 @@ class MainContainer extends React.Component {
     this.handleChangeStylePanel = this.handleChangeStylePanel.bind(this);
     this.openStylePanel = this.openStylePanel.bind(this);
     this.layerLoad = this.layerLoad.bind(this);
+    
+    this.getFeatureInfo = this.getFeatureInfo.bind(this);
+    this.onChangeButton = this.onChangeButton.bind(this);
+    this.editCancle = this.editCancle.bind(this);
     
   }
 
@@ -135,11 +181,6 @@ class MainContainer extends React.Component {
           workSubData: workSubData
         });
 
-        
-
-        
-        
-
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
@@ -148,9 +189,10 @@ class MainContainer extends React.Component {
 
   }
 
-  onChangeEditMode(value) {
+  onChangeEditMode(value, properties) {
     this.setState({
-      editMode: value
+      editMode: value,
+      selecteProperites: properties
     });
   }
 
@@ -773,26 +815,141 @@ class MainContainer extends React.Component {
     })
   }
 
-  //레이어 wms 불러오기 
+  //레이어 불러오기 
   layerLoad(layerName){
-    // console.log(layerName);
-    let raster = new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-          ratio: 1,
-          url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
-          params: {
-            'FORMAT': 'image/png',
-            'VERSION': '1.3.0',
-            'STYLES': '',
-            'LAYERS': 'pinogio:'+layerName,
-          }
-        })
-      });
+    
+    ajaxJson(
+      ['GET', apiSvr + '/coursesWork/layers/' + layerName + '.json'],
+      {},
+      function(res){
+        let wkt = res.response.data.data.bounds;
+        let format = new ol.format.WKT();
+        let feature = format.readFeature(wkt, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: 'EPSG:3857'
+        });
+        this.state.map.getView().fit(
+            feature.getGeometry().getExtent(),
+            this.state.map.getSize()
+        );
+      }.bind(this),
+      function(e){
+        alert(e);
+      }
+    );
 
-      this.setState({
-          raster: raster,
-      });
-    }
+
+
+    this.setState({
+      layerName:layerName
+    })
+    let raster = new ol.layer.Image({
+      source: new ol.source.ImageWMS({
+        ratio: 1,
+        url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+        params: {
+          'FORMAT': 'image/png',
+          'VERSION': '1.3.0',
+          'STYLES': '',
+          'LAYERS': 'pinogio:'+layerName,
+        }
+      })
+    });
+
+    let vector = new ol.layer.Vector({
+      visible: false,
+      style: new ol.style.Style({
+        fill: new ol.style.Fill({ color: '#333' }),
+        stroke: new ol.style.Stroke({ color: 'rgba(255, 122, 74, 1)', width: 5 }),
+        image: new ol.style.Circle({
+          fill: new ol.style.Fill({ color: '#888' }),
+          stroke: new ol.style.Stroke({ color: '#555', width: 5 }),
+          radius: 10
+        })
+      }),
+      source: new ol.source.Vector({
+        format: new ol.format.GeoJSON(),
+        loader: function(extent, resolution, projection) {
+
+          let url = 'http://1.234.82.19:8083/geoserver/pinogio/wfs?request=GetFeature' +
+            '&version=1.0.0' +
+            // '&typeName=pinogio:d=KjCXc4dmy9' +
+            '&typeName=pinogio:' +layerName+
+            '&srsName=EPSG:3857' +
+            '&bbox=' + extent.join(',') + ',' + 'urn:ogc:def:crs:EPSG:3857' +
+            '&outputFormat=text/javascript' +
+            '&format_options=callback:loadFeatures';
+
+          $.ajax({
+            url: url,
+            method: 'GET',
+            jsonpCallback: 'loadFeatures',
+            dataType: 'jsonp',
+            success: function(response) {
+              let feature = new ol.format.GeoJSON().readFeatures(response);
+              vector.getSource().addFeatures(feature);
+            }
+          });
+        }.bind(this),
+        strategy: ol.loadingstrategy.bbox
+      })
+    });
+
+    let select = new ol.interaction.Select({
+      layers: [ vector ],
+      toggleCondition: ol.events.condition.never
+    });
+
+    let modify = new ol.interaction.Modify({
+      features: select.getFeatures()
+    });
+
+    let draw = new ol.interaction.Draw({
+      source: vector.getSource(),
+      // snapTolerance: 20,
+      type: 'MultiPoint'
+    });
+
+    let snap = new ol.interaction.Snap({
+      source: vector.getSource(),
+      pixelTolerance: 10
+    });
+
+    this.setState({
+      layers: {
+        raster: raster,
+        vector: vector
+      },
+      interactions: {
+        select: select, draw: draw, modify: modify, snap: snap
+      }
+    });
+
+
+
+    
+  }
+
+  getFeatureInfo(rowId, datasetId, geometry){
+    this.setState({
+      rowId:rowId,
+      datasetId:datasetId,
+      geometry:geometry
+    });
+  }
+
+  editCancle(value){
+    this.setState({
+      editingFeature:value
+    });
+  }
+
+  onChangeButton(add, del){
+    this.setState({
+      addButton:add,
+      delButton:del
+    });
+  }
 
   render() {
 
@@ -969,14 +1126,33 @@ class MainContainer extends React.Component {
             <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 300 }}>
               <MapsEditorPanel
                 layerId={this.state.selectedLayerId}
+                layers={this.state.layers}
+                interactions={this.state.interactions}
+                map={this.state.map}
                 onChangeEditMode={this.onChangeEditMode}
-                raster={this.state.raster}
+                getFeatureInfo = {this.getFeatureInfo}
+                onChangeButton = {this.onChangeButton}
+                addButton = {this.state.addButton}
+                delButton = {this.state.delButton}
+                editingFeature = {this.state.editingFeature}
+                editCancle = {this.editCancle}
               />
             </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff', display:this.state.editorMode ? 'none' :'block' }}>
               {this.state.stylePanel == false ?
                 <PropertiesPanel
+                  map={this.state.map}
+                  onChangeEditMode={this.onChangeEditMode}
                   propertiesMode={this.state.editMode}
+                  properties={this.state.selecteProperites}
+                  rowId = {this.state.rowId}
+                  datasetId = {this.state.datasetId}
+                  geometry= {this.state.geometry}
+                  onChangeButton = {this.onChangeButton}
+                  addButton = {this.state.addButton}
+                  delButton = {this.state.delButton}
+                  editCancle = {this.editCancle}
+                  layerName = {this.state.layerName}
                 />
                 :
                 <PointSymbolizer 
@@ -984,6 +1160,7 @@ class MainContainer extends React.Component {
                   column={this.state.stylePanelColumn}
                   styles={this.state.stylePanelOptions}
                   layerId={this.state.selectedLayerId}
+                  raster={this.state.layers.raster}
                 />
               }
             

@@ -12,203 +12,170 @@ class MapsEditorPanel extends React.Component {
     this.state = {
 
       isEditMode: false,
-
-      map: new ol.Map({
-        view: new ol.View({
-          center: [14143701.095047, 4477593.930960],
-          zoom: 15,
-          minZoom: 1,	maxZoom: 18
-        }),
-        layers: [
-          new ol.layer.Tile({
-            // source: new ol.source.OSM()
-            // source:new ol.source.Stamen({layer:"toner"})
-            // source:new ol.source.Stamen({layer:"watercolor"})
-            source: new ol.source.XYZ({
-              url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
-            })
-          })
-        ],
-        controls: ol.control.defaults({
-          zoom: true, rotate: false, attribution: true
-        }),
-        interactions: ol.interaction.defaults({
-          altShiftDragRotate: false, doubleClickZoom: true,
-          dragPan: true, pinchRotate: false,
-          pinchZoom: false, keyboard: false,
-          mouseWheelZoom: false, shiftDragZoom: true
-        })
-      }),
-
+      map: null,
       layers: {
         raster: null, vector: null
-      }
+      },
+
+      rowId:'',
+      datasetId:'',
+      selectFeature:{}
     };
 
     this.onToggleEdit = this.onToggleEdit.bind(this);
     this.onClickAdd = this.onClickAdd.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
     this.onClickReset = this.onClickReset.bind(this);
+    this.wmsInfo = this.wmsInfo.bind(this);
   }
   
   componentWillReceiveProps(nextProps){
-    console.log("componentWillReceiveProps: ");
-    console.dir(this.props.raster)
+    
+    if(this.props.layerId !=nextProps.layerId){
 
-    //새로받은 레이어를 비교
-    if(this.props.raster != null){
       let { map } = this.state;
-      //기존 레이어를 삭제
-      map.removeLayer(this.props.raster);
-      //새로운 레이어를 추가
-      map.addLayer(nextProps.raster);
+      for(let i=0; i<map.getLayers().getArray().length; i++){
+        if(map.getLayers().getArray()[i] instanceof ol.layer.Vector){
+          map.removeLayer(map.getLayers().getArray()[i])
+        }else if(map.getLayers().getArray()[i] instanceof ol.layer.Image){
+          map.removeLayer(map.getLayers().getArray()[i])
+        };
+      };
+
+      map.addLayer(nextProps.layers.raster);
+      map.addLayer(nextProps.layers.vector);
+      this.setState({
+        layerId:nextProps.layerId,
+        layers:nextProps.layers,
+        interactions:nextProps.interactions,
+        //  map:nextProps.map
+      },function(){
+        let { interactions } = this.state;
+  
+        // map.on('singleclick', this.wmsInfo);
+    
+        map.addInteraction(interactions.snap);
+        interactions.snap.setActive(true);
+    
+        map.addInteraction(interactions.select);
+        interactions.select.setActive(true);
+        //객체선택
+        interactions.select.getFeatures().on('add', (e) => {
+          let properties = e.element.getProperties();
+    
+          if(e.element.id_){
+            this.setState({
+              rowId:e.element.id_.split('.')[1],
+              datasetId:e.element.id_.split('.')[0]
+            });
+          };
+          this.props.onChangeButton(true, false);
+    
+          this.props.getFeatureInfo(this.state.rowId, this.state.datasetId, e.element.getGeometry());
+    
+          if(!interactions.draw.getActive()) {
+            this.props.onChangeEditMode('edit', e.element);
+          };
+        });
+    
+        //객체선택 해제
+        interactions.select.getFeatures().on('remove', (e) => {
+          this.props.onChangeEditMode('null');
+          
+          if(this.props.editingFeature ==true){
+            this.state.layers.vector.getSource().clear();
+          };
+    
+          this.props.editCancle(false);
+          this.props.onChangeButton(false, true);
+        });
+    
+        map.addInteraction(interactions.modify);
+        interactions.modify.setActive(false);
+        //객체수정 시작
+        interactions.modify.on('modifystart', (e) => {
+          this.setState({
+            selectFeature:e.features.getArray()[0].values_
+          });
+        });
+    
+        //객체수정 완료
+        interactions.modify.on('modifyend', (e) => {
+          this.props.getFeatureInfo(this.state.rowId, this.state.datasetId, e.features.getArray()[0].values_.geometry);
+          this.props.editCancle(true);
+        });
+    
+        map.addInteraction(interactions.draw);
+        interactions.draw.setActive(false);
+        
+        //객체추가 그리기 시작
+        interactions.draw.on('drawstart', (e) => {
+          interactions.select.setActive(false);
+        });
+    
+        //객체추가 그리기 완료
+        interactions.draw.on('drawend', (e) => {
+          interactions.draw.setActive(false);
+          this.props.onChangeButton(true, true);
+          this.props.getFeatureInfo('','',e.feature.getGeometry());
+          this.props.onChangeEditMode('new');
+        });
+        this.onToggleEdit(null, false);
+      });
     }
-}
+  }
 
   componentWillMount() {
-
-    // let raster = new ol.layer.Image({
-    //   source: new ol.source.ImageWMS({
-    //     ratio: 1,
-    //     url: 'http://1.234.82.19:8083/geoserver/ngiiedu/wms',
-    //     params: {
-    //       'FORMAT': 'image/png',
-    //       'VERSION': '1.3.0',
-    //       'STYLES': '',
-    //       'LAYERS': 'ngiiedu:dataset_test1',
-    //     }
-    //   })
-    // });
-
-    let vector = new ol.layer.Vector({
-      visible: false,
-      style: new ol.style.Style({
-				fill: new ol.style.Fill({ color: '#333' }),
-				stroke: new ol.style.Stroke({ color: 'rgba(255, 122, 74, 1)', width: 5 }),
-				image: new ol.style.Circle({
-          fill: new ol.style.Fill({ color: '#888' }),
-          stroke: new ol.style.Stroke({ color: '#555', width: 5 }),
-          radius: 10
-        })
-			}),
-      source: new ol.source.Vector({
-	      format: new ol.format.GeoJSON(),
-				loader: function(extent, resolution, projection) {
-
-					let url = 'http://1.234.82.19:8083/geoserver/ngiiedu/wfs?request=GetFeature' +
-						'&version=1.0.0' +
-						'&typeName=ngiiedu:dataset_test1' +
-						'&srsName=EPSG:3857' +
-						'&bbox=' + extent.join(',') + ',' + 'urn:ogc:def:crs:EPSG:3857' +
-						'&outputFormat=text/javascript' +
-						'&format_options=callback:loadFeatures';
-
-					$.ajax({
-						url: url,
-						method: 'GET',
-						jsonpCallback: 'loadFeatures',
-						dataType: 'jsonp',
-						success: function(response) {
-              let feature = new ol.format.GeoJSON().readFeatures(response);
-
-              console.log(feature);
-
-              vector.getSource().addFeatures(feature);
-            }
-					});
-				}.bind(this),
-	      strategy: ol.loadingstrategy.bbox
-	    })
-    });
-
-    let select = new ol.interaction.Select({
-      layers: [ vector ],
-      toggleCondition: ol.events.condition.never
-    });
-
-    let modify = new ol.interaction.Modify({
-      features: select.getFeatures()
-    });
-
-    let draw = new ol.interaction.Draw({
-      source: vector.getSource(),
-      // snapTolerance: 20,
-      type: 'MultiPoint'
-    });
-
-    let snap = new ol.interaction.Snap({
-      source: vector.getSource(),
-      pixelTolerance: 10
-    });
-
-
     this.setState({
-      layers: {
-        vector: vector
-      },
-      interactions: {
-        select: select, draw: draw, modify: modify, snap: snap
+      map: this.props.map,layers:this.props.layers
+    },function(){
+      this.state.map.setTarget('mapView');
+      this.state.map.on('singleclick', this.wmsInfo);
+    });
+  }
+
+  //wms feature 정보 확인
+  wmsInfo(e){
+    let { map } = this.state;
+    let { layers } = this.state;
+    let props = this.props;
+    let url = layers.raster.getSource().getGetFeatureInfoUrl(
+      e.coordinate, map.getView().getResolution(), map.getView().getProjection(),
+      {'INFO_FORMAT':'application/json'}) + '&info_format=text/javascript' + '&format_options=callback:loadFeatures';
+    $.ajax({
+      url: url,
+      method: 'GET',
+      jsonpCallback: 'loadFeatures',
+      dataType: 'jsonp',
+      success: function(response) {
+        let feature = new ol.format.GeoJSON().readFeatures(response);
+        if(feature.length ==0){
+          props.onChangeEditMode('null');
+        }else{
+          props.onChangeEditMode('wms', feature[0]);
+        };
       }
     });
-
   }
 
   componentDidMount() {
+    //초기 map 지정
     let { map } = this.state;
-    let { layers } = this.state;
-    let { interactions } = this.state;
-
+    
     map.setTarget('mapView');
-
-    // map.addLayer(layers.raster);
-    map.addLayer(layers.vector);
-
-    map.addInteraction(interactions.snap);
-    interactions.snap.setActive(true);
-
-    map.addInteraction(interactions.select);
-    interactions.select.setActive(true);
-    interactions.select.getFeatures().on('add', (e) => {
-      console.log('add');
-      let properties = e.element.getProperties();
-
-      if(!interactions.draw.getActive()) {
-        this.props.onChangeEditMode('edit');
-      }
-    });
-    interactions.select.getFeatures().on('remove', (e) => {
-      console.log('remove');
-    });
-
-    map.addInteraction(interactions.modify);
-    interactions.modify.setActive(false);
-    interactions.modify.on('modifystart', (e) => {
-      console.log('modifystart');
-    });
-    interactions.modify.on('modifyend', (e) => {
-      console.log('modifyend');
-    });
-
-    map.addInteraction(interactions.draw);
-    interactions.draw.setActive(false);
-    interactions.draw.on('drawstart', (e) => {
-      console.log('modifystart');
-    });
-    interactions.draw.on('drawend', (e) => {
-      console.log('modifyend');
-      interactions.draw.setActive(false);
-      interactions.select.setActive(true);
-
-      this.props.onChangeEditMode('new');
-    });
+    
   }
 
   onToggleEdit(e, checked) {
+    let { map } = this.state;
 
     if (checked) {
       this.state.layers.raster.setVisible(false);
       this.state.layers.vector.setVisible(true);
       this.state.interactions.modify.setActive(true);
       this.state.interactions.draw.setActive(false);
+      map.un('singleclick', this.wmsInfo);
+      this.props.onChangeEditMode('null');
     } else {
       this.state.layers.raster.setVisible(true);
       this.state.layers.vector.setVisible(false);
@@ -218,21 +185,60 @@ class MapsEditorPanel extends React.Component {
       this.state.interactions.select.getFeatures().clear();
       this.state.layers.vector.getSource().clear();
       this.state.layers.raster.getSource().updateParams({_: Date.now()});
-    }
+      map.on('singleclick', this.wmsInfo);
+    };
 
     this.setState({
       isEditMode: checked
     });
   }
 
+  //객체 추가 버튼 클릭
   onClickAdd(e) {
+    this.props.onChangeButton(true, true);
+    let { interactions } = this.state;
     this.state.interactions.draw.setActive(true);
     this.state.interactions.modify.setActive(false);
   }
 
-  onClickReset(e) {
+  //객체 삭제 버튼 클릭
+  onClickDelete(e){
+    let { interactions } = this.state;
+    interactions.select.getFeatures().clear();
     this.state.interactions.draw.setActive(false);
-    this.state.interactions.modify.setActive(false);
+    let rowId = this.state.rowId;
+    let datasetId = this.state.datasetId;
+
+    ajaxJson(
+      ['DELETE',apiSvr+'/pngo/dataset/row.json'],
+      {'pinogioOutputId':datasetId, 'rowId':rowId},
+      function(res){
+
+        for(let i=0; i<this.state.layers.vector.getSource().getFeatures().length; i++){
+          if(this.state.rowId == this.state.layers.vector.getSource().getFeatures()[i].id_.split('.')[1]){
+            this.state.layers.vector.getSource().clear();
+          };
+        };
+
+      }.bind(this),
+      function(e){
+        console.log(e);
+      }
+    );
+
+  }
+
+  //작업 초기화
+  onClickReset(e) {
+    let { interactions } = this.state;
+    interactions.select.getFeatures().clear();
+    interactions.draw.setActive(false);
+    interactions.modify.setActive(true);
+    interactions.select.setActive(true);
+    this.state.layers.vector.getSource().clear();
+    
+    this.props.onChangeButton(false, true);
+    this.props.onChangeEditMode('null');
   }
 
   render() {
@@ -254,7 +260,15 @@ class MapsEditorPanel extends React.Component {
                   secondary={true}
                   label="객체 추가"
                   style={{marginRight: 10}}
+                  disabled = {this.props.addButton}
                   onClick={this.onClickAdd}
+                />
+                <RaisedButton
+                  secondary={true}
+                  label="객체 삭제"
+                  style={{marginRight: 10}}
+                  disabled = {this.props.delButton}
+                  onClick={this.onClickDelete}
                 />
                 <RaisedButton
                   secondary={true}
