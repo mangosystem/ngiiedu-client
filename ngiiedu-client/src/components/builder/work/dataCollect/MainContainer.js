@@ -175,9 +175,11 @@ class MainContainer extends React.Component {
         {
           courseWorkSubId : tempOutputTypeIdx,
           title,
-          sources: JSON.stringify({"inputDataset":{"filter":[],"datasetId":"d=r7oFXBrCYl","type":"dataset"}})
+          sources: JSON.stringify({"inputDataset":{"filter":[],"datasetId":"d=AnyangDong","type":"dataset"}})
         },
         function (data) {
+
+          console.log(data);
 
           const result = JSON.parse(JSON.stringify(data)).response.data.data;
           const pinogioOutputId = result.layerId;
@@ -231,7 +233,7 @@ class MainContainer extends React.Component {
         function (data) {
 
           const result = JSON.parse(JSON.stringify(data)).response.data.data;
-          result.metadata.type = template;
+          result.metadata = { type : template };
           const pinogioOutputId = result.mapsId;
           result.items = [{title: "임시데이터"}];
 
@@ -488,7 +490,7 @@ class MainContainer extends React.Component {
         mode: 'add'
       });
     
-    else 
+    else if (outputType == "maps")
       this.setState({ 
         isSubjectMode: false,
         openTemplate: true,
