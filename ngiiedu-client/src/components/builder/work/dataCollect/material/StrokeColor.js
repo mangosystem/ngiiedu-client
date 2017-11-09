@@ -30,7 +30,7 @@ StrokeColor.propTypes = {
 };
 
 StrokeColor.defaultProps = {
-	color: '#3182bd'
+	color: '#e1e1e1'
 };
 
 export default StrokeColor;

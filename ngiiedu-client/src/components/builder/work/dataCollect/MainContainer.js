@@ -477,50 +477,51 @@ class MainContainer extends React.Component {
   }
 
   //style창 열기
-  openStylePanel(layerId){
+  openStylePanel(layerId, styling){
     console.log('layerId'+layerId)
     //임시
-    layerId='d=KjCXc4dmy9'
+    // layerId='d=KjCXc4dmy9'
+    // layerId='l=AnyangDong'
+
     ajaxJson(
       ['GET', apiSvr + '/pngo/dataset/column/list.json?pinogioOutputId='+layerId],
       null,
       function (data) {
-        console.dir(data)
         let column =data.response.data.data
-      
+        
         this.setState({
           stylePanelColumn:column
         })
-
-        console.dir(data.response.data.data);
+        
+        // console.log('ajaxcolumn')
+        // console.dir(data.response.data.data);
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
       }.bind(this)
     );
 
-    var styleData ={
-      "styleType":"GRADUATED",
-      "options":{
-          "columnName":"pino_id",
-          "classification":"EQ",
-          "classesNumber":3,
-          "fillPalette":"Blues",
-          "fillOpacity":0.5,
-          "strokeWidth":2,
-          "strokeColor":"#CB178C",
-          "strokeOpacity":0.5,
-          "reverse":false
-      },
-      "isClassified":false,
-      "geometryType":"MULTIPOLYGON"
-  }
+    // var styling ={
+      // "styleType":"GRADUATED",
+      // "options":{
+      //     "columnName":"noise_value",
+      //     "classification":"EQ",
+      //     "classesNumber":3,
+      //     "fillPalette":"Blues",
+      //     "fillOpacity":0.5,
+      //     "strokeWidth":2,
+      //     "strokeColor":"#CB178C",
+      //     "strokeOpacity":0.5,
+      //     "reverse":false
+      // },
+      // "isClassified":false,
+      // "geometryType":"MULTIPOLYGON"
+  // }
 
-    
 
     this.setState({
       stylePanel:true,
-      stylePanelOptions:styleData,
+      stylePanelOptions:JSON.parse(styling),
       selectedLayerId : layerId
     })  
 
@@ -536,7 +537,7 @@ class MainContainer extends React.Component {
 
   //레이어 wms 불러오기 
   layerLoad(layerName){
-    console.log(layerName);
+    // console.log(layerName);
     let raster = new ol.layer.Image({
         source: new ol.source.ImageWMS({
           ratio: 1,
@@ -645,7 +646,7 @@ class MainContainer extends React.Component {
                               primaryText={data.outputName}
                               initiallyOpen={true}
                               primaryTogglesNestedList={true}
-                              onClick={(value)=>this.openStylePanel(data.pinogioOutputId)}
+                              onClick={(value)=>this.openStylePanel(data.pinogioOutputId,data.pngoData.styling)}
                               rightIcon={
                                 <IconMenu
                                   iconButtonElement={<IconButton><IconMoreVert /></IconButton>}

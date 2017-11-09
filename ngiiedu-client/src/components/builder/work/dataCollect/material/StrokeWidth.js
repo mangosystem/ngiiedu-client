@@ -43,7 +43,7 @@ StrokeWidth.propTypes = {
 };
 
 StrokeWidth.defaultProps = {
-	value: 2
+	value: 1
 };
 
 export default StrokeWidth;

@@ -65,8 +65,8 @@ RangeSize.propTypes = {
 };
 
 RangeSize.defaultProps = {
-	minSize: 5,
-	maxSize: 20
+	minSize: 1,
+	maxSize: 50
 };
 
 export default RangeSize;

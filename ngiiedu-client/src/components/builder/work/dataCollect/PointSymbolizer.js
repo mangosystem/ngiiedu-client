@@ -94,7 +94,8 @@ class PointSymbolizer extends React.Component {
             })
 			let options = this.props.styles.options;
 			if (options != undefined) {
-                
+                console.log('options')
+                console.dir(options)
                 if(options.fillColor != undefined &&options.fillOpacity != undefined ){
                     var color = options.fillColor.replace('#','');
                     var r = parseInt(color.substring(0,2), 16);
@@ -125,22 +126,22 @@ class PointSymbolizer extends React.Component {
 
 
 				this.setState({
-					markerType: options.markerType != undefined ? options.markerType : null,
-					markerSize: options.markerSize != undefined ? options.markerSize : null,
+					markerType: options.markerType != undefined ? options.markerType : Marker.defaultProps.value,
+					markerSize: options.markerSize != undefined ? options.markerSize : MarkerSize.defaultProps.value,
 
-					fillPalette: options.fillPalette != undefined ? options.fillPalette : null,
-					fillColor: options.fillColor != undefined ? options.fillColor : null,
-					fillOpacity: options.fillOpacity != undefined ? Number(options.fillOpacity) : null,
+					fillPalette: options.fillPalette != undefined ? options.fillPalette : FillPalette.defaultProps.fillPalette ,
+					fillColor: options.fillColor != undefined ? options.fillColor : FillColor.defaultProps.color,
+					fillOpacity: options.fillOpacity != undefined ? Number(options.fillOpacity) : 1,
 
-					strokeWidth: options.strokeWidth != undefined ? Number(options.strokeWidth) : null,
-					strokeColor: options.strokeColor != undefined ? options.strokeColor : null,
-					strokeOpacity: options.strokeOpacity != undefined ? Number(options.strokeOpacity) : null,
+					strokeWidth: options.strokeWidth != undefined ? Number(options.strokeWidth) : StrokeWidth.defaultProps.value,
+					strokeColor: options.strokeColor != undefined ? options.strokeColor : StrokeColor.defaultProps.color,
+					strokeOpacity: options.strokeOpacity != undefined ? Number(options.strokeOpacity) : 1,
 
-					columnName: options.columnName != undefined ? options.columnName : null,
-					classification: options.classification != undefined ? options.classification : null,
-					classesNumber: options.classesNumber != undefined ? Number(options.classesNumber) : null,
+					columnName: options.columnName != undefined ? options.columnName : Column.defaultProps.value,
+					classification: options.classification != undefined ? options.classification : Classification.defaultProps.value,
+					classesNumber: options.classesNumber != undefined ? Number(options.classesNumber) : ClassesNum.defaultProps.value,
 
-					reverse: options.reverse != undefined ? options.reverse : null,
+					reverse: options.reverse != undefined ? options.reverse : Reverse.defaultProps.value,
 
 					column: this.props.column
 				});
@@ -150,12 +151,13 @@ class PointSymbolizer extends React.Component {
 				column: this.props.column
 			});
 		}
-
+        
+        console.log('column')
+        console.dir(this.props.column)
 	}
 
 	componentWillMount() {
         console.debug('PointSymbolizer componentWillMount');
-        
         //defaultRandomColor
         // var letters = '0123456789ABCDEF';
         // var defaultFillColor = '#';
@@ -356,7 +358,7 @@ class PointSymbolizer extends React.Component {
             styleType:null,
             options:null,
             isClassified:false,
-            geometryType:"MULTIPOLYGON"
+            geometryType:"MULTIPOINT"
         }
         if(this.state.styleType == 'SINGLE'){
 
@@ -366,7 +368,7 @@ class PointSymbolizer extends React.Component {
                 fillColor: this.state.fillColor==null ? FillColor.defaultProps.color : this.state.fillColor,
                 fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
                 strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
-                strokeColor: this.state.strokeColor==null ? this.state.defaultStrokeColor : this.state.strokeColor,
+                strokeColor: this.state.strokeColor==null ? StrokeColor.defaultProps.color : this.state.strokeColor,
                 strokeOpacity: this.state.strokeOpacity ==null ? 1 : this.state.strokeOpacity,
             }
 
@@ -376,7 +378,9 @@ class PointSymbolizer extends React.Component {
 
         }else if(this.state.styleType == 'GRADUATED'){
             let option = {
-                columnName: this.state.columnName ==null? this.props.column[0] : this.state.columnName,
+                columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
+                // columnName: 'noise_value',
+                markerSize: this.state.markerSize==null ? MarkerSize.defaultProps.value : this.state.markerSize,
                 classification:this.state.classification==null ? Classification.defaultProps.value : this.state.classification,
                 classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
                 fillPalette: this.state.fillPalette==null ? FillPalette.defaultProps.fillPalette : this.state.fillPalette,
@@ -394,7 +398,9 @@ class PointSymbolizer extends React.Component {
 
         }else if(this.state.styleType == 'CATEGORIES'){
             let option = {
-                columnName: this.state.columnName ==null? this.props.column[0] : this.state.columnName,
+                columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
+                // columnName: 'noise_value',
+                
                 strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
                 strokeColor: this.state.strokeColor==null ? StrokeColor.defaultProps.color : this.state.strokeColor,
                 strokeOpacity: this.state.strokeOpacity ==null ? 1 : this.state.strokeOpacity,
@@ -406,7 +412,7 @@ class PointSymbolizer extends React.Component {
 
         }else if(this.state.styleType == 'BUBBLE'){
             let option = {
-                columnName: this.state.columnName ==null? this.props.column[0] : this.state.columnName,
+                columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
                 classification:this.state.classification==null ? Classification.defaultProps.value : this.state.classification,
                 classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
                 fillPalette: this.state.fillPalette==null ? FillPalette.defaultProps.fillPalette : this.state.fillPalette,
@@ -421,15 +427,34 @@ class PointSymbolizer extends React.Component {
         }else if(this.state.styleType == 'HEATMAP'){
 
         }
+        var layerId = this.props.layerId;
+        console.log(layerId)
+        // var layerId = 'd=KjCXc4dmy9';
+        // var layerId = 'l=AnyangDong';
+        ajaxJson(
+            ['PUT',apiSvr+'/coursesWork/layers/'+layerId+'/styling.json'],
+            {
+                styling: JSON.stringify(style)
+            },
+            function(res){
+              this.setState({
+                workList:res.response.data
+              });
+
+              
+            }.bind(this)
+          );
+
+
     }
 
     styleTypeChange(styleType){
         var options = this.props.styles.options
         this.setState({
-            fillColor:options.fillColor !=undefined ? options.fillColor: undefined ,
-            fillOpacity:options.fillOpacity !=undefined ? options.fillOpacity: undefined ,
-            strokeColor:options.strokeColor !=undefined ? options.strokeColor: undefined ,
-            strokeOpacity:options.strokeOpacity !=undefined ? options.strokeOpacity: undefined ,
+            // fillColor:options.fillColor !=undefined ? options.fillColor: FillColor.defaultProps.color ,
+            // fillOpacity:options.fillOpacity !=undefined ? options.fillOpacity: 1 ,
+            // strokeColor:options.strokeColor !=undefined ? options.strokeColor:  StrokeColor.defaultProps.color,
+            // strokeOpacity:options.strokeOpacity !=undefined ? options.strokeOpacity: 1 ,
             styleType:styleType
         })
     }
@@ -477,16 +502,16 @@ class PointSymbolizer extends React.Component {
                     />
                     <Divider style={{marginTop:1}}/>
                     {
-                        this.state.defaultFillColor != null ?
+                        this.state.fillColor != null ?
                             <FillColor
-                                defaultColor={this.state.defaultFillColor}
+                                defaultColor={this.state.fillColor}
                                 color={this.state.fillColor}
                                 opacity={this.state.fillOpacity}
                                 handleChange={this.handleChangeFillColor}
                             />
                             :
                             <FillColor
-                                defaultColor={'#3182bd'}
+                                defaultColor={FillColor.defaultProps.color}
                                 color={this.state.fillColor}
                                 opacity={this.state.fillOpacity}
                                 handleChange={this.handleChangeFillColor}
@@ -494,16 +519,16 @@ class PointSymbolizer extends React.Component {
                     }
                     <Divider style={{marginTop:1}}/>
                     {
-                        this.state.defaultStrokeColor != null?
+                        this.state.strokeColor != null?
                         <StrokeColor
-                            defaultColor={this.state.defaultStrokeColor}
+                            defaultColor={this.state.strokeColor}
                             color={this.state.strokeColor}
                             opacity={this.state.strokeOpacity}
                             handleChange={this.handleChangeStrokeColor}
                         />
                         :
                         <StrokeColor
-                            defaultColor={'#3182bd'}
+                            defaultColor={StrokeColor.defaultProps.color}
                             color={this.state.strokeColor}
                             opacity={this.state.strokeOpacity}
                             handleChange={this.handleChangeStrokeColor}
@@ -534,7 +559,14 @@ class PointSymbolizer extends React.Component {
                         handleChange={this.handleChangeColumn}
                     />
                     <Divider style={{marginTop:1}}/>
+
+                    <MarkerSize
+                        value={this.state.markerSize}
+                        handleChange={this.handleChangeMarkerSize}
+                    />
                     
+                    <Divider style={{marginTop:1}}/>
+
                     <Classification
                         value={this.state.classification}
                         handleChange={this.handleChangeClassification}
@@ -564,16 +596,16 @@ class PointSymbolizer extends React.Component {
                     <Divider style={{marginTop:1}}/>
                     
                     {
-                        this.state.defaultStrokeColor != null?
+                        this.state.strokeColor != null?
                         <StrokeColor
-                            defaultColor={this.state.defaultStrokeColor}
+                            defaultColor={this.state.strokeColor}
                             color={this.state.strokeColor}
                             opacity={this.state.strokeOpacity}
                             handleChange={this.handleChangeStrokeColor}
                         />
                         :
                         <StrokeColor
-                            defaultColor={'#3182bd'}
+                            defaultColor={StrokeColor.defaultProps.color}
                             color={this.state.strokeColor}
                             opacity={this.state.strokeOpacity}
                             handleChange={this.handleChangeStrokeColor}
@@ -610,16 +642,16 @@ class PointSymbolizer extends React.Component {
                     <Divider style={{marginTop:1}}/>
 
                     {
-                        this.state.defaultStrokeColor != null?
+                        this.state.strokeColor != null?
                         <StrokeColor
-                            defaultColor={this.state.defaultStrokeColor}
+                            defaultColor={this.state.strokeColor}
                             color={this.state.strokeColor}
                             opacity={this.state.strokeOpacity}
                             handleChange={this.handleChangeStrokeColor}
                         />
                         :
                         <StrokeColor
-                            defaultColor={'#3182bd'}
+                            defaultColor={StrokeColor.defaultProps.color}
                             color={this.state.strokeColor}
                             opacity={this.state.strokeOpacity}
                             handleChange={this.handleChangeStrokeColor}
@@ -691,23 +723,23 @@ class PointSymbolizer extends React.Component {
 
                 <Paper zDepth={0} style={{padding:3,paddingBottom: 10,display:'flex',widht:100,overflowY:'auto',fontSize:12,height:135}}>
                     <Paper style={this.state.styleType=='SINGLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('SINGLE') }>
-                        <img src="/assets/images/single.png" style={{width:70,height:70}}></img>
+                        <img src="/ngiiedu/assets/images/single.png" style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단일심볼</div>
                     </Paper>
                     <Paper style={this.state.styleType=='GRADUATED'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('GRADUATED') }>
-                        <img src='/assets/images/graduated.png' style={{width:70,height:70}}></img>
+                        <img src='/ngiiedu/assets/images/graduated.png' style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단계구분</div>
                     </Paper>
                     <Paper style={this.state.styleType=='CATEGORIES'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('CATEGORIES') }>
-                        <img src='/assets/images/categories.png' style={{width:70,height:70}}></img>
+                        <img src='/ngiiedu/assets/images/categories.png' style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>분류값사용</div>
                     </Paper>
                     <Paper style={this.state.styleType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('BUBBLE') }>
-                        <img src='/assets/images/bubble.png' style={{width:70,height:70}}></img>
+                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>거품형지도</div>
                     </Paper>
                     <Paper style={this.state.styleType=='HEATMAP'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('HEATMAP') }>
-                        <img src='/assets/images/heatmap.png' style={{width:70,height:70}}></img>
+                        <img src='/ngiiedu/assets/images/heatmap.png' style={{width:70,height:70}}></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>온도지도</div>
                     </Paper>
                 </Paper>

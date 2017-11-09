@@ -49,21 +49,35 @@ class MapsEditorPanel extends React.Component {
     this.onClickAdd = this.onClickAdd.bind(this);
     this.onClickReset = this.onClickReset.bind(this);
   }
+  
+  componentWillReceiveProps(nextProps){
+    console.log("componentWillReceiveProps: ");
+    console.dir(this.props.raster)
+
+    //새로받은 레이어를 비교
+    if(this.props.raster != null){
+      let { map } = this.state;
+      //기존 레이어를 삭제
+      map.removeLayer(this.props.raster);
+      //새로운 레이어를 추가
+      map.addLayer(nextProps.raster);
+    }
+}
 
   componentWillMount() {
 
-    let raster = new ol.layer.Image({
-      source: new ol.source.ImageWMS({
-        ratio: 1,
-        url: 'http://1.234.82.19:8083/geoserver/ngiiedu/wms',
-        params: {
-          'FORMAT': 'image/png',
-          'VERSION': '1.3.0',
-          'STYLES': '',
-          'LAYERS': 'ngiiedu:dataset_test1',
-        }
-      })
-    });
+    // let raster = new ol.layer.Image({
+    //   source: new ol.source.ImageWMS({
+    //     ratio: 1,
+    //     url: 'http://1.234.82.19:8083/geoserver/ngiiedu/wms',
+    //     params: {
+    //       'FORMAT': 'image/png',
+    //       'VERSION': '1.3.0',
+    //       'STYLES': '',
+    //       'LAYERS': 'ngiiedu:dataset_test1',
+    //     }
+    //   })
+    // });
 
     let vector = new ol.layer.Vector({
       visible: false,

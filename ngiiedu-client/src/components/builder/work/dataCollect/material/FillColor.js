@@ -31,7 +31,7 @@ FillColor.propTypes = {
 };
 
 FillColor.defaultProps = {
-	color: '#3182bd'
+	color: '#008fff'
 };
 
 export default FillColor;

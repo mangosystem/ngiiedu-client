@@ -43,7 +43,7 @@ MarkerSize.propTypes = {
 };
 
 MarkerSize.defaultProps = {
-	value: 15
+	value: 20
 };
 
 
