@@ -145,7 +145,6 @@ class MainContainer extends React.Component {
           workSubData = [];
         }
       
-        //tab : 서버에서 데이터작업 되기전까지 임시데이터
         for (let i in workSubData) {
           
           if (workSubData[i].outputType == "maps") {
@@ -172,6 +171,7 @@ class MainContainer extends React.Component {
         }
         
         for (let i in workSubData) {
+          if (workSubData[i].outputType != "dataset")
           workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"}); 
         }
         
@@ -203,7 +203,6 @@ class MainContainer extends React.Component {
       null,
       function (data) {
         const title = JSON.parse(JSON.stringify(data)).response.data;
-        console.log(title);
         this.setState({ workTitle: title });
 
       }.bind(this),
@@ -1063,7 +1062,7 @@ class MainContainer extends React.Component {
                     nestedItems={
                       row.courseWorkSubOutputInfoList.map((data, index) => {
 
-                        if (index == 0) {
+                        if (index == 0 && row.outputType != "dataset") {
                           return (
                               <ListItem
                                 key={0}
@@ -1097,66 +1096,80 @@ class MainContainer extends React.Component {
                               }
                             />
                           );
+                        } else if (row.outputType == "maps") {
+
+                          return (
+                            <ListItem
+                              key={data.idx}
+                              primaryText={data.outputName}
+                              open={true}
+                              primaryTogglesNestedList={true}
+                              rightIcon={
+                                <IconMenu
+                                  iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
+                                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                  targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                  style={{display: 'flex', alignItems: 'center'}}
+                                >
+                                  <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.pngoData.metadata.type, mode: 'edit' })}/>
+                                  <MenuItem primaryText="삭제하기" onClick={(i) => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: false})}/>
+                                  <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/storymap/preview/'+data.idx)}/>
+                                  </IconMenu>
+                              }
+                              nestedItems={
+                                data.pngoData.items.map((r, j) => {
+  
+                                  if (j == 0) {
+                                    return (
+                                      <ListItem
+                                        key={1000-i}
+                                        primaryText="탭 추가하기"
+                                        leftIcon={<IconAddCircleOutline />}
+                                        onClick={(index) => this.selectMapHandle(data.idx, data.pinogioOutputId)}
+                                      />
+                                    );
+                                  }
+  
+                                  return (
+                                    <ListItem
+                                      key={j}
+                                      primaryText={r.title}
+                                      initiallyOpen={true}
+                                      primaryTogglesNestedList={true}
+                                      rightIcon={
+                                        <IconMenu
+                                          iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
+                                          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                          style={{display: 'flex', alignItems: 'center'}}
+                                        >
+                                          <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, tempType: r.metadata.type, mode: 'edit' })}/>
+                                          <MenuItem primaryText="컨텐츠 입력" onClick={(index, j) => this.setState({editorMode: true, tempDescription: r.description, tempIndex: data.idx, tempTabIndex: r.id })}/>
+                                          <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, isStoryTabMode: true})}/>
+                                        </IconMenu>
+                                      }
+                                    />
+                                  );
+                                })
+                              }
+                            />
+                          );
+                          
+                        } else if (row.outputType == "dataset") {
+
+                          return (
+                              <ListItem
+                                key={data.idx}
+                                primaryText={data.outputName}
+                                initiallyOpen={true}
+                                primaryTogglesNestedList={true}
+                              />
+                          );
+
                         }
 
 
 
-                        return (
-                          <ListItem
-                            key={data.idx}
-                            primaryText={data.outputName}
-                            open={true}
-                            primaryTogglesNestedList={true}
-                            rightIcon={
-                              <IconMenu
-                                iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
-                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                style={{display: 'flex', alignItems: 'center'}}
-                              >
-                                <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.pngoData.metadata.type, mode: 'edit' })}/>
-                                <MenuItem primaryText="삭제하기" onClick={(i) => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: false})}/>
-                                <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/storymap/preview/'+data.idx)}/>
-                                </IconMenu>
-                            }
-                            nestedItems={
-                              data.pngoData.items.map((r, j) => {
-
-                                if (j == 0) {
-                                  return (
-                                    <ListItem
-                                      key={1000-i}
-                                      primaryText="탭 추가하기"
-                                      leftIcon={<IconAddCircleOutline />}
-                                      onClick={(index) => this.selectMapHandle(data.idx, data.pinogioOutputId)}
-                                    />
-                                  );
-                                }
-
-                                return (
-                                  <ListItem
-                                    key={j}
-                                    primaryText={r.title}
-                                    initiallyOpen={true}
-                                    primaryTogglesNestedList={true}
-                                    rightIcon={
-                                      <IconMenu
-                                        iconButtonElement={<IconButton><IconMoreVert /></IconButton>}
-                                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                        targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                        style={{display: 'flex', alignItems: 'center'}}
-                                      >
-                                        <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, tempType: r.metadata.type, mode: 'edit' })}/>
-                                        <MenuItem primaryText="컨텐츠 입력" onClick={(index, j) => this.setState({editorMode: true, tempDescription: r.description, tempIndex: data.idx, tempTabIndex: r.id })}/>
-                                        <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, isStoryTabMode: true})}/>
-                                      </IconMenu>
-                                    }
-                                  />
-                                );
-                              })
-                            }
-                          />
-                        );
                     })
                     }
                   />
