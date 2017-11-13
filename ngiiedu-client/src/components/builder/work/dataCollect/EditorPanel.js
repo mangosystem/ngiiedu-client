@@ -68,7 +68,7 @@ class EditorPanel extends React.Component {
     console.log("validation() : ");
     console.log(contents);
     
-    this.props.modifyDescription(contents);
+    this.props.modifyDescription(contents,this.props.layerId);
     this.props.onChangeEditorMode();
 
   }

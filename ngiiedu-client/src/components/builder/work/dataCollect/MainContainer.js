@@ -108,7 +108,8 @@ class MainContainer extends React.Component {
       editingFeature:false,
       addButton:false,
       delButton:true,
-      layerName:''
+      layerName:'',
+      selectedContentLayerId:''//컨텐츠 입력중인 레이어 아이디
     }
 
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
@@ -679,7 +680,7 @@ class MainContainer extends React.Component {
 
   }
 
-  modifyDescription(contents) {
+  modifyDescription(contents,layerId) {
 
     let { workSubData, tempIndex, tempTabIndex } = this.state;
     let mapsId = "";
@@ -712,10 +713,11 @@ class MainContainer extends React.Component {
       }
     }
 
+    console.log(layerId)
     // DB 데이터 수정
     ajaxJson(
       ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
-      { title: title, description: contents },
+      { title: title, description: contents ,metadata:JSON.stringify({type : layerId})},
       function (data) {
 
       }.bind(this),
@@ -1113,7 +1115,7 @@ class MainContainer extends React.Component {
                                 >
                                   <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.pngoData.metadata.type, mode: 'edit' })}/>
                                   <MenuItem primaryText="삭제하기" onClick={(i) => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: false})}/>
-                                  <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/storymap/preview/'+data.idx)}/>
+                                  <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/storymap/preview/'+data.pngoData.mapsId)}/>
                                   </IconMenu>
                               }
                               nestedItems={
@@ -1144,7 +1146,7 @@ class MainContainer extends React.Component {
                                           style={{display: 'flex', alignItems: 'center'}}
                                         >
                                           <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, tempType: r.metadata.type, mode: 'edit' })}/>
-                                          <MenuItem primaryText="컨텐츠 입력" onClick={(index, j) => this.setState({editorMode: true, tempDescription: r.description, tempIndex: data.idx, tempTabIndex: r.id })}/>
+                                          <MenuItem primaryText="컨텐츠 입력" onClick={(index, j) => this.setState({editorMode: true, tempDescription: r.description, tempIndex: data.idx, tempTabIndex: r.id ,selectedContentLayerId: r.metadata.type})}/>
                                           <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, isStoryTabMode: true})}/>
                                         </IconMenu>
                                       }
@@ -1220,6 +1222,7 @@ class MainContainer extends React.Component {
             </div>
             <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300, backgroundColor: '#fff', overflow: 'auto', display:this.state.editorMode ? 'block' :'none' }}>
               <EditorPanel
+                layerId={this.state.selectedContentLayerId}
                 editorMode={this.state.editorMode}
                 onChangeEditorMode={this.onChangeEditorMode}
                 description={this.state.tempDescription}
