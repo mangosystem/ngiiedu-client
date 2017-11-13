@@ -18,13 +18,13 @@ class SelectMap extends React.Component {
         super(props);
 
         this.state = {
-            value: 1
+            value: ''
         };
     }
 
     handleChange(event, index, value) {
         
-        this.props.changeTempIdx(value);
+        this.props.changeTempType(value);
 
     }
 
@@ -57,8 +57,9 @@ class SelectMap extends React.Component {
               onClick={this.addStoryTab.bind(this)}
             />
         ];
-
+        
         return (
+
             <div>
                 <Dialog
                     title={this.props.mode == 'add' ? "스토리맵 만들기" : "스토리맵 수정하기"}
@@ -76,7 +77,7 @@ class SelectMap extends React.Component {
                         { this.props.subjectMap.map((row, index) => {
                             if (index == 0) return;
                             return (
-                                <MenuItem key={row.idx} value={row.idx} primaryText={row.outputName} />
+                                <MenuItem key={row.idx} value={row.pinogioOutputId} primaryText={row.outputName} />
                         )})}
                     </SelectField>
                     <br />

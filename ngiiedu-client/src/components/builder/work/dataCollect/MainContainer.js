@@ -39,8 +39,6 @@ class MainContainer extends React.Component {
   constructor(props){
     super(props);
 
-
-    // tabIndex : 설정변경위해 임시로 넣어줌. 서버에서 데이터받으면 수정해야할것 (삭제)
     this.state = {
       
       map: new ol.Map({
@@ -84,12 +82,13 @@ class MainContainer extends React.Component {
       isStoryTabMode: false,
       tempTitle: '',
       tempIndex: 0,
-      tabIndex: 20,
       tempTabIndex: 0,
       tempIdx: 2,
       tempDescription: '',
       tempMapsId: "",
       tempOutputTypeIdx: 0,
+      tempType: '',
+      workTitle: '',
       stylePanel:false,
       stylePanelColumn:[],
       stylePanelOptions:{},
@@ -132,14 +131,19 @@ class MainContainer extends React.Component {
     const courseId = this.props.match.params.COURSEID;
     const workId = this.props.match.params.workId;
     const sortingField = "id";
+    let workSubData = null;
 
     ajaxJson(
       ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
       null,
       function (data) {
 
-        const workSubData = JSON.parse(JSON.stringify(data)).response.data;
+        workSubData = JSON.parse(JSON.stringify(data)).response.data;
         let tempIdx = 0;
+
+        if (!workSubData) {
+          workSubData = [];
+        }
       
         //tab : 서버에서 데이터작업 되기전까지 임시데이터
         for (let i in workSubData) {
@@ -154,8 +158,14 @@ class MainContainer extends React.Component {
                 return a[sortingField] - b[sortingField];
               });
               
+              for ( let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
+                let itemsMetaData = JSON.parse(workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata);
+                workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata = itemsMetaData;
+              }
+              
               //탭
               workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items.unshift({ title: "임시데이터" });
+
                            
             }
           } 
@@ -184,6 +194,21 @@ class MainContainer extends React.Component {
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
+      }.bind(this)
+    );
+
+
+    ajaxJson(
+      ['GET', apiSvr + '/coursesWork/' + workId + '/getTitle.json'],
+      null,
+      function (data) {
+        const title = JSON.parse(JSON.stringify(data)).response.data;
+        console.log(title);
+        this.setState({ workTitle: title });
+
+      }.bind(this),
+      function (xhr, status, err) {
+          alert('Error');
       }.bind(this)
     );
 
@@ -552,11 +577,39 @@ class MainContainer extends React.Component {
     // DB 데이터에 추가
     ajaxJson(
       ['POST', apiSvr + '/coursesWork/maps/' + tempMapsId + "/item" + '.json'],
-      { title: title },
+      { 
+        title: title,
+        metadata: JSON.stringify({ type: type })
+      },
       function (data) {
         const result = JSON.parse(JSON.stringify(data)).response.data.data;
         
         id = result.id;
+
+
+        for (let i in workSubData) {
+          if (workSubData[i].outputType == "maps") {
+            for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+              if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+    
+                let temp = { 
+                  title: title, 
+                  id: id, 
+                  metadata: { type: type },
+                  description: "" 
+                };
+
+                let newData = workSubData;
+
+                newData[i].courseWorkSubOutputInfoList[j].pngoData.items.push(temp);
+                this.setState({
+                  workSubData: newData,
+                  tempTabIndex: temp.id
+                });
+              }
+            }
+          }
+        }
 
       }.bind(this),
       function (xhr, status, err) {
@@ -564,22 +617,6 @@ class MainContainer extends React.Component {
       }.bind(this)
     );
 
-    for (let i in workSubData) {
-      if (workSubData[i].outputType == "maps") {
-        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
-
-            let temp = { title: title, id: id, type: type, description: "" };
-            let newData = workSubData;
-            newData[i].courseWorkSubOutputInfoList[j].pngoData.items.push(temp);
-            this.setState({
-              workSubData: newData,
-              tempTabIndex: temp.id
-            });
-          }
-        }
-      }
-    }
 
     this.setState({
       editorMode: true,
@@ -608,7 +645,7 @@ class MainContainer extends React.Component {
                 let temp = workSubData;
                 description = temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].description;
                 temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].title = title;
-                temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].type = type;
+                temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata = { type : type };
 
                 this.setState({
                   workSubData: temp
@@ -625,7 +662,11 @@ class MainContainer extends React.Component {
     // DB 데이터 수정
     ajaxJson(
       ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
-      { title: title, description: description },
+      { 
+        title: title, 
+        description: description,
+        metadata: JSON.stringify({type : type})
+      },
       function (data) {
         const result = JSON.parse(JSON.stringify(data)).response.data;
         console.log(result);
@@ -728,7 +769,7 @@ class MainContainer extends React.Component {
         openSelectMap: !this.state.openSelectMap,
         tempIndex: index,
         tempTitle: '',
-        tempIdx: subjectMap[1].idx,
+        tempType: subjectMap[1].pinogioOutputId,
         mode: 'add',
         tempMapsId: mapsId
       });
@@ -749,9 +790,9 @@ class MainContainer extends React.Component {
   }
 
   //스토리맵 탭 지도선택
-  changeTempIdx(idx) {
+  changeTempType(type) {
     this.setState({
-      tempIdx: idx
+      tempType: type
     });
   }
 
@@ -965,7 +1006,7 @@ class MainContainer extends React.Component {
 
             <div style={{flex: 1, paddingTop: 18, paddingBottom: 18}}>
               <div style={{fontSize: 20, textAlign:'center'}}>
-                모바일 기기를 활용한 우리 지역 소음원 현장 조사
+                {this.state.workTitle}
               </div>
             </div>
 
@@ -1105,7 +1146,7 @@ class MainContainer extends React.Component {
                                         targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                                         style={{display: 'flex', alignItems: 'center'}}
                                       >
-                                        <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, tempIdx: r.type, mode: 'edit' })}/>
+                                        <MenuItem primaryText="설정변경" onClick={(index, j) => this.setState({openSelectMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, tempType: r.metadata.type, mode: 'edit' })}/>
                                         <MenuItem primaryText="컨텐츠 입력" onClick={(index, j) => this.setState({editorMode: true, tempDescription: r.description, tempIndex: data.idx, tempTabIndex: r.id })}/>
                                         <MenuItem primaryText="삭제하기" onClick={(index, j) => this.setState({openDeleteMap: true, tempTitle: r.title, tempIndex: data.idx, tempTabIndex: r.id, isStoryTabMode: true})}/>
                                       </IconMenu>
@@ -1197,8 +1238,8 @@ class MainContainer extends React.Component {
               addStoryTab={this.addStoryTab.bind(this)}
               editStoryTab={this.editStoryTab.bind(this)}
               subjectMap={this.state.subjectMap}
-              value={this.state.tempIdx}
-              changeTempIdx={this.changeTempIdx.bind(this)}
+              value={this.state.tempType}
+              changeTempType={this.changeTempType.bind(this)}
               mode={this.state.mode}
             />
             <DeleteMap
