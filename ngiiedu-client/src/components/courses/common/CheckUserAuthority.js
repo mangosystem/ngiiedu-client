@@ -2,7 +2,7 @@ import react from 'react';
 
 
 
-const CheckUserAuthority = (courseId) => {
+const CheckUserAuthority = (courseId,Idx) => {
   
     let isMember = false
     let isOwner = false
@@ -18,7 +18,7 @@ const CheckUserAuthority = (courseId) => {
                 var data = res.response.data;
                 console.dir(data);
                   for(var i=0;i<data.length;i++){
-                    if(data[i].userId==userIdx){
+                    if(data[i].userId==Idx){
                       console.log('isMember');
                       isMember=true;
                     }
@@ -36,7 +36,7 @@ const CheckUserAuthority = (courseId) => {
       async: false,
       success:  
         function(res){
-          if(res.response.data.courseCreateId == userIdx){
+          if(res.response.data.courseCreateId == Idx){
             console.log('isOwner');
               isOwner=true
           }else{

@@ -59,10 +59,6 @@ class Header extends React.Component {
       userIdx:userIdx
     });
 
-    console.log(userId);
-    console.log(userName);
-    console.log(userDivision);
-
   }
  
 

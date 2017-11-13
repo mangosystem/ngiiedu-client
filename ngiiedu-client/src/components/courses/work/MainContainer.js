@@ -19,21 +19,44 @@ class MainContainer extends React.Component {
     }
   }
 
-  componentWillMount() {
-    // alert('생성자, 참여자 구분하여 UI 구성');
-    // console.log(this.props.match.params.COURSEID);
-  }
+
+  componentWillReceiveProps(nextProps){
+    
+    //redux owner, member 정보 확인
+    let courseId = this.props.match.params.COURSEID;
+    if(courseId !=null && nextProps.loginStatus !=null){
+      
+      let authority = CheckUserAuthority(courseId,nextProps.loginStatus.userIdx);
+      this.setState({
+        isOwner:authority.isOwner,
+        isMember:authority.isMember
+      })    
+    }else{
+      this.setState({
+        isOwner:false,
+        isMember:false
+      })
+    }
+  } 
 
   
   componentDidMount() {
     
-      //권한확인 코드
-      var courseId = this.props.match.params.COURSEID;
-      let authority = CheckUserAuthority(courseId);
+    //redux owner, member 정보 확인
+    var courseId = this.props.match.params.COURSEID;
+    if(courseId !=null && this.props.loginStatus !=null){
+      
+      let authority = CheckUserAuthority(courseId,this.props.loginStatus.userIdx);
       this.setState({
         isOwner:authority.isOwner,
         isMember:authority.isMember
+      })    
+    }else{
+      this.setState({
+        isOwner:false,
+        isMember:false
       })
+    }
   
     }
 

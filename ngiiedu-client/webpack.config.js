@@ -5,8 +5,8 @@ module.exports = {
 		entry: './src/index.js',
 
 		output: {
-			path: __dirname + '/webapps',
-			// path: '/Users/hanjin/git/ngiiedu-server/ngiiedu/src/main/webapp/assets/dist',
+			// path: __dirname + '/webapps',
+			path: '/Users/USER/git/ngiiedu-server/ngiiedu/src/main/webapp/assets/dist',
 			filename: 'bundle.js'
 		},
 

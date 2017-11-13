@@ -15,7 +15,6 @@ import MenuPanel from '../common/MenuPanel.js';
 import CheckUserAuthority from '../common/CheckUserAuthority.js';
 
 
-
 import {
   Table,
   TableBody,
@@ -118,17 +117,45 @@ class MainContainer extends React.Component {
     )
   }
 
+  componentWillReceiveProps(nextProps){
+    
+    //redux owner, member 정보 확인
+    let courseId = this.props.match.params.COURSEID;
+    if(courseId !=null && nextProps.loginStatus !=null){
+      
+      let authority = CheckUserAuthority(courseId,nextProps.loginStatus.userIdx);
+      this.setState({
+        isOwner:authority.isOwner,
+        isMember:authority.isMember
+      })    
+    }else{
+      this.setState({
+        isOwner:false,
+        isMember:false
+      })
+    }
+  } 
+
+
   componentDidMount() {
     this.ajaxCall();
+    console.dir(this.props)
 
-    // import CheckUserAuthority from '../common/CheckUserAuthority.js';
-    //권한확인 코드
-    var courseId = this.props.match.params.COURSEID;
-    let authority = CheckUserAuthority(courseId);
-    this.setState({
-      isOwner:authority.isOwner,
-      isMember:authority.isMember
-    })
+    //redux owner, member 정보 확인
+    let courseId = this.props.match.params.COURSEID;
+    if(courseId !=null && this.props.loginStatus !=null){
+      
+      let authority = CheckUserAuthority(courseId,this.props.loginStatus.userIdx);
+      this.setState({
+        isOwner:authority.isOwner,
+        isMember:authority.isMember
+      })    
+    }else{
+      this.setState({
+        isOwner:false,
+        isMember:false
+      })
+    }
 
   }
 
@@ -150,7 +177,7 @@ class MainContainer extends React.Component {
             expanded={this.state.expanded} onExpandChange={(expand) => this.handleExpandChange(expand)}
             >
               <CardHeader
-                title="참여자"
+                title={"참여자"}
                 titleStyle={titleStyle}
                 actAsExpander={true}
                 showExpandableButton={true}

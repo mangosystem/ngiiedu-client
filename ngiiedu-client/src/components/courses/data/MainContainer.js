@@ -83,6 +83,24 @@ class MainContainer extends React.Component {
 
   }
 
+  componentWillReceiveProps(nextProps){
+    
+    //redux owner, member 정보 확인
+    let courseId = this.props.match.params.COURSEID;
+    if(courseId !=null && nextProps.loginStatus !=null){
+      
+      let authority = CheckUserAuthority(courseId,nextProps.loginStatus.userIdx);
+      this.setState({
+        isOwner:authority.isOwner,
+        isMember:authority.isMember
+      })    
+    }else{
+      this.setState({
+        isOwner:false,
+        isMember:false
+      })
+    }
+  } 
 
   componentDidMount() {
     ajaxJson(
@@ -97,13 +115,24 @@ class MainContainer extends React.Component {
       }.bind(this)
     );
 
-    //권한확인 코드
+  
+    //redux owner, member 정보 확인
     var courseId = this.props.match.params.COURSEID;
-    let authority = CheckUserAuthority(courseId);
-    this.setState({
-      isOwner:authority.isOwner,
-      isMember:authority.isMember
-    })
+    if(courseId !=null && this.props.loginStatus !=null){
+      
+      let authority = CheckUserAuthority(courseId,this.props.loginStatus.userIdx);
+      this.setState({
+        isOwner:authority.isOwner,
+        isMember:authority.isMember
+      })    
+    }else{
+      this.setState({
+        isOwner:false,
+        isMember:false
+      })
+    }
+  
+  
 
 
 
@@ -247,5 +276,7 @@ class MainContainer extends React.Component {
     );
   }
 };
+
+
 
 export default withRouter(MainContainer);
