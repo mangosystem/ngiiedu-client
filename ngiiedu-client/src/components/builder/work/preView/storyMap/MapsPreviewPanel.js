@@ -12,7 +12,7 @@ class MapsPreviewPanel extends React.Component {
     this.state = {
 
       isEditMode: false,
-
+      bounds:'',
       map: new ol.Map({
         view: new ol.View({
           center: [14143701.095047, 4477593.930960],
@@ -21,9 +21,6 @@ class MapsPreviewPanel extends React.Component {
         }),
         layers: [
           new ol.layer.Tile({
-            // source: new ol.source.OSM()
-            // source:new ol.source.Stamen({layer:"toner"})
-            // source:new ol.source.Stamen({layer:"watercolor"})
             source: new ol.source.XYZ({
               url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
             })
@@ -47,18 +44,6 @@ class MapsPreviewPanel extends React.Component {
 
   }
 
-  componentWillMount() {
-    // //초기 데이터 지정
-    // let raster=this.props.raster;
-    // this.setState({
-    //   layers: {
-    //     raster: raster
-    //   }
-    // })
-    
-  }
-  
-
   componentDidMount() {
     //초기 맵 지정
     let { map } = this.state;
@@ -80,26 +65,35 @@ class MapsPreviewPanel extends React.Component {
       //새로운 레이어를 추가
       map.addLayer(nextProps.raster);
 
-      // console.log('전달받은 bound : '+nextProps.bounds)
-      //제발 되길 바라며 ..
-      if(nextProps.bounds !=null){
-        // console.log(nextProps.bounds)
-        let wkt = nextProps.bounds;
-        let format = new ol.format.WKT();
-        let feature = format.readFeature(wkt, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: 'EPSG:3857'
-        });
-        map.getView().fit(
-            feature.getGeometry().getExtent(),
-            map.getSize()
-        );  
-      }
-   
+      // nextProps.layerID
+      ajaxJson(
+        ['GET',apiSvr+'/coursesWork/layers/'+nextProps.layerId+'.json'],
+        null,
+        function(res){
+          // console.log('bounds :' +  res.response.data.data.bounds )
+            this.setState({
+                bounds:res.response.data.data.bounds
+            },function(){
+              if(this.state.bounds !=null){
+                let wkt = this.state.bounds;
+                let format = new ol.format.WKT();
+                let feature = format.readFeature(wkt, {
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                });
+                map.getView().fit(
+                    feature.getGeometry().getExtent(),
+                    map.getSize()
+                );  
+              }
+            });
+        }.bind(this),
+        function(e){
+            alert(e);
+        }
+      );
     }
 }
-  
-  
 
   render() {
     return (
