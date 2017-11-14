@@ -115,8 +115,7 @@ class SampleCheckEdit extends Component {
 
     render() {
         return (
-            
-                <div >
+            <div >
                 <Table
                 bodyStyle={{
                     width:850,
@@ -276,29 +275,7 @@ class SampleCheckEdit extends Component {
 
                     </TableBody>
                 </Table>
-
-               
-                
-   
-
-
-{/*    
-                    {this.props.dbColumn.map((row, idx) => (
-                        <div key={idx} >
-                            <span style={{textAlign: 'left'}}>{row}</span>
-                            <SelectField
-                                hintText="Select a name"
-                                value={this.state.dbColumnIndex[idx]}
-                                onChange={(event, key, value) => this.handleChange(event, key, value, idx)}
-                            >
-                                <MenuItem  style={{display:"block"}} value={-1} primaryText={"선택안함"} />
-                            {this.props.apiColumn.map((row, idx) => (
-                                <MenuItem key={idx} style={this.state.menuItemStyle[idx]} value={idx} primaryText={this.props.apiColumn[idx]} />
-                            ))}
-                            </SelectField>
-                        </div>
-                    ))} */}
-                    </div>
+            </div>
             
         );
     }

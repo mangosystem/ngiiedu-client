@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
-import SelectSyncWay from './SelectSyncWay';
 import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import { Link } from 'react-router-dom';
+import RaisedButton from 'material-ui/RaisedButton';
 
 //left panal
 import LeftMenu from '../../common/LeftMenu.js';
+
+const styles={
+    SelectSyncWay:{
+        textAlign : 'center',
+        padding:100
+    },
+    button:{
+        width:'40%'
+    }
+
+}
 
 
 
@@ -21,7 +33,25 @@ class MainContainer extends Component {
                         />
                         <section>
                             <Paper>
-                                <SelectSyncWay/>
+                                <div style={styles.SelectSyncWay}>
+                                    <Link to={contextPath + "/cm-admin/schoolSync/file"}>
+                                        <RaisedButton
+                                            label="파일 동기화"
+                                            primary={true}
+                                            style={styles.button}
+                                        />
+                                    </Link>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <Link to={contextPath + "/cm-admin/schoolSync/api"}>
+                                        <RaisedButton
+                                            label="API 동기화"
+                                            primary={true}
+                                            style={styles.button}
+                                        />
+                                    </Link>
+                                </div>                            
                             </Paper>
                         </section>
                     </div>
