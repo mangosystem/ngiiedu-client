@@ -149,7 +149,9 @@ class MainContainer extends React.Component {
                         onActive={()=>this.handleChangeTap(JSON.parse(row.metadata).type,index)}
                     >
                     <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 250 ,padding:10}}>
-                        <div dangerouslySetInnerHTML={ {__html: row.description} }></div>
+                        <div
+                            style={{wordWrap: 'BREAK-WORD'}}
+                            dangerouslySetInnerHTML={ {__html: row.description} }></div>
                     </div>
                     </Tab>
                    
@@ -170,7 +172,11 @@ class MainContainer extends React.Component {
                     textStyle={{fontWeight:'bold'}}
                     />
                     <CardText expandable={true}>
-                        {row.description}
+                        <div 
+                            style={{wordWrap: 'BREAK-WORD'}}
+                            dangerouslySetInnerHTML={ {__html: row.description} }
+                        >
+                        </div>
                     </CardText>
                 </Card>
                 ))}
