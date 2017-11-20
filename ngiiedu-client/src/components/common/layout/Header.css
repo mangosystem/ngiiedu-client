@@ -1,4 +1,6 @@
 #header { position: fixed; top: 0; left: 0; width: 100%; height: 60px; z-index: 9; background-color: #05BCD3; }
+#slimHeader { position: fixed; top: 0; left: 0; width: 100%; height: 40px; z-index: 9; background-color: #05BCD3; overflow:hidden}
+
   #header .inner { position: relative; width: 1024px; height: 100%; margin: 0 auto; }
   #header .inner.wide { width: 100%; }
   

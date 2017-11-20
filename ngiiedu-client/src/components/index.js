@@ -240,7 +240,10 @@ class App extends Component {
             			</Route>
 
             			<Route path={contextPath +"/storymap/preview/:LAYERID"}>
-            			  <StoryMapPreview loginStatus={this.state.loginStatus}/>
+							<div>
+								<Header slim={true} />
+								<StoryMapPreview loginStatus={this.state.loginStatus}/>
+							</div>
             			</Route>
 
                   		<Route path={contextPath +"/map/preview/:LAYERID"}>
