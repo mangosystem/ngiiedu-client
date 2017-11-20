@@ -64,10 +64,10 @@ class Header extends React.Component {
 
   render() {
     return (
-      <header id="header">
+      <header id={this.props.slim ? "slimHeader" : "header"}>
         <div className={this.props.wide ? "inner wide" : "inner"} style={{display: 'flex'}} >
 
-          <div style={{flex: 1, marginLeft: 0, paddingTop: 20, paddingBottom: 20}}>
+          <div style={{flex: 1, marginLeft: 0, paddingTop: this.props.slim? 8:20, paddingBottom: this.props.slim? 10:20}}>
             <Link to="/ngiiedu/course"><h3>NGII-EDU LOGO</h3></Link>
           </div>
 
@@ -98,11 +98,11 @@ class Header extends React.Component {
               <Avatar
                 src="https://semantic-ui.com/images/avatar/large/stevie.jpg"
                 size={30}
-                style={{margin: '15px 10px', cursor: 'pointer'}}
+                style={{margin: this.props.slim? '5px 10px' :'15px 10px', cursor: 'pointer'}}
               />
               <IconMenu
                   iconButtonElement={
-                      <IconButton style={{width: 50, height: 50, marginTop: 5, marginBottom: 5}}>
+                      <IconButton style={{width: 50, height: 50, marginTop: this.props.slim? -5:5, marginBottom: 5}}>
                         <IconMoreVert />
                       </IconButton>
                   }
@@ -116,7 +116,7 @@ class Header extends React.Component {
                   <MenuItem primaryText="수업 만들기" href={contextPath + "/courseCreate"} />
                   <MenuItem primaryText="로그아웃" href={contextPath + "/logout"} />
               </IconMenu>
-              <IconButton style={{width: 50, height: 50, marginTop: 5, marginBottom: 5}}>
+              <IconButton style={{width: 50, height: 50, marginTop: this.props.slim? -5:5, marginBottom: 5}}>
                 <IconHelpOutline />
               </IconButton>
 

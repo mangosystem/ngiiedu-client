@@ -125,15 +125,7 @@ class MainContainer extends React.Component {
    
     return (
       <div>
-          <header id="prvHeader">
-          <div className="inner wide" style={{display: 'flex'}}>
-            <div style={{flex: 1, paddingTop: 25, paddingBottom: 18}}>
-              <div style={{fontSize: 30, textAlign:'center'}}>
-                    {this.state.storyMapData!=null ? this.state.storyMapData.title : null}
-              </div>
-            </div>
-          </div>
-        </header>
+       
         <main>
             <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0, right: 0 }}>
             {this.state.storyMapData !=null ?
