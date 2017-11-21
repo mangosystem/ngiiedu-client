@@ -211,7 +211,7 @@ class MapsEditorPanel extends React.Component {
 
     ajaxJson(
       ['DELETE',apiSvr+'/coursesWork/dataset/row.json'], //['DELETE',apiSvr+'/pngo/dataset/row.json'],
-      {'pinogioOutputId':datasetId, 'rowId':rowId},
+      {'datasetId':datasetId, 'rowId':rowId}, //{'pinogioOutputId':datasetId, 'rowId':rowId},
       function(res){
 
         for(let i=0; i<this.state.layers.vector.getSource().getFeatures().length; i++){

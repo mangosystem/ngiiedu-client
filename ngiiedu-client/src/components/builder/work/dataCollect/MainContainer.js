@@ -150,36 +150,54 @@ class MainContainer extends React.Component {
           
           if (workSubData[i].outputType == "maps") {
             
-            for (let j in workSubData[i].courseWorkSubOutputInfoList) {              
+            for (let j in workSubData[i].workOutputList) {              
 
-              let metadata = JSON.parse(workSubData[i].courseWorkSubOutputInfoList[j].pngoData.metadata);
-              workSubData[i].courseWorkSubOutputInfoList[j].pngoData.metadata = metadata;
-              workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items.sort((a, b) => {
+              let metadata = JSON.parse(workSubData[i].workOutputList[j].pngoData.metadata);
+              workSubData[i].workOutputList[j].pngoData.metadata = metadata;
+              workSubData[i].workOutputList[j].pngoData.items.sort((a, b) => {
                 return a[sortingField] - b[sortingField];
               });
               
-              for ( let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
-                let itemsMetaData = JSON.parse(workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata);
-                workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata = itemsMetaData;
+              for ( let k in workSubData[i].workOutputList[j].pngoData.items) {
+                let itemsMetaData = JSON.parse(workSubData[i].workOutputList[j].pngoData.items[k].metadata);
+                workSubData[i].workOutputList[j].pngoData.items[k].metadata = itemsMetaData;
               }
               
               //탭
-              workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items.unshift({ title: "임시데이터" });
-
-                           
+              workSubData[i].workOutputList[j].pngoData.items.unshift({ title: "임시데이터" });      
             }
+
+            // for (let j in workSubData[i].courseWorkSubOutputInfoList) {              
+
+            //   let metadata = JSON.parse(workSubData[i].courseWorkSubOutputInfoList[j].pngoData.metadata);
+            //   workSubData[i].courseWorkSubOutputInfoList[j].pngoData.metadata = metadata;
+            //   workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items.sort((a, b) => {
+            //     return a[sortingField] - b[sortingField];
+            //   });
+              
+            //   for ( let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
+            //     let itemsMetaData = JSON.parse(workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata);
+            //     workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata = itemsMetaData;
+            //   }
+              
+            //   //탭
+            //   workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items.unshift({ title: "임시데이터" });           
+            // }
+            
           } 
         }
         
         for (let i in workSubData) {
           if (workSubData[i].outputType != "dataset")
-          workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"}); 
+          // workSubData[i].courseWorkSubOutputInfoList.unshift({title: "임시데이터"});
+          workSubData[i].workOutputList.unshift({title: "임시데이터"});  
         }
         
         console.log(workSubData);
 
         try {
-          let subjectMap = workSubData.filter(val => (val.outputType == 'layer'))[0].courseWorkSubOutputInfoList;
+          //  let subjectMap = workSubData.filter(val => (val.outputType == 'layer'))[0].courseWorkSubOutputInfoList;
+          let subjectMap = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
           
           this.setState({
             subjectMap: subjectMap
@@ -261,8 +279,8 @@ class MainContainer extends React.Component {
                 pngoData: result,
                 pinogioOutputId
               };
-    
-              workSubData[i].courseWorkSubOutputInfoList.push(newObj);
+              // workSubData[i].courseWorkSubOutputInfoList.push(newObj);
+              workSubData[i].workOutputList.push(newObj);
             }
           }
 
@@ -283,7 +301,7 @@ class MainContainer extends React.Component {
     } else {
 
       let courseWorkSubId = tempOutputTypeIdx;
-      let maps_type = "SERIES";
+      let mapsType = "SERIES"; //let maps_type = "SERIES";
       let privacy = "PUBLIC";
       let metadata = JSON.stringify({ "type": template });
       let idx = 0;
@@ -293,7 +311,7 @@ class MainContainer extends React.Component {
         {
           courseWorkSubId,
           title,
-          maps_type,
+          mapsType, // maps_type,
           privacy,
           metadata
         },
@@ -315,8 +333,9 @@ class MainContainer extends React.Component {
                 pngoData: result,
                 pinogioOutputId
               };
-    
-              workSubData[i].courseWorkSubOutputInfoList.push(newObj);
+
+              // workSubData[i].courseWorkSubOutputInfoList.push(newObj);
+              workSubData[i].workOutputList.push(newObj);
             }
           }
 
@@ -346,17 +365,29 @@ class MainContainer extends React.Component {
 
     for (let i in workSubData) {
       if (workSubData[i].outputType == "layer" ) {          
-        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+        for (let j in workSubData[i].workOutputList) {
+          if (workSubData[i].workOutputList[j].idx == tempIndex) {
             let temp = workSubData;
-            layersId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
-            temp[i].courseWorkSubOutputInfoList[j].outputName = title;
+            layersId = temp[i].workOutputList[j].pinogioOutputId;
+            temp[i].workOutputList[j].outputName = title;
             this.setState({
               workSubData: temp, 
               tempIdx: 1
             });
           }
         }
+
+        // for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+        //   if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+        //     let temp = workSubData;
+        //     layersId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+        //     temp[i].courseWorkSubOutputInfoList[j].outputName = title;
+        //     this.setState({
+        //       workSubData: temp, 
+        //       tempIdx: 1
+        //     });
+        //   }
+        // }
       }
     }
 
@@ -382,21 +413,33 @@ class MainContainer extends React.Component {
     
     for (let i in workSubData) {
       if (workSubData[i].outputType == "maps" ) {          
-        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+        for (let j in workSubData[i].workOutputList) {
+          if (workSubData[i].workOutputList[j].idx == tempIndex) {
             let temp = workSubData;
-            layersId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
-            temp[i].courseWorkSubOutputInfoList[j].outputName = title;
-            temp[i].courseWorkSubOutputInfoList[j].pngoData.metadata.type = template ;
+            layersId = temp[i].workOutputList[j].pinogioOutputId;
+            temp[i].workOutputList[j].outputName = title;
+            temp[i].workOutputList[j].pngoData.metadata.type = template ;
             this.setState({
               workSubData: temp
             });
           }
         }
+
+        // for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+        //   if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+        //     let temp = workSubData;
+        //     layersId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+        //     temp[i].courseWorkSubOutputInfoList[j].outputName = title;
+        //     temp[i].courseWorkSubOutputInfoList[j].pngoData.metadata.type = template ;
+        //     this.setState({
+        //       workSubData: temp
+        //     });
+        //   }
+        // }
       }
     }
 
-    let maps_type = "SERIES";
+    let mapsType = "SERIES"; // let maps_type = "SERIES";
     let privacy = "PUBLIC";
     let metadata = JSON.stringify({ "type": template });
 
@@ -404,7 +447,7 @@ class MainContainer extends React.Component {
       ['PUT', apiSvr + '/coursesWork/maps/' + layersId + '.json'],
       {
         title,
-        maps_type,
+        mapsType,
         privacy,
         metadata
       },
@@ -431,16 +474,16 @@ class MainContainer extends React.Component {
 
       for (let i in workSubData) {
         if (workSubData[i].outputType == "maps") {
-          for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-            if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+          for (let j in workSubData[i].workOutputList) {
+            if (workSubData[i].workOutputList[j].idx == tempIndex) {
 
-              mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+              mapsId = workSubData[i].workOutputList[j].pinogioOutputId;
 
-              for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
-                if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
+              for (let k in workSubData[i].workOutputList[j].pngoData.items) {
+                if (workSubData[i].workOutputList[j].pngoData.items[k].id == tempTabIndex) {
   
                   let temp = workSubData;
-                  temp[i].courseWorkSubOutputInfoList[j].pngoData.items.splice(k, 1);
+                  temp[i].workOutputList[j].pngoData.items.splice(k, 1);
   
                   this.setState({
                     workSubData: temp
@@ -451,6 +494,26 @@ class MainContainer extends React.Component {
             }
           }
         }
+
+        // for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+        //   if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+
+        //     mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+
+        //     for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
+        //       if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
+
+        //         let temp = workSubData;
+        //         temp[i].courseWorkSubOutputInfoList[j].pngoData.items.splice(k, 1);
+
+        //         this.setState({
+        //           workSubData: temp
+        //         });
+
+        //       }
+        //     }
+        //   }
+        // }
       }
 
 
@@ -482,16 +545,27 @@ class MainContainer extends React.Component {
 
       for (let i in workSubData) {
         if (workSubData[i].outputType == "layer" ) {          
-          for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-            if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+          for (let j in workSubData[i].workOutputList) {
+            if (workSubData[i].workOutputList[j].idx == tempIndex) {
               let temp = workSubData;
-              mapsId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
-              temp[i].courseWorkSubOutputInfoList.splice(j,1);
+              mapsId = temp[i].workOutputList[j].pinogioOutputId;
+              temp[i].workOutputList.splice(j,1);
               this.setState({
                 workSubData: temp
               });
             }
           }
+
+          // for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+          //   if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+          //     let temp = workSubData;
+          //     mapsId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+          //     temp[i].courseWorkSubOutputInfoList.splice(j,1);
+          //     this.setState({
+          //       workSubData: temp
+          //     });
+          //   }
+          // }
         }
       }
 
@@ -499,7 +573,7 @@ class MainContainer extends React.Component {
       // DB 데이터에서 삭제
       ajaxJson(
         ['DELETE', apiSvr + '/coursesWork/layers/' + mapsId + '.json'],
-        { works_output_id: tempIndex },
+        { worksOutputId: tempIndex },
         function (data) {
         }.bind(this),
         function (xhr, status, err) {
@@ -516,16 +590,27 @@ class MainContainer extends React.Component {
       // state에서 삭제
       for (let i in workSubData) {
         if (workSubData[i].outputType == "maps" ) {          
-          for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-            if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+          for (let j in workSubData[i].workOutputList) {
+            if (workSubData[i].workOutputList[j].idx == tempIndex) {
               let temp = workSubData;
-              mapsId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
-              temp[i].courseWorkSubOutputInfoList.splice(j,1);
+              mapsId = temp[i].workOutputList[j].pinogioOutputId;
+              temp[i].workOutputList.splice(j,1);
               this.setState({
                 workSubData: temp
               });
             }
           }
+
+          // for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+          //   if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+          //     let temp = workSubData;
+          //     mapsId = temp[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+          //     temp[i].courseWorkSubOutputInfoList.splice(j,1);
+          //     this.setState({
+          //       workSubData: temp
+          //     });
+          //   }
+          // }
         }
       }
 
@@ -534,7 +619,7 @@ class MainContainer extends React.Component {
       // DB 데이터에서 삭제
       ajaxJson(
         ['DELETE', apiSvr + '/coursesWork/maps/' + mapsId + '.json'],
-        { works_output_id: tempIndex },
+        { worksOutputId: tempIndex }, //{ works_output_id: tempIndex },
         function (data) {
         }.bind(this),
         function (xhr, status, err) {
@@ -589,8 +674,8 @@ class MainContainer extends React.Component {
 
         for (let i in workSubData) {
           if (workSubData[i].outputType == "maps") {
-            for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-              if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+            for (let j in workSubData[i].workOutputList) {
+              if (workSubData[i].workOutputList[j].idx == tempIndex) {
     
                 let temp = { 
                   title: title, 
@@ -601,13 +686,33 @@ class MainContainer extends React.Component {
 
                 let newData = workSubData;
 
-                newData[i].courseWorkSubOutputInfoList[j].pngoData.items.push(temp);
+                newData[i].workOutputList[j].pngoData.items.push(temp);
                 this.setState({
                   workSubData: newData,
                   tempTabIndex: temp.id
                 });
               }
             }
+
+            // for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+            //   if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+    
+            //     let temp = { 
+            //       title: title, 
+            //       id: id, 
+            //       metadata: { type: type },
+            //       description: "" 
+            //     };
+
+            //     let newData = workSubData;
+
+            //     newData[i].courseWorkSubOutputInfoList[j].pngoData.items.push(temp);
+            //     this.setState({
+            //       workSubData: newData,
+            //       tempTabIndex: temp.id
+            //     });
+            //   }
+            // }
           }
         }
 
@@ -634,18 +739,18 @@ class MainContainer extends React.Component {
 
     for (let i in workSubData) {
       if (workSubData[i].outputType == "maps") {
-        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+        for (let j in workSubData[i].workOutputList) {
+          if (workSubData[i].workOutputList[j].idx == tempIndex) {
 
-            mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+            mapsId = workSubData[i].workOutputList[j].pinogioOutputId;
 
-            for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
-              if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
+            for (let k in workSubData[i].workOutputList[j].pngoData.items) {
+              if (workSubData[i].workOutputList[j].pngoData.items[k].id == tempTabIndex) {
 
                 let temp = workSubData;
-                description = temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].description;
-                temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].title = title;
-                temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata = { type : type };
+                description = temp[i].workOutputList[j].pngoData.items[k].description;
+                temp[i].workOutputList[j].pngoData.items[k].title = title;
+                temp[i].workOutputList[j].pngoData.items[k].metadata = { type : type };
 
                 this.setState({
                   workSubData: temp
@@ -655,6 +760,28 @@ class MainContainer extends React.Component {
             }
           }
         }
+
+        // for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+        //   if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+
+        //     mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+
+        //     for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
+        //       if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
+
+        //         let temp = workSubData;
+        //         description = temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].description;
+        //         temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].title = title;
+        //         temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].metadata = { type : type };
+
+        //         this.setState({
+        //           workSubData: temp
+        //         });
+
+        //       }
+        //     }
+        //   }
+        // }
       }
     }
 
@@ -690,17 +817,17 @@ class MainContainer extends React.Component {
     
     for (let i in workSubData) {
       if (workSubData[i].outputType == "maps") {
-        for (let j in workSubData[i].courseWorkSubOutputInfoList) {
-          if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+        for (let j in workSubData[i].workOutputList) {
+          if (workSubData[i].workOutputList[j].idx == tempIndex) {
 
-            mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+            mapsId = workSubData[i].workOutputList[j].pinogioOutputId;
 
-            for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
-              if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
+            for (let k in workSubData[i].workOutputList[j].pngoData.items) {
+              if (workSubData[i].workOutputList[j].pngoData.items[k].id == tempTabIndex) {
 
                 let temp = workSubData;
-                title = temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].title;
-                temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].description = contents;
+                title = temp[i].workOutputList[j].pngoData.items[k].title;
+                temp[i].workOutputList[j].pngoData.items[k].description = contents;
 
                 this.setState({
                   workSubData: temp
@@ -710,6 +837,27 @@ class MainContainer extends React.Component {
             }
           }
         }
+
+        // for (let j in workSubData[i].courseWorkSubOutputInfoList) {
+        //   if (workSubData[i].courseWorkSubOutputInfoList[j].idx == tempIndex) {
+
+        //     mapsId = workSubData[i].courseWorkSubOutputInfoList[j].pinogioOutputId;
+
+        //     for (let k in workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items) {
+        //       if (workSubData[i].courseWorkSubOutputInfoList[j].pngoData.items[k].id == tempTabIndex) {
+
+        //         let temp = workSubData;
+        //         title = temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].title;
+        //         temp[i].courseWorkSubOutputInfoList[j].pngoData.items[k].description = contents;
+
+        //         this.setState({
+        //           workSubData: temp
+        //         });
+
+        //       }
+        //     }
+        //   }
+        // }
       }
     }
 
@@ -1062,7 +1210,7 @@ class MainContainer extends React.Component {
                     initiallyOpen={true}
                     primaryTogglesNestedList={true}
                     nestedItems={
-                      row.courseWorkSubOutputInfoList.map((data, index) => {
+                      row.workOutputList.map((data, index) => { // row.courseWorkSubOutputInfoList.map((data, index) => {
 
                         if (index == 0 && row.outputType != "dataset") {
                           return (

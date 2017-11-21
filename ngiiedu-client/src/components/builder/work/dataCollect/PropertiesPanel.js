@@ -129,8 +129,8 @@ class PropertiesPanel extends React.Component {
       let contentJson=JSON.stringify(this.state.properties);
 
       ajaxJson(
-        ['PUT',apiSvr+'/pngo/dataset/row.json'],
-        {'pinogioOutputId':datasetId, 'rowId':rowId, 'contentJson':contentJson},
+        ['PUT',apiSvr+'/coursesWork/dataset/row.json'], // ['PUT',apiSvr+'/pngo/dataset/row.json'],
+        {'datasetId':datasetId, 'rowId':rowId, 'contentJson':contentJson}, // {pinogioOutputId':datasetId, 'rowId':rowId, 'contentJson':contentJson},
         function(res){
           for(let i=0; i<this.props.map.getLayers().getArray().length; i++){
             if(this.props.map.getLayers().getArray()[i] instanceof ol.layer.Vector){
@@ -166,8 +166,8 @@ class PropertiesPanel extends React.Component {
       let contentJson = JSON.stringify(this.state.newProperties)
 
       ajaxJson(
-        ['POST',apiSvr+'/pngo/dataset/row.json'],
-        {'pinogioOutputId':datasetId, 'contentJson':contentJson},
+        ['POST',apiSvr+'/coursesWork/dataset/row.json'], // ['POST',apiSvr+'/pngo/dataset/row.json'],
+        {'datasetId':datasetId, 'contentJson':contentJson}, //{'pinogioOutputId':datasetId, 'contentJson':contentJson},
         function(res){
           this.setState({
             newProperties:update(
