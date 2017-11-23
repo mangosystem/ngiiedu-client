@@ -56,6 +56,9 @@ import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
 import StoryMapPreview from './builder/work/preView/storyMap/MainContainer';
 import MapPreview from './builder/work/preView/map/MainContainer';
 
+//work ui 변경중 
+import WorkFrameContainer from './builder/work2/MainContainer';
+import WorkFrameEditDataset from './builder/work2/dataset/edit/MainContainer';
 
 
 const contextPath = '/ngiiedu';
@@ -250,6 +253,29 @@ class App extends Component {
             			  <MapPreview loginStatus={this.state.loginStatus}/>
             			</Route>
 
+
+
+						{/* test route */}
+						
+
+						{/* dataset */}
+						<Route path={contextPath +"/course/:COURSEID/work2/dataset/edit/:DATASETID"}>
+							<div>
+								<Header slim={true} />
+								<WorkFrameEditDataset />
+								<Footer />
+							</div>
+						</Route>
+
+						{/* main */}
+						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID"}>
+							<div>
+								<Header slim={true} />
+								<WorkFrameContainer />
+								<Footer />
+							</div>
+						</Route>
+
             			<Route component={Error404} />
             		</Switch>
             	</div>
@@ -264,10 +290,8 @@ let mapStateToProps = (state) => {
 	};
 }
 
-
 App = connect(
 	mapStateToProps	  
 )(App);
-
 
 export default App;

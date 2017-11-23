@@ -1,0 +1,96 @@
+.workMainSubHeader{
+    position: absolute;
+    top: 40px;
+    right: 0; 
+    left: 0 ;
+    height: 100px;
+    background-color:#E0F7FA;
+    text-align:right;
+    display:flex;
+    justify-content:space-between;
+    align-items:center
+}
+
+.workMainSubHeader .iconButtonContainer{
+    display:flex;
+}
+
+.workMainSubHeader .iconButtonUnSelected{
+    box-sizing: content-box;
+    width: 80px;
+    height: 100px;
+    text-align: center;
+}
+
+.workMainSubHeader .iconButtonSelected{
+    box-sizing: content-box;
+    width: 80px;
+    height: 100px;
+    text-align: center;
+    border: 3px solid;
+    border-color: #00BCD4;
+}
+
+.workMainSubHeader .buttonImg{
+    height: 80px;
+    width: 80px;
+}
+
+.workMainSubHeader .buttonText{
+    font-size:10px
+}
+
+.workMainSubHeader .subHeaderTitle{
+    margin-right:20px
+}
+
+/* main */
+.workMainMainContainer{
+    position: absolute;
+    top: 140px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding-top: 30px;
+    padding-left: 100px;
+    display:flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: left;
+}
+
+.workMainMainContainer .createButton{
+    height:200px;
+    width:200px; 
+    margin:30px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+.workMainMainContainer .thumbnailContainer{
+    text-align: center;
+}
+
+.workMainMainContainer .thumbnailContainer2{
+    height: 200px;
+    width: 200px;
+    margin: 30px;
+}
+
+.workMainMainContainer .thumbnail{
+    height:160px;
+}
+
+.workMainMainContainer .thumbnailTitleContainer{
+    height:40px;
+    background-color:#E0F7FA;
+    display:flex;
+    justify-content:space-between;
+    align-items:center
+}
+
+.workMainMainContainer .thumbnailTitle{
+    margin-left: 10px;
+    max-width: 150px
+}
