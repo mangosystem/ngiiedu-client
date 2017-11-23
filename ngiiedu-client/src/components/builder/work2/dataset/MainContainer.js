@@ -11,7 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import '../workStyle.css';
-
+import CreateDataset from './CreateDataset'
 //testdata
 //"안양시 동안구 소음지도"
 // d=AnyangDong
@@ -47,6 +47,9 @@ class MainContainer extends React.Component {
     //데이터 생성
     createDataset(){
         alert('데이터셋 생성화면으로 전환')
+        this.setState({
+            step:'createDataset'
+        })
     }
 
     //썸네일 클릭시 들어가기
@@ -74,6 +77,7 @@ class MainContainer extends React.Component {
                 {this.state.step=='main'? 
                 //main 화면일때
                 <div className='workMainMainContainer'>
+                <div className='thumbnailsContainer'>
                 {/* 새로만들기 버튼 */}
                     <div className='createButton'  >
                         <FloatingActionButton onClick={this.createDataset}>
@@ -110,11 +114,12 @@ class MainContainer extends React.Component {
                     ))}
                     
                 </div>
+                </div>
                 :
                 //데이터 새로만들기 메뉴선택화면
                 this.state.step=='createDataset'? 
                     <div className='workMainMainContainer'>
-                        새로만들기 엑셀만들기 구글시트 경계결합.... component
+                        <CreateDataset/>
                     </div>
                 :
                 //데이터셋 생성 화면

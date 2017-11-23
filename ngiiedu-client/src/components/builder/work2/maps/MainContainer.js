@@ -100,41 +100,43 @@ class MainContainer extends React.Component {
                 {this.state.step=='main'? 
                 //main 화면일때
                 <div className='workMainMainContainer'>
-                {/* 새로만들기 버튼 */}
-                    <div className='createButton'  >
-                        <FloatingActionButton onClick={this.createDataset}>
-                            <ContentAdd />
-                        </FloatingActionButton>
-                    </div>
-
-                {/* 컨텐츠 내용 map */}
-                
-                    {[0,1,2,3,4,5,6,7,8,9,10,11,12,13].map((row,index)=>(
-                        <div className='thumbnailContainer'  key={index} >
-                            <Paper zDepth={1} className='thumbnailContainer2'>
-                                <div className='thumbnail' onClick={()=>this.thumbnailClick(row)}>
-                                    썸네일 {index}
-                                </div>
-                                <div className='thumbnailTitleContainer'>
-                                    <div className='thumbnailTitle'>
-                                        제목 {index}
-                                    </div>
-                                    <div>
-                                        <IconMenu
-                                            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                                            anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-                                            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                        >
-                                            <MenuItem primaryText="이름바꾸기" onClick={()=>this.changeName(row)}/>
-                                            <MenuItem primaryText="삭제하기" onClick={()=>this.deleteDataset(row)}/>
-                                        </IconMenu>
-                                    </div>    
-                                </div>
-                            </Paper>
+                    <div className='thumbnailsContainer'>
+                    {/* 새로만들기 버튼 */}
+                        <div className='createButton'  >
+                            <FloatingActionButton onClick={this.createDataset}>
+                                <ContentAdd />
+                            </FloatingActionButton>
                         </div>
 
-                    ))}
-                    
+                    {/* 컨텐츠 내용 map */}
+                
+                        {[0,1,2,3,4,5,6,7,8,9,10,11,12,13].map((row,index)=>(
+                            <div className='thumbnailContainer'  key={index} >
+                                <Paper zDepth={1} className='thumbnailContainer2'>
+                                    <div className='thumbnail' onClick={()=>this.thumbnailClick(row)}>
+                                        썸네일 {index}
+                                    </div>
+                                    <div className='thumbnailTitleContainer'>
+                                        <div className='thumbnailTitle'>
+                                            제목 {index}
+                                        </div>
+                                        <div>
+                                            <IconMenu
+                                                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                                                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                                                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                            >
+                                                <MenuItem primaryText="이름바꾸기" onClick={()=>this.changeName(row)}/>
+                                                <MenuItem primaryText="삭제하기" onClick={()=>this.deleteDataset(row)}/>
+                                            </IconMenu>
+                                        </div>    
+                                    </div>
+                                </Paper>
+                            </div>
+
+                        ))}
+                        
+                    </div>
                 </div>
                 :
                 //데이터 새로만들기 메뉴선택화면

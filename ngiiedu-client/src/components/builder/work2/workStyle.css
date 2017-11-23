@@ -52,13 +52,25 @@
     bottom: 0;
     left: 0;
     padding-top: 30px;
-    padding-left: 100px;
+    /* padding-left: 100px; */
     display:flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.workMainMainContainer .thumbnailsContainer{
+    padding-top: 30px;
+    /* padding-left: 100px; */
+    display:flex;
+    width:90%;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: left;
 }
 
+
+/* position:'absolute',display:'flex',top:140,right:0,left:0,justifyContent:'center' */
 .workMainMainContainer .createButton{
     height:200px;
     width:200px; 
