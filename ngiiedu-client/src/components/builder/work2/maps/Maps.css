@@ -1,0 +1,24 @@
+.paper {
+    height: 300px;
+    width: 500px;
+    overflow-y: scroll;
+}
+
+.swiffPaper {
+    height: 300px;
+    width: 200px;
+    overflow-y: scroll;
+}
+
+.transDivider {
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.td {
+    width:190px; 
+    border-right:1px solid grey; 
+    padding-right:22px; 
+    text-align:justify
+}

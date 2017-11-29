@@ -26,7 +26,7 @@ class MainContainer extends React.Component {
         super();
 
         this.state={
-            workType:'layer' //dataset , layer, maps
+            workType:'maps' //dataset , layer, maps
         }
 
         this.handleWorkType=this.handleWorkType.bind(this);
@@ -36,7 +36,7 @@ class MainContainer extends React.Component {
     componentDidMount(){
         //현재 수행과정번호로 데이터셋인지 (레이어,맵스) 과정인지 조회하여 화면 전환
         this.setState({
-            workType:'layer'
+            workType:'maps'
         })
     }
 

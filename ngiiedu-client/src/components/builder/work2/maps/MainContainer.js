@@ -10,6 +10,8 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
+import CreateMaps from './CreateMaps';
+
 import '../workStyle.css';
 
 //testdata
@@ -25,11 +27,8 @@ class MainContainer extends React.Component {
             step:'main'
         }
 
-        this.changeName = this.changeName.bind(this);
-        this.deleteDataset = this.deleteDataset.bind(this);
-        this.createDataset = this.createDataset.bind(this);
-        this.thumbnailClick = this.thumbnailClick.bind(this);
-        this.changeWorkType = this.changeWorkType.bind(this);
+        this.createMaps = this.createMaps.bind(this);
+
     }
 
     componentDidMount(){
@@ -46,8 +45,8 @@ class MainContainer extends React.Component {
     }
 
     //데이터 생성
-    createDataset(){
-        alert('데이터셋 생성화면으로 전환')
+    createMaps(){
+        this.setState({ step: 'createMaps' });
     }
 
     //썸네일 클릭시 들어가기
@@ -57,6 +56,13 @@ class MainContainer extends React.Component {
 
     changeWorkType(type){
         this.props.handleWorkType(type);
+    }
+
+    //메인화면 돌아오기
+    viewMain() {
+        this.setState({
+            step: 'main'
+        });
     }
 
 
@@ -103,7 +109,7 @@ class MainContainer extends React.Component {
                     <div className='thumbnailsContainer'>
                     {/* 새로만들기 버튼 */}
                         <div className='createButton'  >
-                            <FloatingActionButton onClick={this.createDataset}>
+                            <FloatingActionButton onClick={this.createMaps}>
                                 <ContentAdd />
                             </FloatingActionButton>
                         </div>
@@ -140,21 +146,11 @@ class MainContainer extends React.Component {
                 </div>
                 :
                 //데이터 새로만들기 메뉴선택화면
-                this.state.step=='createDataset'? 
+                this.state.step=='createMaps'? 
                     <div className='workMainMainContainer'>
-                        새로만들기 엑셀만들기 구글시트 경계결합.... component
-                    </div>
-                :
-                //데이터셋 생성 화면
-                this.state.step=='newDataset'?
-                    <div className='workMainMainContainer'>
-                        새로만들기 상세 화면 component
-                    </div>
-                :
-                this.state.step=='excelImport'?
-                //엑셀 세로만들기 화면
-                    <div className='workMainMainContainer'>
-                        엑셀 세로만들기 component
+                        <CreateMaps 
+                            viewMain={this.viewMain.bind(this)}
+                        />
                     </div>
                 :
                 //에러에러

@@ -69,25 +69,45 @@ class MainContainer extends React.Component {
       }),
 
       editMode: '',
+      //add, edit으로 구분
       mode: '',
+      //스마트에디터
       editorMode: false,
+      //주제지도 만들기/수정하기
       openNewMap: false,
+      //스토리맵 만들기/수정하기
       openTemplate: false,
+      //스토리맵 탭 만들기/수정하기
       openSelectMap: false,
+      //삭제하기
       openDeleteMap: false,
+      //ajax로 받아오는 data
       workSubData: [],
+      //주제지도 배열, 스토리맵 탭의 지도선택
       subjectMap: [],
+      //스토리맵 템플릿 선택
       template: 'tab',
+      //true: 주제지도, false: 스토리맵
       isSubjectMode: true,
+      //ture: 스토리맵 탭
       isStoryTabMode: false,
+      //수정하기, 삭제하기에 전달할 제목
       tempTitle: '',
+      //수정하기, 삭제하기에 필요한 index값
       tempIndex: 0,
+      //수정하기, 삭제하기에 필요한 tab의 index값
       tempTabIndex: 0,
+      //
       tempIdx: 2,
+      //스토리맵 탭의 컨텐츠(설명) 전달해줄 값
       tempDescription: '',
+      //수정하기, 삭제하기에서 서버에 전달해줄 id값
       tempMapsId: "",
+      //서버에 전달해줄 courseWorkSubId
       tempOutputTypeIdx: 0,
+      //스토리맵 탭의 지도선택에 쓰일 주제지도 pinogioOutputId
       tempType: '',
+      //과정활동 제목
       workTitle: '',
       stylePanel:false,
       stylePanelColumn:[],
@@ -217,6 +237,7 @@ class MainContainer extends React.Component {
     );
 
 
+    // 활동 제목
     ajaxJson(
       ['GET', apiSvr + '/coursesWork/' + workId + '/getTitle.json'],
       null,
@@ -245,6 +266,7 @@ class MainContainer extends React.Component {
     });
   }
 
+  //새로 만들기 (하위 컴포넌트에서 실행)
   addMapTitle(title, template) {
 
 
@@ -270,6 +292,7 @@ class MainContainer extends React.Component {
           const pinogioOutputId = result.layerId;
           idx = JSON.parse(JSON.stringify(data)).response.data.worksOutputId;
 
+          // state에 data 적용
           for (let i in workSubData) {
             if (workSubData[i].outputType == "layer") {
                         
@@ -324,6 +347,7 @@ class MainContainer extends React.Component {
 
           idx = JSON.parse(JSON.stringify(data)).response.data.worksOutputId;
 
+          // state에 data 적용
           for (let i in workSubData) {
             if (workSubData[i].outputType == "maps") {          
               
@@ -351,18 +375,16 @@ class MainContainer extends React.Component {
         }.bind(this)
       );
 
-
-
-
     }
   }
 
-  //주제지도
+  //주제지도 이름 수정하기
   editMapTitle(title) {
 
     let { workSubData, tempIndex } = this.state;
     let layersId = "";
 
+    // state에 data적용
     for (let i in workSubData) {
       if (workSubData[i].outputType == "layer" ) {          
         for (let j in workSubData[i].workOutputList) {
@@ -406,11 +428,13 @@ class MainContainer extends React.Component {
     
   }
 
+  //스토리맵 수정하기 (이름, 템플릿)
   editMapSetting(title, template) {
 
     let { workSubData, tempIndex, tempTabIndex } = this.state;
     let layersId = "";
     
+    //state 수정
     for (let i in workSubData) {
       if (workSubData[i].outputType == "maps" ) {          
         for (let j in workSubData[i].workOutputList) {
@@ -463,6 +487,7 @@ class MainContainer extends React.Component {
 
   }
 
+  //지도 삭제 (주제지도, 스토리맵, 스토리맵 items)
   deleteMap() {
 
     let { workSubData, tempIndex, tempTabIndex } = this.state;
@@ -631,9 +656,11 @@ class MainContainer extends React.Component {
     }
   }
 
+  //새로만들기 (여기에서 실행)
   newMap(outputType, idx) {
 
-    if (outputType == "layer") 
+    // 주제지도
+    if (outputType == "layer") {
       this.setState({ 
         isSubjectMode: true,
         openNewMap: true,
@@ -641,8 +668,9 @@ class MainContainer extends React.Component {
         tempOutputTypeIdx: idx,
         mode: 'add'
       });
-    
-    else if (outputType == "maps")
+
+    // 스토리맵
+    } else if (outputType == "maps") {      
       this.setState({ 
         isSubjectMode: false,
         openTemplate: true,
@@ -650,9 +678,12 @@ class MainContainer extends React.Component {
         tempOutputTypeIdx: idx,
         mode: 'add'
       });    
+    }
 
   }
 
+
+  //스토리맵 탭 추가
   addStoryTab(title, type) {
 
     let { workSubData, tempIndex, tempMapsId } = this.state;
@@ -671,7 +702,7 @@ class MainContainer extends React.Component {
         
         id = result.id;
 
-
+        //state에 적용
         for (let i in workSubData) {
           if (workSubData[i].outputType == "maps") {
             for (let j in workSubData[i].workOutputList) {
@@ -723,6 +754,7 @@ class MainContainer extends React.Component {
     );
 
 
+    // 탭 추가하면 컨텐츠입력 (스마트에디터) 열림
     this.setState({
       editorMode: true,
       tempDescription: ""
@@ -731,6 +763,7 @@ class MainContainer extends React.Component {
       
   }
 
+  // 스토리맵 탭 수정 (제목, 지도타입)
   editStoryTab(title, type) {
 
     let { workSubData, tempIndex, tempTabIndex } = this.state;
@@ -807,6 +840,7 @@ class MainContainer extends React.Component {
 
   }
 
+  //컨텐츠 수정
   modifyDescription(contents,layerId) {
 
     let { workSubData, tempIndex, tempTabIndex } = this.state;
@@ -861,7 +895,7 @@ class MainContainer extends React.Component {
       }
     }
 
-    console.log(layerId)
+    console.log(layerId);
     // DB 데이터 수정
     ajaxJson(
       ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
@@ -877,18 +911,9 @@ class MainContainer extends React.Component {
   }
 
   newMapHandle() {
-
-    if (!this.state.openNewMap) {
-      this.setState({
-        openNewMap: !this.state.openNewMap
-      });
-
-    } else {
-      this.setState({
-        openNewMap: !this.state.openNewMap
-      });
-    }
-
+    this.setState({
+      openNewMap: !this.state.openNewMap
+    });
   }
 
   deleteHandle() {
@@ -898,22 +923,29 @@ class MainContainer extends React.Component {
   }
 
   templateHandle() {
-    if (this.state.template != 'tab') {
-      this.setState({ template: 'tab' });
-    }
+    // if (this.state.template != 'tab') {
+    //   this.setState({ template: 'tab' });
+    // }
 
     this.setState({
       openTemplate: !this.state.openTemplate
     });
   }
 
+  // 탭 만들기
   selectMapHandle(index, mapsId) {
 
-    
+    // 창이 닫힘 -> 열림
     if (!this.state.openSelectMap) {
 
       let subjectMap = this.state.subjectMap;
 
+      if (!subjectMap[1].pinogioOutputId) {
+        alert("주제지도를 먼저 만들어주세요.");
+        return;
+      }
+
+      //상태 초기화 및 창 열기
       this.setState({
         openSelectMap: !this.state.openSelectMap,
         tempIndex: index,
