@@ -33,7 +33,7 @@ class UserPopup extends React.Component {
         const userid = nextProps.userid;
 
         $.ajax({
-            url: 'http://localhost:8080/ngiiedu/api/v1/users/' + userid + '.json',
+            url: apiSvr + '/users/' + userid + '.json',
             dataType: 'json',
             cache: false,
             success: function(data) {

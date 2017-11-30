@@ -95,7 +95,7 @@ class MainContainer extends React.Component {
         }
 
         $.ajax({
-            url: 'http://localhost:8080/ngiiedu/api/v1/users/' + value + '.json',
+            url: apiSvr + '/users/' + value + '.json',
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -144,7 +144,7 @@ class MainContainer extends React.Component {
         }
 
         $.ajax({
-            url: 'http://localhost:8080/ngiiedu/api/v1/users/' + userEmail + '.json',
+            url: apiSvr + '/users/' + userEmail + '.json',
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -213,7 +213,7 @@ class MainContainer extends React.Component {
         }
 
         $.ajax({
-            url: 'http://localhost:8080/ngiiedu/api/v1/schools/authkey/' + schoolAuthkey +'/get.json',
+            url: apiSvr + '/schools/authkey/' + schoolAuthkey +'/get.json',
             dataType: 'json',
             cache: false,
             success: function(data) {

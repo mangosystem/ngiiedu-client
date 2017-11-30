@@ -45,7 +45,7 @@ class List extends React.Component {
 
     componentDidMount() {
         $.ajax({
-            url: 'http://localhost:8080/ngiiedu/api/v1/users.json',
+            url: apiSvr + '/users.json',
             dataType: 'json',
             cache: false,
             success: function(data) {
@@ -66,7 +66,7 @@ class List extends React.Component {
         const keyword = '%'+nextProps.keyword+'%';
 
         $.ajax({
-            url: 'http://localhost:8080/ngiiedu/api/v1/users.json',
+            url: apiSvr + '/users.json',
             dataType: 'json',
             cache: false,
             data: {
@@ -97,7 +97,7 @@ class List extends React.Component {
         }
 
         ajaxJson(
-			['PUT', 'http://localhost:8080/ngiiedu/api/v1/users/' + contact.userid + '/state.json'],
+			['PUT', apiSvr +'/users/' + contact.userid + '/state.json'],
 			{
 				"userState": value
 			},

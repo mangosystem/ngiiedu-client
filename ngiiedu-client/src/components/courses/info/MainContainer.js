@@ -57,7 +57,7 @@ class MainContainer extends React.Component {
   componentDidMount() {
 
     ajaxJson(
-			['GET', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '.json'],
+			['GET', apiSvr + '/courses/' + this.state.courseid + '.json'],
 			null,
 			function(data) {
         const courseInfo = JSON.parse(JSON.stringify(data)).response.data;
@@ -72,7 +72,7 @@ class MainContainer extends React.Component {
     );
 
     ajaxJson(
-			['GET', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '/authkey.json'],
+			['GET', apiSvr + '/courses/' + this.state.courseid + '/authkey.json'],
 			null,
 			function(data) {
         let authkey = JSON.parse(JSON.stringify(data)).response.data;
@@ -125,7 +125,7 @@ class MainContainer extends React.Component {
     
 
     ajaxJson(
-      ['PUT', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '.json'],
+      ['PUT', apiSvr + '/courses/' + this.state.courseid + '.json'],
 			data,
 			function(data) {
         //console.log("수정됨");
@@ -144,7 +144,7 @@ class MainContainer extends React.Component {
   modifyAuthkey() {
 
     ajaxJson(
-			['GET', 'http://localhost:8080/ngiiedu/api/v1/courses/' + this.state.courseid + '/authkey/modify.json'],
+			['GET', apiSvr + '/courses/' + this.state.courseid + '/authkey/modify.json'],
 			null,
 			function(data) {
         let authkey = JSON.parse(JSON.stringify(data)).response.data;        
