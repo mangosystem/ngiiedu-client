@@ -33,40 +33,40 @@ class CreateDataset extends Component {
         return (
             <div style={{width:'90%',textAlign:'center',display:'flex',justifyContent:'center'}}>
                 <Tabs
-                    style={{marginTop:0,marginLeft:100}}
+                    style={{marginTop:50,marginLeft:100}}
                     tabItemContainerStyle={{backgroundColor:'rgba(0,0,0,0)'}}
-                    inkBarStyle={{width:120,marginRight:70}}
+                    inkBarStyle={{width:200,marginRight:70}}
                 >
-                    <Tab label="데이터셋 생성" 
+                    {/* <Tab label="데이터셋 생성" 
                         buttonStyle={{color:'black'}}
                         style={{width:120,marginRight:70}}
                     >
                         <NewDataset/>
-                    </Tab>
+                    </Tab> */}
                     <Tab label="엑셀 데이터" 
                         buttonStyle={{color:'black'}}
-                        style={{width:120,marginRight:70}}
+                        style={{width:200,marginRight:70}}
                     >
                         <ExcelDataset/>
                     </Tab>
                     
                     <Tab label="구글 시트" 
                         buttonStyle={{color:'black'}}
-                        style={{width:120,marginRight:70}}
+                        style={{width:200,marginRight:70}}
                     >
                         <GoogleDataset/>
                     </Tab>
 
                     <Tab label="데이터셋 결합" 
                         buttonStyle={{color:'black'}}
-                        style={{width:120,marginRight:70}}
+                        style={{width:200,marginRight:70}}
 
                     >
                         <JoinDataset/>
                     </Tab>
                     <Tab label="행정경계 결합" 
                         buttonStyle={{color:'black'}}
-                        style={{width:120,marginRight:70}}
+                        style={{width:200,marginRight:70}}
                     >
                         <BoundaryJoinDataset/>
                     </Tab>

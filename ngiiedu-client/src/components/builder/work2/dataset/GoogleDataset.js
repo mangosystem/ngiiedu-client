@@ -17,30 +17,33 @@ class GoogleDataset extends Component {
         this.state={
             step:'step1',
             xValue : 'temp1',
-            yValue : 'temp2'
+            yValue : 'temp2',
+            files : [], //google api loading files
+            sheetData : [], //google api loading sheet json,
+            loading:'false'
+            
         }
 
-        this.selectFile = this.selectFile.bind(this);
         this.handleNextStep = this.handleNextStep.bind(this);
         this.handleChange = this.handleChange.bind(this);
-
+        this.googleConnect = this.googleConnect.bind(this);
+        this.listFiles = this.listFiles.bind(this);
+        this.filesSetState = this.filesSetState.bind(this);
+        this.sheetConnect = this.sheetConnect.bind(this);
+        // this.updateSigninStatus = this.updateSigninStatus.bind(this);
     }
 
     
-    //파일선택 이벤트
-    selectFile(){
-        alert('selectFile')
-    }
     
     // 다음단계로..
     handleNextStep(value){
-
+        
         if(value!='complete'){
             this.setState({
                 step:value
             })
         }else{
-            alert('데이터셋 생성')
+            // alert('데이터셋 생성')
         }
     }
     
@@ -59,7 +62,111 @@ class GoogleDataset extends Component {
         }
         
     }
+    
+    //구글로그인 이벤트
+    googleConnect(value){
+        // alert('googleConnect')
+        if(value =='connect'){
+            var listFiles = this.listFiles;
+            gapi.auth2.getAuthInstance().signIn().then(listFiles);
+        }else if(value=='disconnect'){
+            gapi.auth2.getAuthInstance().disconnect();
+            this.setState({
+                files:[],
+                sheetData:[]
+            })
 
+        }
+
+    }
+    //get google file list
+    listFiles() {
+        var filesSetState=this.filesSetState;
+        gapi.client.drive.files.list({
+          'pageSize': 1000,
+          'fields': "nextPageToken, files(id, name)",
+          'supportsTeamDrives':false,
+          'q':"mimeType contains 'sheet' or mimeType contains 'excel'"
+        }).then(function(response) {
+            // console.dir(response)
+            filesSetState(response.result.files);
+     
+        });
+      }
+
+    filesSetState(value){
+        this.setState({
+            files:value
+        })
+    }
+
+    sheetDataSetState(value){
+        this.setState({
+            sheetData:value
+        })
+    }
+    
+    //시트 정보 가져오기 google api
+    sheetConnect(sheetId){
+        var sheetDataSetState = this.sheetDataSetState.bind(this);
+        var columnAlpha = this.columnAlpha.bind(this);
+        var params = {
+        // The spreadsheet to request.
+        spreadsheetId: sheetId,// TODO: Update placeholder value.
+
+        // The ranges to retrieve from the spreadsheet.
+        ranges: [],  // TODO: Update placeholder value.
+
+        };
+
+        //sheet 기본정보 요청
+        var request = gapi.client.sheets.spreadsheets.get(params);
+        request.then(function(response) {
+            let properties = response.result.sheets[0].properties
+            
+            //sheet 세부정보요청
+            //내부 재요청...
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: response.result.spreadsheetId,
+                range: properties.title+'!A1:'+columnAlpha(properties.gridProperties.columnCount),
+            }).then(function(response) {
+                console.dir(response.result.values);
+                sheetDataSetState(response.result.values);
+            }, function(response) {
+            console('Error: ' + response.result.error.message);
+            });
+
+
+
+        }, function(reason) {
+        console.error('error: ' + reason.result.error.message);
+        });
+    
+    }
+    
+    //excel 컬럼 수를 알파벳으로 변환
+    columnAlpha(value){
+        let alphabet = []
+        let result = '';
+        while(true){
+            if(Math.floor(value/27)>=1){
+                alphabet.push(value%26)
+                value=Math.floor(value/26)
+                console.log(value)
+            }else{
+                console.log(value)
+                alphabet.push(value);
+                break;
+            }
+        }
+        console.log( alphabet.toString())
+
+        for(var i =alphabet.length-1;i>=0; i--){
+            console.log(i+','+alphabet.length)
+            result=result+String.fromCharCode(alphabet[i]+64);
+        }
+        return result;        
+      }
 
     render() {
 
@@ -77,14 +184,33 @@ class GoogleDataset extends Component {
                     <br/>
                     <div style={{marginTop:20}}>
                         <p>시트 선택</p>
-                        <TextField style={{marginTop:10,height:30,width:200,backgroundColor:'white',paddingLeft:10}} 
-                            underlineShow={false}
-                            hintText='url 입력'
-                        />
+                       
+                        
+                    {this.state.files.length !=0 ? 
+                    <div>
                         <FlatButton
-                            label="확인"
-                            onClick={this.selectFile}
-                        />
+                            label="해제"
+                            onClick={()=>this.googleConnect('disconnect')}
+                        /> 
+                            <Paper style={{height:400,width:'100%',overflow:'auto',marginTop:40,paddingTop:10}}>
+                        {this.state.files.map((row, index)=>(
+                                <Paper key={index} style={{height:60,width:'80%', marginLeft:'10%',marginBottom:10, display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                                    <div style={{height:30,width:30,border:'solid 1px gray'}}>xls</div>
+                                    <h4>{row.name}</h4>
+                                    <FlatButton
+                                        label="선택"
+                                        onClick={()=>this.sheetConnect(row.id)}
+                                    />  
+                                </Paper>
+                        ))}
+                            </Paper>
+                    </div>
+                    :
+                    <FlatButton
+                            label="연결"
+                            onClick={()=>this.googleConnect('connect')}
+                    /> 
+                    }
                         
                     <Divider style={{marginTop:20,marginBottom:20}}/>
                     </div>
@@ -114,7 +240,6 @@ class GoogleDataset extends Component {
                                 <MenuItem key={index} value={row} primaryText={row} />
                             ))}
                         </DropDownMenu>
-
                     </div>
                    
                     <div style={{backgroundColor:'white', width:'100%', height:300,marginTop:20}}>

@@ -210,7 +210,7 @@ class MapEditorPanel extends React.Component {
     let datasetId = this.state.datasetId;
 
     ajaxJson(
-      ['DELETE',apiSvr+'/pngo/dataset/row.json'],
+      ['DELETE',apiSvr+'/courseWork/dataset/row.json'],
       {'pinogioOutputId':datasetId, 'rowId':rowId},
       function(res){
 

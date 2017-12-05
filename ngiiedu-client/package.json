@@ -25,7 +25,8 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.2",
     "style-loader": "^0.18.2",
-    "uglify-js": "^3.1.6"
+    "uglify-js": "^3.1.6",
+    "xlsx": "^0.11.10"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
