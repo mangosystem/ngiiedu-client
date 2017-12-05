@@ -9,6 +9,8 @@ import update from 'react-addons-update';
 import Divider from 'material-ui/Divider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import CircularProgress from 'material-ui/CircularProgress';
+
 
 
 class GoogleDataset extends Component {
@@ -69,11 +71,13 @@ class GoogleDataset extends Component {
         if(value =='connect'){
             var listFiles = this.listFiles;
             gapi.auth2.getAuthInstance().signIn().then(listFiles);
+            
+            
         }else if(value=='disconnect'){
             gapi.auth2.getAuthInstance().disconnect();
             this.setState({
                 files:[],
-                sheetData:[]
+                sheetData:[],
             })
 
         }
@@ -90,13 +94,18 @@ class GoogleDataset extends Component {
         }).then(function(response) {
             // console.dir(response)
             filesSetState(response.result.files);
-     
+            
         });
+
+        this.setState({
+            loading:'true'
+        })
       }
 
     filesSetState(value){
         this.setState({
-            files:value
+            files:value,
+            loading:'false'
         })
     }
 
@@ -211,6 +220,12 @@ class GoogleDataset extends Component {
                             onClick={()=>this.googleConnect('connect')}
                     /> 
                     }
+                    {this.state.loading=='true'?
+                    <div style={{width:'100%', height:400, marginTop:40, display:'flex',alignItems:'center',justifyContent:'center'}}>
+                        <CircularProgress size={80} thickness={5} />
+                    </div> 
+                    :
+                    null}
                         
                     <Divider style={{marginTop:20,marginBottom:20}}/>
                     </div>
