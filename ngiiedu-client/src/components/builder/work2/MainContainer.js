@@ -11,6 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 //component
+import SubHeader from './SubHeader';
 import DatasetMain from './dataset/MainContainer';
 import LayerMain from './layer/MainContainer';
 import MapsMain from './maps/MainContainer';
@@ -26,44 +27,77 @@ class MainContainer extends React.Component {
         super();
 
         this.state={
-            workType:'maps' //dataset , layer, maps
+            workType:'maps', //dataset , layer, maps
+			data:[]
         }
 
+		this.getDataList = this.getDataList.bind(this);
         this.handleWorkType=this.handleWorkType.bind(this);
 
     }
 
     componentDidMount(){
-        //현재 수행과정번호로 데이터셋인지 (레이어,맵스) 과정인지 조회하여 화면 전환
-        this.setState({
-            workType:'maps'
-        })
+        this.getDataList();
     }
+	
+    //데이터 불러오기
+	getDataList(){
+		const workId = this.props.match.params.WORKID;
+        ajaxJson(
+            ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
+            null,
+            function (data) {
+                if(data.response.data.length!=0 && data.response.data!=null){
+                    this.setState({
+                        data:data.response.data,
+                        //현재 수행과정번호로 데이터셋인지 (레이어,맵스) 과정인지 조회하여 화면 전환, 2개 이상일 때는 첫번째 활동이 첫 페이지
+                        workType:data.response.data[0].outputType 
+                    },function(){
+                        console.log(this.state.data)
+                    })
+                }
+            }.bind(this),
+            function (xhr, status, err) {
+              alert('Error');
+            }.bind(this)
+        )
+	}
 
+    //활동 변경(2개 이상일 때)
     handleWorkType(type){
-        alert(type)
         this.setState({
             workType:type
-        })
+        });
     }
-
-   
-
 
     render() {
    
         return (
-               this.state.workType=='dataset' ? 
+            <main>
+                {/* sub header */}
+                <SubHeader
+                    handleWorkType={this.handleWorkType} //Type(dataset, layer, maps) change
+                    workId={this.props.match.params.WORKID}
+                    workType={this.state.workType} //dataset, layer,maps
+                    data={this.state.data}
+                />
+
+                {/* 메인 container */}
+                {this.state.workType=='dataset' ? 
                 <DatasetMain/>
                 :
                 this.state.workType=='layer'?
-                <LayerMain handleWorkType={this.handleWorkType}/>
+                <LayerMain
+                    workId={this.props.match.params.WORKID} 
+                    data={this.state.data}
+                    getDataList={this.getDataList}
+                />
                 :
                 this.state.workType=='maps'?
                 <MapsMain handleWorkType={this.handleWorkType}/>
                 :
-                null
-               
+                null}
+            </main>
         );
     }
 };
