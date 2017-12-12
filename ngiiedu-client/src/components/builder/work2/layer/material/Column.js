@@ -12,16 +12,17 @@ class Column extends React.Component {
 		}
     }
 
-	componentWillMount() {
-		console.log('column componentWillMount');
+	componentDidMount () {
+		console.log('test')
+		console.log(this.props.column)
+		console.log('test')
         let column = [];
-        console.dir(this.props.column)
 		this.props.column.map((value) => {
-			if (value.datatype == 'INTEGER' || value.datatype == 'DOUBLE' || value.datatype == 'LONG') {
+			if (value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {
 				column.push({
 					text: value.name,
 					value: value.name,
-					datatype: value.datatype,
+					dataType: value.dataType,
 					description: value.description
 				});
 			}
@@ -49,8 +50,9 @@ class Column extends React.Component {
 					labelStyle={{paddingLeft:10}}
 				>
 						{this.state.column.map((row,index)=>(
-                        <MenuItem key={index} value={row.value} primaryText={row.text}/>
+                        	<MenuItem key={index} value={row.value} primaryText={row.text}/>
 						))}
+
 				</DropDownMenu>
                 </Paper>
             </Paper>

@@ -22,8 +22,8 @@ import '../workStyle.css';
 // "POLYGON((126.956689249013 37.3794283769578,126.956689249013 37.3966047439905,126.982533779737 37.3966047439905,126.982533779737 37.3794283769578,126.956689249013 37.3794283769578))"
 class MainContainer extends React.Component {
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
 
         this.state={
             step:'main',
@@ -102,6 +102,7 @@ class MainContainer extends React.Component {
     //썸네일 클릭시 들어가기
     thumbnailClick(row){
         alert(row+' 썸네일 들어가기');
+        this.context.router.history.push("/some/Path");
     }
 
     //화면 변경(리스트, 추가, 변경)
@@ -185,7 +186,9 @@ class MainContainer extends React.Component {
                                 row.workOutputList.map((data,i)=>(
                                     <div className='thumbnailContainer' key={i}>
                                             <Paper zDepth={1} className='thumbnailContainer2'>
-                                                <div className='thumbnail' onClick={()=>this.thumbnailClick(data)}>
+                                                <div 
+                                                className='thumbnail' 
+                                                onClick={()=>this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}>
                                                     썸네일
                                                 </div>
                                                 <div className='thumbnailTitleContainer'>
@@ -220,7 +223,9 @@ class MainContainer extends React.Component {
                             datasetList={this.state.datasetList}
                             type={this.state.type}
                             workId={this.props.workId}
+                            courseId={this.props.courseId}
                             courseWorkSubId ={this.state.courseWorkSubId}
+                            history={this.props.history}
                         />
                     </div>
                 :
@@ -232,8 +237,10 @@ class MainContainer extends React.Component {
                             datasetList={this.state.datasetList}
                             type={this.state.type}
                             workId={this.props.workId}
+                            courseId={this.props.courseId}
                             courseWorkSubId ={this.state.courseWorkSubId}
                             selectRow={this.state.selectRow}
+                            history={this.props.history}
                         />
                     </div>
                 :

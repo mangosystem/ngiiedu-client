@@ -27,7 +27,7 @@ class MainContainer extends React.Component {
         super();
 
         this.state={
-            workType:'maps', //dataset , layer, maps
+            workType:'', //dataset , layer, maps
 			data:[]
         }
 
@@ -88,6 +88,7 @@ class MainContainer extends React.Component {
                 :
                 this.state.workType=='layer'?
                 <LayerMain
+                    courseId={this.props.match.params.COURSEID}
                     workId={this.props.match.params.WORKID} 
                     data={this.state.data}
                     getDataList={this.getDataList}

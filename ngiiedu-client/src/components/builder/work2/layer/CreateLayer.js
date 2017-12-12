@@ -53,7 +53,8 @@ class CreateLayer extends Component {
           sources: JSON.stringify({"inputDataset":{"filter":[],"datasetId":this.state.selDataset.pinogioOutputId,"type":this.state.selDataset.outputType}})
         },
         function (data) {
-          this.props.changeView('main');
+          this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.response.data.data.layerId);
+
         }.bind(this),
         function (xhr, status, err) {
           alert('Error');
@@ -117,15 +118,18 @@ class CreateLayer extends Component {
           onChange={this.changeTitle}
           type='text'
         />
-
-        <Subheader>Dataset</Subheader>
-        <Paper style={{width:500, height:300, overflowY:'scroll'}}>
-          {this.props.datasetList.map((row,index)=>(
-            <SelectableList value={this.state.selDataset.idx} onChange={(i)=>this.handleRequestChange(row)} key={index}>
-              <ListItem primaryText={row.outputName} value={row.idx}/>
-            </SelectableList>
-          ))}
-        </Paper><br/>
+        {this.props.type=='create'?
+        <div>
+          <Subheader>Dataset</Subheader>
+          <Paper style={{width:500, height:300, overflowY:'scroll'}}>
+            {this.props.datasetList.map((row,index)=>(
+              <SelectableList value={this.state.selDataset.idx} onChange={(i)=>this.handleRequestChange(row)} key={index}>
+                <ListItem primaryText={row.outputName} value={row.idx}/>
+              </SelectableList>
+            ))}
+          </Paper>
+        </div>
+        :null}<br/>
 
         <FlatButton
           hoverColor="#FAFAFA"

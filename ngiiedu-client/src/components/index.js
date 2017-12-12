@@ -60,6 +60,7 @@ import MapPreview from './builder/work/preView/map/MainContainer';
 import WorkFrameContainer from './builder/work2/MainContainer';
 import WorkFrameEditDataset from './builder/work2/dataset/edit/MainContainer';
 import WorkFrameMaps from './builder/work2/maps/setting/MainContainer';
+import WorkFrameEditLayer from './builder/work2/layer/setting/MainContainer';
 
 
 const contextPath = '/ngiiedu';
@@ -264,6 +265,15 @@ class App extends Component {
 							<div>
 								<Header slim={true} />
 								<WorkFrameEditDataset />
+								<Footer />
+							</div>
+						</Route>
+
+						{/* layer */}
+						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/layer/:LAYERID"}>
+							<div>
+								<Header slim={false} />
+								<WorkFrameEditLayer />
 								<Footer />
 							</div>
 						</Route>
