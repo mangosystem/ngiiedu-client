@@ -85,7 +85,7 @@
 }
 
 .workMainMainContainer .thumbnailContainer2{
-    height: 200px;
+    /* height: 200px; */
     width: 200px;
     margin: 30px;
 }
@@ -105,4 +105,11 @@
 .workMainMainContainer .thumbnailTitle{
     margin-left: 10px;
     max-width: 150px
+}
+
+.workMainMainContainer .thumbnailDescription{
+    background-color:#E0F7FA;
+    padding: 10px;
+    text-align: left;
+    font-size: 0.5em;
 }

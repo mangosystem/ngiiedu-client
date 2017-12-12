@@ -1,0 +1,381 @@
+import React, { Component } from 'react';
+
+import { cyan500 } from 'material-ui/styles/colors';
+import FlatButton from 'material-ui/FlatButton';
+import Paper from 'material-ui/Paper';
+
+import BasicMaps from './BasicMaps';
+import StoryMaps from './StoryMaps';
+import SeriesMaps from './SeriesMaps';
+import SplitMaps from './SplitMaps';
+import SwipeMaps from './SwipeMaps';
+
+class CreateMaps extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            mapsType: 'default',
+            stepIndex: 0,
+            typeKind: '',
+            title: '',
+            itemTitle: '',
+            layerId: '',
+            layerId2: ''
+        };
+    }
+
+    handleNext() {
+        const {stepIndex} = this.state;
+        this.setState({
+          stepIndex: stepIndex + 1
+        });
+    }
+
+    handlePrev() {
+        const {stepIndex} = this.state;
+        if (stepIndex > 0) {
+          this.setState({stepIndex: stepIndex - 1});
+        }
+    };
+
+    createMaps() {
+
+        let { mapsType, title, typeKind, itemTitle, layerId } = this.state;
+
+        let courseWorkSubId = this.props.idx;
+        let privacy = "PUBLIC";
+        let idx = 0;
+
+        let maps = {};
+  
+        //maps 추가
+        ajaxJson(
+            ['POST', apiSvr + '/coursesWork/maps.json'],
+            {
+                courseWorkSubId,
+                title,
+                mapsType, // maps_type,
+                privacy,
+                typeKind
+            },
+            function (data) {
+
+                maps = JSON.parse(JSON.stringify(data)).response.data.result;
+                
+                if (mapsType == 'SWIPE') {
+
+                    let layerId2 = this.state.layerId2;
+                    this.createMapsItem(maps, itemTitle, layerId, layerId2);
+
+                } else {
+                    this.createMapsItem(maps, itemTitle, layerId);
+                }
+
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
+        
+        this.props.viewMain();
+
+    }
+
+    createMapsItem(maps, itemTitle, layerId, layerId2) {
+        //maps_item 추가
+        ajaxJson(
+            ['POST', apiSvr + '/coursesWork/maps/' + maps.pinogioOutputId + "/item" + '.json'],
+            {
+                title: itemTitle,
+                pinoLayer: layerId
+            },
+            function (data) {
+                
+                let mapsItem = JSON.parse(JSON.stringify(data)).response.data.data;
+
+                if (this.state.mapsType == 'SWIPE') {
+                    this.createMapsItem2(maps, mapsItem, layerId2);
+                } else {
+                    this.props.createMaps(maps, mapsItem);
+                }
+
+    
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
+
+    }
+
+    createMapsItem2(maps, item1, layerId2) {
+        //maps_item 추가
+        ajaxJson(
+            ['POST', apiSvr + '/coursesWork/maps/' + maps.pinogioOutputId + "/item" + '.json'],
+            {
+                pinoLayer: layerId2
+            },
+            function (data) {
+                
+                let item2 = JSON.parse(JSON.stringify(data)).response.data.data;
+                this.props.createMaps(maps, item1, item2);
+    
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
+
+    }
+
+    changeTitle(title) {
+        this.setState({
+            title
+        });
+    }
+
+    changeTypeKind(typeKind) {
+        this.setState({
+            typeKind
+        });
+    }
+
+    changeItemTitle(itemTitle) {
+        this.setState({
+            itemTitle
+        });
+    }
+
+    changeLayerId(layerId) {
+        this.setState({
+            layerId
+        });
+    }
+
+    changeLayerId2(layerId2) {
+        this.setState({
+            layerId2
+        });
+    }
+
+    getStepContent(stepIndex) {
+
+        const { mapsType } = this.state;
+
+        switch (stepIndex) {
+          case 1:
+            return(
+                <div>
+                    {(() => {
+                        if (mapsType == 'BASIC') {
+                            return <BasicMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                    />;                            
+                        } else if (mapsType == 'STORY') {
+                            return <StoryMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        title={this.state.title}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                    />
+                        } else if (mapsType == 'SERIES') { 
+                            return <SeriesMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                    /> 
+                        } else if (mapsType == 'SPLIT') { 
+                            return <SplitMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                    />
+                        } else if (mapsType == 'SWIPE') {
+                            return <SwipeMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                    />
+                        }
+                    })()}
+                </div>
+            );
+          case 2:
+            return(
+                <div>
+                    {(() => {
+                        if (mapsType == 'BASIC') {
+                            return <BasicMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                        layerId={this.state.layerId}
+                                        changeLayerId={this.changeLayerId.bind(this)}
+                                    />;                            
+                        } else if (mapsType == 'STORY') {
+                            return <StoryMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeItemTitle={this.changeItemTitle.bind(this)}
+                                        itemTitle={this.state.itemTitle}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                        layerId={this.state.layerId}
+                                        changeLayerId={this.changeLayerId.bind(this)}
+                                    />
+                        } else if (mapsType == 'SERIES') { 
+                            return <SeriesMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                        layerId={this.state.layerId}
+                                        changeLayerId={this.changeLayerId.bind(this)}
+                                    /> 
+                        } else if (mapsType == 'SPLIT') { 
+                            return <SplitMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                    />
+                        } else if (mapsType == 'SWIPE') {
+                            return <SwipeMaps 
+                                        stepIndex={this.state.stepIndex}
+                                        changeTitle={this.changeTitle.bind(this)}
+                                        changeTypeKind={this.changeTypeKind.bind(this)}
+                                        layerId={this.state.layerId}
+                                        changeLayerId={this.changeLayerId.bind(this)}
+                                        layerId2={this.state.layerId2}
+                                        changeLayerId2={this.changeLayerId2.bind(this)}
+                                    />
+                        }
+                    })()}
+                </div>
+            );
+          default:
+            return (
+                <div style={{textAlign: 'center'}}>
+                    <p>
+                        <i className="fa fa-map" style={{fontSize: '200px'}}></i>
+                    </p>
+                    <p>
+                        <br />
+                        위와 같은 내용으로 새로운 스토리맵을 만들겠습니다. <br />
+                        아래 버튼을 클릭하면 설정 페이지로 이동합니다.
+                    </p>
+                </div>
+            );
+        }
+      }
+
+    render() {
+
+        const { stepIndex } = this.state;
+
+        const style = {
+            selected: {
+                border: '3px solid',
+                borderColor: cyan500,
+                width: '300px',
+                height: '206px'
+            },
+
+            unselected: {
+                padding: '3px',
+                width: '300px',
+                height: '206px'
+            }
+        };
+
+        return (
+            <div>
+                {this.state.stepIndex == '0'? 
+            
+                <div style={{ textAlign: 'center' }}>
+                    <h1>스토리맵 만들기</h1>
+                    <br />
+                    <div style={{display: 'flex'}}>
+                        <img 
+                            className="img"
+                            src="/ngiiedu/assets/images/basic.png" 
+                            alt="basic" 
+                            onClick={() => this.setState({ mapsType: 'BASIC' })}
+                            style={this.state.mapsType == "BASIC"? style.selected : style.unselected} 
+                        />
+                        &nbsp;&nbsp;&nbsp;
+                        <img 
+                            className="img"
+                            src="/ngiiedu/assets/images/story.png" 
+                            alt="story" 
+                            onClick={() => this.setState({ mapsType: 'STORY' })}
+                            style={this.state.mapsType == "STORY" ? style.selected : style.unselected} 
+                        />
+                        &nbsp;&nbsp;&nbsp;
+                        <img 
+                            className="img"
+                            src="/ngiiedu/assets/images/cData.png" 
+                            alt="SERIES" 
+                            onClick={() => this.setState({ mapsType: 'SERIES' })}
+                            style={this.state.mapsType == "SERIES" ? style.selected : style.unselected} 
+                        />
+                    </div>
+                    <br />
+                    <div style={{display: 'flex'}}>
+                        <img 
+                            className="img"
+                            src="/ngiiedu/assets/images/split.png" 
+                            alt="split" 
+                            onClick={() => this.setState({ mapsType: 'SPLIT' })}
+                            style={this.state.mapsType == "SPLIT" ? style.selected : style.unselected} 
+                        />
+                        &nbsp;&nbsp;&nbsp;
+                        <img
+                            className="img"
+                            src="/ngiiedu/assets/images/swiff.png" 
+                            alt="SWIPE" 
+                            onClick={() => this.setState({ mapsType: 'SWIPE' })}
+                            style={this.state.mapsType == "SWIPE" ? style.selected : style.unselected} 
+                        />
+                    </div>
+                </div>
+                :
+                <div 
+                    style={{ textAlign: 'center' }}
+                >
+                    {this.getStepContent(stepIndex)}
+                    <br />
+                </div>
+                }
+                <div style={{ textAlign: 'center' }}>
+                    <br />
+                    { stepIndex >= 3 ? 
+                        <FlatButton
+                            label="페이지 이동"
+                            style={{color: 'white'}}
+                            backgroundColor={cyan500}
+                            onClick={stepIndex == 0? this.props.viewMain : this.handlePrev.bind(this)}
+                        />
+                        :
+                        <div>
+                            <FlatButton
+                                label="이전"
+                                onClick={stepIndex == 0? this.props.viewMain : this.handlePrev.bind(this)}
+                            />
+                            <FlatButton
+                                label={stepIndex == '2'? "추가" : "다음"}
+                                disabled={this.state.mapsType == 'default'? true : false}
+                                backgroundColor={this.state.mapsType == 'default'? 'grey' : cyan500}
+                                onClick={stepIndex == '2'? this.createMaps.bind(this) : this.handleNext.bind(this)}
+                                style={{color: 'white'}}
+                            />
+                        </div>
+                    }
+                </div>
+            </div>
+        );
+    }
+}
+
+export default CreateMaps;

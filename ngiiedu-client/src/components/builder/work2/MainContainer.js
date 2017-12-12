@@ -14,7 +14,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import SubHeader from './SubHeader';
 import DatasetMain from './dataset/MainContainer';
 import LayerMain from './layer/MainContainer';
-import MapsMain from './maps/MainContainer';
+import MapsMain from './maps/main/MainContainer';
 
 
 //testdata

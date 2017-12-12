@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
+
 import FlatButton from 'material-ui/FlatButton';
 import { cyan500, pink400 } from 'material-ui/styles/colors';
 import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import {List, ListItem, makeSelectable} from 'material-ui/List';
 
+let SelectableList = makeSelectable(List);
 
-
-class ContinuousMaps extends Component {
+class SeriesMaps extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
             stepIndex: 0,
-            continuousTemplate: 'c1',
-            itemValue: 1,
+            typeKind: 'CAROUSEL',
             items: [
                 { value: 1, text: '레이어1'},
                 { value: 2, text: '레이어2'},
@@ -34,6 +36,44 @@ class ContinuousMaps extends Component {
         };
     }
 
+    componentDidMount() {
+        
+        if (this.props.map) {
+            this.setState({ 
+                typeKind: this.props.map.pngoData.typeKind
+            });
+        } else {
+            this.props.changeTypeKind("CAROUSEL");
+        }
+
+        const workId = this.props.match.params.WORKID;
+
+        ajaxJson(
+            ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
+            null,
+            function (data) {
+                
+                let workSubData = JSON.parse(JSON.stringify(data)).response.data;
+                let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+
+                this.setState({
+                    items: items
+                });
+
+        
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
+    }
+
+    componentWillMount() {
+        if (this.props.map) {
+            this.props.changeLayerId(this.props.map.pngoData.items[0].pinoLayer);
+        }
+    }
+
     handleNext() {
         const {stepIndex} = this.state;
         this.setState({
@@ -48,11 +88,17 @@ class ContinuousMaps extends Component {
         }
     };
 
+    changeTypeKind(typeKind) {
+        this.setState({
+            typeKind
+        });
+
+        this.props.changeTypeKind(typeKind);
+    }
 
     getStepContent(stepIndex) {
-        console.log("Story Map : " + stepIndex);
 
-        const { itemValue, continuousTemplate, items, radioType } = this.state;
+        const { itemValue, typeKind, items, radioType } = this.state;
 
         const style = {
             selected: {
@@ -69,7 +115,8 @@ class ContinuousMaps extends Component {
             },
 
             itemSelected: {
-                color: pink400
+                color: pink400,
+                backgroundColor: 'rgba(128, 128, 128, 0.2)'
             },
 
             itemUnselected: {
@@ -89,15 +136,18 @@ class ContinuousMaps extends Component {
                     <Subheader>제목</Subheader>
                     <TextField 
                         fullWidth={true}
-                        hintText="*스토리맵 제목을 입력해주세요"/>
+                        hintText="*스토리맵 제목을 입력해주세요"
+                        onChange={(e, value) => this.props.changeTitle(value)}
+                        defaultValue={this.props.map ? this.props.map.outputName : ''}
+                    />
                     <br /><br />
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <img 
                             src="/ngiiedu/assets/images/c1.png" 
                             // src="/assets/images/tab.png" 
                             alt="c1" 
-                            style={continuousTemplate == "c1"? style.selected : style.unselected}
-                            onClick={() => this.setState({ continuousTemplate: 'c1' })}/>
+                            style={typeKind == "CAROUSEL"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('CAROUSEL')}/>
                         &nbsp;&nbsp;&nbsp;
                         <div>
                             <h4>화면전환형</h4> <br />
@@ -113,8 +163,8 @@ class ContinuousMaps extends Component {
                             src="/ngiiedu/assets/images/c2.png" 
                             // src="/assets/images/accordion.png" 
                             alt="c2" 
-                            style={continuousTemplate == "c2"? style.selected : style.unselected}
-                            onClick={() => this.setState({ continuousTemplate: 'c2' })}/>
+                            style={typeKind == "SLIDE"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('SLIDE')}/>
                         &nbsp;&nbsp;&nbsp;
                         <div>
                             <h4>슬라이더형</h4> <br />
@@ -132,14 +182,16 @@ class ContinuousMaps extends Component {
                     <br />
                     <Subheader>레이어 선택</Subheader>
                     <Paper className="paper">
-                        {items.map((item) => (
-                            <MenuItem 
-                                key={item.value}
-                                value={item.value} 
-                                style={item.value == itemValue? style.itemSelected : style.itemUnselected} 
-                                primaryText={item.text} 
-                                onClick={() => this.setState({ itemValue: item.value })}/>
+                        <SelectableList value={this.props.layerId}>
+                        {items.map((item, i) => (
+                            <ListItem 
+                                key={item.idx}
+                                value={item.pinogioOutputId} 
+                                primaryText={item.outputName}
+                                onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
+                            />
                         ))}
+                        </SelectableList>
                     </Paper>
                 </div>
             );
@@ -162,4 +214,4 @@ class ContinuousMaps extends Component {
     }
 }
 
-export default ContinuousMaps;
+export default withRouter(SeriesMaps);

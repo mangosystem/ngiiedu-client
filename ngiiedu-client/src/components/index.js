@@ -59,6 +59,7 @@ import MapPreview from './builder/work/preView/map/MainContainer';
 //work ui 변경중 
 import WorkFrameContainer from './builder/work2/MainContainer';
 import WorkFrameEditDataset from './builder/work2/dataset/edit/MainContainer';
+import WorkFrameMaps from './builder/work2/maps/setting/MainContainer';
 
 
 const contextPath = '/ngiiedu';
@@ -268,11 +269,18 @@ class App extends Component {
 						</Route>
 
 						{/* main */}
-						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID"}>
+						<Route exact path={contextPath +"/course/:COURSEID/work2/:WORKID"}>
 							<div>
 								<Header slim={true} />
 								<WorkFrameContainer />
 								<Footer />
+							</div>
+						</Route>
+
+						{/* maps */}
+						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/:MAPSID"}>
+							<div>
+								<WorkFrameMaps />
 							</div>
 						</Route>
 

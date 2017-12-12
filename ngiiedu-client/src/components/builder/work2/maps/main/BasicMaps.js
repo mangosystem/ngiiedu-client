@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
+
 import FlatButton from 'material-ui/FlatButton';
 import { cyan500, pink500, pink400 } from 'material-ui/styles/colors';
 import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
 
+import {List, ListItem, makeSelectable} from 'material-ui/List';
 
 import './Maps.css';
   
+let SelectableList = makeSelectable(List);
+
 
 class BasicMaps extends Component {
     constructor(props) {
@@ -17,8 +22,7 @@ class BasicMaps extends Component {
         
         this.state = {
             stepIndex: 0,
-            basicTemplate: 'b1',
-            itemValue: 1,
+            typeKind: 'BOTTOM',
             items: [
                 { value: 1, text: '레이어1'},
                 { value: 2, text: '레이어2'},
@@ -32,6 +36,38 @@ class BasicMaps extends Component {
                 { value: 10, text: '레이어10'}
             ]
         };
+    }
+
+    componentDidMount() {
+        
+        if (this.props.map) {
+            this.setState({ 
+                typeKind: this.props.map.pngoData.typeKind
+            });
+        } else {
+            this.props.changeTypeKind("BOTTOM");
+        }
+
+        const workId = this.props.match.params.WORKID;
+
+        ajaxJson(
+            ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
+            null,
+            function (data) {
+                
+                let workSubData = JSON.parse(JSON.stringify(data)).response.data;
+                let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+
+                this.setState({
+                    items: items
+                });
+
+        
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
     }
 
     handleNext() {
@@ -48,11 +84,23 @@ class BasicMaps extends Component {
         }
     };
 
+    changeTypeKind(typeKind) {
+        this.setState({
+            typeKind
+        });
+
+        this.props.changeTypeKind(typeKind);
+    }
+
+    componentWillMount() {
+        if (this.props.map) {
+            this.props.changeLayerId(this.props.map.pngoData.items[0].pinoLayer);
+        }
+    }
 
     getStepContent(stepIndex) {
-        console.log("Basic Map : " + stepIndex);
 
-        const { itemValue, basicTemplate, items } = this.state;
+        const { itemValue, typeKind, items } = this.state;
 
         const style = {
             selected: {
@@ -69,7 +117,8 @@ class BasicMaps extends Component {
             },
 
             itemSelected: {
-                color: pink400
+                color: pink400,
+                backgroundColor: 'rgba(128, 128, 128, 0.2)'
             },
 
             itemUnselected: {
@@ -86,22 +135,25 @@ class BasicMaps extends Component {
                     <Subheader style={{textAlign: 'left'}}>제목</Subheader>
                     <TextField 
                         fullWidth={true}
-                        hintText="*스토리맵 제목을 입력해주세요"/>
+                        hintText="*스토리맵 제목을 입력해주세요"
+                        onChange={(e, value) => this.props.changeTitle(value)}
+                        defaultValue={this.props.map ? this.props.map.outputName : ''}
+                    />
                     <br /><br />
                     <div style={{display: 'flex'}}>
                         <img 
                             src="/ngiiedu/assets/images/b1.png" 
                             // src="/assets/images/b1.png" 
                             alt="b1" 
-                            style={basicTemplate == "b1"? style.selected : style.unselected}
-                            onClick={() => this.setState({ basicTemplate: 'b1' })}/>
+                            style={typeKind == "BOTTOM"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('BOTTOM')}/>
                         &nbsp;&nbsp;&nbsp;
                         <img 
                             src="/ngiiedu/assets/images/b2.png" 
                             // src="/assets/images/b2.png" 
                             alt="b2" 
-                            style={basicTemplate == "b2"? style.selected : style.unselected}
-                            onClick={() => this.setState({ basicTemplate: 'b2' })}/>
+                            style={typeKind == "TOP"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('TOP')}/>
                     </div>
                     <br />
                     <div style={{display: 'flex'}}>
@@ -109,15 +161,15 @@ class BasicMaps extends Component {
                             src="/ngiiedu/assets/images/b3.png" 
                             // src="/assets/images/b3.png" 
                             alt="b3" 
-                            style={basicTemplate == "b3"? style.selected : style.unselected}
-                            onClick={() => this.setState({ basicTemplate: 'b3' })}/>
+                            style={typeKind == "RIGHT"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('RIGHT')}/>
                         &nbsp;&nbsp;&nbsp;
                         <img 
                             src="/ngiiedu/assets/images/b4.png" 
                             // src="/assets/images/b4.png" 
                             alt="b4" 
-                            style={basicTemplate == "b4"? style.selected : style.unselected}
-                            onClick={() => this.setState({ basicTemplate: 'b4' })}/>
+                            style={typeKind == "LEFT"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('LEFT')}/>
                     </div>
                 </div>
             );
@@ -127,14 +179,16 @@ class BasicMaps extends Component {
                     <br />
                     <Subheader>레이어 선택</Subheader>
                     <Paper className="paper">
-                        {items.map((item) => (
-                            <MenuItem 
-                                key={item.value}
-                                value={item.value} 
-                                style={item.value == itemValue? style.itemSelected : style.itemUnselected} 
-                                primaryText={item.text} 
-                                onClick={() => this.setState({ itemValue: item.value })}/>
+                        <SelectableList value={this.props.layerId}>
+                        {items.map((item, i) => (
+                            <ListItem 
+                                key={item.idx}
+                                value={item.pinogioOutputId} 
+                                primaryText={item.outputName}
+                                onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
+                            />
                         ))}
+                        </SelectableList>
                     </Paper>
                 </div>
             );
@@ -157,4 +211,4 @@ class BasicMaps extends Component {
     }
 }
 
-export default BasicMaps;
+export default withRouter(BasicMaps);

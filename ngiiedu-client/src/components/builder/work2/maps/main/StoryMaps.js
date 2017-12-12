@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
+
 import FlatButton from 'material-ui/FlatButton';
 import { cyan500, pink400 } from 'material-ui/styles/colors';
 import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
-  
+import {List, ListItem, makeSelectable} from 'material-ui/List';
+let SelectableList = makeSelectable(List);
 
 class StoryMaps extends Component {
     constructor(props) {
@@ -16,22 +19,51 @@ class StoryMaps extends Component {
         
         this.state = {
             stepIndex: 0,
-            storyTemplate: 'tab',
-            itemValue: 1,
-            items: [
-                { value: 1, text: '레이어1'},
-                { value: 2, text: '레이어2'},
-                { value: 3, text: '레이어3'},
-                { value: 4, text: '레이어4'},
-                { value: 5, text: '레이어5'},
-                { value: 6, text: '레이어6'},
-                { value: 7, text: '레이어7'},
-                { value: 8, text: '레이어8'},
-                { value: 9, text: '레이어9'},
-                { value: 10, text: '레이어10'}
-            ],
+            typeKind: 'TAB',
+            items: [],
+            itemTitle: '',
             radioType: 'layer'
         };
+    }
+
+    componentDidMount() {
+
+        if (this.props.map) {
+            this.setState({ 
+                typeKind: this.props.map.pngoData.typeKind
+            });
+        } else {
+            this.props.changeTypeKind("TAB");
+        }
+
+        const workId = this.props.match.params.WORKID;
+
+        ajaxJson(
+            ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
+            null,
+            function (data) {
+              
+              let workSubData = JSON.parse(JSON.stringify(data)).response.data;
+              let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+
+              this.setState({
+                  items: items
+              });
+
+      
+            }.bind(this),
+            function (xhr, status, err) {
+              alert('Error');
+            }.bind(this)
+          );
+    }
+
+    componentWillMount() {
+        if (this.props.map) {
+            this.props.changeTitle(this.props.map.outputName);
+            this.props.changeItemTitle(this.props.map.pngoData.items[0].title);
+            this.props.changeLayerId(this.props.map.pngoData.items[0].pinoLayer);
+        }
     }
 
     handleNext() {
@@ -48,11 +80,17 @@ class StoryMaps extends Component {
         }
     };
 
+    changeTypeKind(typeKind) {
+        this.setState({
+            typeKind
+        });
+
+        this.props.changeTypeKind(typeKind);
+    }
 
     getStepContent(stepIndex) {
-        console.log("Story Map : " + stepIndex);
 
-        const { itemValue, storyTemplate, items, radioType } = this.state;
+        const { itemValue, typeKind, items, radioType } = this.state;
 
         const style = {
             selected: {
@@ -69,7 +107,8 @@ class StoryMaps extends Component {
             },
 
             itemSelected: {
-                color: pink400
+                color: pink400,
+                backgroundColor: 'rgba(128, 128, 128, 0.2)'
             },
 
             itemUnselected: {
@@ -81,24 +120,28 @@ class StoryMaps extends Component {
             }
         };
 
-
+        
         switch (stepIndex) {
-          case 1:
+            case 1:
             return (
                 <div style={{textAlign: 'left'}}>
                     <br />
                     <Subheader>제목</Subheader>
                     <TextField 
+                        id="title"
                         fullWidth={true}
-                        hintText="*스토리맵 제목을 입력해주세요"/>
+                        hintText="*스토리맵 제목을 입력해주세요"
+                        onChange={(e, value) => this.props.changeTitle(value)}
+                        value={this.props.title}
+                    />
                     <br /><br />
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <img 
                             src="/ngiiedu/assets/images/tab.png" 
                             // src="/assets/images/tab.png" 
                             alt="tab" 
-                            style={storyTemplate == "tab"? style.selected : style.unselected}
-                            onClick={() => this.setState({ storyTemplate: 'tab' })}/>
+                            style={typeKind == "TAB"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('TAB')}/>
                         &nbsp;&nbsp;&nbsp;
                         <div>
                             <h4>탭</h4> <br />
@@ -114,8 +157,8 @@ class StoryMaps extends Component {
                             src="/ngiiedu/assets/images/accordion.png" 
                             // src="/assets/images/accordion.png" 
                             alt="accordion" 
-                            style={storyTemplate == "accordion"? style.selected : style.unselected}
-                            onClick={() => this.setState({ storyTemplate: 'accordion' })}/>
+                            style={typeKind == "ACCORDION"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('ACCORDION')}/>
                         &nbsp;&nbsp;&nbsp;
                         <div>
                             <h4>아코디언</h4> <br />
@@ -131,9 +174,17 @@ class StoryMaps extends Component {
             return (
                 <div style={{textAlign: 'left'}}>
                     <br />
+                    <Subheader>제목</Subheader>
+                    <TextField
+                        id="itemTitle"
+                        fullWidth={true}
+                        hintText="*탭 제목을 입력해주세요"
+                        onChange={(e, value) => this.props.changeItemTitle(value)}
+                        value={this.props.itemTitle}
+                    />
                     <RadioButtonGroup 
                         name="" 
-                        defaultSelected="layer"
+                        defaultSelected={radioType}
                         onChange={(e, value) => this.setState({ radioType: value })}
                     >
                         <RadioButton
@@ -148,15 +199,17 @@ class StoryMaps extends Component {
                         />
                     </RadioButtonGroup>
                     <Paper className="paper">
-                        {items.map((item) => (
-                            <MenuItem 
-                                disabled={radioType != 'layer' ? true : false}
-                                key={item.value}
-                                value={item.value} 
-                                style={radioType != 'layer' ? style.itemUnselected : item.value == itemValue? style.itemSelected : style.itemUnselected} 
-                                primaryText={item.text} 
-                                onClick={() => this.setState({ itemValue: item.value })}/>
+                        <SelectableList value={radioType == 'layer' ? this.props.layerId : null}>
+                        {items.map((item, i) => (
+                            <ListItem
+                                disabled={radioType == 'layer'? false : true}
+                                key={item.idx}
+                                value={item.pinogioOutputId} 
+                                primaryText={item.outputName}
+                                onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
+                            />
                         ))}
+                        </SelectableList>
                     </Paper>
                 </div>
             );
@@ -179,4 +232,4 @@ class StoryMaps extends Component {
     }
 }
 
-export default StoryMaps;
+export default withRouter(StoryMaps);

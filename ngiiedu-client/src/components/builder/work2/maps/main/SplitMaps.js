@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
+
 import FlatButton from 'material-ui/FlatButton';
 import { cyan500, pink500, pink400 } from 'material-ui/styles/colors';
 import Subheader from 'material-ui/Subheader';
@@ -18,12 +21,13 @@ class SplitMaps extends Component {
         
         this.state = {
             stepIndex: 0,
-            splitTemplate: 's1',
+            typeKind: 'DOUBLE1',
             itemValue1: 1,
             itemValue2: 1,
             itemValue3: 1,
             itemValue4: 1,
             splitType: '2',
+            defaultSplitType: '2',
             items: [
                 { value: 1, text: '구글지도'},
                 { value: 2, text: '네이버지도'},
@@ -37,6 +41,39 @@ class SplitMaps extends Component {
                 { value: 10, text: '레이어10'}
             ]
         };
+    }
+
+    componentDidMount() {
+        
+        if (this.props.map) {
+
+            let typeKind = this.props.map.pngoData.typeKind;
+
+            this.setState({ 
+                typeKind
+            });
+
+            if (typeKind.indexOf("DOUBLE") != -1) {
+                this.setState({
+                    defaultSplitType: '2',
+                    splitType: '2'
+                });
+            } else if (typeKind.indexOf("TRIPLE") != -1) {
+                this.setState({
+                    defaultSplitType: '3',
+                    splitType: '3'
+                });
+            } else {
+                this.setState({
+                    defaultSplitType: '4',
+                    splitType: '4'
+                });
+            }
+        } else {
+            this.props.changeTypeKind("DOUBLE1");
+        }
+
+        
     }
 
 
@@ -62,10 +99,18 @@ class SplitMaps extends Component {
 
     }
 
+    changeTypeKind(typeKind, splitType) {
+        this.setState({
+            typeKind,
+            splitType
+        });
+
+        this.props.changeTypeKind(typeKind);
+    }
 
     getStepContent(stepIndex) {
 
-        const { itemValue, splitTemplate, items, splitType } = this.state;
+        const { itemValue, typeKind, items, splitType, defaultSplitType } = this.state;
 
         const style = {
             selected: {
@@ -82,7 +127,8 @@ class SplitMaps extends Component {
             },
 
             itemSelected: {
-                color: pink400
+                color: pink400,
+                backgroundColor: 'rgba(128, 128, 128, 0.2)'
             },
 
             itemUnselected: {
@@ -95,72 +141,81 @@ class SplitMaps extends Component {
           case 1:
             return (
                 <div>
-                    <Tabs>
+                    <Tabs value={defaultSplitType}>
                         <Tab 
                             label="2분할" 
+                            value="2"
+                            onActive={() => this.setState({ defaultSplitType: '2' })}
                         >
                             <br />
                             <div style={{display: 'flex'}}>
                                 <img 
-                                    src="/ngiiedu/assets/images/s1.png" 
+                                    src="/ngiiedu/assets/images/DOUBLE1.png" 
                                     // src="/assets/images/s1.png" 
                                     alt="s1" 
-                                    style={splitTemplate == "s1"? style.selected : style.unselected}
-                                    onClick={() => this.setState({ splitTemplate: 's1', splitType: '2' })}/>
+                                    style={typeKind == "DOUBLE1"? style.selected : style.unselected}
+                                    onClick={() => this.changeTypeKind('DOUBLE1', '2')}/>
                                 &nbsp;&nbsp;&nbsp;
                                 <img 
-                                    src="/ngiiedu/assets/images/s2.png" 
+                                    src="/ngiiedu/assets/images/DOUBLE2.png" 
                                     // src="/assets/images/s2.png" 
                                     alt="s2" 
-                                    style={splitTemplate == "s2"? style.selected : style.unselected}
-                                    onClick={() => this.setState({ splitTemplate: 's2', splitType: '2' })}/>
+                                    style={typeKind == "DOUBLE2"? style.selected : style.unselected}
+                                    onClick={() => this.changeTypeKind('DOUBLE2', '2')}/>
                             </div>
                         </Tab>
                         <Tab 
                             label="3분할" 
+                            value="3"
+                            onActive={() => this.setState({ defaultSplitType: '3' })}
                         >
                             <br />
                             <div style={{display: 'flex'}}>
                                 <img 
-                                   src="/ngiiedu/assets/images/s3.png" 
+                                   src="/ngiiedu/assets/images/TRIPLE1.png" 
                                     // src="/assets/images/s3.png" 
                                     alt="s3" 
-                                    style={splitTemplate == "s3"? style.selected : style.unselected}
-                                    onClick={() => this.setState({ splitTemplate: 's3', splitType: '3' })}/>
+                                    style={typeKind == "TRIPLE1"? style.selected : style.unselected}
+                                    onClick={() => this.changeTypeKind('TRIPLE1','3')}/>
                                 &nbsp;&nbsp;&nbsp;
                                 <img 
-                                    src="/ngiiedu/assets/images/s4.png" 
+                                    src="/ngiiedu/assets/images/TRIPLE2.png" 
                                     // src="/assets/images/s4.png" 
                                     alt="s4" 
-                                    style={splitTemplate == "s4"? style.selected : style.unselected}
-                                    onClick={() => this.setState({ splitTemplate: 's4', splitType: '3' })}/>
+                                    style={typeKind == "TRIPLE2"? style.selected : style.unselected}
+                                    onClick={() => this.changeTypeKind('TRIPLE2','3')}/>
                                 &nbsp;&nbsp;&nbsp;
                                 <img 
-                                    src="/ngiiedu/assets/images/s5.png" 
+                                    src="/ngiiedu/assets/images/TRIPLE3.png" 
                                     // src="/assets/images/s5.png" 
                                     alt="s5" 
-                                    style={splitTemplate == "s5"? style.selected : style.unselected}
-                                    onClick={() => this.setState({ splitTemplate: 's5', splitType: '3' })}/>
+                                    style={typeKind == "TRIPLE3"? style.selected : style.unselected}
+                                    onClick={() => this.changeTypeKind('TRIPLE3','3')}/>
                             </div>
                         </Tab>
                         <Tab 
                             label="4분할" 
+                            value="4"
+                            onActive={() => this.setState({ defaultSplitType: '4' })}
                         >
                             <br />
                             <div style={{display: 'flex', justifyContent: 'center'}}>
                                 <img 
-                                    src="/ngiiedu/assets/images/s6.png" 
+                                    src="/ngiiedu/assets/images/QUADRUPLE.png" 
                                     // src="/assets/images/s6.png" 
                                     alt="s6" 
-                                    style={splitTemplate == "s6"? style.selected : style.unselected}
-                                    onClick={() => this.setState({ splitTemplate: 's6', splitType: '4' })}/>
+                                    style={typeKind == "QUADRUPLE"? style.selected : style.unselected}
+                                    onClick={() => this.changeTypeKind('QUADRUPLE','4')}/>
                             </div>
                         </Tab>
                     </Tabs>
                     <Subheader style={{textAlign: 'left'}}>제목</Subheader>
                     <TextField 
                         fullWidth={true}
-                        hintText="*스토리맵 제목을 입력해주세요"/>
+                        hintText="*스토리맵 제목을 입력해주세요"
+                        onChange={(e, value) => this.props.changeTitle(value)}
+                        defaultValue={this.props.map ? this.props.map.outputName : ''}
+                    />
                     <br />
                 </div>
             );
@@ -175,8 +230,8 @@ class SplitMaps extends Component {
                         <br />
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <img 
-                                src={"/ngiiedu/assets/images/" + splitTemplate + ".png"}  
-                                // src={"/assets/images/" + splitTemplate + ".png"}
+                                src={"/ngiiedu/assets/images/" + typeKind + ".png"}  
+                                // src={"/assets/images/" + typeKind + ".png"}
                                 style={style.selected}
                             />
                         </div>
@@ -217,8 +272,8 @@ class SplitMaps extends Component {
                         <br />
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <img 
-                                src={"/ngiiedu/assets/images/" + splitTemplate + ".png"}  
-                                // src={"/assets/images/" + splitTemplate + ".png"}  
+                                src={"/ngiiedu/assets/images/" + typeKind + ".png"}  
+                                // src={"/assets/images/" + typeKind + ".png"}  
                                 style={style.selected}
                             />
                         </div>
@@ -273,8 +328,8 @@ class SplitMaps extends Component {
                         <br />
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <img 
-                                src={"/ngiiedu/assets/images/" + splitTemplate + ".png"}
-                                // src={"/assets/images/" + splitTemplate + ".png"}
+                                src={"/ngiiedu/assets/images/" + typeKind + ".png"}
+                                // src={"/assets/images/" + typeKind + ".png"}
                                 style={style.selected}
                             />
                         </div>
@@ -324,7 +379,7 @@ class SplitMaps extends Component {
                             floatingLabelText="①"
                             fullWidth={true}
                             value={this.state.itemValue4}
-                            onChange={(e, i, value) => this.handleChange("3", value)}
+                            onChange={(e, i, value) => this.handleChange("4", value)}
                         >
                             {items.map((item) => (
                                 <MenuItem 
@@ -356,4 +411,4 @@ class SplitMaps extends Component {
     }
 }
 
-export default SplitMaps;
+export default withRouter(SplitMaps);
