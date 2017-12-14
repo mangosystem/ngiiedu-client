@@ -61,6 +61,8 @@ import WorkFrameContainer from './builder/work2/MainContainer';
 import WorkFrameEditDataset from './builder/work2/dataset/edit/MainContainer';
 import WorkFrameMaps from './builder/work2/maps/setting/MainContainer';
 import WorkFrameEditLayer from './builder/work2/layer/setting/MainContainer';
+import DatasetPreview from './builder/work2/dataset/view/MainContainer';
+
 
 
 const contextPath = '/ngiiedu';
@@ -265,6 +267,14 @@ class App extends Component {
 							<div>
 								<Header slim={true} />
 								<WorkFrameEditDataset />
+								<Footer />
+							</div>
+						</Route>
+						{/* dataset preview */}
+						<Route path={contextPath +"/dataset/preview/:DATASETID"}>
+							<div>
+								<Header slim={true} />
+								<DatasetPreview />
 								<Footer />
 							</div>
 						</Route>

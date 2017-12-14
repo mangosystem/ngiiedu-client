@@ -175,7 +175,7 @@ class MainContainer extends React.Component {
                 </header>
        
             <main>
-                <div style={{ position: 'absolute', top: 80, bottom:0, left: 0, right: 0 }}>
+                <div style={{ position: 'absolute', top: 60, bottom:0, left: 0, right: 0 }}>
                     <div style={{width:'20%', height:'100%', float:'left', backgroundColor:'white'}}>
                    {/* {this.state.type.indexOf('POINT')!=-1? */}
                         <PointSymbolizer 

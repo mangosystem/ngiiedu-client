@@ -37,7 +37,6 @@ class MainContainer extends React.Component {
 
     componentDidMount(){
         // var response={"code":200,"data":[{"idx":24,"courseWorkId":27,"moduleWorkSubId":1,"moduleWorkSubName":"소음데이터 수집","moduleWorkSubSeq":1,"createDate":1510251778947,"modifyDate":1510249561075,"outputType":"dataset","workOutputList":[{"idx":49,"courseWorkSubId":24,"outputTeamId":0,"outputUserid":40,"outputDivision":"1","pinogioOutputId":"d=AnyangDong","outputType":"dataset","pngoData":{"id":10,"projectId":"p=pppppppp","datasetId":"d=AnyangDong","ownerId":1,"title":"안양시 동안구 소음지도","description":"안양시 동안구 지역의 소음도를 측정한 데이터 입니다.","metadata":null,"privacy":"PUBLIC","createdDate":1510199356715,"updatedDate":1510199356715,"ownerUsername":"admin","geometryType":"MULTIPOINT","geometryColumn":"the_geom","srid":3857,"bounds":"POLYGON((126.956689249013 37.3794283769578,126.956689249013 37.3966047439905,126.982533779737 37.3966047439905,126.982533779737 37.3794283769578,126.956689249013 37.3794283769578))","rowsCount":501,"totalSize":163840,"commentCount":0,"viewCount":0,"likeCount":0,"ratingScore":0},"outputName":"안양시 동안구 소음지도"}]}]}
-    
 
         // this.setState({
         //     dataSetData:response.data
@@ -89,16 +88,6 @@ class MainContainer extends React.Component {
         return (
        
             <main>
-                {/* sub header */}
-                <div className='workMainSubHeader'>
-                    <div className='iconButtonContainer'>
-                        
-                    </div>
-                    <div>
-                       <h1 className='subHeaderTitle'>{this.state.dataSetData[0].moduleWorkSubName}</h1>
-                    </div>
-                </div>
-
                 {/* 메인 container */}
                 {this.state.step=='main'? 
                 //main 화면일때
