@@ -38,21 +38,19 @@ class DeleteItems extends React.Component {
 
 
         return (
-            <div>
-                <Dialog
-                    title="삭제하기"
-                    actions={actions}
-                    open={this.props.open}
-                    autoScrollBodyContent={false}
-                    contentStyle={{width: '50%'}}
-                >
-                    <b>{this.props.title}</b> 지도가 삭제됩니다.
-                    <br />
-                    이 지도가 다른 곳에 사용되고 있을 경우 삭제되지 않을 수 있습니다.
-                    <br />
-                    계속 진행하시겠습니까?
-                </Dialog>
-            </div>
+            <Dialog
+                title="삭제하기"
+                actions={actions}
+                open={this.props.open}
+                autoScrollBodyContent={false}
+                contentStyle={{width: '50%'}}
+            >
+                <b>{this.props.title}</b> 지도가 삭제됩니다.
+                <br />
+                이 지도가 다른 곳에 사용되고 있을 경우 삭제되지 않을 수 있습니다.
+                <br />
+                계속 진행하시겠습니까?
+            </Dialog>
         );
     }
 }

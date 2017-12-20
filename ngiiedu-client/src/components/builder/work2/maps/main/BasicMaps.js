@@ -62,6 +62,10 @@ class BasicMaps extends Component {
                     items: items
                 });
 
+                if (!this.props.map) {
+                    this.props.changeLayerId(items[0].pinogioOutputId);
+                }
+
         
             }.bind(this),
             function (xhr, status, err) {
@@ -140,22 +144,24 @@ class BasicMaps extends Component {
                         defaultValue={this.props.map ? this.props.map.outputName : ''}
                     />
                     <br /><br />
-                    <div style={{display: 'flex'}}>
-                        <img 
-                            src="/ngiiedu/assets/images/b1.png" 
-                            // src="/assets/images/b1.png" 
-                            alt="b1" 
-                            style={typeKind == "BOTTOM"? style.selected : style.unselected}
-                            onClick={() => this.changeTypeKind('BOTTOM')}/>
-                        &nbsp;&nbsp;&nbsp;
-                        <img 
-                            src="/ngiiedu/assets/images/b2.png" 
-                            // src="/assets/images/b2.png" 
-                            alt="b2" 
-                            style={typeKind == "TOP"? style.selected : style.unselected}
-                            onClick={() => this.changeTypeKind('TOP')}/>
-                    </div>
-                    <br />
+                    {/*
+                        <div style={{display: 'flex'}}>
+                            <img 
+                                src="/ngiiedu/assets/images/b1.png" 
+                                // src="/assets/images/b1.png" 
+                                alt="b1" 
+                                style={typeKind == "BOTTOM"? style.selected : style.unselected}
+                                onClick={() => this.changeTypeKind('BOTTOM')}/>
+                            &nbsp;&nbsp;&nbsp;
+                            <img 
+                                src="/ngiiedu/assets/images/b2.png" 
+                                // src="/assets/images/b2.png" 
+                                alt="b2" 
+                                style={typeKind == "TOP"? style.selected : style.unselected}
+                                onClick={() => this.changeTypeKind('TOP')}/>
+                        </div>
+                        <br />
+                    */}
                     <div style={{display: 'flex'}}>
                         <img 
                             src="/ngiiedu/assets/images/b3.png" 

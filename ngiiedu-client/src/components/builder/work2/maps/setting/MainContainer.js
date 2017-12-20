@@ -25,11 +25,12 @@ import Avatar from 'material-ui/Avatar';
 import BasicLeft from './BasicLeft';
 import BasicRight from './BasicRight';
 import BasicTop from './BasicTop';
-
 import StoryTab from './StoryTab';
+import Swipe from './Swipe';
 
 import BasicSetting from './BasicSetting';
 import StorySetting from './StorySetting';
+import SwipeSetting from './SwipeSetting';
 
 class MainContainer extends React.Component {
 
@@ -39,7 +40,7 @@ class MainContainer extends React.Component {
     this.state = {
       maps: {},
       open: false,
-      mapsTitleEdit: false
+      sortingOpen: false
     };
   }
 
@@ -64,6 +65,12 @@ class MainContainer extends React.Component {
           mapsTitle: maps.outputName
         });
 
+        if (maps.pngoData.mapsType == "SWIPE") {
+          this.setState({
+            layerId2: maps.pngoData.items[1].pinoLayer
+          });
+        }
+
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
@@ -78,9 +85,21 @@ class MainContainer extends React.Component {
     });
   }
 
+  changeLayerId2(layerId2) {
+    this.setState({
+      layerId2
+    });
+  }
+
   settingHandle() {
     this.setState({
       open: !this.state.open
+    });
+  }
+
+  sortingHandle() {
+    this.setState({
+      sortingOpen: !this.state.sortingOpen
     });
   }
 
@@ -88,6 +107,7 @@ class MainContainer extends React.Component {
     this.setState({
       maps: maps.pngoData,
       typeKind: maps.pngoData.typeKind,
+      mapsTitle: maps.outputName
     });
   }
 
@@ -97,24 +117,18 @@ class MainContainer extends React.Component {
     });
   }
 
-  submit() {
+  updateItemSetting2(items) {
+    this.setState({
+      layerId2: items.pinoLayer
+    });
+  }
 
-    const { maps, mapsTitle } = this.state;
-    const mapsId = maps.mapsId;
-
-    //maps수정
-    ajaxJson(
-      ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '.json'],
-      {
-        title: mapsTitle,
-      },
-      function (data) {
-        
-      }.bind(this),
-      function (xhr, status, err) {
-        alert('Error');
-      }.bind(this)
-    );
+  previewMaps() {
+    const courseId = this.props.match.params.COURSEID;
+    const workId = this.props.match.params.WORKID;
+    const mapsId = this.props.match.params.MAPSID;
+    
+    this.props.history.push("/ngiiedu/course/" + courseId + "/work2/" + workId + "/" + mapsId + "/preview");
   }
 
   render() {
@@ -127,34 +141,28 @@ class MainContainer extends React.Component {
               <IconButton style={{width: 50, height: 50}}>
                 <IconArrowBack />
               </IconButton>
-              {!this.state.mapsTitleEdit ? 
               <div 
-                style={{fontSize: 20, textAlign:'left'}}
-                onDoubleClick={() => this.setState({ mapsTitleEdit: true })}>
+                style={{fontSize: 20, textAlign:'left'}}>
                 {this.state.mapsTitle}
               </div>
-              :
-              <TextField
-                fullWidth={true}
-                hintText="*스토리맵 제목"
-                onChange={(e, value) => this.setState({ mapsTitle: value })}
-                onBlur={() => this.setState({ mapsTitleEdit: false })}
-                value={this.state.mapsTitle}
-              />
-              }
             </div>
 
             <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
+                {this.state.mapsType == 'STORY' ?             
+                <FlatButton
+                  label="순서변경"
+                  onClick={this.sortingHandle.bind(this)}
+                />
+                :
+                null
+                }
                 <FlatButton
                   label="설정"
                   onClick={this.settingHandle.bind(this)}
                 />
                 <FlatButton
                   label="미리보기"
-                />
-                <FlatButton
-                  label="저장"
-                  onClick={this.submit.bind(this)}
+                  onClick={this.previewMaps.bind(this)}
                 />
             </div>
           </div>
@@ -186,9 +194,17 @@ class MainContainer extends React.Component {
                 return (
                   <StoryTab 
                     maps={this.state.maps}
+                    open={this.state.sortingOpen}
+                    sortingHandle={this.sortingHandle.bind(this)}
                   />
                 );
               }
+            } else if (this.state.mapsType == 'SWIPE') {
+              return (
+                <Swipe
+                  maps={this.state.maps}
+                />
+              );
             }
           })()}
           {(() => {
@@ -202,6 +218,7 @@ class MainContainer extends React.Component {
                   updateItemSetting={this.updateItemSetting.bind(this)}
                   layerId={this.state.layerId}
                   changeLayerId={this.changeLayerId.bind(this)}
+                  mapsTitle={this.state.mapsTitle}
                 />
               );
             } else if (this.state.mapsType == 'STORY') {
@@ -212,12 +229,27 @@ class MainContainer extends React.Component {
                   maps={this.state.maps}
                   updateMapsSetting={this.updateMapsSetting.bind(this)}
                   updateItemSetting={this.updateItemSetting.bind(this)}
+                  mapsTitle={this.state.mapsTitle}
                 />
               );
             } else if (this.state.mapsType == 'SERIES') {
               return null;
             } else if (this.state.mapsType == 'SWIPE') {
-              return null;
+              return (
+                <SwipeSetting
+                  open={this.state.open}
+                  settingHandle={this.settingHandle.bind(this)}
+                  maps={this.state.maps}
+                  updateMapsSetting={this.updateMapsSetting.bind(this)}
+                  updateItemSetting={this.updateItemSetting.bind(this)}
+                  updateItemSetting2={this.updateItemSetting2.bind(this)}
+                  layerId={this.state.layerId}
+                  layerId2={this.state.layerId2}
+                  changeLayerId={this.changeLayerId.bind(this)}
+                  changeLayerId2={this.changeLayerId2.bind(this)}
+                  mapsTitle={this.state.mapsTitle}
+                />
+              );
             } else if (this.state.mapsType == 'SPLIT') {
               return null;
             }

@@ -4,9 +4,21 @@
     overflow-y: scroll;
 }
 
-.swiffPaper {
+.settingPaper {
+    height: 230px;
+    width: 500px;
+    overflow-y: scroll;
+}
+
+.swipePaper {
     height: 300px;
     width: 200px;
+    overflow-y: scroll;
+}
+
+.settingSwipePaper {
+    height: 200px;
+    width: 300px;
     overflow-y: scroll;
 }
 
@@ -26,3 +38,7 @@
 .temp {
     background-color: rgba(128, 128, 128, 0.438)
 }
+
+ul { margin: 10px; padding: 0; }
+li { list-style-type: none; padding: 10px 5px; cursor: pointer;  }
+.ui-sortable-disabled li { cursor: not-allowed; }

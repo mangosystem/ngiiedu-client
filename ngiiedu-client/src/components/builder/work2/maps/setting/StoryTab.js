@@ -6,10 +6,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { cyan500, limeA100 } from 'material-ui/styles/colors';
 import MapsView from './MapsView';
 import EditorPanel from './EditorPanel';
-
 import StorySetting from './StorySetting';
 import CreateItems from './CreateItems';
 import DeleteItems from './DeleteItems';
+
+import ItemSort from './ItemSort';
 
 class StoryTab extends Component {
 
@@ -17,22 +18,15 @@ class StoryTab extends Component {
         super(props);
 
         this.state = {
-            editorMode: true,
             maps: {},
             items: [],
             itemMode: 'map',
             itemOpen: false,
             deleteOpen: false,
             layerId: '',
-            itemTitle: ''
+            itemTitle: '',
+            itemIndex: []
         };
-    }
-
-    addContent() {
-        const div = document.createElement('div');
-    
-        div.innerHTML = '컨텐츠추가됨';
-        $('#content').append(div);
     }
 
     componentWillMount() {
@@ -51,8 +45,34 @@ class StoryTab extends Component {
             maps: this.props.maps,
             items: this.props.maps.items,
             tempTitle: this.props.maps.items[0].title,
-            itemIndex: 0
+            itemIndex: 0,
+            description: this.props.maps.items[0].description
         });
+    }
+
+    setDefaultLayerId(defaultLayerId) {
+        this.setState({
+            defaultLayerId
+        });
+    }
+
+    changeItemIndex(itemIndex) {
+        
+        let { items } = this.state;
+        let newItem = [];
+
+        for (let i=0; i<itemIndex.length; i++) {
+            for (let j=0; j<items.length; j++) {
+                if (itemIndex[i] == items[j].id) {
+                    newItem.push(items[j]);
+                }
+            }
+        }
+
+        this.setState({
+            items: newItem
+        });
+
     }
 
     addItems(item) {
@@ -68,6 +88,7 @@ class StoryTab extends Component {
         this.setState({
             items: items
         });
+
     }
 
     changeItemTitle(itemTitle) {
@@ -120,6 +141,18 @@ class StoryTab extends Component {
 
     }
 
+    modifyDescription(description) {
+
+        let { itemIndex, items } = this.state;
+        let newItems = items;
+        newItems[itemIndex].description = description;
+
+        this.setState({
+            description,
+            items: newItems
+        });
+    }
+
     changeItemModeToEdit() {
 
         const { items, itemIndex } = this.state;
@@ -137,7 +170,7 @@ class StoryTab extends Component {
             itemMode: 'add',
             itemOpen: true,
             itemTitle: '',
-            layerId: this.state.items[0].pinoLayer
+            layerId: this.state.defaultLayerId
         });
     }
 
@@ -152,14 +185,14 @@ class StoryTab extends Component {
                         <div style={{display: 'flex', marginLeft: 10, alignItems: 'flex-end'}}>
                             {this.state.items.map((item, index) => (
                                 <RaisedButton 
+                                    id={item.id}
                                     key={item.id}
                                     label={item.title}
-                                    onClick={() => this.setState({ itemIndex: index, tempTitle: item.title })}
+                                    onClick={() => this.setState({ itemIndex: index, tempTitle: item.title, description: item.description })}
                                     backgroundColor={itemIndex == index ? limeA100 : null}
                                 />
                             ))}
                         </div>
-            
                         <div style={{display: 'flex', alignItems: 'center', marginLeft: 30}}>
                             <RaisedButton
                                 label="추가"
@@ -176,36 +209,36 @@ class StoryTab extends Component {
                         </div>
                     </div>
                 </div>
+                {this.state.items[this.state.itemIndex].pinoLayer != '' ? 
                 <div style={{ position: 'absolute', top: 120, bottom: 0, left: 0, right: 0 }}>
                     <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
-                        <div style={{marginTop: '10px', display: 'flex', justifyContent: 'space-around'}}>
-                            <FlatButton
-                                label="컨텐츠 추가"
-                                backgroundColor={cyan500}
-                                style={{color: 'white'}}
-                                onClick={this.addContent.bind(this)}
-                            />
-                            <FlatButton
-                                label="그래프 추가"
-                                backgroundColor={cyan500}
-                                style={{color: 'white'}}
-                            />
-                        </div>
-                        <div id="content" style={{margin: '15px 0', textAlign: 'center'}}>
-                            여기에 컨텐츠가 추가
-                            <EditorPanel
-                                editorMode={this.state.editorMode}
-                            />
-                        </div>
+                        <EditorPanel
+                            description={this.state.description}
+                            modifyDescription={this.modifyDescription.bind(this)}
+                            mapsId={this.state.maps.mapsId}
+                            itemId={this.state.items[this.state.itemIndex].id}
+                            pinoLayer={this.state.items[this.state.itemIndex].pinoLayer}
+                        />                      
                     </div>
                     <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 0 }}>
                         <MapsView
-                            onChangeEditMode={this.onChangeEditMode}
                             maps={this.state.maps}
+                            items={this.state.items}
                             itemIndex={this.state.itemIndex}
                         />
                     </div>
                 </div>
+                :
+                <div style={{ position: 'absolute', top: 120, bottom: 0, left: 0, right: 0 }}>
+                    <EditorPanel
+                        description={this.state.description}
+                        modifyDescription={this.modifyDescription.bind(this)}
+                        mapsId={this.state.maps.mapsId}
+                        itemId={this.state.items[this.state.itemIndex].id}
+                        pinoLayer=""
+                    />
+                </div>
+                }
                 <div>
                     <CreateItems 
                         open={this.state.itemOpen}
@@ -219,12 +252,19 @@ class StoryTab extends Component {
                         mapsId={this.state.maps.mapsId}
                         addItems={this.addItems.bind(this)}
                         modifyItems={this.modifyItems.bind(this)}
+                        setDefaultLayerId={this.setDefaultLayerId.bind(this)}
                     />
                     <DeleteItems
                         open={this.state.deleteOpen}
                         deleteItemHandle={this.deleteItemHandle.bind(this)}
                         title={this.state.tempTitle}
                         deleteItem={this.deleteItem.bind(this)}
+                    />
+                    <ItemSort
+                        open={this.props.open}
+                        sortingHandle={this.props.sortingHandle.bind(this)}
+                        items={this.state.items}
+                        changeItemIndex={this.changeItemIndex.bind(this)}
                     />
                 </div>
             </div>

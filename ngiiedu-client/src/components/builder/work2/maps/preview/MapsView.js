@@ -37,8 +37,6 @@ class MapsView extends React.Component {
 
   changeLayer(props, isChange) {
 
-    console.log("changeLayer()");
-
     let layerId = props.items[0].pinoLayer;
 
     if (props.itemIndex) {
@@ -137,8 +135,7 @@ class MapsView extends React.Component {
     });
 
     let { map } = this.state;
-    let oldLayer = map.getLayers();
-    map.removeLayer(oldLayer);
+
 
     ajaxJson(
       ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],

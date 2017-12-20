@@ -42,6 +42,7 @@ class CreateItems extends Component {
                     items: items
                 });
 
+                this.props.setDefaultLayerId(items[0].pinogioOutputId);
         
             }.bind(this),
             function (xhr, status, err) {
@@ -55,6 +56,11 @@ class CreateItems extends Component {
     createItems() {
 
         let { itemTitle, layerId, mapsId } = this.props;
+        let { radioType } = this.state;
+
+        if (radioType == 'text') {
+            layerId = null;
+        }
 
         ajaxJson(
             ['POST', apiSvr + '/coursesWork/maps/' + mapsId + "/item" + '.json'],
@@ -66,7 +72,7 @@ class CreateItems extends Component {
                 
                 let mapsItem = JSON.parse(JSON.stringify(data)).response.data.data;
                 this.props.addItems(mapsItem);
-                console.log(mapsItem);
+                //console.log(mapsItem);
     
             }.bind(this),
             function (xhr, status, err) {
@@ -83,6 +89,12 @@ class CreateItems extends Component {
                 itemTitle: nextProps.itemTitle,
                 layerId: nextProps.layerId
             });
+
+            if (nextProps.layerId == '') {
+                this.setState({
+                    radioType: 'text'
+                });
+            }
         }
     }
 
@@ -90,6 +102,12 @@ class CreateItems extends Component {
 
         let { itemTitle, layerId, mapsId, item } = this.props;
         let itemId = item.id;
+
+        let { radioType } = this.state;
+        if (radioType == 'text') {
+            layerId = "";
+        }
+
 
         //maps_item수정
         ajaxJson(
@@ -101,7 +119,6 @@ class CreateItems extends Component {
             function (data) {
                 let mapsItem = JSON.parse(JSON.stringify(data)).response.data.data;
                 this.props.modifyItems(mapsItem);
-                console.log(mapsItem);
             }.bind(this),
             function (xhr, status, err) {
                 alert('Error');
@@ -131,6 +148,13 @@ class CreateItems extends Component {
         const style = {
             radioButton: {
                 marginBottom: 16,
+            },
+            disabled: {
+                color: '#ccc',
+                cursor: 'no-drop'
+            },
+            abled: {
+
             }
         };
 
@@ -178,33 +202,37 @@ class CreateItems extends Component {
                             style={style.radioButton}
                         />
                     </RadioButtonGroup>
-                    <Paper className="paper">
-                        {this.props.mode == 'add' ? 
-                        <SelectableList value={radioType == 'layer' ? this.props.layerId : null}>
-                        {items.map((item, i) => (
-                            <ListItem
-                                disabled={radioType == 'layer'? false : true}
-                                key={item.idx}
-                                value={item.pinogioOutputId} 
-                                primaryText={item.outputName}
-                                onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
-                            />
-                        ))}
-                        </SelectableList>
-                        :
-                        <SelectableList value={radioType == 'layer' ? this.state.layerId : null}>
-                        {items.map((item, i) => (
-                            <ListItem
-                                disabled={radioType == 'layer'? false : true}
-                                key={item.idx}
-                                value={item.pinogioOutputId} 
-                                primaryText={item.outputName}
-                                onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
-                            />
-                        ))}
-                        </SelectableList>
-                        }
-                    </Paper>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <Paper className="paper">
+                            {this.props.mode == 'add' ? 
+                            <SelectableList value={radioType == 'layer' ? this.props.layerId : null}>
+                            {items.map((item, i) => (
+                                <ListItem
+                                    disabled={radioType == 'layer'? false : true}
+                                    style={radioType == 'layer'? style.abled : style.disabled}
+                                    key={item.idx}
+                                    value={item.pinogioOutputId} 
+                                    primaryText={item.outputName}
+                                    onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
+                                />
+                            ))}
+                            </SelectableList>
+                            :
+                            <SelectableList value={radioType == 'layer' ? this.state.layerId : null}>
+                            {items.map((item, i) => (
+                                <ListItem
+                                    disabled={radioType == 'layer'? false : true}
+                                    style={radioType == 'layer'? style.abled : style.disabled}
+                                    key={item.idx}
+                                    value={item.pinogioOutputId} 
+                                    primaryText={item.outputName}
+                                    onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
+                                />
+                            ))}
+                            </SelectableList>
+                            }
+                        </Paper>
+                    </div>
                 </div>
             </Dialog>
         );

@@ -30,7 +30,8 @@ class StorySetting extends Component {
     componentWillReceiveProps(nextProps){
         if (nextProps.maps) {
             this.setState({ 
-                typeKind: nextProps.maps.typeKind
+                typeKind: nextProps.maps.typeKind,
+                mapsTitle: nextProps.mapsTitle
             });
         }
     }
@@ -62,12 +63,12 @@ class StorySetting extends Component {
     changeTypeKind(typeKind) {
         this.setState({
             typeKind
-        });
+        });typeKind
     }
 
     updateMapsSetting() {
 
-        const { typeKind } = this.state;
+        const { typeKind, mapsTitle } = this.state;
         const mapsId = this.props.maps.mapsId;
 
         //maps수정
@@ -75,6 +76,7 @@ class StorySetting extends Component {
             ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '.json'],
             {
                 typeKind,
+                title: mapsTitle
             },
             function (data) {
                 let maps = JSON.parse(JSON.stringify(data)).response.data.result;                
@@ -105,7 +107,7 @@ class StorySetting extends Component {
             />
         ];
 
-        const { itemValue, typeKind, items } = this.state;
+        const { itemValue, typeKind, items, mapsTitle } = this.state;
         
         const style = {
             selected: {
@@ -140,6 +142,14 @@ class StorySetting extends Component {
                 contentStyle={{width: '50%'}}
             >
                 <div>
+                    <Subheader>제목</Subheader>
+                    <TextField
+                        fullWidth={true}
+                        hintText="*스토리맵 제목"
+                        onChange={(e, value) => this.setState({ mapsTitle: value })}
+                        value={this.state.mapsTitle}
+                        style={{ marginBottom: '8px' }}
+                    />
                     <Subheader>템플릿 변경</Subheader>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <img 

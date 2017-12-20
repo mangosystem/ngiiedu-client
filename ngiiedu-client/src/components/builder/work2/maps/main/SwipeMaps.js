@@ -63,6 +63,11 @@ class SwipeMaps extends Component {
                     items: items
                 });
 
+                if (!this.props.map) {
+                    this.props.changeLayerId(items[0].pinogioOutputId);
+                    this.props.changeLayerId2(items[0].pinogioOutputId);
+                }
+
         
             }.bind(this),
             function (xhr, status, err) {
@@ -73,8 +78,19 @@ class SwipeMaps extends Component {
 
     componentWillMount() {
         if (this.props.map) {
-            this.props.changeLayerId(this.props.map.pngoData.items[0].pinoLayer);
-            this.props.changeLayerId2(this.props.map.pngoData.items[1].pinoLayer);
+
+            let items = this.props.map.pngoData.items;
+
+            if (items.length >= 2) {
+                let sortingField = 'id';
+    
+                items.sort(function(a, b) { // 오름차순
+                    return a[sortingField] - b[sortingField];
+                });
+            }
+
+            this.props.changeLayerId(items[0].pinoLayer);
+            this.props.changeLayerId2(items[1].pinoLayer);
         }
     }
 
@@ -145,7 +161,7 @@ class SwipeMaps extends Component {
                     <div style={{display: 'flex'}}>
                         <figure>
                             <img 
-                               src="/ngiiedu/assets/images/sw1.png" 
+                               src="/ngiiedu/assets/images/sw2.png" 
                                 // src="/assets/images/sw1.png" 
                                 alt="HORIZONTAL" 
                                 style={typeKind == "HORIZONTAL"? style.selected : style.unselected}
@@ -155,13 +171,13 @@ class SwipeMaps extends Component {
                         &nbsp;&nbsp;&nbsp;
                         <figure>
                             <img 
-                                src="/ngiiedu/assets/images/sw2.png" 
+                                src="/ngiiedu/assets/images/sw1.png" 
                                 // src="/assets/images/sw2.png" 
                                 alt="VERTICAL" 
                                 style={typeKind == "VERTICAL"? style.selected : style.unselected}
                                 onClick={() => this.changeTypeKind('VERTICAL')}/>
                                 <figcaption>세로 스와이프</figcaption>
-                            </figure>
+                        </figure>
                     </div>
                     <br />
                 </div>
@@ -173,7 +189,7 @@ class SwipeMaps extends Component {
                         <tr style={{verticalAlign: 'top'}}>
                             <td className="td">
                                 <Subheader>{typeKind == 'sw1' ? '왼쪽맵' : '아래쪽맵'}</Subheader>
-                                <Paper className="swiffPaper">
+                                <Paper className="swipePaper">
                                     <SelectableList value={this.props.layerId}>
                                     {items.map((item, i) => (
                                         <ListItem 
@@ -189,7 +205,7 @@ class SwipeMaps extends Component {
                             </td>
                             <td style={{ paddingLeft: '20px' }}>
                                 <Subheader>{typeKind == 'sw1' ? '오른쪽맵' : '위쪽맵'}</Subheader>
-                                <Paper className="swiffPaper">
+                                <Paper className="swipePaper">
                                     <SelectableList value={this.props.layerId2}>
                                     {items.map((item, i) => (
                                         <ListItem 

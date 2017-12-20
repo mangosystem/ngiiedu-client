@@ -21,7 +21,8 @@ class ModifyMaps extends Component {
             typeKind: '',
             title: '',
             layerId: '',
-            layerId2: ''
+            layerId2: '',
+            radioType: 'layer'
         };
     }
 
@@ -37,6 +38,12 @@ class ModifyMaps extends Component {
         });
 
         
+    }
+
+    changeRadioType(radioType) {
+        this.setState({
+            radioType
+        });
     }
 
     handleNext() {
@@ -61,7 +68,7 @@ class ModifyMaps extends Component {
 
     modifyMaps() {
 
-        const { title, typeKind, layerId } = this.state;
+        let { title, typeKind, layerId, radioType, mapsType } = this.state;
         const mapsId = this.props.map.pinogioOutputId;
         let maps = {};
 
@@ -91,6 +98,12 @@ class ModifyMaps extends Component {
         }
 
         //maps_item수정
+
+        if (radioType == 'text' && mapsType == 'STORY') {
+            layerId = "";
+        }
+
+
         ajaxJson(
             ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId + '.json'],
             {
@@ -105,7 +118,7 @@ class ModifyMaps extends Component {
             }.bind(this)
         );
 
-        if (this.state.mapsType == 'SWIPE') {
+        if (mapsType == 'SWIPE') {
             const itemId2 = this.props.map.pngoData.items[1].id;
             const layerId2 = this.state.layerId2;
 
@@ -179,6 +192,8 @@ class ModifyMaps extends Component {
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         map={this.props.map}
+                                        radioType={this.state.radioType}
+                                        changeRadioType={this.changeRadioType.bind(this)}
                                     />;
                         } else if (mapsType == 'SERIES') { 
                             return <SeriesMaps 
@@ -231,6 +246,8 @@ class ModifyMaps extends Component {
                                         layerId={this.state.layerId}
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         map={this.props.map}
+                                        radioType={this.state.radioType}
+                                        changeRadioType={this.changeRadioType.bind(this)}
                                     />
                         } else if (mapsType == 'SERIES') { 
                             return <SeriesMaps 

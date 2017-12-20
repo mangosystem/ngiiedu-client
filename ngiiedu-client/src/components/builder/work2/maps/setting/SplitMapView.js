@@ -4,11 +4,11 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import Toggle from 'material-ui/Toggle';
 
-class MapsView extends React.Component {
+class SplitMapView extends React.Component {
 
   constructor(props){
-    super(props);
-
+      super(props);
+      
     this.state = {
       map: new ol.Map({
         view: new ol.View({
@@ -174,10 +174,14 @@ class MapsView extends React.Component {
 
   render() {
     return (
-      <div id="mapView" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
-      </div>
+        <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
+            <div id="map1">
+            </div>
+            <div id="map2">
+            </div>
+        </div>
     );
   }
 }
 
-export default MapsView;
+export default SplitMapView;

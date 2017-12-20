@@ -69,6 +69,7 @@ import WorkFrameMaps from './builder/work2/maps/setting/MainContainer';
 import WorkFrameEditLayer from './builder/work2/layer/setting/MainContainer';
 import DatasetPreview from './builder/work2/dataset/view/MainContainer';
 
+import WorkFramePreviewMaps from './builder/work2/maps/preview/MainContainer';
 
 
 const contextPath = '/ngiiedu';
@@ -300,7 +301,7 @@ class App extends Component {
 						</Route>
 
 						{/* maps */}
-						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/:MAPSID"}>
+						<Route exact path={contextPath +"/course/:COURSEID/work2/:WORKID/:MAPSID"}>
 							<div>
 								<WorkFrameMaps />
 							</div>
@@ -312,6 +313,13 @@ class App extends Component {
 								{/* <Header2/> */}
 								<UserLoginContainer />
 								{/* <Footer2/> */}
+							</div>
+						</Route>
+						
+						{/* maps preview */}
+						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/:MAPSID/preview"}>
+							<div>
+								<WorkFramePreviewMaps />
 							</div>
 						</Route>
 

@@ -2,34 +2,52 @@ import React, { Component } from 'react';
 
 import FlatButton from 'material-ui/FlatButton';
 import { cyan500 } from 'material-ui/styles/colors';
-import Paper from 'material-ui/Paper';
 
-import MapsView from './MapsView';
+import SwipeMapView from './SwipeMapView';
 import EditorPanel from './EditorPanel';
 
-
-class BasicRight extends Component {
+class Swipe extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
+            editorMode: true,
+            layerId: '',
             maps: {}
         };
     }
 
-    componentWillMount() {
+    componentWillReceiveProps(nextProps){
+
+        let items = nextProps.maps.items;
+
+        let sortingField = 'id';
+
+        items.sort(function(a, b) { // 오름차순
+            return a[sortingField] - b[sortingField];
+        });
+
         this.setState({
-            maps: this.props.maps,
-            items: this.props.maps.items,
-            description: this.props.maps.items[0].description
+            maps: nextProps.maps,
+            items
         });
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillMount() {
+
+        let items = this.props.maps.items;
+
+        let sortingField = 'id';
+
+        items.sort(function(a, b) { // 오름차순
+            return a[sortingField] - b[sortingField];
+        });
+
         this.setState({
-            maps: nextProps.maps,
-            items: nextProps.maps.items,
+            maps: this.props.maps,
+            items,
+            description: items[0].description
         });
     }
 
@@ -48,7 +66,7 @@ class BasicRight extends Component {
     render() {
         return (
             <div style={{ position: 'absolute', top: 60, bottom: 0, left: 0, right: 0 }}>
-                <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300 }}>
+                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
                     <EditorPanel
                         description={this.state.description}
                         modifyDescription={this.modifyDescription.bind(this)}
@@ -57,8 +75,8 @@ class BasicRight extends Component {
                         pinoLayer={this.state.items[0].pinoLayer}
                     />
                 </div>
-                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 300 }}>
-                    <MapsView
+                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 0 }}>
+                    <SwipeMapView
                         maps={this.state.maps}
                         items={this.state.items}
                     />
@@ -68,4 +86,4 @@ class BasicRight extends Component {
     }
 }
 
-export default BasicRight;
+export default Swipe;

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import FlatButton from 'material-ui/FlatButton';
 import { cyan500 } from 'material-ui/styles/colors';
+import Paper from 'material-ui/Paper';
+
 
 import MapsView from './MapsView';
 import EditorPanel from './EditorPanel';

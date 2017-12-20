@@ -15,7 +15,7 @@ import '../main/Maps.css';
 import {List, ListItem, makeSelectable} from 'material-ui/List';  
 let SelectableList = makeSelectable(List);
 
-class BasicSetting extends Component {
+class SwipeSetting extends Component {
     constructor(props) {
         super(props);
         
@@ -62,8 +62,18 @@ class BasicSetting extends Component {
 
     componentWillMount() {
         if (this.props.maps) {
+
+            let items = this.props.maps.items;
+
+            let sortingField = 'id';
+
+            items.sort(function(a, b) { // 오름차순
+                return a[sortingField] - b[sortingField];
+            });
+
             this.setState({ typeKind: this.props.maps.typeKind });
-            this.props.changeLayerId(this.props.maps.items[0].pinoLayer);
+            this.props.changeLayerId(items[0].pinoLayer);
+            this.props.changeLayerId2(items[1].pinoLayer)
         }
     }
 
@@ -97,7 +107,9 @@ class BasicSetting extends Component {
 
 
         const itemId = this.props.maps.items[0].id;
+        const item2Id = this.props.maps.items[1].id;
         const layerId = this.props.layerId;
+        const layerId2 = this.props.layerId2;
         let itemTitle = "";
 
 
@@ -117,6 +129,21 @@ class BasicSetting extends Component {
             }.bind(this)
         );
 
+        ajaxJson(
+            ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + item2Id + '.json'],
+            {
+                title: itemTitle,
+                pinoLayer: layerId2
+            },
+            function (data) {
+                let items = JSON.parse(JSON.stringify(data)).response.data.data;
+                this.props.updateItemSetting2(items);
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
+
         this.props.settingHandle();
     }
 
@@ -124,6 +151,7 @@ class BasicSetting extends Component {
 
         if (this.props.maps) {
             this.props.changeLayerId(this.props.maps.items[0].pinoLayer);
+            this.props.changeLayerId2(this.props.maps.items[1].pinoLayer)
         }
 
         this.props.settingHandle();
@@ -145,7 +173,7 @@ class BasicSetting extends Component {
             />
         ];
 
-        const { typeKind, items, mapsTitle } = this.state;
+        const { typeKind, items } = this.state;
         
         const style = {
             selected: {
@@ -189,62 +217,72 @@ class BasicSetting extends Component {
                         style={{ marginBottom: '8px' }}
                     />
                     <Subheader>템플릿 변경</Subheader>
-                    <div style={{textAlign: 'center'}}>
-                    {/* 
-                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <figure>
                             <img 
-                                src="/ngiiedu/assets/images/b1.png" 
-                                // src="/assets/images/b1.png" 
-                                alt="b1" 
-                                style={typeKind == "BOTTOM"? style.selected : style.unselected}
-                                onClick={() => this.changeTypeKind('BOTTOM')}/>
-                            &nbsp;&nbsp;&nbsp;
+                               src="/ngiiedu/assets/images/sw2.png" 
+                                // src="/assets/images/sw1.png" 
+                                alt="HORIZONTAL" 
+                                style={typeKind == "HORIZONTAL"? style.selected : style.unselected}
+                                onClick={() => this.changeTypeKind('HORIZONTAL')}/>
+                                <figcaption>가로 스와이프</figcaption>
+                        </figure>
+                        &nbsp;&nbsp;&nbsp;
+                        <figure>
                             <img 
-                                src="/ngiiedu/assets/images/b2.png" 
-                                // src="/assets/images/b2.png" 
-                                alt="b2" 
-                                style={typeKind == "TOP"? style.selected : style.unselected}
-                                onClick={() => this.changeTypeKind('TOP')}/>
-                        </div>
-                        <br />
-                    */}                        
-                        <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <img 
-                                src="/ngiiedu/assets/images/b3.png" 
-                                // src="/assets/images/b3.png" 
-                                alt="b3" 
-                                style={typeKind == "RIGHT"? style.selected : style.unselected}
-                                onClick={() => this.changeTypeKind('RIGHT')}/>
-                            &nbsp;&nbsp;&nbsp;
-                            <img 
-                                src="/ngiiedu/assets/images/b4.png" 
-                                // src="/assets/images/b4.png" 
-                                alt="b4" 
-                                style={typeKind == "LEFT"? style.selected : style.unselected}
-                                onClick={() => this.changeTypeKind('LEFT')}/>
-                        </div>
+                                src="/ngiiedu/assets/images/sw1.png" 
+                                // src="/assets/images/sw2.png" 
+                                alt="VERTICAL" 
+                                style={typeKind == "VERTICAL"? style.selected : style.unselected}
+                                onClick={() => this.changeTypeKind('VERTICAL')}/>
+                                <figcaption>세로 스와이프</figcaption>
+                        </figure>
                     </div>
                 </div>
-                <div style={{textAlign: 'left'}}>
-                    <Subheader>레이어 선택</Subheader>
-                    <div style={{display: 'flex', justifyContent: 'center'}}>
-                        <Paper className="settingPaper">
-                            <SelectableList value={this.props.layerId}>
-                            {items.map((item, i) => (
-                                <ListItem 
-                                    key={item.idx}
-                                    value={item.pinogioOutputId} 
-                                    primaryText={item.outputName}
-                                    onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
-                                />
-                            ))}
-                            </SelectableList>
-                        </Paper>
-                    </div>
+                <Subheader style={{marginTop: '10px'}}>레이어 선택</Subheader>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <table style={{textAlign: 'left'}}>
+                        <tbody>
+                            <tr style={{verticalAlign: 'top'}}>
+                                <td>
+                                    <Subheader>{typeKind == 'sw1' ? '왼쪽맵' : '아래쪽맵'}</Subheader>
+                                    <Paper className="settingSwipePaper">
+                                        <SelectableList value={this.props.layerId}>
+                                        {items.map((item, i) => (
+                                            <ListItem 
+                                                key={item.idx}
+                                                value={item.pinogioOutputId} 
+                                                primaryText={item.outputName}
+                                                onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
+                                            />
+                                        ))}
+                                        </SelectableList>
+                                    </Paper>
+                                    <br />
+                                </td>
+                                <td style={{ paddingLeft: '20px' }}>
+                                    <Subheader>{typeKind == 'sw1' ? '오른쪽맵' : '위쪽맵'}</Subheader>
+                                    <Paper className="settingSwipePaper">
+                                        <SelectableList value={this.props.layerId2}>
+                                        {items.map((item, i) => (
+                                            <ListItem 
+                                                key={item.idx}
+                                                value={item.pinogioOutputId} 
+                                                primaryText={item.outputName}
+                                                onClick={(i) => this.props.changeLayerId2(item.pinogioOutputId)}
+                                            />
+                                        ))}
+                                        </SelectableList>
+                                    </Paper>
+                                    <br />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </Dialog>
         );
     }
 }
 
-export default withRouter(BasicSetting);
+export default withRouter(SwipeSetting);

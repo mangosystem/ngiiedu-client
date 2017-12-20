@@ -21,8 +21,7 @@ class StoryMaps extends Component {
             stepIndex: 0,
             typeKind: 'TAB',
             items: [],
-            itemTitle: '',
-            radioType: 'layer'
+            itemTitle: ''
         };
     }
 
@@ -43,27 +42,55 @@ class StoryMaps extends Component {
             null,
             function (data) {
               
-              let workSubData = JSON.parse(JSON.stringify(data)).response.data;
-              let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+                let workSubData = JSON.parse(JSON.stringify(data)).response.data;
+                let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
 
-              this.setState({
-                  items: items
-              });
+                this.setState({
+                    items: items
+                });
+
+                if (!this.props.map) {
+                    this.props.changeLayerId(items[0].pinogioOutputId);
+                }
 
       
             }.bind(this),
             function (xhr, status, err) {
-              alert('Error');
+                alert('Error');
             }.bind(this)
           );
     }
 
     componentWillMount() {
+        //수정할때
         if (this.props.map) {
+
+            let items = this.props.map.pngoData.items;
+
+            if (items.length >= 2) {
+                let sortingField = 'id';
+    
+                items.sort(function(a, b) { // 오름차순
+                    return a[sortingField] - b[sortingField];
+                });
+            }
+
             this.props.changeTitle(this.props.map.outputName);
-            this.props.changeItemTitle(this.props.map.pngoData.items[0].title);
-            this.props.changeLayerId(this.props.map.pngoData.items[0].pinoLayer);
+            this.props.changeItemTitle(items[0].title);
+            this.props.changeLayerId(items[0].pinoLayer);
+            
+            if (items[0].pinoLayer == '') {
+                this.props.changeRadioType('text');
+            } else {
+                this.props.changeRadioType('layer');
+            }
         }
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            radioType: nextProps.radioType
+        });
     }
 
     handleNext() {
@@ -106,12 +133,12 @@ class StoryMaps extends Component {
                 height: '136px'
             },
 
-            itemSelected: {
-                color: pink400,
-                backgroundColor: 'rgba(128, 128, 128, 0.2)'
+            disabled: {
+                color: '#ccc',
+                cursor: 'no-drop'
             },
 
-            itemUnselected: {
+            abled: {
 
             },
 
@@ -185,7 +212,7 @@ class StoryMaps extends Component {
                     <RadioButtonGroup 
                         name="" 
                         defaultSelected={radioType}
-                        onChange={(e, value) => this.setState({ radioType: value })}
+                        onChange={(e, value) => this.props.changeRadioType(value)}
                     >
                         <RadioButton
                             value="text"
@@ -203,6 +230,7 @@ class StoryMaps extends Component {
                         {items.map((item, i) => (
                             <ListItem
                                 disabled={radioType == 'layer'? false : true}
+                                style={radioType == 'layer'? style.abled : style.disabled}
                                 key={item.idx}
                                 value={item.pinogioOutputId} 
                                 primaryText={item.outputName}

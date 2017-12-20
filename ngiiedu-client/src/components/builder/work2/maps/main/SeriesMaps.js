@@ -60,6 +60,10 @@ class SeriesMaps extends Component {
                     items: items
                 });
 
+                if (!this.props.map) {
+                    this.props.changeLayerId(items[0].pinogioOutputId);
+                }
+
         
             }.bind(this),
             function (xhr, status, err) {

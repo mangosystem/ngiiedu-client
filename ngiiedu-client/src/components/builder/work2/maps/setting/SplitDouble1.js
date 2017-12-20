@@ -8,7 +8,7 @@ import MapsView from './MapsView';
 import EditorPanel from './EditorPanel';
 
 
-class BasicRight extends Component {
+class SplitDouble1 extends Component {
 
     constructor(props) {
         super(props);
@@ -48,7 +48,7 @@ class BasicRight extends Component {
     render() {
         return (
             <div style={{ position: 'absolute', top: 60, bottom: 0, left: 0, right: 0 }}>
-                <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 300 }}>
+                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
                     <EditorPanel
                         description={this.state.description}
                         modifyDescription={this.modifyDescription.bind(this)}
@@ -57,7 +57,7 @@ class BasicRight extends Component {
                         pinoLayer={this.state.items[0].pinoLayer}
                     />
                 </div>
-                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 300 }}>
+                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 0 }}>
                     <MapsView
                         maps={this.state.maps}
                         items={this.state.items}
@@ -68,4 +68,4 @@ class BasicRight extends Component {
     }
 }
 
-export default BasicRight;
+export default SplitDouble1;

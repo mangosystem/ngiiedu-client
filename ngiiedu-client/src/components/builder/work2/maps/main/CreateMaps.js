@@ -22,7 +22,8 @@ class CreateMaps extends Component {
             title: '',
             itemTitle: '',
             layerId: '',
-            layerId2: ''
+            layerId2: '',
+            radioType: 'layer'
         };
     }
 
@@ -30,6 +31,12 @@ class CreateMaps extends Component {
         const {stepIndex} = this.state;
         this.setState({
           stepIndex: stepIndex + 1
+        });
+    }
+
+    changeRadioType(radioType) {
+        this.setState({
+            radioType
         });
     }
 
@@ -84,6 +91,11 @@ class CreateMaps extends Component {
     }
 
     createMapsItem(maps, itemTitle, layerId, layerId2) {
+
+        if (this.state.radioType == 'text' && this.state.mapsType == 'STORY') {
+            layerId = "";
+        }
+
         //maps_item 추가
         ajaxJson(
             ['POST', apiSvr + '/coursesWork/maps/' + maps.pinogioOutputId + "/item" + '.json'],
@@ -174,6 +186,7 @@ class CreateMaps extends Component {
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
+                                        changeLayerId={this.changeLayerId.bind(this)}
                                     />;                            
                         } else if (mapsType == 'STORY') {
                             return <StoryMaps 
@@ -181,12 +194,15 @@ class CreateMaps extends Component {
                                         changeTitle={this.changeTitle.bind(this)}
                                         title={this.state.title}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
+                                        changeLayerId={this.changeLayerId.bind(this)}
+                                        radioType={this.state.radioType}
                                     />
                         } else if (mapsType == 'SERIES') { 
                             return <SeriesMaps 
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
+                                        changeLayerId={this.changeLayerId.bind(this)}
                                     /> 
                         } else if (mapsType == 'SPLIT') { 
                             return <SplitMaps 
@@ -199,6 +215,8 @@ class CreateMaps extends Component {
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
+                                        changeLayerId={this.changeLayerId.bind(this)}
+                                        changeLayerId2={this.changeLayerId2.bind(this)}
                                     />
                         }
                     })()}
@@ -225,6 +243,8 @@ class CreateMaps extends Component {
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         layerId={this.state.layerId}
                                         changeLayerId={this.changeLayerId.bind(this)}
+                                        changeRadioType={this.changeRadioType.bind(this)}
+                                        radioType={this.state.radioType}
                                     />
                         } else if (mapsType == 'SERIES') { 
                             return <SeriesMaps 

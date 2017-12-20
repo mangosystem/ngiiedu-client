@@ -14,20 +14,13 @@ class EditorPanel extends React.Component {
 
   constructor(props){
     super(props);
-
-
   }
 
   componentWillReceiveProps(nextProps){
 
-    // const { oEditors } = this.state;
-
-    // if (oEditors.getById) {
-    //   oEditors.getById["smarteditor"].exec("SET_IR", [""]); //내용초기화 
-    //   oEditors.getById["smarteditor"].exec("PASTE_HTML", [nextProps.description]);
-    // }
-
-    CKEDITOR.instances.smarteditor.setData(nextProps.description);
+    if (this.props.description != nextProps.description) {
+      CKEDITOR.instances.smarteditor.setData(nextProps.description);
+    }
 
   }
   
@@ -119,53 +112,34 @@ class EditorPanel extends React.Component {
     
   }
 
-  submit() {
-
-    // var oEditors = this.state.oEditors;
-
-    // oEditors.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
-
-    // this.validation();
-    //this.props.modifyDescription(contents);
-    
-    
+  cancel() {
+    CKEDITOR.instances.smarteditor.setData(this.props.description);    
   }
   
   
   validation() {
-    
-    // var oEditors = this.state.oEditors;
-    
-    // var contents = $.trim(oEditors[0].getContents()); 
-    
-    // console.log("validation() : ");
-    // console.log(contents);
-    
-    
-    let contents = CKEDITOR.instances.smarteditor.getData();
-    console.log(contents);
-    
-    this.props.modifyDescription(contents,this.props.layerId);
-    this.props.onChangeEditorMode();
 
+    let contents = CKEDITOR.instances.smarteditor.getData();
+
+    let { mapsId, itemId, pinoLayer } = this.props;
+    
+    //서버 데이터 수정
+    ajaxJson(
+      ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + itemId + '.json'],
+      { pinoLayer , description: contents },
+      function (data) {
+        this.props.modifyDescription(contents);
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
 
   }
 
   render() {
-
-    const style = {
-      editStyle: {
-        
-      },
-      none: {
-        display: 'none'
-      }
-    };
-
-
     return (
-      <div style={ this.props.editorMode ? style.editStyle : style.none }>
-        <Paper zDepth={0} style={{ width: '100%', height: '90%' }}>
+        <div style={{ width: '100%', height: '90%' }}>
           <textarea 
             name="smarteditor" 
             id="smarteditor" 
@@ -177,7 +151,7 @@ class EditorPanel extends React.Component {
           <div style={{ textAlign: 'right', margin: '20px' }}>
             <FlatButton
               label="취소"
-              onClick={this.props.onChangeEditorMode}
+              onClick={this.cancel.bind(this)}
             />
             <FlatButton
               label="적용"
@@ -186,18 +160,9 @@ class EditorPanel extends React.Component {
               onClick={this.validation.bind(this)}
             />
           </div>
-        </Paper>
-      </div>
+        </div>
     );
   }
-};
-
-EditorPanel.propTypes = {
-	editorMode: React.PropTypes.bool
-};
-
-EditorPanel.defaultProps = {
-	editorMode: false
 };
 
 export default EditorPanel;
