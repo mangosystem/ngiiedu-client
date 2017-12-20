@@ -37,6 +37,17 @@ class ItemSort extends Component {
     handleOnChange(event, ui) {
         // Attach any custom behavior here
         //console.log(event.target.children);
+
+        if (this.state.children) {
+            this.setState({
+                old: this.state.children
+            });
+        } else {
+            this.setState({
+                old: this.state.items
+            });
+        }
+
         this.setState({
             children: event.target.children
         });
@@ -60,12 +71,23 @@ class ItemSort extends Component {
         this.props.sortingHandle();
     }
 
+    cancel() {
+
+        if (this.state.old) {
+            this.setState({
+                children: this.state.old
+            });
+        }
+
+        this.props.sortingHandle();
+    }
+
     render() {
 
         const actions = [
             <FlatButton
                 label="취소"
-                onClick={this.props.sortingHandle}
+                onClick={this.cancel.bind(this)}
             />,
             <FlatButton
                 label="변경"
@@ -77,7 +99,7 @@ class ItemSort extends Component {
 
         return (
             <Dialog
-                title="설정 변경"
+                title="순서 변경"
                 actions={actions}
                 open={this.props.open}
                 autoScrollBodyContent={false}
