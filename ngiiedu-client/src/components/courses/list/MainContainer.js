@@ -7,7 +7,7 @@ import CourseInfoModal from  './CourseInfoModal';
 class MainContainer extends React.Component {
     render() {
         return (
-            <main id="main">
+            <main>
 				<div className="inner">
                     {
                     // <SearchCourse/>

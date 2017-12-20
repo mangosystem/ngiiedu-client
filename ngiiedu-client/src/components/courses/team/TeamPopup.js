@@ -15,6 +15,7 @@ import ToggleRadioButtonChecked from 'material-ui/svg-icons/toggle/radio-button-
 import Chip from 'material-ui/Chip';
 import {red500, yellow500, blue500, grey500} from 'material-ui/styles/colors';
 import NotificationDoNotDisturbAlt from 'material-ui/svg-icons/notification/do-not-disturb-alt';
+import CancleIcon from 'material-ui/svg-icons/navigation/cancel';
 
 
 class TeamPopup extends React.Component {
@@ -109,17 +110,31 @@ class TeamPopup extends React.Component {
 
 
     const actions = [
-      <FlatButton
-        label="취소"
-        primary={true}
-        onClick={(summit)=>this.props.handleClose(false)}
-      />,
-      <FlatButton
-        label="확인"
-        primary={true}
-        keyboardFocused={true}
-        onClick={(summit,teamId,teamName)=>this.props.handleClose(true,this.props.selectedTeamId,this.state.teamName,this.state.selectedUserId)}
-        />,
+        <div>
+            <div style={{display:'flex',alignItems: 'center', justifyContent:'space-between'}}>
+            <TextField
+                defaultValue={this.state.teamName}
+                style={{width:300,color:'#fff',backgroundColor:'#619bff',height:40,display:'flex',alignItems: 'center'}}
+                hintText="팀이름"
+                onChange={(event,newValue)=>this.changeTeamName(event,newValue)}
+                underlineShow={false}
+                hintStyle={{bottom:10,marginLeft:10}}
+
+            />,
+            <FlatButton
+                label="확인"
+                primary={true}
+                onClick={(summit,teamId,teamName)=>this.props.handleClose(true,this.props.selectedTeamId,this.state.teamName,this.state.selectedUserId)}
+                style={{width:105,height:40,backgroundColor:'#43444c',color:'#fff',borderRadius:3}}
+            />
+            </div>
+            <FloatingActionButton secondary={true} 
+                style={{position:'absolute', bottom:-100,left:200}}
+                onClick={(summit)=>this.props.handleClose(false)}
+            >
+                <CancleIcon />
+            </FloatingActionButton>
+        </div>
     ];
 
     const dialLogStyle = {
@@ -147,19 +162,18 @@ class TeamPopup extends React.Component {
 
     return (
         <Dialog
-            title="팀원관리"
+            title="팀"
+            titleStyle={{fontSize:18,height:40,paddingTop:10,paddingLeft:10,paddingBottom:10,inlineHeight:0, backgroundColor:'#3e81f6',inlineHeight:0,padding:0,paddingLeft:10,color:'white'}}
             actions={actions}
             modal={false}
             open={this.state.open}
             onRequestClose={(summit)=>this.props.handleClose(false)}
-            contentStyle={{width:500,  maxWidth: 'none' ,overflow:'auto'}}
+            contentStyle={{width:500, maxWidth: 'none'}}
             autoScrollBodyContent={true}
-            >
-            <TextField
-                defaultValue={this.state.teamName}
-                hintText="팀이름"
-                onChange={(event,newValue)=>this.changeTeamName(event,newValue)}
-            />
+            actionsContainerStyle={{backgroundColor:'#3e81f6'}}
+            style={{borderRadius:3}}
+        >
+            
             <div style={dialLogStyle}>
                 <div style={leftStyle}>
                  

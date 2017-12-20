@@ -245,7 +245,8 @@ class MainContainer extends React.Component {
     render() {
         return (
             <main id="main">
-                <div className="inner">
+                <div id="contentsWrap">
+                    <div className="contents">
                     <h3 style={{textAlign: 'center'}}>회원가입</h3>
                     <p style={{textAlign: 'center', fontSize: '11px'}}>로그인정보 및 가입정보를 입력하세요.</p>
                     <p style={{textAlign: 'right', fontSize: '10px'}}>*표시는 필수입력 사항입니다.</p>
@@ -320,6 +321,7 @@ class MainContainer extends React.Component {
                             />
                         </div>
                     </form>
+                    </div>
                 </div>
             </main>
         );

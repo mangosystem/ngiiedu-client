@@ -794,27 +794,29 @@ class MainContainer extends React.Component {
 
         //wms info
         let wmsPopupInfo = Object.keys(this.state.wmsFeatureInfo).length != 0 ?
-            <Paper style={{ marginTop: 10, width: '100%', maxHeight: '70%', overFlow: 'auto', backgroundColor: 'white', paddingTop: 20, paddingBottom: 20 }}>
-                <h2>Properties</h2>
-                {this.state.layerColumns.map((row,idx)=>{
-                    if (row.name == 'the_geom' || row.name =='pino_id') {
-                        return null;
-                    } else {
-                        return(
-                            <div key={idx} style={listStyle}>
-                            <TextField
-                                floatingLabelStyle={{ fontSize: 15 }}
-                                inputStyle={{ fontSize: 15 }}
-                                value={this.state.wmsFeatureInfo[row.name]}
-                                floatingLabelText={row.alias}
-                            />
-                        </div>
-                        )
-                    }
-                })}
-				<div style={{ textAlign: 'right' }}>
-                    <FlatButton label="닫기" id="popupClose" onClick={this.closeButton}/>
-				</div>
+            <Paper style={{ marginTop: 10, width: '100%',  backgroundColor: 'white', paddingTop: 20, paddingBottom: 20 }}>
+                <div style={{maxHeight:500,overflow:'auto',width:'100%'}}>
+                    <h2>Properties</h2>
+                    {this.state.layerColumns.map((row,idx)=>{
+                        if (row.name == 'the_geom' || row.name =='pino_id') {
+                            return null;
+                        } else {
+                            return(
+                                <div key={idx} style={listStyle}>
+                                <TextField
+                                    floatingLabelStyle={{ fontSize: 15 }}
+                                    inputStyle={{ fontSize: 15 }}
+                                    value={this.state.wmsFeatureInfo[row.name]}
+                                    floatingLabelText={row.alias}
+                                />
+                            </div>
+                            )
+                        }
+                    })}
+                    <div style={{ textAlign: 'right' }}>
+                        <FlatButton label="닫기" id="popupClose" onClick={this.closeButton}/>
+                    </div>
+                </div>
             </Paper>
             : null
 

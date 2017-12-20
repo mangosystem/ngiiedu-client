@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import { cyan500 } from 'material-ui/styles/colors';
@@ -31,6 +33,7 @@ class ExcelDataset extends Component {
             excelJson : [],
             sheetNames: [],
             title:'',
+            dataType:null
         }
 
         this.handleNextStep = this.handleNextStep.bind(this);
@@ -41,40 +44,78 @@ class ExcelDataset extends Component {
         
     }
 
+    // componentWillMount() { console.log('componentWillMount');} 
+    componentDidMount() {
+        let setType = this.setType.bind(this);
+         $('#uploadForm').change(function () {
+            let nameSplit = document.getElementById('uploadFile').files[0].name.split('.');
+            let type = nameSplit[nameSplit.length-1].toLowerCase();
+            setType(type);
+        });
+    } 
+    
+    setType(type){
+        this.setState({
+            dataType: type
+        })
+    }
+    // componentWillReceiveProps(nextProps) { console.log('componentWillReceiveProps'); } 
+    // shouldComponentUpdate(nextProps, nextState) { console.log('shouldComponentUpdate'); return true / false; }
+    // componentWillUpdate(nextProps, nextState) { console.log('componentWillUpdate'); } 
+    // componentDidUpdate(prevProps, prevState) { console.log('componentDidUpdate'); } 
+    // componentWillUnmount() { console.log('componentWillUnmount'); } 
     
    
     
     // 다음단계로..
     handleNextStep(value){
+        var files = document.getElementById('uploadForm');
+        
+        // let type = files.files[0].name.split('.')[files[0].name.split('.').length-1].toLowerCase();
+        var form = new FormData(files);
+        form.append("title",this.state.title);
+        form.append("courseWorkSubId",this.props.match.params.COURSEID);
 
-        if(value=='step1'){
-            // document.getElementById('xlf')=this.state.files
-            this.setState({
-                step:value
-            })
+        $.ajax({
+            type: "post",
+            url: apiSvr + '/coursesWork/dataset.json',
+            data: form,
+            dataType: "text",
+            processData: false,
+            contentType: false,
+            success:function(data){
+                alert(data);
+            }
+        })
+        // if(value=='step1'){
+        //     // document.getElementById('xlf')=this.state.files
+        //     this.setState({
+        //         step:value
+        //     })
 
-        }else if(value=='step2'){
-            //엑셀데이터 로딩..
-            var files = document.getElementById('xlf').files
-            if(this.state.excelJson.length==0 && files.length==0){
-                alert('파일을 선택해 주세요')
-            }else if(this.state.title==''){
-                alert('제목을 입력해 주세요')
-            }else if(files.length!=0){
-                this.doFile(files)
-                this.setState({
-                    step:value
-                })
-            }else(
-                this.setState({
-                    step:value
-                })
-            )
+        // }else if(value=='step2'){
+        //     //엑셀데이터 로딩..
+        //     var files = document.getElementById('xlf').files
+        //     if(this.state.excelJson.length==0 && files.length==0){
+        //         alert('파일을 선택해 주세요')
+        //     }else if(this.state.title==''){
+        //         alert('제목을 입력해 주세요')
+        //     }else if(files.length!=0){
+        //         this.doFile(files)
+        //         this.setState({
+        //             step:value
+        //         })
+        //     }else(
+        //         this.setState({
+        //             step:value
+        //         })
+        //     )
             
 
-        }else{
-            alert('데이터셋 생성')
-        }
+        // }else if(value='upload'){
+        //     alert('데이터셋 생성')
+
+        // }
         
     }
     
@@ -93,8 +134,6 @@ class ExcelDataset extends Component {
         
     }
 
-    componentDidMount(){
-    }
 
     // 파일선택 이벤트 생성
     // xlfEvent(){
@@ -183,12 +222,35 @@ class ExcelDataset extends Component {
 
     render() {
 
+        let dataOption = 
+            this.state.dataType =='csv' || this.state.dataType =='xlsx' || this.state.dataType =='xls' ?
+            <div>
+                {/* <p style={{fontSize:15}}>좌표값 지정</p> */}
+                <TextField
+                    hintText="경도 필드를 입력하세요 (ex:X)"
+                    floatingLabelText="경도"
+                    floatingLabelFixed={true}
+                />
+                <br/>
+                <TextField
+                    hintText="경도 필드를 입력하세요 (ex:Y)"
+                    floatingLabelText="위도"
+                    floatingLabelFixed={true}
+                />
+            </div>
+            :
+            this.state.dataType == 'zip' || this.state.dataType =='geojson' ||this.state.dataType == null ?
+            null 
+            :
+            <div>올바른 파일형식이 아닙니다.</div>
+
         return (
+            //step1
             <div style={{marginTop:50,
                 paddingRight:70
             }}>
             {this.state.step=='step1' ? 
-                <div>
+                <div style={{textAlign:'center'}}>
                     <p>제목</p>
                     <TextField
                         style={{marginLeft:'0%'}}
@@ -198,16 +260,20 @@ class ExcelDataset extends Component {
 
                     />
                     <br/>
-                    <div style={{marginTop:20}}>
-                        <input type="file" name="xlfile" id="xlf"/>
-                    <Divider style={{marginTop:20,marginBottom:20}}/>
+                    <form id="uploadForm" style={{marginTop:30,marginBottom:20}}>
+                        <input type="file" id="uploadFile" name="uFile"/>
+                    </form>
+                    <Divider style={{marginTop:20,marginBottom:40}}/>
+                    
+                    <div>
+                      {dataOption}
                     </div>
 
                     <FlatButton
-                        label="다음"
+                        label="생성"
                         backgroundColor={cyan500}
                         style={{color: 'white',position:'absolute',right:0,marginRight:70}}
-                        onClick={()=>this.handleNextStep('step2')}
+                        onClick={()=>this.handleNextStep('upload')}
                     />
                 </div>
             :
@@ -303,4 +369,4 @@ class ExcelDataset extends Component {
     }
 }
 
-export default ExcelDataset;
+export default withRouter(ExcelDataset);

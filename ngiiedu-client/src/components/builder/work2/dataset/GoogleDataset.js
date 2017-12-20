@@ -184,7 +184,7 @@ class GoogleDataset extends Component {
                 paddingRight:70
             }}>
             {this.state.step=='step1' ? 
-                <div>
+                <div style={{textAlign:'center'}}>
                     <p>제목</p>
                     <TextField
                         style={{marginLeft:'0%'}}

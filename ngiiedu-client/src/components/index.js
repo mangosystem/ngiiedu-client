@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 
 import Header from './common/layout/Header.js';
 import Footer from './common/layout/Footer.js';
+import Header2 from './common/layout/Header2.js';
+import Footer2 from './common/layout/Footer2.js';
+import JoinHeader from './common/layout/JoinHeader.js';
+
 
 import {BrowserRouter, Router, Route, Switch, Redirect} from 'react-router-dom';
 
@@ -14,7 +18,9 @@ import { actionLoginInfo }  from '../actions/index';
 
 // 미인증 사용자
 import UserJoinContainer from './users/join/MainContainer';
-// import UserLoginContainer from './users/login/MainContainer';
+
+//로그인 창
+import UserLoginContainer from './users/login/MainContainer';
 
 // 인증 사용자
 //import UserProfileContainer from './users/profile/MainContainer';
@@ -178,24 +184,24 @@ class App extends Component {
 
                         <Route exact path={contextPath + "/join"}>
             				<div>
-            					<Header />
+            					<JoinHeader />
             					<UserJoinContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
 
             			<Route exact path={contextPath + "/course"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseListContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
             			<Route exact path={contextPath + "/course/:COURSEID"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseInfoContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/data"}>
@@ -258,10 +264,6 @@ class App extends Component {
             			</Route>
 
 
-
-						{/* test route */}
-						
-
 						{/* dataset */}
 						<Route path={contextPath +"/course/:COURSEID/work2/dataset/edit/:DATASETID"}>
 							<div>
@@ -301,6 +303,15 @@ class App extends Component {
 						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/:MAPSID"}>
 							<div>
 								<WorkFrameMaps />
+							</div>
+						</Route>
+
+						{/* login */}
+						<Route path={contextPath +"/login"}>
+							<div>
+								{/* <Header2/> */}
+								<UserLoginContainer />
+								{/* <Footer2/> */}
 							</div>
 						</Route>
 

@@ -7,6 +7,9 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Avatar from 'material-ui/Avatar';
+import { withRouter } from "react-router-dom";
+
+
 import { connect } from 'react-redux';
 import { actionUserid, actionOpen } from '../../../actions/index';
 
@@ -30,8 +33,12 @@ class CourseList extends React.Component {
             isAccessor: true,
             isOwner: true,
             isMember: false,
-            userid: '1'
+            userid: '1',
+            selectedCourse:'',//선택된 카드
         };
+
+
+        this.handleExpandChange = this.handleExpandChange.bind(this)
     }
 
     componentDidMount() {
@@ -63,150 +70,172 @@ class CourseList extends React.Component {
         );
     };
 
-    componentWillReceiveProps(nextProps) {
-        // 검색
-        let params = ({ 'keyword': '%' + nextProps.keyword + '%' });
-        ajaxJson(
-            ['GET', apiSvr + '/courses/list/courseInfoListJoin.json'],
-            params,
-            function (res) {
-                this.setState({
-                    courseInfoListJoinData: res.response.data
-                });
-            }.bind(this),
-            function (xhr, status, err) {
-                console.log(err);
-            }.bind(this)
-        );
+    // componentWillReceiveProps(nextProps) {
+    //     // 검색
+    //     let params = ({ 'keyword': '%' + nextProps.keyword + '%' });
+    //     ajaxJson(
+    //         ['GET', apiSvr + '/courses/list/courseInfoListJoin.json'],
+    //         params,
+    //         function (res) {
+    //             this.setState({
+    //                 courseInfoListJoinData: res.response.data
+    //             });
+    //         }.bind(this),
+    //         function (xhr, status, err) {
+    //             console.log(err);
+    //         }.bind(this)
+    //     );
 
-        ajaxJson(
-            ['GET', apiSvr + '/courses/list/courseInfoListOwn.json'],
-            params,
-            function (res) {
-                this.setState({
-                    courseInfoListOwnData: res.response.data
-                });
-            }.bind(this),
-            function (xhr, status, err) {
-                console.log(err);
-            }.bind(this)
-        );
-    };
+    //     ajaxJson(
+    //         ['GET', apiSvr + '/courses/list/courseInfoListOwn.json'],
+    //         params,
+    //         function (res) {
+    //             this.setState({
+    //                 courseInfoListOwnData: res.response.data
+    //             });
+    //         }.bind(this),
+    //         function (xhr, status, err) {
+    //             console.log(err);
+    //         }.bind(this)
+    //     );
+    // };
+
+    handleExpandChange(value){
+        console.log(value)
+        if(value==this.state.selectedCourse){
+            this.setState({
+                selectedCourse:''
+            })
+        }else{
+            this.setState({
+                selectedCourse: value
+            })
+        }
+        console.dir(this.props)
+
+    }
 
     render() {
         return (
             <div>
-                <Card>
-                    <CardHeader
-                        title="내가 참여한 수업"
-                        style={{
-                            // backgroundColor: '#70a8ff'
-                        }}
-                    />
-                    <CardText>
-                        <div>
-                            <Table
-                                height={'200px'}
+            <div id="contentsWrap" style={{margin:'10px auto 0'}}>
+                <ul className="location">
+                    <li>홈</li>
+                    <li>메뉴</li>
+                    <li>수업목록</li>
+                </ul>
+            </div>
+            {this.props.loginStatus.userDivision==1? //교사일때
+            <div id="contentsWrap">
+                <div className="contents">
+                    <h3 className="edge">생성한 수업</h3>
+                    {this.state.courseInfoListOwnData.map((row, i) => (
+
+                    <Card key={i} expanded={this.state.selectedCourse=="own_"+row.idx}  style={{marginBottom:20,border:this.state.selectedCourse=="own_"+row.idx?'solid 2px #3e81f6': null}}>
+                        <CardHeader
+                            actAsExpander={true}
+                                
+                            textStyle={{display:'none'}}
+                        >
+                            <div style={{display:'grid',gridTemplateColumns:'15% 75% 10%'}}>
+                                <div style={{gridColumn:1,textAlign:'right'}} onClick={()=>this.handleExpandChange("own_"+row.idx)}>
+                                    <Avatar src={row.moduleMetadata} />
+
+                                </div>
+                                <div style={{gridColumn:2,paddingLeft:20}} onClick={()=>this.handleExpandChange("own_"+row.idx)}>
+                                    <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px'}}>
+                                    </div>
+                                    <div style={{fontSize:22,fontWeight:'bold'}}>{row.courseName}</div>
+                                </div>
+                                <div style={{gridColumn:3,textAlign:'right'}}>
+                                    <IconMenu
+                                        iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                                        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                        targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                        style={{ float: 'right' }}
+                                    >
+                                        <MenuItem
+                                            primaryText="이동하기"
+                                            onClick={() => this.props.history.push(contextPath + '/course/'+row.idx)}
+                                        />
+                                    </IconMenu>
+                                </div>
+                            </div>
+                        </CardHeader>
+                    
+                        <CardText expandable={true}>
+                            <div style={{marginLeft:'15%',marginRight:'15%'}}>
+                                {JSON.parse(row.courseMetadata).courseDesc}
+                            </div>
+                        </CardText>
+                    </Card>
+                    
+                    ))}
+
+                    </div>
+                </div>
+                :
+                null
+                }
+
+
+
+                <div id="contentsWrap">
+                    <div className="contents">
+                        <h3 className="edge">참여한 수업</h3>
+
+                        {this.state.courseInfoListJoinData.map((row, i) => (
+
+                        <Card key={i} expanded={this.state.selectedCourse=="join_"+row.idx} style={{marginBottom:20,border:this.state.selectedCourse=="join_"+row.idx?'solid 2px #3e81f6': null}}>
+                            <CardHeader
+                                actAsExpander={true}
+                                    
+                                textStyle={{display:'none'}}
                             >
-                                <TableHeader displaySelectAll={false}>
-                                </TableHeader>
-                                <TableBody displayRowCheckbox={false}>
-                                    {this.state.courseInfoListJoinData.map((row, i) => (
-                                        <TableRow
-                                            key={row.idx}
-                                            style={{ height: '70px' }}
+                                <div style={{display:'grid',gridTemplateColumns:'15% 75% 10%'}}>
+                                    <div style={{gridColumn:1,textAlign:'right'}} onClick={()=>this.handleExpandChange("join_"+row.idx)}>
+                                        <Avatar src={row.moduleMetadata} />
+                                    </div>
+                                    <div style={{gridColumn:2,paddingLeft:20,display:'flex',alignItems:'center'}} onClick={()=>this.handleExpandChange("join_"+row.idx)}>
+                                        <div style={{fontSize:22,fontWeight:'bold'}}>{row.courseName}</div>
+                                    </div>
+                                    <div style={{gridColumn:3,textAlign:'right'}}>
+                                        <IconMenu
+                                            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                                            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                            targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                            style={{ float: 'right' }}
                                         >
-                                            <TableRowColumn style={{ width: '10%' }}>
-                                                <Avatar src={row.moduleMetadata} />
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '55%' }}>
-                                                {row.courseName}
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '10%' }}>
-                                                <Avatar>{row.courseCreateUserId.charAt(0)}</Avatar>
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '15%' }}>
-                                                {row.courseCreateUserId}
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '10%' }}>
-                                                <IconMenu
-                                                    iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                                                    anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                                    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                                    style={{ float: 'right' }}
-                                                >
-                                                    <MenuItem
-                                                        primaryText="이동하기"
-                                                        href={contextPath + "/course/" + row.idx}
-                                                    />
-                                                </IconMenu>
-                                            </TableRowColumn>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </CardText>
-                </Card>
-                <br />
-                <Card>
-                    <CardHeader
-                        title="내가 개설한 수업"
-                    />
-                    <CardText>
-                        <div>
-                            <Table
-                                height={'200px'}
-                            >
-                                <TableHeader displaySelectAll={false}>
-                                </TableHeader>
-                                <TableBody displayRowCheckbox={false} >
-                                    {this.state.courseInfoListOwnData.map((row, i) => (
-                                        <TableRow
-                                            key={row.idx}
-                                            style={{ height: '70px' }}
-                                        >
-                                            <TableRowColumn style={{ width: '10%' }}>
-                                                <Avatar src={row.moduleMetadata} />
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '55%' }}>
-                                                {row.courseName}
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '15%' }}>
-                                                <Avatar>{row.courseCreateUserId.charAt(0)}</Avatar>
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '10%' }}>
-                                                {row.courseCreateUserId}
-                                            </TableRowColumn>
-                                            <TableRowColumn style={{ width: '10%' }}>
-                                                <IconMenu
-                                                    iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                                                    anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                                    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                                    style={{ float: 'right' }}
-                                                >
-                                                    <MenuItem
-                                                        primaryText="이동하기"
-                                                        href={contextPath + "/course/" + row.idx}
-                                                    />
-                                                </IconMenu>
-                                            </TableRowColumn>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </CardText>
-                </Card>
+                                            <MenuItem
+                                                primaryText="이동하기"
+                                                onClick={() => this.props.history.push(contextPath + '/course/'+row.idx)}
+                                            />
+                                        </IconMenu>
+                                    </div>
+                                </div>
+                            </CardHeader>
+                        
+                            <CardText expandable={true}>
+                                <div style={{marginLeft:'15%',marginRight:'15%'}}>
+                                    {JSON.parse(row.courseMetadata).courseDesc}
+                                </div>
+                            </CardText>
+                        </Card>
+                        
+                        ))}
+
+                    </div>
+                </div>
             </div>
         )
     }
 }
 
 let mapStateToProps = (state) => ({
-    keyword: state.courseList.keyword
+    loginStatus: state.loginInfo.loginStatus
 });
 
 CourseList = connect(mapStateToProps)(CourseList);
 
-export default CourseList;
+export default withRouter(CourseList);
+

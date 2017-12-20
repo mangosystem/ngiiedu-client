@@ -12,11 +12,14 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import IconEdit from 'material-ui/svg-icons/image/edit';
 
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 
 import MenuPanel from '../common/MenuPanel.js';
 import AuthkeyInfo from './AuthkeyInfo';
 import CheckUserAuthority from '../common/CheckUserAuthority.js';
+import CourseHeader from '../common/CourseHeader.js';//과정 해더
+
 
 class MainContainer extends React.Component {
 
@@ -161,6 +164,7 @@ class MainContainer extends React.Component {
     return (
       <main id="main">
         <div className="inner">
+          <CourseHeader/>
           <div className="flexible">
             <MenuPanel
               isAccessor={this.state.isAccessor}
@@ -230,39 +234,40 @@ class MainContainer extends React.Component {
                       </div>
                     );
                 })()}
-              </Paper>
-              {(() => {
-                if (this.state.isAccessor && this.state.isOwner)
-                  return (
-                    <div>
-                      <Paper>
-                        <div style={{ paddingTop: 15, paddingBottom: 10 }}>
-                          <div style={{ fontSize: '1.5rem', display: 'flex', padding: '0 20px' }}>
-                            <div style={{ lineHeight: '48px', margin: '0 auto' }}>
-                              수업코드 : {this.state.authkey}
-                            </div>
-                            <div>
-                              <IconMenu
-                                iconButtonElement={<IconButton><IconMoreHoriz /></IconButton>}
-                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                              >
-                                <MenuItem primaryText="표시" onClick={() => this.setState({authkeyOpen: !this.state.authkeyOpen})}/>
-                                <MenuItem primaryText="코드 변경" onClick={this.modifyAuthkey.bind(this)}/>
-                              </IconMenu>
+
+                
+                {(() => {
+                  if (this.state.isAccessor && this.state.isOwner)
+                    return (
+                      <div style={{backgroundColor:'#3e81f6'}}>
+                          <div style={{ paddingTop: 15, paddingBottom: 10 }}>
+                            <div style={{ fontSize: '1.5rem', display: 'flex', padding: '0 20px' }}>
+                              <div style={{ lineHeight: '48px', margin: '0 auto', fontColor:'#fff',fontSize:25 }}>
+                                수업코드 : {this.state.authkey}
+                              </div>
+                              <div>
+                                <IconMenu
+                                  iconButtonElement={<IconButton><MoreVertIcon/></IconButton>}
+                                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                  targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                >
+                                  <MenuItem primaryText="표시" onClick={() => this.setState({authkeyOpen: !this.state.authkeyOpen})}/>
+                                  <MenuItem primaryText="코드 변경" onClick={this.modifyAuthkey.bind(this)}/>
+                                </IconMenu>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </Paper>
-
-                      <AuthkeyInfo 
-                        authkeyOpen={this.state.authkeyOpen}
-                        authkey={this.state.authkey}
-                        changeAuthkeyOpen={this.changeAuthkeyOpen.bind(this)}
-                      />
-                    </div>
-                  );
-              })()}
+  
+                        <AuthkeyInfo 
+                          authkeyOpen={this.state.authkeyOpen}
+                          authkey={this.state.authkey}
+                          changeAuthkeyOpen={this.changeAuthkeyOpen.bind(this)}
+                        />
+                      </div>
+                    );
+                })()}
+              </Paper>
+              
             </section>
           </div>
         </div>
