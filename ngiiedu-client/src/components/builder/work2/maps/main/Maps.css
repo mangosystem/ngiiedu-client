@@ -18,7 +18,7 @@
 
 .settingSwipePaper {
     height: 200px;
-    width: 300px;
+    width: 200px;
     overflow-y: scroll;
 }
 
@@ -37,4 +37,12 @@
 
 .temp {
     background-color: rgba(128, 128, 128, 0.438)
+}
+
+.sortable div{
+	margin: 10px;
+	padding: 10px 0 10px 20px;
+	background-color: #FFF;
+	border: 1px solid #ddd;
+	cursor: ns-resize;
 }

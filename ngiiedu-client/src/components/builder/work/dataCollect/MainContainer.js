@@ -821,7 +821,7 @@ class MainContainer extends React.Component {
 
     // DB 데이터 수정
     ajaxJson(
-      ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
+      ['POST', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
       { 
         title: title, 
         description: description,
@@ -898,7 +898,7 @@ class MainContainer extends React.Component {
     console.log(layerId);
     // DB 데이터 수정
     ajaxJson(
-      ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
+      ['POST', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
       { title: title, description: contents ,metadata:JSON.stringify({type : layerId})},
       function (data) {
 

@@ -8,7 +8,6 @@ import { cyan500, pink500, pink400 } from 'material-ui/styles/colors';
 import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
 
 import '../main/Maps.css';
 
@@ -103,7 +102,7 @@ class BasicSetting extends Component {
 
         //maps_item수정
         ajaxJson(
-            ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId + '.json'],
+            ['POST', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId + '.json'],
             {
                 title: itemTitle,
                 pinoLayer: layerId
@@ -150,15 +149,16 @@ class BasicSetting extends Component {
         const style = {
             selected: {
                 border: '3px solid',
+                borderRadius: '15px',
                 borderColor: cyan500,
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             unselected: {
                 padding: '3px',
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             itemSelected: {
@@ -210,14 +210,14 @@ class BasicSetting extends Component {
                     */}                        
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <img 
-                                src="/ngiiedu/assets/images/b3.png" 
+                                src="/ngiiedu/assets/images/RIGHT.png" 
                                 // src="/assets/images/b3.png" 
                                 alt="b3" 
                                 style={typeKind == "RIGHT"? style.selected : style.unselected}
                                 onClick={() => this.changeTypeKind('RIGHT')}/>
                             &nbsp;&nbsp;&nbsp;
                             <img 
-                                src="/ngiiedu/assets/images/b4.png" 
+                                src="/ngiiedu/assets/images/LEFT.png" 
                                 // src="/assets/images/b4.png" 
                                 alt="b4" 
                                 style={typeKind == "LEFT"? style.selected : style.unselected}

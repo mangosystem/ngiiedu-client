@@ -9,7 +9,6 @@ import Subheader from 'material-ui/Subheader';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
-import {Tabs, Tab} from 'material-ui/Tabs';
 import SelectField from 'material-ui/SelectField';
 
 import './Maps.css';
@@ -31,14 +30,7 @@ class SplitMaps extends Component {
             items: [
                 { value: 1, text: '구글지도'},
                 { value: 2, text: '네이버지도'},
-                { value: 3, text: '다음지도'},
-                { value: 4, text: '레이어4'},
-                { value: 5, text: '레이어5'},
-                { value: 6, text: '레이어6'},
-                { value: 7, text: '레이어7'},
-                { value: 8, text: '레이어8'},
-                { value: 9, text: '레이어9'},
-                { value: 10, text: '레이어10'}
+                { value: 3, text: '다음지도'}
             ]
         };
     }
@@ -115,15 +107,16 @@ class SplitMaps extends Component {
         const style = {
             selected: {
                 border: '3px solid',
+                borderRadius: '15px',
                 borderColor: cyan500,
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             unselected: {
                 padding: '3px',
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             itemSelected: {
@@ -140,94 +133,47 @@ class SplitMaps extends Component {
         switch (stepIndex) {
           case 1:
             return (
-                <div>
-                    <Tabs value={defaultSplitType}>
-                        <Tab 
-                            label="2분할" 
-                            value="2"
-                            onActive={() => this.setState({ defaultSplitType: '2' })}
-                        >
-                            <br />
-                            <div style={{display: 'flex'}}>
-                                <img 
-                                    src="/ngiiedu/assets/images/DOUBLE1.png" 
-                                    // src="/assets/images/s1.png" 
-                                    alt="s1" 
-                                    style={typeKind == "DOUBLE1"? style.selected : style.unselected}
-                                    onClick={() => this.changeTypeKind('DOUBLE1', '2')}/>
-                                &nbsp;&nbsp;&nbsp;
-                                <img 
-                                    src="/ngiiedu/assets/images/DOUBLE2.png" 
-                                    // src="/assets/images/s2.png" 
-                                    alt="s2" 
-                                    style={typeKind == "DOUBLE2"? style.selected : style.unselected}
-                                    onClick={() => this.changeTypeKind('DOUBLE2', '2')}/>
-                            </div>
-                        </Tab>
-                        <Tab 
-                            label="3분할" 
-                            value="3"
-                            onActive={() => this.setState({ defaultSplitType: '3' })}
-                        >
-                            <br />
-                            <div style={{display: 'flex'}}>
-                                <img 
-                                   src="/ngiiedu/assets/images/TRIPLE1.png" 
-                                    // src="/assets/images/s3.png" 
-                                    alt="s3" 
-                                    style={typeKind == "TRIPLE1"? style.selected : style.unselected}
-                                    onClick={() => this.changeTypeKind('TRIPLE1','3')}/>
-                                &nbsp;&nbsp;&nbsp;
-                                <img 
-                                    src="/ngiiedu/assets/images/TRIPLE2.png" 
-                                    // src="/assets/images/s4.png" 
-                                    alt="s4" 
-                                    style={typeKind == "TRIPLE2"? style.selected : style.unselected}
-                                    onClick={() => this.changeTypeKind('TRIPLE2','3')}/>
-                                &nbsp;&nbsp;&nbsp;
-                                <img 
-                                    src="/ngiiedu/assets/images/TRIPLE3.png" 
-                                    // src="/assets/images/s5.png" 
-                                    alt="s5" 
-                                    style={typeKind == "TRIPLE3"? style.selected : style.unselected}
-                                    onClick={() => this.changeTypeKind('TRIPLE3','3')}/>
-                            </div>
-                        </Tab>
-                        <Tab 
-                            label="4분할" 
-                            value="4"
-                            onActive={() => this.setState({ defaultSplitType: '4' })}
-                        >
-                            <br />
-                            <div style={{display: 'flex', justifyContent: 'center'}}>
-                                <img 
-                                    src="/ngiiedu/assets/images/QUADRUPLE.png" 
-                                    // src="/assets/images/s6.png" 
-                                    alt="s6" 
-                                    style={typeKind == "QUADRUPLE"? style.selected : style.unselected}
-                                    onClick={() => this.changeTypeKind('QUADRUPLE','4')}/>
-                            </div>
-                        </Tab>
-                    </Tabs>
-                    <Subheader style={{textAlign: 'left'}}>제목</Subheader>
+                <div style={{textAlign: 'left'}}>
+                    <Subheader>제목</Subheader>
                     <TextField 
+                        id="title"
                         fullWidth={true}
                         hintText="*스토리맵 제목을 입력해주세요"
                         onChange={(e, value) => this.props.changeTitle(value)}
-                        defaultValue={this.props.map ? this.props.map.outputName : ''}
+                        value={this.props.title}
                     />
+                    <br /><br />
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <img 
+                            src="/ngiiedu/assets/images/DOUBLE1.png" 
+                            // src="/assets/images/s1.png" 
+                            alt="s1" 
+                            style={typeKind == "DOUBLE1"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('DOUBLE1', '2')}/>
+                        &nbsp;&nbsp;&nbsp;
+                        <img 
+                            src="/ngiiedu/assets/images/DOUBLE2.png" 
+                            // src="/assets/images/s2.png" 
+                            alt="s2" 
+                            style={typeKind == "DOUBLE2"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('DOUBLE2', '2')}/>
+                        &nbsp;&nbsp;&nbsp;
+                        <img 
+                            src="/ngiiedu/assets/images/QUADRUPLE.png" 
+                            // src="/assets/images/s6.png" 
+                            alt="s6" 
+                            style={typeKind == "QUADRUPLE"? style.selected : style.unselected}
+                            onClick={() => this.changeTypeKind('QUADRUPLE','4')}/>
+                    </div>
                     <br />
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        
+                    </div>
                 </div>
             );
           case 2:
             return (
-                <Tabs style={{width: 651.77}} value={splitType}>
-                    <Tab 
-                        label="2분할" 
-                        disabled={splitType == '2' ? false : true}
-                        value="2"
-                    >
-                        <br />
+                <div style={{textAlign: 'left'}}>
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <img 
                                 src={"/ngiiedu/assets/images/" + typeKind + ".png"}  
@@ -236,7 +182,7 @@ class SplitMaps extends Component {
                             />
                         </div>
                         <SelectField
-                            floatingLabelText="①"
+                            floatingLabelText="1"
                             fullWidth={true}
                             value={this.state.itemValue1}
                             onChange={(e, i, value) => this.handleChange("1", value)}
@@ -250,7 +196,7 @@ class SplitMaps extends Component {
                             ))}
                         </SelectField>
                         <SelectField
-                            floatingLabelText="①"
+                            floatingLabelText="2"
                             fullWidth={true}
                             value={this.state.itemValue2}
                             onChange={(e, i, value) => this.handleChange("2", value)}
@@ -263,134 +209,41 @@ class SplitMaps extends Component {
                                 />
                             ))}
                         </SelectField>
-                    </Tab>
-                    <Tab 
-                        label="3분할" 
-                        disabled={splitType == '3' ? false : true}
-                        value="3"
-                    >
-                        <br />
-                        <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <img 
-                                src={"/ngiiedu/assets/images/" + typeKind + ".png"}  
-                                // src={"/assets/images/" + typeKind + ".png"}  
-                                style={style.selected}
-                            />
+                        {this.state.splitType == '4' ?
+                        <div>
+                            <SelectField
+                                floatingLabelText="3"
+                                fullWidth={true}
+                                value={this.state.itemValue3}
+                                onChange={(e, i, value) => this.handleChange("3", value)}
+                            >
+                                {items.map((item) => (
+                                    <MenuItem 
+                                        key={item.value}
+                                        value={item.value}
+                                        primaryText={item.text} 
+                                    />
+                                ))}
+                            </SelectField>
+                            <SelectField
+                                floatingLabelText="4"
+                                fullWidth={true}
+                                value={this.state.itemValue4}
+                                onChange={(e, i, value) => this.handleChange("4", value)}
+                            >
+                                {items.map((item) => (
+                                    <MenuItem 
+                                        key={item.value}
+                                        value={item.value}
+                                        primaryText={item.text} 
+                                    />
+                                ))}
+                            </SelectField>
                         </div>
-                        <SelectField
-                            floatingLabelText="①"
-                            fullWidth={true}
-                            value={this.state.itemValue1}
-                            onChange={(e, i, value) => this.handleChange("1", value)}
-                        >
-                            {items.map((item) => (
-                                <MenuItem 
-                                    key={item.value}
-                                    value={item.value}
-                                    primaryText={item.text} 
-                                />
-                            ))}
-                        </SelectField>
-                        <SelectField
-                            floatingLabelText="①"
-                            fullWidth={true}
-                            value={this.state.itemValue2}
-                            onChange={(e, i, value) => this.handleChange("2", value)}
-                        >
-                            {items.map((item) => (
-                                <MenuItem 
-                                    key={item.value}
-                                    value={item.value}
-                                    primaryText={item.text} 
-                                />
-                            ))}
-                        </SelectField>
-                        <SelectField
-                            floatingLabelText="①"
-                            fullWidth={true}
-                            value={this.state.itemValue3}
-                            onChange={(e, i, value) => this.handleChange("3", value)}
-                        >
-                            {items.map((item) => (
-                                <MenuItem 
-                                    key={item.value}
-                                    value={item.value}
-                                    primaryText={item.text} 
-                                />
-                            ))}
-                        </SelectField>
-                    </Tab>
-                    <Tab 
-                        label="4분할" 
-                        disabled={splitType == '4' ? false : true}
-                        value="4"
-                    >
-                        <br />
-                        <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <img 
-                                src={"/ngiiedu/assets/images/" + typeKind + ".png"}
-                                // src={"/assets/images/" + typeKind + ".png"}
-                                style={style.selected}
-                            />
-                        </div>
-                        <SelectField
-                            floatingLabelText="①"
-                            fullWidth={true}
-                            value={this.state.itemValue1}
-                            onChange={(e, i, value) => this.handleChange("1", value)}
-                        >
-                            {items.map((item) => (
-                                <MenuItem 
-                                    key={item.value}
-                                    value={item.value}
-                                    primaryText={item.text} 
-                                />
-                            ))}
-                        </SelectField>
-                        <SelectField
-                            floatingLabelText="①"
-                            fullWidth={true}
-                            value={this.state.itemValue2}
-                            onChange={(e, i, value) => this.handleChange("2", value)}
-                        >
-                            {items.map((item) => (
-                                <MenuItem 
-                                    key={item.value}
-                                    value={item.value}
-                                    primaryText={item.text} 
-                                />
-                            ))}
-                        </SelectField>
-                        <SelectField
-                            floatingLabelText="①"
-                            fullWidth={true}
-                            value={this.state.itemValue3}
-                            onChange={(e, i, value) => this.handleChange("3", value)}
-                        >
-                            {items.map((item) => (
-                                <MenuItem 
-                                    key={item.value}
-                                    value={item.value}
-                                    primaryText={item.text} 
-                                />
-                            ))}
-                        </SelectField>
-                        <SelectField
-                            floatingLabelText="①"
-                            fullWidth={true}
-                            value={this.state.itemValue4}
-                            onChange={(e, i, value) => this.handleChange("4", value)}
-                        >
-                            {items.map((item) => (
-                                <MenuItem 
-                                    key={item.value}
-                                    value={item.value}
-                                    primaryText={item.text} 
-                                />
-                            ))}
-                        </SelectField>
-                    </Tab>
-                </Tabs>
+                        :
+                        null
+                        }
+                </div>
             );
           default:
             return 'You\'re a long way from home sonny jim!';
@@ -403,7 +256,7 @@ class SplitMaps extends Component {
 
         return (
             <div>
-                <h2>화면분할형 스토리맵 만들기</h2>
+                <h3>화면분할형 스토리맵 만들기</h3>
                 <br />
                 <div>{this.getStepContent(stepIndex)}</div>
             </div>

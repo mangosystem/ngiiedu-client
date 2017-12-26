@@ -35,6 +35,12 @@ class MainContainer extends React.Component {
       function (data) {      
         let maps = JSON.parse(JSON.stringify(data)).response.data.data;
 
+        for (let i=0; i<maps.pngoData.items.length; i++) {
+          let description = maps.pngoData.items[i].description;
+          description = decodeURIComponent(description);
+          maps.pngoData.items[i].description = description;
+        }
+
         this.setState({
           maps: maps.pngoData,
           mapsType: maps.pngoData.mapsType,

@@ -34,7 +34,7 @@ class StoryTab extends Component {
         let items = this.props.maps.items;
 
         if (items.length >= 2) {
-            let sortingField = 'id';
+            let sortingField = 'priority';
 
             items.sort(function(a, b) { // 오름차순
                 return a[sortingField] - b[sortingField];
@@ -43,10 +43,10 @@ class StoryTab extends Component {
 
         this.setState({
             maps: this.props.maps,
-            items: this.props.maps.items,
-            tempTitle: this.props.maps.items[0].title,
+            items,
+            tempTitle: items[0].title,
             itemIndex: 0,
-            description: this.props.maps.items[0].description
+            description: items[0].description
         });
     }
 
@@ -56,28 +56,55 @@ class StoryTab extends Component {
         });
     }
 
-    changeItemIndex(itemIndex) {
+    changeItemIndex(newIndex) {
         
-        let { items } = this.state;
+        let { items, itemIndex, maps } = this.state;
         let newItem = [];
 
-        for (let i=0; i<itemIndex.length; i++) {
+        for (let i=0; i<newIndex.length; i++) {
             for (let j=0; j<items.length; j++) {
-                if (itemIndex[i] == items[j].id) {
+                if (newIndex[i] == items[j].id) {
                     newItem.push(items[j]);
                 }
             }
         }
 
         this.setState({
-            items: newItem
+            items: newItem,
+            description: newItem[itemIndex].description
         });
+
+        let priority = [];
+
+        for (let i=0; i<newItem.length; i++) {
+            priority.push({
+                itemId: newItem[i].id,
+                priority: i+1
+            });
+        }
+
+        console.log(priority);
+        // priority = JSON.stringify(priority);
+
+        ajaxJson(
+            ['PUT', apiSvr + '/coursesWork/maps/' + maps.mapsId + '/itemOrder.json'],
+            { priority },
+            function (data) {
+                console.log(data);
+            }.bind(this),
+            function (xhr, status, err) {
+              alert('Error');
+            }.bind(this)
+        );
 
     }
 
     addItems(item) {
+
         this.setState({
-            items: this.state.items.concat(item)
+            items: this.state.items.concat(item),
+            itemIndex: this.state.items.length,
+            description: ""
         });
     }
 
@@ -136,7 +163,8 @@ class StoryTab extends Component {
         items.splice(itemIndex, 1);
 
         this.setState({
-            items
+            items,
+            description: items[itemIndex].description
         });
 
     }
@@ -211,7 +239,7 @@ class StoryTab extends Component {
                 </div>
                 {this.state.items[this.state.itemIndex].pinoLayer != '' ? 
                 <div style={{ position: 'absolute', top: 120, bottom: 0, left: 0, right: 0 }}>
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300, height: '100%' }}>
                         <EditorPanel
                             description={this.state.description}
                             modifyDescription={this.modifyDescription.bind(this)}

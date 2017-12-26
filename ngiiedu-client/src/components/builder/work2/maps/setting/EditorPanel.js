@@ -19,7 +19,8 @@ class EditorPanel extends React.Component {
   componentWillReceiveProps(nextProps){
 
     if (this.props.description != nextProps.description) {
-      CKEDITOR.instances.smarteditor.setData(nextProps.description);
+      let decoding = decodeURIComponent(nextProps.description);
+      CKEDITOR.instances.smarteditor.setData(decoding);
     }
 
   }
@@ -109,23 +110,25 @@ class EditorPanel extends React.Component {
       ]
     } );
 
-    
   }
+  
 
   cancel() {
-    CKEDITOR.instances.smarteditor.setData(this.props.description);    
+    let decoding = decodeURIComponent(this.props.description);
+    CKEDITOR.instances.smarteditor.setData(decoding);  
   }
   
   
   validation() {
 
     let contents = CKEDITOR.instances.smarteditor.getData();
+    contents = encodeURIComponent(contents);
 
     let { mapsId, itemId, pinoLayer } = this.props;
     
     //서버 데이터 수정
     ajaxJson(
-      ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + itemId + '.json'],
+      ['POST', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + itemId + '.json'],
       { pinoLayer , description: contents },
       function (data) {
         this.props.modifyDescription(contents);
@@ -139,15 +142,16 @@ class EditorPanel extends React.Component {
 
   render() {
     return (
-        <div style={{ width: '100%', height: '90%' }}>
-          <textarea 
-            name="smarteditor" 
-            id="smarteditor" 
-            rows="50" 
-            cols="35" 
-            defaultValue={this.props.description}
-            style={{ minWidth: '100%', height: '600px', MaxHeight: '600px' }}
-          ></textarea>
+        <div style={{ width: '100%', height: '100%' }}>
+          <div style={{ height: '85%', overflow: 'scroll' }}>
+            <textarea 
+              name="smarteditor" 
+              id="smarteditor" 
+              rows="50" 
+              cols="7"
+              defaultValue={decodeURIComponent(this.props.description)}
+            ></textarea>
+          </div>
           <div style={{ textAlign: 'right', margin: '20px' }}>
             <FlatButton
               label="취소"

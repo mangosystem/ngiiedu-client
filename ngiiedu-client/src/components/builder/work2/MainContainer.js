@@ -27,7 +27,7 @@ class MainContainer extends React.Component {
         super();
 
         this.state={
-            workType:'', //dataset , layer, maps
+            workType:'maps', //dataset , layer, maps
 			data:[]
         }
 

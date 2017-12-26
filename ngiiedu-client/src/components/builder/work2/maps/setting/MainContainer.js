@@ -31,6 +31,7 @@ import Swipe from './Swipe';
 import BasicSetting from './BasicSetting';
 import StorySetting from './StorySetting';
 import SwipeSetting from './SwipeSetting';
+import SeriesSetting from './SeriesSetting';
 
 class MainContainer extends React.Component {
 
@@ -148,6 +149,10 @@ class MainContainer extends React.Component {
             </div>
 
             <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
+                <FlatButton
+                  label="설정"
+                  onClick={this.settingHandle.bind(this)}
+                />
                 {this.state.mapsType == 'STORY' ?             
                 <FlatButton
                   label="순서변경"
@@ -156,10 +161,6 @@ class MainContainer extends React.Component {
                 :
                 null
                 }
-                <FlatButton
-                  label="설정"
-                  onClick={this.settingHandle.bind(this)}
-                />
                 <FlatButton
                   label="미리보기"
                   onClick={this.previewMaps.bind(this)}
@@ -233,7 +234,16 @@ class MainContainer extends React.Component {
                 />
               );
             } else if (this.state.mapsType == 'SERIES') {
-              return null;
+              return (
+                <SeriesSetting
+                  open={this.state.open}
+                  settingHandle={this.settingHandle.bind(this)}
+                  maps={this.state.maps}
+                  updateMapsSetting={this.updateMapsSetting.bind(this)}
+                  updateItemSetting={this.updateItemSetting.bind(this)}
+                  mapsTitle={this.state.mapsTitle}
+                />
+              );
             } else if (this.state.mapsType == 'SWIPE') {
               return (
                 <SwipeSetting

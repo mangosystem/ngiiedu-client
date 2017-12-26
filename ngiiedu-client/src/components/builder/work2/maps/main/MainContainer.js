@@ -207,7 +207,7 @@ class MainContainer extends React.Component {
                                 onClick={()=>this.changeWorkType('layer')}
                             >
                                 <img 
-                                    src="/ngiiedu/assets/images/tab.png" 
+                                    src="/ngiiedu/assets/images/TAB.png" 
                                     className="buttonImg"
                                 />
                                 <div className="buttonText" >
@@ -218,7 +218,7 @@ class MainContainer extends React.Component {
                                 onClick={()=>this.changeWorkType('maps')}
                             >
                                 <img 
-                                    src="/ngiiedu/assets/images/tab.png" 
+                                    src="/ngiiedu/assets/images/TAB.png" 
                                     className="buttonImg"
                                 />
                                 <div className="buttonText" >

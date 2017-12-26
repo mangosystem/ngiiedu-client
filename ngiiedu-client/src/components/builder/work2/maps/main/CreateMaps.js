@@ -92,8 +92,15 @@ class CreateMaps extends Component {
 
     createMapsItem(maps, itemTitle, layerId, layerId2) {
 
+        let baseLayer = "";
+
         if (this.state.radioType == 'text' && this.state.mapsType == 'STORY') {
             layerId = "";
+        }
+
+        if (this.state.mapsType == 'SPLIT') {
+            layerId = "";
+            //baseLayer 설정
         }
 
         //maps_item 추가
@@ -331,8 +338,10 @@ class CreateMaps extends Component {
                             alt="story" 
                             onClick={() => this.setState({ mapsType: 'STORY' })}
                             style={this.state.mapsType == "STORY" ? style.selected : style.unselected} 
-                        />
-                        &nbsp;&nbsp;&nbsp;
+                        />                        
+                    </div>
+                    <br />
+                    <div style={{display: 'flex'}}>
                         <img 
                             className="img"
                             src="/ngiiedu/assets/images/cData.png" 
@@ -340,20 +349,10 @@ class CreateMaps extends Component {
                             onClick={() => this.setState({ mapsType: 'SERIES' })}
                             style={this.state.mapsType == "SERIES" ? style.selected : style.unselected} 
                         />
-                    </div>
-                    <br />
-                    <div style={{display: 'flex'}}>
-                        <img 
-                            className="img"
-                            src="/ngiiedu/assets/images/split.png" 
-                            alt="split" 
-                            onClick={() => this.setState({ mapsType: 'SPLIT' })}
-                            style={this.state.mapsType == "SPLIT" ? style.selected : style.unselected} 
-                        />
                         &nbsp;&nbsp;&nbsp;
                         <img
                             className="img"
-                            src="/ngiiedu/assets/images/swiff.png" 
+                            src="/ngiiedu/assets/images/swipe.png" 
                             alt="SWIPE" 
                             onClick={() => this.setState({ mapsType: 'SWIPE' })}
                             style={this.state.mapsType == "SWIPE" ? style.selected : style.unselected} 

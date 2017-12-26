@@ -34,7 +34,7 @@ class ItemSort extends Component {
         });
     }
 
-    handleOnChange(event, ui) {
+    handleOnStop(event, ui) {
         // Attach any custom behavior here
         //console.log(event.target.children);
 
@@ -108,7 +108,7 @@ class ItemSort extends Component {
                 <Sortable
                     opacity={0.8}
                     data={this.state.items}
-                    onChange={this.handleOnChange.bind(this)} 
+                    onStop={this.handleOnStop.bind(this)} 
                 />
             </Dialog>
         );

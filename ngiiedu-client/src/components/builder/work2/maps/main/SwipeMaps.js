@@ -123,15 +123,16 @@ class SwipeMaps extends Component {
         const style = {
             selected: {
                 border: '3px solid',
+                borderRadius: '15px',
                 borderColor: cyan500,
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             unselected: {
                 padding: '3px',
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             itemSelected: {
@@ -161,7 +162,7 @@ class SwipeMaps extends Component {
                     <div style={{display: 'flex'}}>
                         <figure>
                             <img 
-                               src="/ngiiedu/assets/images/sw2.png" 
+                               src="/ngiiedu/assets/images/HORIZONTAL.png" 
                                 // src="/assets/images/sw1.png" 
                                 alt="HORIZONTAL" 
                                 style={typeKind == "HORIZONTAL"? style.selected : style.unselected}
@@ -171,7 +172,7 @@ class SwipeMaps extends Component {
                         &nbsp;&nbsp;&nbsp;
                         <figure>
                             <img 
-                                src="/ngiiedu/assets/images/sw1.png" 
+                                src="/ngiiedu/assets/images/VERTICAL.png" 
                                 // src="/assets/images/sw2.png" 
                                 alt="VERTICAL" 
                                 style={typeKind == "VERTICAL"? style.selected : style.unselected}
@@ -188,7 +189,7 @@ class SwipeMaps extends Component {
                     <tbody>
                         <tr style={{verticalAlign: 'top'}}>
                             <td className="td">
-                                <Subheader>{typeKind == 'sw1' ? '왼쪽맵' : '아래쪽맵'}</Subheader>
+                                <Subheader>{typeKind == 'VERTICAL' ? '왼쪽맵' : '아래쪽맵'}</Subheader>
                                 <Paper className="swipePaper">
                                     <SelectableList value={this.props.layerId}>
                                     {items.map((item, i) => (
@@ -204,7 +205,7 @@ class SwipeMaps extends Component {
                                 <br />
                             </td>
                             <td style={{ paddingLeft: '20px' }}>
-                                <Subheader>{typeKind == 'sw1' ? '오른쪽맵' : '위쪽맵'}</Subheader>
+                                <Subheader>{typeKind == 'VERTICAL' ? '오른쪽맵' : '위쪽맵'}</Subheader>
                                 <Paper className="swipePaper">
                                     <SelectableList value={this.props.layerId2}>
                                     {items.map((item, i) => (

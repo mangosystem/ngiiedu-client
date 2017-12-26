@@ -105,7 +105,7 @@ class ModifyMaps extends Component {
 
 
         ajaxJson(
-            ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId + '.json'],
+            ['POST', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId + '.json'],
             {
                 title: itemTitle,
                 pinoLayer: layerId
@@ -124,7 +124,7 @@ class ModifyMaps extends Component {
 
             //maps_item수정
             ajaxJson(
-                ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId2 + '.json'],
+                ['POST', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId2 + '.json'],
                 {
                     title: itemTitle,
                     pinoLayer: layerId2

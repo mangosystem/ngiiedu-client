@@ -107,15 +107,16 @@ class SeriesMaps extends Component {
         const style = {
             selected: {
                 border: '3px solid',
+                borderRadius: '15px',
                 borderColor: cyan500,
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             unselected: {
                 padding: '3px',
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             itemSelected: {

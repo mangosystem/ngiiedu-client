@@ -17,10 +17,11 @@ class Sortable extends React.Component {
         // Initialize the jQuery UI functionality you need
         // in this case, the Sortable: https://jqueryui.com/sortable/
         this.$node.sortable({
+            axis: "y",
             // Get the incoming `opacity` prop and use it in the plugin configuration
             opacity: this.props.opacity,
             // Get the incoming onChange func and we invoke it on the Sortable `change` event
-            change: (event, ui) => this.props.onChange(event, ui)
+            stop: (event, ui) => this.props.onStop(event, ui)
         });
     }
     
@@ -47,17 +48,17 @@ class Sortable extends React.Component {
     // jQuery UI sortable expects a <ul> list with <li>s.
     renderItems() {
         return this.props.data.map( (item, i) =>
-            <li key={i} className="ui-state-default" id={item.id}>
+            <div key={i} id={item.id}>
                 <span className="ui-icon ui-icon-arrowthick-2-n-s"></span>
                 { item.title }
-            </li>
+            </div>
         );
     }
     render() {
         return (
-            <ul ref="sortable">
+            <div className="sortable" ref="sortable">
                 { this.renderItems() }
-            </ul>
+            </div>
         );
     }
 
@@ -74,7 +75,7 @@ Sortable.defaultProps = { opacity: 1, enable: true };
 Sortable.propTypes = {
     opacity: React.PropTypes.number,
     enable: React.PropTypes.bool,
-    onChange: React.PropTypes.func.isRequired
+    onStop: React.PropTypes.func.isRequired
 };
 
 export default Sortable;

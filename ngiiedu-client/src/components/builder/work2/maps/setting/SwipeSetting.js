@@ -115,7 +115,7 @@ class SwipeSetting extends Component {
 
         //maps_item수정
         ajaxJson(
-            ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId + '.json'],
+            ['POST', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + itemId + '.json'],
             {
                 title: itemTitle,
                 pinoLayer: layerId
@@ -130,7 +130,7 @@ class SwipeSetting extends Component {
         );
 
         ajaxJson(
-            ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + item2Id + '.json'],
+            ['POST', apiSvr + '/coursesWork/maps/' + mapsId + '/item/' + item2Id + '.json'],
             {
                 title: itemTitle,
                 pinoLayer: layerId2
@@ -178,15 +178,16 @@ class SwipeSetting extends Component {
         const style = {
             selected: {
                 border: '3px solid',
+                borderRadius: '15px',
                 borderColor: cyan500,
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             unselected: {
                 padding: '3px',
-                width: '200px',
-                height: '136px'
+                width: '264px',
+                height: '164px'
             },
 
             itemSelected: {
@@ -220,7 +221,7 @@ class SwipeSetting extends Component {
                     <div style={{display: 'flex', justifyContent: 'center'}}>
                         <figure>
                             <img 
-                               src="/ngiiedu/assets/images/sw2.png" 
+                               src="/ngiiedu/assets/images/HORIZONTAL.png" 
                                 // src="/assets/images/sw1.png" 
                                 alt="HORIZONTAL" 
                                 style={typeKind == "HORIZONTAL"? style.selected : style.unselected}
@@ -230,7 +231,7 @@ class SwipeSetting extends Component {
                         &nbsp;&nbsp;&nbsp;
                         <figure>
                             <img 
-                                src="/ngiiedu/assets/images/sw1.png" 
+                                src="/ngiiedu/assets/images/VERTICAL.png" 
                                 // src="/assets/images/sw2.png" 
                                 alt="VERTICAL" 
                                 style={typeKind == "VERTICAL"? style.selected : style.unselected}
@@ -245,7 +246,7 @@ class SwipeSetting extends Component {
                         <tbody>
                             <tr style={{verticalAlign: 'top'}}>
                                 <td>
-                                    <Subheader>{typeKind == 'sw1' ? '왼쪽맵' : '아래쪽맵'}</Subheader>
+                                    <Subheader>{typeKind == 'VERTICAL' ? '왼쪽맵' : '아래쪽맵'}</Subheader>
                                     <Paper className="settingSwipePaper">
                                         <SelectableList value={this.props.layerId}>
                                         {items.map((item, i) => (
@@ -261,7 +262,7 @@ class SwipeSetting extends Component {
                                     <br />
                                 </td>
                                 <td style={{ paddingLeft: '20px' }}>
-                                    <Subheader>{typeKind == 'sw1' ? '오른쪽맵' : '위쪽맵'}</Subheader>
+                                    <Subheader>{typeKind == 'VERTICAL' ? '오른쪽맵' : '위쪽맵'}</Subheader>
                                     <Paper className="settingSwipePaper">
                                         <SelectableList value={this.props.layerId2}>
                                         {items.map((item, i) => (
