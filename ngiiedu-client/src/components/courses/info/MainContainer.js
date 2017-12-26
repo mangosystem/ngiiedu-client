@@ -172,7 +172,16 @@ class MainContainer extends React.Component {
               isMember={this.state.isMember}
             />
             <section>
-              <Paper>
+              <Paper style={{minHeight:700,paddingTop:20}}>
+                <div style={{display:'flex',paddingLeft:20, paddingRight:20,justifyContent:'space-between'}}>
+                  <h3 className="edge">수업정보</h3>
+                  <ul className="location">
+                    <li>홈</li>
+                    <li>수업</li>
+                    <li>수업목록</li>
+                    <li style={{fontWeight:'bold'}}>수업정보</li>
+                  </ul>
+                </div>
                 {(() => {
                   if (!this.state.isEdit)
                     return (
@@ -239,15 +248,15 @@ class MainContainer extends React.Component {
                 {(() => {
                   if (this.state.isAccessor && this.state.isOwner)
                     return (
-                      <div style={{backgroundColor:'#3e81f6'}}>
-                          <div style={{ paddingTop: 15, paddingBottom: 10 }}>
+                      <div style={{backgroundColor:'#3e81f6',margin:15}}>
                             <div style={{ fontSize: '1.5rem', display: 'flex', padding: '0 20px' }}>
-                              <div style={{ lineHeight: '48px', margin: '0 auto', fontColor:'#fff',fontSize:25 }}>
+                              <div style={{ lineHeight: '48px', margin: '0 auto', color:'#fff',fontSize:25 }}>
                                 수업코드 : {this.state.authkey}
                               </div>
                               <div>
                                 <IconMenu
                                   iconButtonElement={<IconButton><MoreVertIcon/></IconButton>}
+                                  iconStyle={{fill: 'white'}}
                                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                                 >
@@ -256,7 +265,6 @@ class MainContainer extends React.Component {
                                 </IconMenu>
                               </div>
                             </div>
-                          </div>
   
                         <AuthkeyInfo 
                           authkeyOpen={this.state.authkeyOpen}

@@ -17,15 +17,15 @@ class MainContainer extends React.Component {
         this.state = {
             idErrorText: '',
             pwdErrorText: '',
-            emailErrorText: '',
+            // emailErrorText: '',
             authkeyErrorText: '',
             idErrorStyle: {},
             pwdErrorStyle: {},
-            emailErrorStyle: {},
+            // emailErrorStyle: {},
             authkeyErrorStyle: {},
             idCheck: false,
             pwdCheck: false,
-            emailCheck: false,
+            // emailCheck: false,
             authkeyCheck: false
         };
     }
@@ -38,9 +38,9 @@ class MainContainer extends React.Component {
         } else if (!this.state.pwdCheck) {
             alert("비밀번호를 확인해주세요.");
             return;
-        } else if (!this.state.emailCheck) {
-            alert("이메일을 확인해주세요.")
-            return;
+        // } else if (!this.state.emailCheck) {
+        //     alert("이메일을 확인해주세요.")
+        //     return;
         } else if ($('#userName').val() == '') {
             alert('이름을 입력해주세요.');
             return;
@@ -64,8 +64,8 @@ class MainContainer extends React.Component {
                 userid: $('form[id=join] input[name=userid]').val(),
                 password: $('form[id=join] input[name=password]').val(),
                 userName: $('form[id=join] input[name=userName]').val(),
-                userEmail: $('form[id=join] input[name=userEmail]').val(),
-                schoolName: $('form[id=join] input[name=schoolName]').val(),
+                // userEmail: $('form[id=join] input[name=userEmail]').val(),
+                // schoolName: $('form[id=join] input[name=schoolName]').val(),
                 userDivision: userDivision
             }, function(res) {
                 if (res.response.code == 200) {
@@ -123,60 +123,60 @@ class MainContainer extends React.Component {
         });
     }
 
-    checkEmail(userEmail) {
+    // checkEmail(userEmail) {
 
-        if (userEmail == '') {
-            this.setState({
-                emailErrorText: "필수 입력 사항입니다.",
-                emailErrorStyle: {color: orange500},
-                emailCheck: false
-            });
-            return;
-        }
+        // if (userEmail == '') {
+        //     this.setState({
+        //         emailErrorText: "필수 입력 사항입니다.",
+        //         emailErrorStyle: {color: orange500},
+        //         emailCheck: false
+        //     });
+        //     return;
+        // }
 
-        if (!this.isEmail(userEmail)) {
-            this.setState({
-                emailErrorText: "올바른 이메일 형식이 아닙니다.",
-                emailErrorStyle: {color: orange500},
-                emailCheck: false
-            });
-            return;
-        }
+        // if (!this.isEmail(userEmail)) {
+        //     this.setState({
+        //         emailErrorText: "올바른 이메일 형식이 아닙니다.",
+        //         emailErrorStyle: {color: orange500},
+        //         emailCheck: false
+        //     });
+        //     return;
+        // }
 
-        $.ajax({
-            url: apiSvr + '/users/' + userEmail + '.json',
-            dataType: 'json',
-            cache: false,
-            success: function(data) {
+        // $.ajax({
+        //     url: apiSvr + '/users/' + userEmail + '.json',
+        //     dataType: 'json',
+        //     cache: false,
+        //     success: function(data) {
 
-                const users = JSON.parse(JSON.stringify(data)).response.data;
+                // const users = JSON.parse(JSON.stringify(data)).response.data;
 
-                if (users) {
-                    this.setState({
-                        emailErrorText: "이미 사용중인 이메일입니다.",
-                        emailErrorStyle: {color: orange500},
-                        emailCheck: false
-                    });
-                } else {
-                    this.setState({
-                        emailErrorText: "사용 가능한 이메일입니다.",
-                        emailErrorStyle: {color: cyan500},
-                        emailCheck: true
-                    });
-                }
+                // if (users) {
+                //     this.setState({
+                //         emailErrorText: "이미 사용중인 이메일입니다.",
+                //         emailErrorStyle: {color: orange500},
+                //         emailCheck: false
+                //     });
+                // } else {
+                //     this.setState({
+                //         emailErrorText: "사용 가능한 이메일입니다.",
+                //         emailErrorStyle: {color: cyan500},
+                //         emailCheck: true
+                //     });
+                // }
 
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(status, err.toString());
-            }.bind(this)
-        });
+        //     }.bind(this),
+        //     error: function(xhr, status, err) {
+        //         console.error(status, err.toString());
+        //     }.bind(this)
+        // });
 
-    }
+    // }
 
-    isEmail(email) {
-        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        return re.test(email);
-    }
+    // isEmail(email) {
+    //     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    //     return re.test(email);
+    // }
 
     checkPwd(id) {
 
@@ -283,10 +283,10 @@ class MainContainer extends React.Component {
                             <TextField
                                 id="userName"
                                 name="userName"
-                                floatingLabelText="*이름"
+                                floatingLabelText="*별명"
                                 fullWidth={true}
                             />
-                            <TextField
+                            {/* <TextField
                                 name="userEmail"
                                 floatingLabelText="*이메일"
                                 fullWidth={true}
@@ -299,7 +299,7 @@ class MainContainer extends React.Component {
                                 name="schoolName"
                                 floatingLabelText="학교명"
                                 fullWidth={true}
-                            />
+                            /> */}
                             <TextField
                                 name="schoolAuthkey"
                                 floatingLabelText="학교 비밀코드(교사전용)"

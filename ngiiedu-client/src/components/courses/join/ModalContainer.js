@@ -78,10 +78,11 @@ class ModalContainer extends React.Component {
 			<div>
 			<Dialog
 				open={this.props.isOpen}
-				title="수업참여하기"
+				title="수업 코드 입력"
+				titleStyle={{fontSize:20,textAlign:'center'}}
 				modal={true}
 				bodyStyle={{textAlign: 'center'}}
-				contentStyle={{width: 400}}
+				contentStyle={{width: 600}}
 				onRequestClose={this.onClickClose}
 				actions = {[
 					<FlatButton
@@ -91,24 +92,38 @@ class ModalContainer extends React.Component {
 					/>
 				]}
 			>
-				<p>수업코드 여섯자리를 입력하세요.</p>
+				{/* <p>수업코드 여섯자리를 입력하세요.</p> */}
+				<div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+
+
 				<TextField
-					hintText="앞자리"
-					hintStyle={{paddingLeft: 18}}
-					inputStyle={{textAlign: 'center'}}
-					style={{width: 100, fontSize: 20, textAlign:'center'}}
 					value={this.state.frontKey}
 					onChange={this.onChangeFrontKey}
-				/>
-				<span> - </span>
+					hintText="앞자리"
+					inputStyle={{paddingLeft:10,fontSize:60,textAlign:'center'}}
+					style={{width:200,border:'2px solid #3e81f6' ,display:'flex',alignItems: 'center',height:100}}
+					underlineShow={false}
+					hintStyle={{marginLeft:10,width:'90%', textAlign:'center',fontSize:50,bottom:40}}
+					/>
+				<span style={{fontSize:50,margin:20}}> - </span>
 				<TextField
+					value={this.state.backKey}
+					onChange={this.onChangeBackKey}
+					hintText="뒷자리"
+					inputStyle={{paddingLeft:10,fontSize:60,textAlign:'center'}}
+					style={{width:200,border:'2px solid #3e81f6' ,display:'flex',alignItems: 'center',height:100}}
+					underlineShow={false}
+					hintStyle={{marginLeft:10,width:'90%', textAlign:'center',fontSize:50,bottom:40}}
+				/>
+				{/* <TextField
 					hintText="뒷자리"
 					hintStyle={{paddingLeft: 18}}
 					inputStyle={{textAlign: 'center'}}
 					style={{width: 100, fontSize: 20, textAlign:'center'}}
 					value={this.state.backKey}
 					onChange={this.onChangeBackKey}
-				/>
+				/> */}
+				</div>
 				<br/>
 				<br/>
 				<RaisedButton

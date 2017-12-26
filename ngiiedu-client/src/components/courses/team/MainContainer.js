@@ -5,6 +5,7 @@ import MenuPanel from '../common/MenuPanel.js';
 import TeamPopup from './TeamPopup.js';
 import DeletePopup from './DeletePopup.js';
 import CheckUserAuthority from '../common/CheckUserAuthority.js';
+import CourseHeader from '../common/CourseHeader.js';//과정 해더
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
@@ -15,6 +16,9 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
+import People from 'material-ui/svg-icons/social/people';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+
 import Chip from 'material-ui/Chip';
 // import List from 'material-ui/svg-icons/action/list';
 import IconList from 'material-ui/svg-icons/action/list';
@@ -339,8 +343,11 @@ class MainContainer extends React.Component {
 
     const pStyle = {
       marginLeft: '10%', 
-      fontWeight: 'bold'
-      
+      fontWeight: 'bold',
+      fontSize:18,
+      width:180,
+      overflow:'hidden',
+      textOverflow: 'ellipsis'
     };
 
 
@@ -361,11 +368,11 @@ class MainContainer extends React.Component {
 
     const styles = {
       chip: {
-        marginLeft: '4%',
-        marginTop: '2%'
+        margin:10,
+        fontSize:16,
       },
       wrapper: {
-        paddingTop:10,
+        padding:10,
         display: 'flex', 
         flexWrap: 'wrap',
         overflow:'auto',
@@ -376,6 +383,7 @@ class MainContainer extends React.Component {
     return (
       <main id="main">
         <div className="inner">
+          <CourseHeader/>
           <div className="flexible">
             <MenuPanel
               isAccessor={this.state.isAccessor}
@@ -384,10 +392,36 @@ class MainContainer extends React.Component {
               activeMenu={'TEAM'}
             />
             <section>
-              <Paper style={{padding:'2%'}}>
+            <Paper style={{minHeight:700,paddingTop:20,paddingBottom:20}}>
+              <div style={{display:'flex',paddingLeft:20, paddingRight:20,justifyContent:'space-between'}}>
+                <h3 className="edge">팀</h3>
+                <ul className="location">
+                  <li>홈</li>
+                  <li>수업</li>
+                  <li>수업목록</li>
+                  <li style={{fontWeight:'bold'}}>팀</li>
+                </ul>
+              </div>
+
+      
+              {/* 팀생성 버튼 */}
+              {(() => {
+                  if (this.state.isAccessor && this.state.isOwner) {
+                    return(
+                      <div style={{width:'100%',display:'flex',flexDirection:'row-reverse'}}>
+                        <div style={{border:'2px solid #3e81f6',borderRadius:5,display:'flex',alignItems:'center',justifyContent:'center',width:180,margin:20}} onClick={()=>this.handleOpen(null)}>
+                            <People style={{fill:'#3e81f6',width:60,height:60}}/>
+                            <p style={{color:'#3e81f6',fontSize:25}}>팀생성</p>
+                        </div>
+                      </div>
+                    )
+                  }
+                })()}
+
+                {/* 팀 그리드 */}
               <div style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-start', flexWrap: 'wrap'}}>
                 {this.state.teams.map((row,index)=>(
-                  <Paper  key={index} style={style}>
+                  <Paper  key={index} style={style} className="mouseOverBlue">
                     <div>
                       <div style={divStyle}>
                         <p style={pStyle}>{row.teamName}</p>
@@ -395,7 +429,7 @@ class MainContainer extends React.Component {
                           if (this.state.isAccessor && this.state.isOwner) {
                             return(
                               <IconMenu
-                                iconButtonElement={<IconButton><IconList /></IconButton>}
+                                iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                                 anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
                               >
@@ -415,12 +449,17 @@ class MainContainer extends React.Component {
                             row2[0].teamId==row.idx ?
                             row2.map((row3,index3)=>(
                                 row3.joinStatus =='CJS02'?
-                                <Chip
-                                  key={index3}
-                                  style={styles.chip}
-                                >
-                                 {row3.userName}
-                                </Chip> :null
+                                <div key={index3} style={styles.chip}>
+                                     {row3.userName}
+                                </div>
+
+                                // <Chip
+                                //   key={index3}
+                                //   style={styles.chip}
+                                // >
+                                //  {row3.userName}
+                                // </Chip>
+                                 :null
                               )) : null
                           ))}
                         </div>
@@ -430,17 +469,7 @@ class MainContainer extends React.Component {
 
                 ))}
 
-                {(() => {
-                  if (this.state.isAccessor && this.state.isOwner) {
-                    return(
-                      <div style={bDivStyle}>
-                          <FloatingActionButton zDepth={0} style={{margin: '0 auto'}} onClick={(seq)=>this.handleOpen(null)} >
-                              <ContentAdd />
-                          </FloatingActionButton>
-                      </div>
-                    )
-                  }
-                })()}
+               
               </div>
               </Paper>
             </section>

@@ -11,7 +11,10 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import '../workStyle.css';
-import CreateDataset from './CreateDataset'
+import CreateDataset from './CreateDataset'; //데이터셋 생성
+import EditDataset from './EditDataset';  //데이터셋 편집
+import DeleteDataset from './DeleteDataset'; //데이터셋 삭제 모달
+
 //testdata
 //"안양시 동안구 소음지도"
 // d=AnyangDong
@@ -26,13 +29,18 @@ class MainContainer extends React.Component {
             dataSetData:[{
                 moduleWorkSubName:'',
                 workOutputList:[]
-            }]
+            }],
+            selectedDatasetData:{},//선택된 데이터셋 편집시 사용
+            deleteDatasetOpen:false , //삭제 데이터셋 다얄로그
+
         }
 
         this.changeName = this.changeName.bind(this);
-        this.deleteDataset = this.deleteDataset.bind(this);
-        this.createDataset = this.createDataset.bind(this);
+        // this.deleteDataset = this.deleteDataset.bind(this);
+        // this.createDataset = this.createDataset.bind(this);
         this.thumbnailClick = this.thumbnailClick.bind(this);
+        this.handleStep = this.handleStep.bind(this);
+        this.deleteDatasetHandle = this.deleteDatasetHandle.bind(this);
     }
 
     componentDidMount(){
@@ -53,13 +61,17 @@ class MainContainer extends React.Component {
             function (xhr, status, err) {
               alert('Error');
             }.bind(this)
-          );
+        );
 
     }
 
     //이름변경 함수
     changeName(row){
-        alert(row+' 데이터셋 이름변경')
+        this.handleStep('changeName');
+
+        this.setState({
+            selectedDatasetData: row
+        })
     }
 
     //삭제 함수
@@ -67,10 +79,33 @@ class MainContainer extends React.Component {
         alert(row+' 데이터셋 삭제')
     }
 
-    //데이터 생성
-    createDataset(){
+    // //데이터 생성
+    // createDataset(){
+    //     this.setState({
+    //         step:'createDataset'
+    //     })
+    // }
+
+    //스텝 변경
+    handleStep(value){
+        if(value=='save'){
+            value='main';
+            const workId = this.props.match.params.WORKID;
+            ajaxJson(
+                ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
+                null,
+                function (response) {
+                    this.setState({
+                        dataSetData : response.response.data
+                    })
+                }.bind(this),
+                function (xhr, status, err) {
+                  alert('Error');
+                }.bind(this)
+            );
+        }
         this.setState({
-            step:'createDataset'
+            step: value
         })
     }
 
@@ -82,6 +117,19 @@ class MainContainer extends React.Component {
         this.props.history.push("/ngiiedu/course/" + workId+"/work2/dataset/edit/"+value);
     }
 
+    //데이터셋 다얄로그
+    deleteDatasetHandle(data) {
+        if(data==''){
+            this.setState({ 
+                deleteDatasetOpen: !this.state.deleteDatasetOpen 
+            });
+        }else{
+            this.setState({ 
+                selectedDatasetData: data,
+                deleteDatasetOpen: !this.state.deleteDatasetOpen 
+            });
+        }
+    }
 
     render() {
    
@@ -95,7 +143,7 @@ class MainContainer extends React.Component {
                     <div className='thumbnailsContainer'>
                     {/* 새로만들기 버튼 */}
                         <div className='createButton'  >
-                            <FloatingActionButton onClick={this.createDataset}>
+                            <FloatingActionButton onClick={()=>this.handleStep('createDataset')}>
                                 <ContentAdd />
                             </FloatingActionButton>
                         </div>
@@ -118,8 +166,8 @@ class MainContainer extends React.Component {
                                                 anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                                                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
                                             >
-                                                <MenuItem primaryText="이름바꾸기" onClick={()=>this.changeName(row.pinogioOutputId)}/>
-                                                <MenuItem primaryText="삭제하기" onClick={()=>this.deleteDataset(row.pinogioOutputId)}/>
+                                                <MenuItem primaryText="편집하기" onClick={()=>this.changeName(row)}/>
+                                                <MenuItem primaryText="삭제하기" onClick={()=>this.deleteDatasetHandle(row)}/>
                                             </IconMenu>
                                         </div>    
                                     </div>
@@ -137,10 +185,27 @@ class MainContainer extends React.Component {
                         <CreateDataset/>
                     </div>
                 :
+                //데이터 이름바꾸기 화면
+                this.state.step=='changeName'?
+                    <div className='workMainMainContainer'>
+                        <EditDataset
+                            cancleEdit={this.handleStep}
+                            data ={this.state.selectedDatasetData}
+                        />
+                    </div>
+                :
                     <div className='workMainMainContainer'>
                         에러에러에러 component
                     </div>
                 }
+
+
+                    <DeleteDataset
+                        open={this.state.deleteDatasetOpen}
+                        deleteDatasetHandle={this.deleteDatasetHandle}
+                        data={this.state.selectedDatasetData}
+                        deleteDataset={this.deleteDataset.bind(this)}
+                    />
             </main>
         );
     }

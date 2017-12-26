@@ -3,6 +3,8 @@ import { withRouter } from "react-router-dom";
 
 import MenuPanel from '../common/MenuPanel.js';
 import CheckUserAuthority from '../common/CheckUserAuthority.js';
+import CourseHeader from '../common/CourseHeader.js';//과정 해더
+
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
@@ -143,7 +145,10 @@ class MainContainer extends React.Component {
     const divStyle = {
       display: 'flex', 
       alignItems: 'center',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      height:40,
+      borderBottom:'2px solid #3e81f6',
+      paddingLeft:10
     };
 
     const style = {
@@ -162,7 +167,9 @@ class MainContainer extends React.Component {
 
     return (
       <main id="main">
+
 				<div className="inner">
+        <CourseHeader/>
           <div className="flexible">
             <MenuPanel
               isAccessor={this.state.isAccessor}
@@ -171,9 +178,18 @@ class MainContainer extends React.Component {
               activeMenu={'DATA'}
             />
             <section>
+            <Paper style={{minHeight:700,paddingTop:20}}>
+                <div style={{display:'flex',paddingLeft:20, paddingRight:20,justifyContent:'space-between'}}>
+                  <h3 className="edge">관련 데이터</h3>
+                  <ul className="location">
+                    <li>홈</li>
+                    <li>수업</li>
+                    <li>수업목록</li>
+                    <li style={{fontWeight:'bold'}}>관련 데이터</li>
+                  </ul>
+                </div>
               {this.state.groupedByDivision.map((data,i) => (
-                <Paper key={i}>
-                  <div  style={{padding: '20px'}}>
+                  <div key={i} style={{padding: '20px'}}>
                     <div style={divStyle}>
                     <div style={titleStyle}>{data[0].moduleWorkDataDivisionText}</div>
                     </div>
@@ -244,12 +260,10 @@ class MainContainer extends React.Component {
                       </TableBody>
                     </Table>
                   </div>
-                </Paper>
               ))}
               {(() => {
                 if (this.state.groupedByDivision.length == 0) {
                   return(
-                    <Paper>
                       <div  style={{padding: '20px'}}>
                         <div style={divStyle}>
                           <div style={titleStyle}>관련 데이터</div>
@@ -265,10 +279,10 @@ class MainContainer extends React.Component {
                           </TableBody>
                         </Table>
                       </div>
-                    </Paper>
                   );
                 }
               })()}
+              </Paper>
             </section>
           </div>
         </div>

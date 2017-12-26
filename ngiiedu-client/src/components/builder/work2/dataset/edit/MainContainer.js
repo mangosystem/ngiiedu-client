@@ -848,7 +848,7 @@ class MainContainer extends React.Component {
                                     </div>
                                 )
                             }else if(row.valueType=='RANGE_VALUE'){
-                                var items = row.valueBase.split('|')//가|나|다
+                                var items = row.valueBase.split('|')
                                 var item1 = Number(items[0]);
                                 var item2 = Number(items[1]);
                                 var item3 = Number(items[2]);

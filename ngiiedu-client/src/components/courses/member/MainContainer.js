@@ -9,8 +9,10 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import IconMoreHoriz from 'material-ui/svg-icons/navigation/more-horiz';
 import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
 
 
+import CourseHeader from '../common/CourseHeader.js';//과정 해더
 import MenuPanel from '../common/MenuPanel.js';
 import CheckUserAuthority from '../common/CheckUserAuthority.js';
 
@@ -75,7 +77,11 @@ class MainContainer extends React.Component {
   }
 
   handleExpandChange(expand) {
-    this.setState({expanded: expand});
+    if(this.state.expanded==expand){
+      this.setState({expanded:''});
+    }else{
+      this.setState({expanded: expand});
+    }
   }
 
   ajaxCall(){
@@ -165,6 +171,8 @@ class MainContainer extends React.Component {
     return (
       <main id="main">
 				<div className="inner">
+          <CourseHeader/>
+
           <div className="flexible">
             <MenuPanel
               isAccessor={this.state.isAccessor}
@@ -173,40 +181,49 @@ class MainContainer extends React.Component {
               activeMenu={'MEMBER'}
             />
             <section>
+            <Paper style={{minHeight:700,paddingTop:20,paddingBottom:20}}>
+            <div style={{display:'flex',paddingLeft:20, paddingRight:20,justifyContent:'space-between'}}>
+              <h3 className="edge">멤버</h3>
+              <ul className="location">
+                <li>홈</li>
+                <li>수업</li>
+                <li>수업목록</li>
+                <li style={{fontWeight:'bold'}}>멤버</li>
+              </ul>
+            </div>
+
+
             <Card
-            expanded={this.state.expanded} onExpandChange={(expand) => this.handleExpandChange(expand)}
+              expanded={this.state.expanded=='CJS02'} onExpandChange={() => this.handleExpandChange('CJS02')}
+              style={{margin:20,boxShadow:'none'}}
             >
               <CardHeader
-                title={"참여자"}
-                titleStyle={titleStyle}
+                textStyle={{display:'none'}}
                 actAsExpander={true}
-                showExpandableButton={true}
-              />
+                style={{padding:0 }}
+              >
+                <div  className="mouseOverBlue" style={{display:'flex',alignItems:'center',border:this.state.expanded=='CJS02'?'2px solid #3e81f6':'2px solid rgba(0,0,0,0.2)',padding:16}}>
+                  <div style={{marginRight:20,fontSize:18,color:this.state.expanded=='CJS02'?'#3e81f6':null}}>참여자</div>
+                  <div style={{color:'#3e81f6'}}>{this.state.CJS02.length}</div> 
+                </div>
+
+              </CardHeader>
               <CardText expandable={true}>
-              <Divider/>
                 {this.state.CJS02.map(
                   (row,index) => (
                     <div key={row.userId}>
-                      <div style={{margin:'auto'}}>
-                        <div style={{display:'flex'}}>
-                                    <div style={{padding:10,width:'70%'}}>
-                                      <h3>{row.userName}</h3>
-                                      <p style={{color:'rgb(158, 158, 158)',marginLeft:10,marginTop:5}}>{row.userEmail}</p>
-                                    </div>
-                                    {(() => {
-                                      if (this.state.isAccessor && this.state.isOwner) {
-                                        return(
-                                          <div style={{padding:10,width:'30%',textAlign:'right'}}>
-                                            <FlatButton label="차단" secondary={true} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'BLOCK')}/>
-                                          </div>
-                                        )
-                                      }
-                                    })()}
-
-                                  </div>
-                        </div>
-                      <Divider/>
+                    <div  style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:10}}>
+                      <div style={{display:'flex'}}>
+                        <div style={{marginRight:20,fontSize:18,width:100}}>{row.userName}</div>
+                        <div style={{fontSize:15}}>{row.userEmail}</div>
+                      </div>
+                      <div>
+                        <FlatButton label="차단" secondary={true} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'BLOCK')}/>
+                      </div>
                     </div>
+                    <Divider/>
+                    </div>
+                      
                   )
                 )}
               </CardText>
@@ -214,36 +231,38 @@ class MainContainer extends React.Component {
             {(() => {
               if (this.state.isAccessor && this.state.isOwner) {
                 return(
-                  <Card>
+                  <Card
+                    expanded={this.state.expanded=='CJS01'} onExpandChange={() => this.handleExpandChange('CJS01')}
+                    style={{margin:20,boxShadow:'none'}}
+                    
+                  >
                     <CardHeader
-                      title="승인대기"
-                      titleStyle={titleStyle}
+                      textStyle={{display:'none'}}
                       actAsExpander={true}
-                      showExpandableButton={true}
-                    />
+                      style={{ border:this.state.expanded=='CJS01'?'2px solid #3e81f6':'2px solid rgba(0,0,0,0.2)'}}
+                    >
+                      <div style={{display:'flex',alignItems:'center'}}>
+                        <div style={{marginRight:20,fontSize:18,color:this.state.expanded=='CJS01'?'#3e81f6':null}}>승인대기</div>
+                        <div style={{color:'#3e81f6'}}>{this.state.CJS01.length}</div> 
+                      </div>
+                    </CardHeader>
                     <CardText expandable={true}>
-                    <Divider/>
 
                   
                     {this.state.CJS01.map(
                         (row,index) => (
                           <div key={row.userId}>
-                            <div style={{margin:'auto'}}>
-                              <div style={{display:'flex'}}>
-                                <div style={{padding:10,width:'70%'}}>
-                                  <h3>{row.userName}</h3>
-                                  <p style={{color:'rgb(158, 158, 158)',marginLeft:10,marginTop:5}}>{row.userEmail}</p>
-                                </div>
-                              
-                                      <div style={{padding:10,width:'30%',textAlign:'right'}}>
-                                        <FlatButton label="승인" primary={true}  style={{marginLeft:10}} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'ACTIVE')}/>
-                                        <FlatButton label="차단" secondary={true} style={{marginLeft:10}} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'BLOCK')}/>                                    
-                                      </div>
-                                  
-                                </div>
-
-                              </div>
-                            <Divider/>
+                          <div  style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:10}}>
+                            <div style={{display:'flex'}}>
+                              <div style={{marginRight:20,fontSize:18,width:100}}>{row.userName}</div>
+                              <div style={{fontSize:15}}>{row.userEmail}</div>
+                            </div>
+                            <div>
+                              <FlatButton label="승인" primary={true}  style={{marginLeft:10}} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'ACTIVE')}/>
+                              <FlatButton label="차단" secondary={true} style={{marginLeft:10}} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'BLOCK')}/>                                    
+                            </div>
+                          </div>
+                          <Divider/>
                           </div>
                         )
                       )}
@@ -256,32 +275,35 @@ class MainContainer extends React.Component {
             {(() => {
               if (this.state.isAccessor && this.state.isOwner) {
                 return(
-                  <Card>
+                  <Card
+                    expanded={this.state.expanded=='CJS04'} onExpandChange={() => this.handleExpandChange('CJS04')}
+                    style={{margin:20,boxShadow:'none'}}
+                    
+                  >
                     <CardHeader
-                      title="차단"
-                      titleStyle = {titleStyle}
-                      actAsExpander={true}
-                      showExpandableButton={true}
-                    />
+                       textStyle={{display:'none'}}
+                       actAsExpander={true}
+                       style={{ border:this.state.expanded=='CJS04'?'2px solid #3e81f6':'2px solid rgba(0,0,0,0.2)'}}
+                    >
+                      <div style={{display:'flex',alignItems:'center'}}>
+                        <div style={{marginRight:20,fontSize:18,color:this.state.expanded=='CJS04'?'#3e81f6':null}}>차단</div>
+                        <div style={{color:'#3e81f6'}}>{this.state.CJS04.length}</div> 
+                      </div>
+                    </CardHeader>
                     <CardText expandable={true}>
-                    <Divider/>
                     {this.state.CJS04.map(
                         (row,index) => (
                           <div key={row.userId}>
-                            <div style={{margin:'auto'}}>
-                              <div style={{display:'flex'}}>
-                                          <div style={{padding:10,width:'70%'}}>
-                                            <h3>{row.userName}</h3>
-                                            <p style={{color:'rgb(158, 158, 158)',marginLeft:10,marginTop:5}}>{row.userEmail}</p>
-                                          </div>
-                                        
-                                                <div style={{padding:10,width:'30%',textAlign:'right'}}>
-                                                <FlatButton label="차단해제" primary={true} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'WAITING')}/>
-                                                </div>
-                                            
-                                        </div>
-                              </div>
-                            <Divider/>
+                          <div  style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:10}}>
+                            <div style={{display:'flex'}}>
+                              <div style={{marginRight:20,fontSize:18,width:100}}>{row.userName}</div>
+                              <div style={{fontSize:15}}>{row.userEmail}</div>
+                            </div>
+                            <div>
+                              <FlatButton label="차단해제" primary={true} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'WAITING')}/>
+                            </div>
+                          </div>
+                          <Divider/>
                           </div>
                         )
                       )}
@@ -290,6 +312,7 @@ class MainContainer extends React.Component {
                 )
               }
             })()}
+            </Paper>
             </section>
           </div>
         </div>

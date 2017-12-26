@@ -37,12 +37,12 @@ class CreateDataset extends Component {
                     tabItemContainerStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                     inkBarStyle={{width:200,marginRight:70}}
                 >
-                    {/* <Tab label="데이터셋 생성" 
+                    <Tab label="데이터셋 생성" 
                         buttonStyle={{color:'black'}}
                         style={{width:120,marginRight:70}}
                     >
                         <NewDataset/>
-                    </Tab> */}
+                    </Tab>
                     <Tab label="엑셀 데이터" 
                         buttonStyle={{color:'black'}}
                         style={{width:200,marginRight:70}}

@@ -74,10 +74,6 @@ class Setting extends React.Component {
     if (this.props.isAccessor && this.props.isOwner) {
       return (
         <div>
-
-          <div style={{padding: 20}}>
-            <h1>수업 설정</h1>
-          </div>
           
           <div style={{paddingTop: 20, paddingLeft: 40, paddingBottom:20}}>
             <h3>수업 활성화</h3><br/>

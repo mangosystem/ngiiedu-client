@@ -9,6 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
@@ -83,82 +84,64 @@ class Work extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.props.isAccessor?
-          <div>
-            <h3>수업 과정</h3>
-            <p>교사가 수업만들기에서 추가한 수업 과정이 아래에 나타납니다.</p>
-            <br />
-            <Divider />
-            <br />
-          </div>
-        :''}
+      <div style={{padding:20}}>
+        
         {this.state.workList.map((work,i) => (
+
+          // <div style={{marginTop:50,display:'grid',gridTemplateColumns:'0% 75% 25% 0%',
+          
           <div key={work.idx}>
-          {this.props.isMember&&this.props.isAccessor&&work.status ? 
+
+          {this.props.isMember&&this.props.isAccessor&&!this.props.isOwner&&work.status ? 
           //학생 로그인
-              <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
-                
-                <CardHeader
-                  actAsExpander={true}
-                  showExpandableButton={true}
-                >
-                <Paper zDepth={0} style={{textAlign: 'left'}}>
-                  <Avatar size={60} style={{fontSize: 20}}>
-                    <div style={{textAlign:'center', width:'70%', whiteSpace:'normal'}}>
-                      {work.moduleWorkCourseType}
-                    </div>
-                  </Avatar>
-                  <div style={{width:'90%', float:'right'}}><br/>
-                    {work.moduleWorkName}
-                  </div>
-                </Paper>
-                </CardHeader>
-
-                <CardActions style={{textAlign: 'right' }}>
-                  <FlatButton label="수행하기" primary={true} onClick={(i)=>this.enterWork(work.idx)}/>
-                </CardActions>
-
-                <CardText expandable={true}>
-                  {work.moduleWorkName}
-                </CardText>
-              </Card>
+          <Paper style={{display:'grid',gridTemplateColumns:'90% 10%',marginBottom:20}} className="mouseOverBlue">
+            <div style={{padding:'50px 20px',fontSize:20,overflow:'hidden',textOverflow:'ellipsis',fontWeight:'bold'}}>
+                {work.moduleWorkName}
+            </div>
+            <div style={{display:'flex',alignItems:'center'}}>
+              <IconMenu
+                iconButtonElement={<IconButton><MoreVertIcon/></IconButton>}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+              >
+                <MenuItem primaryText="수행하기" onClick={(i)=>this.enterWork(work.idx)}/>
+              </IconMenu>
+            </div>
+          </Paper>
 
             : this.props.isOwner&&this.props.isAccessor ?
             //교사 로그인
-              <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
-                
-                <CardHeader
-                  actAsExpander={true}
-                  showExpandableButton={true}
-                >
-                <Paper zDepth={0} style={{textAlign: 'left'}}>
-                  <Avatar size={60} style={{fontSize: 20}}>
-                    <div style={{textAlign:'center', width:'70%', whiteSpace:'normal'}}>
-                      {work.moduleWorkCourseType}
-                    </div>
-                  </Avatar>
-                  <div style={{width:'90%', float:'right'}}><br/>
+              <Paper style={{display:'grid',gridTemplateColumns:'90% 10%',marginBottom:20}} className="mouseOverBlue">
+                <div style={{padding:'50px 20px',fontSize:20,overflow:'hidden',textOverflow:'ellipsis',fontWeight:'bold'}}>
+                  {work.status ?
+                  <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px',fontSize:15}}>
+                    <p>공개 이미지</p>
+                  </div>
+                  :
+                  <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px',fontSize:15}}>
+                    <p>비공개 이미지</p>
+                  </div>
+                  }
+                  <div>
                     {work.moduleWorkName}
                   </div>
-                </Paper>
-                </CardHeader>
-
-                <CardActions style={{textAlign: 'right' }}>
-                  <FlatButton label="수행하기" primary={true} onClick={(i)=>this.enterWork(work.idx)}/>
-                </CardActions>
-
-                <CardText expandable={true}>
-                    <Checkbox 
-                      checkedIcon={<Visibility />} 
-                      uncheckedIcon={<VisibilityOff />} 
-                      checked = {work.status}
-                      label={work.moduleWorkName} 
-                      labelPosition="left"
-                      onCheck={(i)=>this.courseChecked(work)}
-                    />
-                </CardText>
-              </Card>
+                </div>               
+                <div style={{display:'flex',alignItems:'center'}}>
+                  <IconMenu
+                    iconButtonElement={<IconButton><MoreVertIcon/></IconButton>}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  >
+                    <MenuItem primaryText="수행하기" onClick={(i)=>this.enterWork(work.idx)}/>
+                    {work.status ?
+                      <MenuItem primaryText="비활성화" onClick={(i)=>this.courseChecked(work)}/>
+                    :
+                      <MenuItem primaryText="활성화" onClick={(i)=>this.courseChecked(work)}/>
+                    }
+                  </IconMenu>
+                </div>
+              </Paper>
+             
             :''}
           </div>
         ))}

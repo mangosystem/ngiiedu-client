@@ -6,6 +6,7 @@ import SearchBar from 'material-ui-search-bar'
 
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import Paper from 'material-ui/Paper';
 
 import Step1Module from './Step1Module';
 import Step2Work from './Step2Work';
@@ -147,6 +148,15 @@ class MainContainer extends React.Component {
 		return (
 			<main id="main">
 				<div className="inner">
+				<Paper style={{minHeight:700,paddingTop:20,paddingBottom:20}}>
+					<div style={{display:'flex',paddingLeft:20, paddingRight:20,justifyContent:'space-between'}}>
+						<h3 className="edge">수업생성</h3>
+						<ul className="location">
+							<li>홈</li>
+							<li>수업</li>
+							<li style={{fontWeight:'bold'}}>수업생성</li>
+						</ul>
+					</div>
 					<Stepper
 						activeStep={this.state.stepIndex}
 						style={{margin: '0 auto', width: 500}}
@@ -165,9 +175,9 @@ class MainContainer extends React.Component {
 						</Step>
 					</Stepper>
 
-					<Divider style={{marginTop: '20px', marginBottom: '30px'}} />
+					{/* <Divider style={{marginTop: '20px', marginBottom: '30px'}} /> */}
 
-					<div>
+					<div style={{marginTop: '20px', marginBottom: '30px'}}>
 					{(() => {
 						if (this.state.stepIndex == 0) {
 							return (
@@ -238,6 +248,7 @@ class MainContainer extends React.Component {
 							)
 						}
 					})()}
+					</Paper>
 				</div>
 			</main>
 		)

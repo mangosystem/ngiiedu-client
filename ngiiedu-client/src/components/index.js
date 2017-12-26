@@ -177,9 +177,9 @@ class App extends Component {
                         <Redirect exact from={contextPath} to={contextPath + "/course"} />
             			<Route path={contextPath + "/courseCreate"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseCreateContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
 
@@ -207,57 +207,69 @@ class App extends Component {
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/data"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseDataContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
             			<Route exact path={contextPath + "/course/:COURSEID/work"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseWorkContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/member"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseMemberContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/team"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseTeamContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
             			<Route path={contextPath + "/course/:COURSEID/setting"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseSettingContainer loginStatus={this.state.loginStatus}/>
-            					<Footer />
+            					<Footer2 />
             				</div>
             			</Route>
 
-						<Route path={contextPath + "/course/:COURSEID/activity/:ACTIVITYID"}>
+									<Route path={contextPath + "/course/:COURSEID/activity/:ACTIVITYID/:SUBWORKID"}>
             				<div>
-            					<Header />
+            					<Header2 />
             					<CourseActivityContainer loginStatus={this.state.loginStatus}/>
             					<Footer />
             				</div>
             			</Route>
+									
+									<Route path={contextPath + "/course/:COURSEID/activity/:ACTIVITYID"}>
+            				<div>
+            					<Header2 />
+            					<CourseActivityContainer loginStatus={this.state.loginStatus}/>
+            					<Footer2 />
+            				</div>
+            			</Route>
+
+
+
+									
 
             			<Route path={contextPath + "/course/:COURSEID/work/:workId"}>
             				<WorkFrameDataCollect loginStatus={this.state.loginStatus}/>
             			</Route>
 
             			<Route path={contextPath +"/storymap/preview/:LAYERID"}>
-							<div>
-								<Header slim={true} />
-								<StoryMapPreview loginStatus={this.state.loginStatus}/>
-							</div>
+										<div>
+											<Header slim={true} />
+											<StoryMapPreview loginStatus={this.state.loginStatus}/>
+										</div>
             			</Route>
 
                   		<Route path={contextPath +"/map/preview/:LAYERID"}>

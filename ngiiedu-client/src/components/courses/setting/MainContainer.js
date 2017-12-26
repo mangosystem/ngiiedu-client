@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import CheckUserAuthority from '../common/CheckUserAuthority.js';
 import Setting from './Setting.js'
 import MenuPanel from '../common/MenuPanel.js';
+import CourseHeader from '../common/CourseHeader.js';//과정 해더
 
 import Paper from 'material-ui/Paper';
 
@@ -64,6 +65,7 @@ class MainContainer extends React.Component {
     return (
       <main id="main">
 				<div className="inner">
+          <CourseHeader/>
           <div className="flexible">
             <MenuPanel
               isAccessor={this.state.isAccessor}
@@ -72,7 +74,16 @@ class MainContainer extends React.Component {
               activeMenu={'SETTING'}
             />
             <section>
-              <Paper style={{height:500}}>
+              <Paper style={{minHeight:700,paddingTop:20,paddingBottom:20}}>
+                <div style={{display:'flex',paddingLeft:20, paddingRight:20,justifyContent:'space-between'}}>
+                  <h3 className="edge">수업 설정</h3>
+                  <ul className="location">
+                    <li>홈</li>
+                    <li>수업</li>
+                    <li>수업목록</li>
+                    <li style={{fontWeight:'bold'}}>수업 설정</li>
+                  </ul>
+                </div>
                 <Setting
                   isAccessor={this.state.isAccessor}
                   isOwner={this.state.isOwner}

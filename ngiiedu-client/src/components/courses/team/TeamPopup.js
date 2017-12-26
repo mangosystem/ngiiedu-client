@@ -16,6 +16,8 @@ import Chip from 'material-ui/Chip';
 import {red500, yellow500, blue500, grey500} from 'material-ui/styles/colors';
 import NotificationDoNotDisturbAlt from 'material-ui/svg-icons/notification/do-not-disturb-alt';
 import CancleIcon from 'material-ui/svg-icons/navigation/cancel';
+import ClearIcon from 'material-ui/svg-icons/content/clear';
+
 
 
 class TeamPopup extends React.Component {
@@ -114,7 +116,8 @@ class TeamPopup extends React.Component {
             <div style={{display:'flex',alignItems: 'center', justifyContent:'space-between'}}>
             <TextField
                 defaultValue={this.state.teamName}
-                style={{width:300,color:'#fff',backgroundColor:'#619bff',height:40,display:'flex',alignItems: 'center'}}
+                inputStyle={{color:'#fff',paddingLeft:10}}
+                style={{width:350,color:'#fff',backgroundColor:'#619bff',height:40,display:'flex',alignItems: 'center'}}
                 hintText="팀이름"
                 onChange={(event,newValue)=>this.changeTeamName(event,newValue)}
                 underlineShow={false}
@@ -128,34 +131,37 @@ class TeamPopup extends React.Component {
                 style={{width:105,height:40,backgroundColor:'#43444c',color:'#fff',borderRadius:3}}
             />
             </div>
-            <FloatingActionButton secondary={true} 
+            {/* <FloatingActionButton secondary={true} 
                 style={{position:'absolute', bottom:-100,left:200}}
                 onClick={(summit)=>this.props.handleClose(false)}
             >
                 <CancleIcon />
-            </FloatingActionButton>
+            </FloatingActionButton> */}
         </div>
     ];
 
     const dialLogStyle = {
         width:'100%',
-        height:350
+        height:400
     }
 
     const leftStyle = {
         position:'absolute',
         left:0,
         width:'60%',
-        height:'70%',
-        border:'1px solid #ccc'
+        height:400,
+        overflow:'auto'
+        // height:'70%',
+        // border:'1px solid #ccc'
     }
 
     const rightStyle = {
         position:'absolute',
         right:0,
         width:'40%',
-        height:'70%',
-        border:'1px solid #ccc'
+        height:400,
+        // height:'70%',
+        // border:'1px solid #ccc'
     }
 
     
@@ -163,7 +169,7 @@ class TeamPopup extends React.Component {
     return (
         <Dialog
             title="팀"
-            titleStyle={{fontSize:18,height:40,paddingTop:10,paddingLeft:10,paddingBottom:10,inlineHeight:0, backgroundColor:'#3e81f6',inlineHeight:0,padding:0,paddingLeft:10,color:'white'}}
+            titleStyle={{fontSize:18,height:40,padding:'5px 0 5px 0',inlineHeight:0, backgroundColor:'#3e81f6',inlineHeight:0,color:'white',margin:0,width:'97%',paddingLeft:'3%'}}
             actions={actions}
             modal={false}
             open={this.state.open}
@@ -171,20 +177,19 @@ class TeamPopup extends React.Component {
             contentStyle={{width:500, maxWidth: 'none'}}
             autoScrollBodyContent={true}
             actionsContainerStyle={{backgroundColor:'#3e81f6'}}
-            style={{borderRadius:3}}
+            bodyStyle={{padding:1}}
         >
             
             <div style={dialLogStyle}>
                 <div style={leftStyle}>
                  
-                <div style={{overflow:'auto',height:'100%'}}>
+                <div style={{height:'100%',paddingLeft:10,paddingTop:10}}>
                     {this.props.member.map((row,index)=>(
 
                         <div key={index}>
-                            <Divider style={{marginTop:10}}/>
-                            <p>{row[0].teamId==null?'미배정':row[0].teamName}</p>
+                            <p style={{color:'#3e81f6'}}>{row[0].teamId==null?'미배정':row[0].teamName}</p>
                             
-                            <div style={{marginTop:10,marginLeft:10}}>
+                            <div style={{marginTop:10,marginLeft:20}}>
                             {this.props.member[index].map((row2,index2)=>(
                                     
                                 (() => {
@@ -209,21 +214,22 @@ class TeamPopup extends React.Component {
                                     )}
                                     else if(row2.joinStatus=='CJS04'){
                                         return(
-                                            <Checkbox
-                                                key ={index2}
-                                                style={{marginBottom:10}}
-                                                label={row2.userName}
-                                                labelPosition="left"
-                                                disabled={true}
-                                                checked = {this.state.selectedUserId.indexOf(row2.userId)>=0}
-                                                checkedIcon={
-                                                    <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
-                                                }
-                                                uncheckedIcon={
-                                                    <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
-                                                }
-                                                onClick ={(event, isInputChecked) => this.checkedChange(event, isInputChecked, row2.userId)}
-                                            />
+                                            // <Checkbox
+                                            //     key ={index2}
+                                            //     style={{marginBottom:10}}
+                                            //     label={row2.userName}
+                                            //     labelPosition="left"
+                                            //     disabled={true}
+                                            //     checked = {this.state.selectedUserId.indexOf(row2.userId)>=0}
+                                            //     checkedIcon={
+                                            //         <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
+                                            //     }
+                                            //     uncheckedIcon={
+                                            //         <NotificationDoNotDisturbAlt style={{fill: "#E6E6E6"}}/>
+                                            //     }
+                                            //     onClick ={(event, isInputChecked) => this.checkedChange(event, isInputChecked, row2.userId)}
+                                            // />
+                                            null
                                         )
                                     }else{
                                         return;
@@ -231,6 +237,7 @@ class TeamPopup extends React.Component {
                                 })()
                             ))}
                             </div>
+                            <Divider style={{marginTop:10}}/>
                         </div>
                     ))}
 
@@ -254,16 +261,22 @@ class TeamPopup extends React.Component {
                         {this.state.selectedUserId.map((row2,index2)=>(
                             <div key={row2}>
                             {this.props.member.map((row,index)=>(
-                                <div key={index} style={{overflow:"auto"}}>
+                                <div key={index} >
                                 {this.props.member[index].map((row3,index3)=>(
                                     row3.userId==row2 &&row3.joinStatus=='CJS02'?
-                                    <Chip
-                                        key={row3.userId}
-                                        style={{margin: 4,marginLeft:15}}
-                                        onRequestDelete={(userId)=>this.handleRequestDelete(row3.userId)}
-                                    >
-                                        {row3.userName}
-                                    </Chip>
+
+                                    <div key={row3.userId} style={{display:'flex',padding:'10px 0px 0px 10px',alignItems:'center'}}>
+                                        <div>{row3.userName}</div>
+                                        <ClearIcon style={{width:20,height:20,marginLeft:10}} onClick={()=>this.handleRequestDelete(row3.userId)}/>
+                                    </div>
+
+                                    // <Chip
+                                    //     key={row3.userId}
+                                    //     style={{margin: 4,marginLeft:15,backgroundColor:'#fff'}}
+                                    //     onRequestDelete={(userId)=>this.handleRequestDelete(row3.userId)}
+                                    // >
+                                    //     {row3.userName}
+                                    // </Chip>
                                      : null
                                 ))}
                             </div>

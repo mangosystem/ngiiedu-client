@@ -19,12 +19,13 @@ class Header extends React.Component {
     this.state = {
       isOpenJoinCourse: false,
       loginStatus : 'none' ,//student /teacher /none
-      mainTitle :'나의수업',
-      subTitle:'1' ,// 서브 타이틀 value
+      mainTitle :'class',
+      subTitle:'수업목록' ,// 서브 타이틀 value
     }
 
     this.onChangeCourseOpen = this.onChangeCourseOpen.bind(this);
     this.handleMainTitle = this.handleMainTitle.bind(this); //메인타이틀 핸들러
+    this.handleSubTitle = this.handleSubTitle.bind(this); //서브 타이틀 핸들러
   }
 
   onChangeCourseOpen(){
@@ -56,9 +57,25 @@ class Header extends React.Component {
         mainTitle:value
       })
     }
-    if(value=="나의수업"){
-
+    if(value == 'introduce'){
+      window.location.href=contextPath + '/'+value;
+    }else if(value == 'gallary'){
+      window.location.href=contextPath + '/'+value;
+    }else if(value == 'surport'){
+      window.location.href=contextPath + '/'+value+'/notice';
+    }else if(value == 'class'){
+      this.props.history.push(contextPath + '/course');
     }
+  }
+
+  handleSubTitle(value){
+    if(this.state.subTitle !=value){
+      this.setState({
+        subTitle:value
+      })
+    }
+    if(value)
+    this.props.history.push(contextPath + '/'+value);
   }
 
 
@@ -96,20 +113,20 @@ class Header extends React.Component {
             </div>
             <div className="lnbWrap">
               <ul className="lnb">
-                <li onClick={()=>this.handleMainTitle("수업소개")} className={this.state.mainTitle=="수업소개" ? 'on' : null}>수업소개</li>
-                <li onClick={()=>this.handleMainTitle("수업활동갤러리")} className={this.state.mainTitle=="수업활동갤러리" ? 'on' : null}>수업활동갤러리</li>
-                <li onClick={()=>this.handleMainTitle("사용지원")} className={this.state.mainTitle=="사용지원" ? 'on' : null}>사용지원</li>
-                <li onClick={()=>this.handleMainTitle("나의수업")} className={this.state.mainTitle=="나의수업" ? 'on' : null}>나의수업</li>
+                <li onClick={()=>this.handleMainTitle("introduce")} className={this.state.mainTitle=="introduce" ? 'on' : null}>수업소개</li>
+                <li onClick={()=>this.handleMainTitle("gallary")} className={this.state.mainTitle=="gallary" ? 'on' : null}>수업활동갤러리</li>
+                <li onClick={()=>this.handleMainTitle("surport")} className={this.state.mainTitle=="surport" ? 'on' : null}>사용지원</li>
+                <li onClick={()=>this.handleMainTitle("class")} className={this.state.mainTitle=="class" ? 'on' : null}>나의수업</li>
               </ul>	
             </div>
             <div className="snbWrap navy">
               <div className="snb">
                 <h2>나의수업</h2>
                 <ul>
-                  <li className="on" onClick={() => this.props.history.push(contextPath + '/course')}>수업목록</li>
+                  <li className={this.state.subTitle=="course" ? 'on' : null} onClick={() => this.handleSubTitle('course')}>수업목록</li>
                   <li onClick={this.onChangeCourseOpen}>수업참여</li>
                   {this.props.loginStatus.userDivision==1?
-                  <li onClick={() => alert("아직안했다 뚜시")}>수업생성</li>
+                  <li className={this.state.subTitle=="courseCreate" ? 'on' : null} onClick={() => this.handleSubTitle('courseCreate')}>수업생성</li>
                   :
                   null
                   }

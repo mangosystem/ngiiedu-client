@@ -8,13 +8,17 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
+import NewDataset from './NewDataset.js';
+
 class Step2Work extends React.Component {
 
 	constructor() {
 		super();
 		this.state = {
       items: [],
-      selectedRows: []
+      selectedRows: [],
+      datasetWorkIdx:'',
+      newDataset:false //데이터셋 생성 창
 		};
 
     this.onSelectionWork = this.onSelectionWork.bind(this);
@@ -29,9 +33,19 @@ class Step2Work extends React.Component {
       ['GET', apiSvr+'/modules/' + this.props.selectedModule + '/moduleWork.json'],
       null,
       function(res) {
+        let data = res.response.data;
         this.setState({
-          items: res.response.data
+          items: data,
         });
+
+        data.map((row,idx)=>{
+          if(row.moduleWorkCourseType=="현장실습"){
+            this.setState({
+              datasetWorkIdx:row.idx
+            })
+          }
+        })
+
 
         let workIds = [];
         for (let n of this.props.selectedItems) {
@@ -56,6 +70,7 @@ class Step2Work extends React.Component {
   }
 
   isSelected(index) {
+ 
     return this.state.selectedRows.indexOf(index) !== -1;
   }
 
@@ -65,13 +80,26 @@ class Step2Work extends React.Component {
     });
 
     let workIds = [];
+
+    let newDataset = false;
+    let stateDatasetWorkIdx = this.state.datasetWorkIdx;
+
     for (let n of selectedRows) {
-      this.state.items.map(function(v, i) {
+      this.state.items.map((v, i)=> {
         if (n == i) {
+          if(v.idx==stateDatasetWorkIdx){
+            newDataset = true;
+          }
           workIds.push(v.idx);
           return;
         }
       });
+    }
+
+    if(this.stateNewDataset!=newDataset){
+      this.setState({
+        newDataset:newDataset
+      })
     }
 
     console.log(workIds);
@@ -80,7 +108,7 @@ class Step2Work extends React.Component {
 
 	render() {
 		return (
-      <div style={{textAlign: 'center'}}>
+      <div style={{textAlign: 'center' }}>
         {(() => {
           const {items} = this.state;
           if (items.length > 0) {
@@ -89,9 +117,10 @@ class Step2Work extends React.Component {
                 <TableRow
                   key={index}
                   selected={this.isSelected(index)}
+                  
                 >
-                  <TableRowColumn checked>{item.moduleWorkCourseType}</TableRowColumn>
-                  <TableRowColumn>{item.moduleWorkName}</TableRowColumn>
+                  <TableRowColumn checked >{item.moduleWorkCourseType}</TableRowColumn>
+                  <TableRowColumn >{item.moduleWorkName}</TableRowColumn>
                 </TableRow>
               ))
             );
@@ -102,6 +131,7 @@ class Step2Work extends React.Component {
       					multiSelectable
       					showCheckboxes
                 onRowSelection={this.onSelectionWork}
+                className="material-table"
       				>
       					<TableBody
       						displayRowCheckbox
@@ -119,6 +149,18 @@ class Step2Work extends React.Component {
             )
           }
         })()}
+
+        {this.state.newDataset ? 
+          <NewDataset/>
+         :
+           null
+        } 
+        
+
+
+
+
+
 			</div>
 		)
 	}

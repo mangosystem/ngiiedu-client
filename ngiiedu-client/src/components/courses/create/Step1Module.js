@@ -10,19 +10,23 @@ import IconButton from 'material-ui/IconButton';
 const style = {
   item: {
     selected: {
-      width: 200,
-      height: 250,
+      width: 220,
+      height: 200,
       margin: 10,
       display: 'inline-block',
       borderStyle: 'solid',
-      borderColor: '#26C6DA'
+      // borderColor: '#26C6DA',
+      borderRadius:15,
+      backgroundColor:'#3e81f6',
+      color:'#fff'
     },
     unSelected: {
-      width: 200,
-      height: 250,
+      width: 220,
+      height: 200,
       margin: 10,
       display: 'inline-block',
-      borderStyle: 'none'
+      borderStyle: 'none',
+      borderRadius:15
     }
   }
 };
@@ -76,24 +80,26 @@ class Step1Module extends React.Component {
                 zDepth={1}
               >
                 <Paper
+                  rounded={true}
                   zDepth={0}
                   style={{
                     height:'150px',
-                    backgroundImage: 'url(' + item.moduleMetadata + ')',
+                    backgroundImage: this.props.selectedItem == item.idx ? 'url(/ngiiedu/assets/images/' + item.moduleMetadata + '_on.png)' : 'url(/ngiiedu/assets/images/' + item.moduleMetadata + '.png)',
                     backgroundSize: 'auto',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    backgroundColor:'rgba(0,0,0,0)'
                   }}
                   onClick={() => this.onSelectionModule(item.idx)}
-                >
+                >             
                   <IconButton iconClassName="muidocs-icon-custom-github" />
                 </Paper>
                 <p style={{paddingTop: '5px', paddingBottom: '5px'}}>{item.moduleName}</p>
-                <br />
+                {/* <br />
                 <RaisedButton
                   label="상세정보"
-                />
+                /> */}
               </Paper>
             ))
           );
