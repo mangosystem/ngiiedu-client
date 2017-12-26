@@ -82,10 +82,7 @@ class StoryTab extends Component {
                 priority: i+1
             });
         }
-
-        console.log(priority);
-        // priority = JSON.stringify(priority);
-
+        priority = JSON.stringify(priority);
         ajaxJson(
             ['PUT', apiSvr + '/coursesWork/maps/' + maps.mapsId + '/itemOrder.json'],
             { priority },
