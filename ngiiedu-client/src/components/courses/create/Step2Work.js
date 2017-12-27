@@ -10,6 +10,7 @@ import {
 
 import NewDataset from './NewDataset.js';
 
+
 class Step2Work extends React.Component {
 
 	constructor() {
@@ -18,7 +19,8 @@ class Step2Work extends React.Component {
       items: [],
       selectedRows: [],
       datasetWorkIdx:'',
-      newDataset:false //데이터셋 생성 창
+      newDataset:false, //데이터셋 생성 창
+      moduleId : '',//moduleId 현장실습 default 값을 정하기 위해서 ...
 		};
 
     this.onSelectionWork = this.onSelectionWork.bind(this);
@@ -41,7 +43,8 @@ class Step2Work extends React.Component {
         data.map((row,idx)=>{
           if(row.moduleWorkCourseType=="현장실습"){
             this.setState({
-              datasetWorkIdx:row.idx
+              datasetWorkIdx:row.idx,
+              moduleId:row.moduleId
             })
           }
         })
@@ -151,9 +154,9 @@ class Step2Work extends React.Component {
         })()}
 
         {this.state.newDataset ? 
-          <NewDataset/>
+          <NewDataset moduleId = {this.state.moduleId}/>
          :
-           null
+          null
         } 
         
 

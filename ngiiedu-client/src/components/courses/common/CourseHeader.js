@@ -52,7 +52,9 @@ class CourseHeader extends Component {
     return (
       <Paper style={{display:'flex',height:100,alignItems:'center',paddingLeft:30,marginBottom:20}}>
         <div>
-          <Avatar style={{width:50,height:50,marginRight:20}} src={'/ngiiedu/assets/images/'+this.state.moduleMetadata+'.png'} />
+          {this.state.moduleMetadata =='' ? null :
+            <Avatar style={{width:50,height:50,marginRight:20}} src={'/ngiiedu/assets/images/'+this.state.moduleMetadata+'.png'} />
+          }
         </div>
         <div>
           <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px'}}>

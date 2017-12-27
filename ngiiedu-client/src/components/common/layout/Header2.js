@@ -20,7 +20,7 @@ class Header extends React.Component {
       isOpenJoinCourse: false,
       loginStatus : 'none' ,//student /teacher /none
       mainTitle :'class',
-      subTitle:'수업목록' ,// 서브 타이틀 value
+      subTitle:'course' ,// 서브 타이틀 value
     }
 
     this.onChangeCourseOpen = this.onChangeCourseOpen.bind(this);
@@ -121,7 +121,7 @@ class Header extends React.Component {
             </div>
             <div className="snbWrap navy">
               <div className="snb">
-                <h2>나의수업</h2>
+                <h2 className="mainTitle">나의수업</h2>
                 <ul>
                   <li className={this.state.subTitle=="course" ? 'on' : null} onClick={() => this.handleSubTitle('course')}>수업목록</li>
                   <li onClick={this.onChangeCourseOpen}>수업참여</li>

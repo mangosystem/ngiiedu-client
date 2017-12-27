@@ -185,7 +185,7 @@ class CourseList extends React.Component {
 
                         {this.state.courseInfoListJoinData.map((row, i) => (
 
-                        <Card key={i} expanded={this.state.selectedCourse=="join_"+row.idx} style={{marginBottom:20,border:this.state.selectedCourse=="join_"+row.idx?'solid 2px #3e81f6': null}}>
+                        <Card key={i} expanded={this.state.selectedCourse=="join_"+row.idx} style={{marginBottom:20,border:this.state.selectedCourse=="join_"+row.idx?'solid 2px #3e81f6': null}} className="mouseOverBlue">
                             <CardHeader
                                 actAsExpander={true}
                                     
