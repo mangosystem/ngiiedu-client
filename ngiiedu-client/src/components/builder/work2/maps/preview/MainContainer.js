@@ -4,9 +4,11 @@ import { withRouter } from "react-router-dom";
 
 import { cyan500 } from 'material-ui/styles/colors';
 import Toggle from 'material-ui/Toggle';
-import IconButton from 'material-ui/IconButton';
-import IconArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
 
+import IconButton from 'material-ui/IconButton';
+import IconNavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 import BasicLeft from './BasicLeft';
 import BasicRight from './BasicRight';
@@ -57,6 +59,11 @@ class MainContainer extends React.Component {
 
   }
 
+  goCourseHome() {
+    const courseId = this.props.match.params.COURSEID;
+    this.props.history.push("/ngiiedu/course/" + courseId);
+  }
+
   render() {
 
     let styles = {
@@ -67,7 +74,7 @@ class MainContainer extends React.Component {
             backgroundColor: '#BDBDBD'
         },
         thumbSwitched: {
-            backgroundColor: 'black'
+            backgroundColor: '#3e81f6'
         },
         trackSwitched: {
             backgroundColor: '#BDBDBD'
@@ -77,12 +84,16 @@ class MainContainer extends React.Component {
     return (
       <div>
         <header id="header">
-          <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between'}}>
-
+          <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white'}}>
             <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
-              <IconButton style={{width: 50, height: 50}}>
-                <IconArrowBack />
-              </IconButton>
+              <IconMenu
+                iconButtonElement={<IconButton><IconNavigationMenu color='white'/></IconButton>}
+                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+              >
+                <MenuItem primaryText="수업 홈" onClick={this.goCourseHome.bind(this)}/>
+                <MenuItem primaryText="뒤로 가기" onClick={()=>this.props.history.goBack()}/>
+              </IconMenu>
               <div 
                 style={{fontSize: 20, textAlign:'left'}}>
                 {this.state.mapsTitle}
@@ -92,6 +103,7 @@ class MainContainer extends React.Component {
             <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
                 <Toggle
                     label="컨텐츠 보기"
+                    labelStyle={{ color: 'white' }}
                     defaultToggled={true}
                     thumbStyle={styles.thumbOff}
                     trackStyle={styles.trackOff}

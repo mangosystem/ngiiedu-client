@@ -10,6 +10,11 @@ import StorySetting from './StorySetting';
 import CreateItems from './CreateItems';
 import DeleteItems from './DeleteItems';
 
+import IconButton from 'material-ui/IconButton';
+import IconAddBox from 'material-ui/svg-icons/content/add-box';
+import IconEdit from 'material-ui/svg-icons/image/edit';
+import IconDelete from 'material-ui/svg-icons/action/delete';
+
 import ItemSort from './ItemSort';
 
 class StoryTab extends Component {
@@ -203,40 +208,77 @@ class StoryTab extends Component {
 
         let { itemIndex } = this.state;
 
+        let style = {
+
+            seletedTab: {
+                backgroundColor: '#3e81f6',
+                borderRadius: '15px',
+                color: 'white',
+                marginLeft: '10px'
+            },
+
+            unSelectedTab: {
+                backgroundColor: null,
+                borderRadius: '15px',
+                color: 'white',
+                marginLeft: '10px',
+                border: '1.5px solid white'
+            }
+        }
+
         return (
             <div>
-                <div style={{ position: 'absolute', top: 60, left: 0, right: 0, height: 60, backgroundColor: cyan500 }}>
-                    <div style={{display: 'flex', height: 60}}>        
-                        <div style={{display: 'flex', marginLeft: 10, alignItems: 'flex-end'}}>
+                <div style={{ position: 'absolute', top: 60, left: 0, right: 0, height: 40, backgroundColor: '#43444c' }}>
+                    <div style={{display: 'flex', height: 40}}>        
+                        <div style={{display: 'flex'}}>
                             {this.state.items.map((item, index) => (
-                                <RaisedButton 
+                                <FlatButton 
                                     id={item.id}
                                     key={item.id}
                                     label={item.title}
                                     onClick={() => this.setState({ itemIndex: index, tempTitle: item.title, description: item.description })}
-                                    backgroundColor={itemIndex == index ? limeA100 : null}
-                                />
+                                    style={itemIndex == index ? style.seletedTab : style.unSelectedTab}
+                                >
+                                </FlatButton>
                             ))}
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', marginLeft: 30}}>
-                            <RaisedButton
-                                label="추가"
+                            <IconButton 
+                                //style={{width: 40, height: 30}}
                                 onClick={this.changeItemModeToAdd.bind(this)}
-                            />&nbsp;&nbsp;
-                            <RaisedButton
-                                label="편집"
+                                tooltip="추가"
+                                >
+                                <IconAddBox
+                                    color='white'                                    
+                                />
+                            </IconButton>                            
+                            &nbsp;&nbsp;
+                            <IconButton 
+                                //style={{width: 40, height: 30}}
                                 onClick={this.changeItemModeToEdit.bind(this)}
-                            />&nbsp;&nbsp;
-                            <RaisedButton
-                                label="삭제"
+                                tooltip="편집"
+                                >
+                                <IconEdit
+                                    color='white'                                    
+                                />
+                            </IconButton>                            
+                            &nbsp;&nbsp;
+                            <IconButton 
+                                //style={{width: 40, height: 30}}
                                 onClick={() => this.setState({ deleteOpen: true })}
-                            />&nbsp;&nbsp;
+                                tooltip="삭제"
+                                >
+                                <IconDelete
+                                    color='white'                                    
+                                />
+                            </IconButton>
+                            &nbsp;&nbsp;
                         </div>
                     </div>
                 </div>
                 {this.state.items[this.state.itemIndex].pinoLayer != '' ? 
-                <div style={{ position: 'absolute', top: 120, bottom: 0, left: 0, right: 0 }}>
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300, height: '100%' }}>
+                <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0, right: 0 }}>
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 400, height: '100%' }}>
                         <EditorPanel
                             description={this.state.description}
                             modifyDescription={this.modifyDescription.bind(this)}
@@ -245,7 +287,7 @@ class StoryTab extends Component {
                             pinoLayer={this.state.items[this.state.itemIndex].pinoLayer}
                         />                      
                     </div>
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 0 }}>
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 400, right: 0 }}>
                         <MapsView
                             maps={this.state.maps}
                             items={this.state.items}
@@ -254,7 +296,7 @@ class StoryTab extends Component {
                     </div>
                 </div>
                 :
-                <div style={{ position: 'absolute', top: 120, bottom: 0, left: 0, right: 0 }}>
+                <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0, right: 0 }}>
                     <EditorPanel
                         description={this.state.description}
                         modifyDescription={this.modifyDescription.bind(this)}

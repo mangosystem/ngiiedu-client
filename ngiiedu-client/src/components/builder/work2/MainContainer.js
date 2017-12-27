@@ -51,7 +51,7 @@ class MainContainer extends React.Component {
                     this.setState({
                         data:data.response.data,
                         //현재 수행과정번호로 데이터셋인지 (레이어,맵스) 과정인지 조회하여 화면 전환, 2개 이상일 때는 첫번째 활동이 첫 페이지
-                        workType:data.response.data[0].outputType 
+                        //workType:data.response.data[0].outputType 
                     },function(){
                         console.log(this.state.data)
                     })

@@ -5,20 +5,19 @@ import { withRouter } from "react-router-dom";
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
 import Badge from 'material-ui/Badge';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
 import { cyan500 } from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 
-import IconNotifications from 'material-ui/svg-icons/social/notifications';
-import IconChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import IconArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
-import IconMoreVert from 'material-ui/svg-icons/navigation/more-vert';
-import IconHelpOutline from 'material-ui/svg-icons/action/help-outline';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconNavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import IconSettings from 'material-ui/svg-icons/action/settings';
+import IconSwapVert from 'material-ui/svg-icons/action/swap-vert';
+import IconPageView from 'material-ui/svg-icons/action/pageview';
 
 import Avatar from 'material-ui/Avatar';
 
@@ -41,7 +40,8 @@ class MainContainer extends React.Component {
     this.state = {
       maps: {},
       open: false,
-      sortingOpen: false
+      sortingOpen: false,
+      mapsTitle: ''
     };
   }
 
@@ -132,16 +132,26 @@ class MainContainer extends React.Component {
     this.props.history.push("/ngiiedu/course/" + courseId + "/work2/" + workId + "/" + mapsId + "/preview");
   }
 
+  goCourseHome() {
+    const courseId = this.props.match.params.COURSEID;
+    this.props.history.push("/ngiiedu/course/" + courseId);
+  }
+
   render() {
     return (
       <div>
         <header id="header">
-          <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white'}}>
 
             <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
-              <IconButton style={{width: 50, height: 50}}>
-                <IconArrowBack />
-              </IconButton>
+              <IconMenu
+                iconButtonElement={<IconButton><IconNavigationMenu color='white'/></IconButton>}
+                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+              >
+                <MenuItem primaryText="수업 홈" onClick={this.goCourseHome.bind(this)}/>
+                <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
+              </IconMenu>
               <div 
                 style={{fontSize: 20, textAlign:'left'}}>
                 {this.state.mapsTitle}
@@ -149,22 +159,37 @@ class MainContainer extends React.Component {
             </div>
 
             <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
-                <FlatButton
-                  label="설정"
-                  onClick={this.settingHandle.bind(this)}
-                />
-                {this.state.mapsType == 'STORY' ?             
-                <FlatButton
-                  label="순서변경"
+                {this.state.mapsType == 'STORY' ?
+                <IconButton 
+                  style={{width: 50, height: 50}}
                   onClick={this.sortingHandle.bind(this)}
-                />
+                  tooltip="순서변경"
+                >
+                  <IconSwapVert
+                    color='white'                    
+                  />
+                </IconButton>
                 :
                 null
                 }
-                <FlatButton
-                  label="미리보기"
+                <IconButton 
+                  style={{width: 50, height: 50}}
+                  onClick={this.settingHandle.bind(this)}
+                  tooltip="설정"
+                >
+                  <IconSettings 
+                    color='white'                    
+                  />
+                </IconButton>
+                <IconButton 
+                  style={{width: 50, height: 50}}
+                  tooltip="미리보기"
                   onClick={this.previewMaps.bind(this)}
-                />
+                >
+                  <IconPageView
+                    color='white'                    
+                  />
+                </IconButton>
             </div>
           </div>
         </header>

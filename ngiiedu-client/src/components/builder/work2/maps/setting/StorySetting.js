@@ -35,7 +35,7 @@ class StorySetting extends Component {
         }
     }
 
-    componentDidMount() {    
+    componentWillMount() {    
         
         const workId = this.props.match.params.WORKID;
 

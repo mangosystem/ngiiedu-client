@@ -48,7 +48,7 @@ class BasicLeft extends Component {
     render() {
         return (
             <div style={{ position: 'absolute', top: 60, bottom: 0, left: 0, right: 0 }}>
-                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
+                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 400 }}>
                     <EditorPanel
                         description={this.state.description}
                         modifyDescription={this.modifyDescription.bind(this)}
@@ -57,7 +57,7 @@ class BasicLeft extends Component {
                         pinoLayer={this.state.items[0].pinoLayer}
                     />
                 </div>
-                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 0 }}>
+                <div style={{ position: 'absolute', top: 0, bottom: 0, left: 400, right: 0 }}>
                     <MapsView
                         maps={this.state.maps}
                         items={this.state.items}

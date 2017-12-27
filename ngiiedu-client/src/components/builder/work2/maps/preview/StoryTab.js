@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 import { cyan500, limeA100 } from 'material-ui/styles/colors';
 import MapsView from './MapsView';
@@ -52,34 +52,49 @@ class StoryTab extends Component {
             paper: {
                 padding: '20px',
                 margin: '10px'
+            },
+            seletedTab: {
+                backgroundColor: '#3e81f6',
+                borderRadius: '15px',
+                color: 'white',
+                marginLeft: '10px'
+            },
+            unSelectedTab: {
+                backgroundColor: null,
+                borderRadius: '15px',
+                color: 'white',
+                marginLeft: '10px',
+                border: '1.5px solid white'
             }
         };
 
         return (
             <div>
-                <div style={{ position: 'absolute', top: 60, left: 0, right: 0, height: 60, backgroundColor: cyan500 }}>
-                    <div style={{display: 'flex', height: 60}}>        
-                        <div style={{display: 'flex', marginLeft: 10, alignItems: 'flex-end'}}>
+                <div style={{ position: 'absolute', top: 60, left: 0, right: 0, height: 40, backgroundColor: '#43444c' }}>
+                    <div style={{display: 'flex', height: 40}}>        
+                        <div style={{display: 'flex'}}>
                             {this.state.items.map((item, index) => (
-                                <RaisedButton 
+                                <FlatButton 
+                                    id={item.id}
                                     key={item.id}
                                     label={item.title}
-                                    onClick={() => this.setState({ itemIndex: index, description: item.description })}
-                                    backgroundColor={itemIndex == index ? limeA100 : null}
-                                />
+                                    onClick={() => this.setState({ itemIndex: index, tempTitle: item.title, description: item.description })}
+                                    style={itemIndex == index ? style.seletedTab : style.unSelectedTab}
+                                >
+                                </FlatButton>
                             ))}
                         </div>
                     </div>
                 </div>
                 {this.state.items[this.state.itemIndex].pinoLayer != '' && this.state.isInputChecked ? 
-                <div style={{ position: 'absolute', top: 120, bottom: 0, left: 0, right: 0 }}>
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
+                <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0, right: 0 }}>
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 400 }}>
                         <Paper
                             style={style.paper}
                             dangerouslySetInnerHTML={ {__html: this.state.description} }
                         />                      
                     </div>
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 0 }}>
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 400, right: 0 }}>
                         <MapsView
                             items={this.state.items}
                             itemIndex={this.state.itemIndex}
@@ -88,14 +103,14 @@ class StoryTab extends Component {
                 </div>
                 :
                 this.state.items[this.state.itemIndex].pinoLayer != '' && !this.state.isInputChecked ? 
-                <div style={{ position: 'absolute', top: 120, bottom: 0, left: 0, right: 0 }}>
+                <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0, right: 0 }}>
                     <MapsView
                         items={this.state.items}
                         itemIndex={this.state.itemIndex}
                     />
                 </div>
                 :
-                <div style={{ position: 'absolute', top: 120, bottom: 0, left: 0, right: 0 }}>
+                <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0, right: 0 }}>
                     <Paper
                         style={style.paper}
                         dangerouslySetInnerHTML={ {__html: this.state.description} }

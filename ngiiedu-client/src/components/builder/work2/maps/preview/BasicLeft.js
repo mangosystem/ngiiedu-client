@@ -46,14 +46,14 @@ class BasicLeft extends Component {
             <div style={{ position: 'absolute', top: 60, bottom: 0, left: 0, right: 0 }}>
                 {this.state.isInputChecked ?
                 <div>
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 300 }}>
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 400 }}>
                         <Paper
                             style={style.paper}
                             dangerouslySetInnerHTML={ {__html: this.state.description} }
                         >
                         </Paper>
                     </div>
-                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 300, right: 0 }}>
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 400, right: 0 }}>
                         <MapsView
                             items={this.state.items}
                         />
