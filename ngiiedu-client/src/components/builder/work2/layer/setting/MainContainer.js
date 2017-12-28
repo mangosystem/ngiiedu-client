@@ -11,8 +11,16 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import FlatButton from 'material-ui/FlatButton';
 import IconArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import Dialog from 'material-ui/Dialog';
+import Subheader from 'material-ui/Subheader';
+import TextField from 'material-ui/TextField';
+import IconSettings from 'material-ui/svg-icons/action/settings';
+import IconPageView from 'material-ui/svg-icons/action/pageview';
+import IconNavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
-import PointSymbolizer from './PointSymbolizer.js'
+import PointSymbolizer from './PointSymbolizer.js';
+import LineSymbolizer from './LineSymbolizer.js';
+import PolygonSymbolizer from './PolygonSymbolizer.js';
 
 class MainContainer extends React.Component {
 
@@ -43,7 +51,7 @@ class MainContainer extends React.Component {
                   altShiftDragRotate: false, doubleClickZoom: true,
                   dragPan: true, pinchRotate: false,
                   pinchZoom: false, keyboard: false,
-                  mouseWheelZoom: false, shiftDragZoom: true
+                  mouseWheelZoom: true, shiftDragZoom: true
                 })
             }),
             layers:{
@@ -53,12 +61,24 @@ class MainContainer extends React.Component {
             stylePanelColumn:[],
             stylePanelOptions:{},
             layerId:null,
+            datasetId:null,
             title:null,
-            type:null
+            type:null,
+            settingModal:false,
+            changeTitle:null,
+            rowUniqueInfo:[],
+            process:null,
 
         }
 
         this.handleChangeSingle = this.handleChangeSingle.bind(this);
+        this.handleChangeSetting = this.handleChangeSetting.bind(this);
+        this.handleChangeTitle = this.handleChangeTitle.bind(this);
+        this.getRowUniqueInfo = this.getRowUniqueInfo.bind(this);
+        this.handleChangeRowColor = this.handleChangeRowColor.bind(this);
+
+        this.addBaseLayer = this.addBaseLayer.bind(this);
+        this.addBaseLayer = this.addBaseLayer.bind(this);
     }
 
     componentDidMount(){
@@ -67,25 +87,56 @@ class MainContainer extends React.Component {
             ['GET', apiSvr + '/coursesWork/layers/' + layerId + '.json'],
             {},
             function(res){
-                console.log(res);
-            let wkt = res.response.data.data.bounds;
-            let format = new ol.format.WKT();
-            let feature = format.readFeature(wkt, {
-                dataProjection: 'EPSG:4326',
-                featureProjection: 'EPSG:3857'
-            });
-            this.state.map.getView().fit(
-                feature.getGeometry().getExtent(),
-                this.state.map.getSize()
-            );
-            this.setState({
-                layerId:this.props.match.params.LAYERID,
-                stylePanelOptions:JSON.parse(res.response.data.data.styling),
-                title:res.response.data.data.title,
-                type:res.response.data.data.geometryType
-            },function(){
-                console.log(this.state.type)
-            });
+                if(res.response.data.data.bounds!=null){
+                    let wkt = res.response.data.data.bounds;
+                    let format = new ol.format.WKT();
+                    let feature = format.readFeature(wkt, {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    });
+                    this.state.map.getView().fit(
+                        feature.getGeometry().getExtent(),
+                        this.state.map.getSize()
+                    );
+                }else if(res.response.data.data.bounds==null&&res.response.data.data.metadata!=null){
+                    let wgs84Bounds=JSON.parse(res.response.data.data.metadata).wgs84Bounds;
+                    let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
+                    let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
+                    this.state.map.getView().fit(transformExtent, this.state.map.getSize());
+                }
+                console.log(res.response.data.data)
+                console.log('testtest')
+                this.setState({
+                    layerId:this.props.match.params.LAYERID,
+                    datasetId:JSON.parse(res.response.data.data.sources).inputDataset.datasetId,
+                    stylePanelOptions:JSON.parse(res.response.data.data.styling),
+                    title:res.response.data.data.title,
+                    changeTitle:res.response.data.data.title,
+                    type:res.response.data.data.geometryType,
+                    process:res.response.data.data.process!=undefined&&res.response.data.data.process!=null ? JSON.parse(res.response.data.data.process):null
+                });
+
+                let datasetId = JSON.parse(res.response.data.data.sources).inputDataset.datasetId
+                ajaxJson(
+                    // ['GET', apiSvr + '/pngo/dataset/column/list.json?pinogioOutputId='+layerId],
+                    ['GET', apiSvr + '/coursesWork/dataset/column/list.json'],
+                    {datasetId:datasetId},
+                    function (data) {
+                    console.log('test33')
+                        let column =[];
+                        for(var i=0;i<data.response.data.data.length;i++){
+                            if(data.response.data.data[i].name!='pino_id'&&data.response.data.data[i].name!='the_geom'){
+                                column.push(data.response.data.data[i])
+                            }
+                        }
+                        this.setState({
+                            stylePanelColumn:column
+                        })
+                    }.bind(this),
+                    function (xhr, status, err) {
+                      alert('Error');
+                    }.bind(this)
+                );
             }.bind(this),
             function(e){
             alert(e);
@@ -95,6 +146,7 @@ class MainContainer extends React.Component {
         let raster = new ol.layer.Image({
             source: new ol.source.ImageWMS({
             ratio: 1,
+            visible: true,
             url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
             params: {
                 'FORMAT': 'image/png',
@@ -109,32 +161,265 @@ class MainContainer extends React.Component {
             layers: {
                 raster: raster
             }
-        },function(){
-            //초기 map 지정 
-            let { map } = this.state;
-            
-            map.setTarget('mapView');
-            map.addLayer(this.state.layers.raster);
         });
+        //초기 map 지정 
+        let { map } = this.state;
 
-        ajaxJson(
-            // ['GET', apiSvr + '/pngo/dataset/column/list.json?pinogioOutputId='+layerId],
-            ['GET', apiSvr + '/coursesWork/layers/'+layerId+'/column.json'],
-            null,
-            function (data) {
-              let column =data.response.data.data
-              console.log(column);
-              this.setState({
-                stylePanelColumn:column
-              })
-              
-              // console.log('ajaxcolumn')
-              // console.dir(data.response.data.data);
-            }.bind(this),
-            function (xhr, status, err) {
-              alert('Error');
-            }.bind(this)
-          );
+        let layerSwitcher = new ol.control.LayerSwitcher();
+        map.addControl(layerSwitcher);
+
+        let boundaryLayer1 = this.addBoundaryLayer('tl_scco_ctprvn', '행정경계: 시도');
+        let boundaryLayer2 = this.addBoundaryLayer('tl_scco_sig', '행정경계: 시군구');
+        let boundaryLayer3 = this.addBoundaryLayer('tl_scco_emd', '행정경계: 읍면동');
+        let boundaryLayer4 = this.addBoundaryLayer('tl_scco_li', '행정경계: 리');
+        
+        let layerGroup2 = new ol.layer.Group({
+          title: 'Boundary Map',
+          layers: [
+            boundaryLayer1,
+            boundaryLayer2,
+            boundaryLayer3,
+            boundaryLayer4
+          ]
+        });
+        
+        this.addBaseLayer(map);
+        map.addLayer(layerGroup2);
+        map.addLayer(raster);
+        map.setTarget('mapView');
+    }
+
+    addBaseLayer(map) {
+        
+        // define epsg:5179 projection
+        proj4.defs("EPSG:5179","+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+        let proj5179 = ol.proj.get('EPSG:5179');
+        proj5179.setExtent([90112, 1192896, 2187264, 2765760]);
+        
+        // define epsg:5181 projection
+        proj4.defs("EPSG:5181","+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+        let proj5181 = ol.proj.get('EPSG:5181');
+        proj5181.setExtent([-30000, -60000, 494288, 988576]);
+    
+    
+        let osm = new ol.layer.Tile({
+            title : 'OSM',
+            visible : false,
+            type : 'base',
+            source: new ol.source.OSM()
+        });
+        
+        let resolutions = [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25];
+        let extent = [90112, 1192896, 2187264, 2765760];  // 4 * 3
+    
+        let naver = new ol.layer.Tile({
+            title : 'Naver Street Map',
+            visible : true,
+            type : 'base',
+            source : new ol.source.XYZ({
+                projection: 'EPSG:5179',
+                tileSize: 256,
+                minZoom: 0,
+                maxZoom: resolutions.length - 1,
+                tileGrid: new ol.tilegrid.TileGrid({
+                    extent: extent,
+                    origin: [extent[0], extent[1]],
+                    resolutions: resolutions
+                }),
+                tileUrlFunction: function (tileCoord, pixelRatio, projection) {
+                    if (tileCoord == null) return undefined;
+    
+                    var s = Math.floor(Math.random() * 3) + 1;  // 1 ~ 4
+                    var z = tileCoord[0] + 1;
+                    var x = tileCoord[1];
+                    var y = tileCoord[2];
+    
+                    return 'http://onetile' + s + '.map.naver.net/get/149/0/0/' + z + '/' + x + '/' + y + '/bl_vc_bg/ol_vc_an';
+                },
+                attributions: [
+                    new ol.Attribution({ 
+                        html: ['<a href="http://map.naver.com"><img src="http://static.naver.net/maps2/logo_naver_s.png"></a>']
+                    })
+                ]
+            })
+        });
+    
+        extent = [-30000, -60000, 494288, 988576];
+        
+        let daum = new ol.layer.Tile({
+            title : 'Daum Street Map',
+            visible : false,
+            type : 'base',
+            source : new ol.source.XYZ({
+                projection: 'EPSG:5181',
+                tileSize: 256,
+                minZoom: 0,
+                maxZoom: resolutions.length - 1,
+                tileGrid: new ol.tilegrid.TileGrid({
+                    origin: [extent[0], extent[1]],
+                    resolutions: resolutions
+                }),
+                tileUrlFunction: function (tileCoord, pixelRatio, projection) {
+                    if (tileCoord == null) return undefined;
+    
+                    var s = Math.floor(Math.random() * 4);  // 0 ~ 3
+                    var z = resolutions.length - tileCoord[0];
+                    var x = tileCoord[1];
+                    var y = tileCoord[2];
+    
+                    return 'http://map' + s + '.daumcdn.net/map_2d/2fso49/L' + z + '/' + y + '/' + x + '.png';
+                },
+                attributions: [
+                    new ol.Attribution({ 
+                        html: ['<a href="http://map.daum.net"><img src="http://i1.daumcdn.net/localimg/localimages/07/mapjsapi/m_bi.png"></a>']
+                    })
+                ]
+            })
+        });
+        
+        let vworldBase = new ol.layer.Tile({
+            title : 'Vworld base',
+            visible : false,
+            type : 'base',
+            source:new ol.source.XYZ({
+                url: 'http://xdworld.vworld.kr:8080/2d/Base/201512/{z}/{x}/{y}.png'
+            })
+        });
+        
+        let vworldSatelite = new ol.layer.Tile({
+            title : 'Vworld satelite',
+            visible : false,
+            type : 'base',
+            source:new ol.source.XYZ({
+                url: 'http://xdworld.vworld.kr:8080/2d/Satellite/201301/{z}/{x}/{y}.jpeg'
+            })
+        });
+        
+        let vworldHybrid = new ol.layer.Tile({
+            title : 'Vworld hybrid',
+            visible : false,
+            type : 'base',
+            source:new ol.source.XYZ({
+                url: 'http://xdworld.vworld.kr:8080/2d/Hybrid/201310/{z}/{x}/{y}.png'
+            })
+        });
+    
+        let layers = [];
+        layers.push($.extend(true, {}, vworldHybrid));
+        layers.push($.extend(true, {}, vworldSatelite));
+        layers.push($.extend(true, {}, vworldBase));
+        layers.push($.extend(true, {}, osm));
+        layers.push($.extend(true, {}, daum));
+        layers.push($.extend(true, {}, naver));
+    
+        let layerGroup = new ol.layer.Group({
+            title : 'Base Maps',
+            layers : layers
+        });
+    
+        map.addLayer(layerGroup);
+    
+    }
+    
+    addBoundaryLayer(layer, title) {
+        let boundaryLayer = new ol.layer.Image({
+            title: title,
+            visible: false,
+            opacity: 0.6,
+            source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+            params: {
+                'FORMAT': 'image/png',
+                'VERSION': '1.3.0',
+                'STYLES': '',
+                'LAYERS': 'pinogio:'+layer,
+                // 'LAYERS': 'pinogio:d=KjCXc4dmy9',
+            }
+            })
+        });
+    
+        return boundaryLayer;
+    }
+
+    getRowUniqueInfo(value){
+        if(value !=null){
+            let datasetId = this.state.datasetId;
+            ajaxJson(
+                // ['GET', apiSvr + '/pngo/dataset/column/list.json?pinogioOutputId='+layerId],
+                ['GET', apiSvr + '/coursesWork/dataset/'+datasetId+'/rowUnique.json'],
+                {datasetId:datasetId, columnName:value},
+                function (data) {
+                    let rowUniqueInfo=[];
+                    for(let i=0; i<data.response.data.data.length;i++){
+                        if (i < 10) { 
+                            rowUniqueInfo.push({
+                                value: data.response.data.data[i],
+                                color: '#'+Math.random().toString(16).substr(-6),
+                                opacity: 1,
+                                label: data.response.data.data[i]
+                            });
+                        }
+                    }
+
+                    this.setState({
+                        rowUniqueInfo: rowUniqueInfo
+                    });
+                }.bind(this),
+                function (xhr, status, err) {
+                alert('Error');
+                }.bind(this)
+            );
+        }else{
+            this.setState({
+                rowUniqueInfo:[]
+            })
+        }
+    }
+
+    //RowColor
+    handleChangeRowColor(color, row){
+        var opacity = 1;
+
+        if(color.length>7){
+            // 컬러값과 쉼표만 남기고 삭제. 
+            var rgb = color.replace( /[^%,.\d]/g, "" ); 
+        
+            // 쉼표(,)를 기준으로 분리해서, 배열에 담기. 
+            rgb = rgb.split( "," ); 
+    
+            // 컬러값이 "%"일 경우, 변환하기. 
+            for ( var x = 0; x < 4; x++ ) { 
+                if ( rgb[ x ].indexOf( "%" ) > -1 ) rgb[ x ] = Math.round( parseFloat( rgb[ x ] ) * 2.55 ); 
+            } 
+    
+            // 16진수 문자로 변환. 
+            var toHex = function( string ){ 
+                string = parseInt( string, 10 ).toString( 16 ); 
+                string = ( string.length === 1 ) ? "0" + string : string; 
+
+                return string; 
+            }; 
+    
+            var r = toHex( rgb[ 0 ] ); 
+            var g = toHex( rgb[ 1 ] ); 
+            var b = toHex( rgb[ 2 ] ); 
+            
+            color = "#" + r + g + b; 
+            opacity = rgb[ 3 ];
+        }
+
+        for(let i=0;i<this.state.rowUniqueInfo.length;i++){
+            if(this.state.rowUniqueInfo[i].value==row.value){
+                let rowUniqueInfo = this.state.rowUniqueInfo;
+                rowUniqueInfo[i].color = color;
+                rowUniqueInfo[i].opacity = opacity;
+                this.setState({
+                    rowUniqueInfo:rowUniqueInfo
+                })
+            }
+        }
+        
     }
 
     handleChangeSingle (event, value) {
@@ -143,21 +428,71 @@ class MainContainer extends React.Component {
         })
     };
 
+    handleChangeSetting(){
+        this.setState({
+            settingModal:!this.state.settingModal
+        })
+    }
+
+    //제목입력
+    handleChangeTitle(e, v){
+        this.setState({
+            changeTitle: v
+        });
+    }
+
+    //주제지도 변경 버튼
+    editLayer(){
+        let title=this.state.changeTitle
+        ajaxJson(
+        ['PUT', apiSvr + '/coursesWork/layers/' + this.state.layerId + '/metadata.json'],
+        {
+            title:this.state.changeTitle
+        },
+        function (data) {
+            this.setState({
+                title:title,
+                settingModal:!this.state.settingModal
+            })
+        }.bind(this),
+        function (xhr, status, err) {
+            alert('Error');
+        }.bind(this)
+        );
+    }
+
     render() {
+
+        //주제지도 삭제 확인 및 취소 버튼
+        const settingButton = [
+            <FlatButton
+                hoverColor="#FAFAFA"
+                label="취소"
+                onClick={this.handleChangeSetting}
+            />,
+            <FlatButton
+                backgroundColor="#00BCD4"
+                hoverColor="#B2EBF2"
+                label="편집"
+                onClick={()=>this.editLayer()}
+            />
+        ];
    
         return (
             <div>
                 <header id="header">
-                    <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor:'#424242'}}>
+                    <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor:'#43444c'}}>
 
                         <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
                             {/* 뒤로가기 */}
-                            <IconButton style={{width: 50, height: 50}}>
-                                <IconArrowBack 
-                                    color='white'
-                                    onClick={()=>this.props.history.goBack()}
-                                />
-                            </IconButton>
+                            <IconMenu
+                                iconButtonElement={<IconButton><IconNavigationMenu color='white' /></IconButton>}
+                                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                            >
+                                <MenuItem primaryText="수업 홈" onClick={() => this.props.history.push('/ngiiedu/course/'+this.props.match.params.COURSEID)}/>
+                                <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
+                            </IconMenu>
                             {/* 활동 제목 */}
                             <div style={{fontSize: 20, textAlign:'left',color:'white'}}>
                                 {this.state.title}
@@ -165,34 +500,76 @@ class MainContainer extends React.Component {
                         </div>
 
                         <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
-                            <FlatButton
-                                label="미리보기"
-                                style={{color:'white'}}
-                                onClick={() => this.props.history.push('/ngiiedu/map/preview/'+this.props.match.params.LAYERID)}
-                            />
+                            <IconButton tooltip='설정' onClick={() => this.handleChangeSetting()}>
+                                <IconSettings color='white'/>
+                            </IconButton>
+                            <IconButton tooltip='미리보기' onClick={() => this.props.history.push('/ngiiedu/layer/preview/'+this.props.match.params.LAYERID)}>
+                                <IconPageView color='white'/>
+                            </IconButton>
                         </div>
                     </div>
                 </header>
        
             <main>
                 <div style={{ position: 'absolute', top: 60, bottom:0, left: 0, right: 0 }}>
-                    <div style={{width:'20%', height:'100%', float:'left', backgroundColor:'white'}}>
-                   {/* {this.state.type.indexOf('POINT')!=-1? */}
-                        <PointSymbolizer 
-                            column={this.state.stylePanelColumn}
-                            styles={this.state.stylePanelOptions}
-                            layerId={this.state.layerId}
-                            raster={this.state.layers.raster}
-                        />
-                    {/* :null} */}
+                    <div style={{width:400, height:'100%', float:'left', backgroundColor:'white'}}>
+                        {this.state.type!=null&&this.state.type.indexOf('POINT')!=-1 || this.state.stylePanelOptions!=null&&this.state.stylePanelOptions.symbolizerType =="COLORMAP"?
+                            <PointSymbolizer 
+                                column={this.state.stylePanelColumn}
+                                styles={this.state.stylePanelOptions}
+                                layerId={this.state.layerId}
+                                raster={this.state.layers.raster}
+                                getRowUniqueInfo={this.getRowUniqueInfo}
+                                rowUniqueInfo={this.state.rowUniqueInfo}
+                                handleChangeRowColor={this.handleChangeRowColor}
+                                datasetId = {this.state.datasetId}
+                                process={this.state.process}
+                            />
+                        :this.state.type!=null&&this.state.type.indexOf('LINE')!=-1?
+                            <LineSymbolizer
+                                column={this.state.stylePanelColumn}
+                                styles={this.state.stylePanelOptions}
+                                layerId={this.state.layerId}
+                                raster={this.state.layers.raster}
+                                getRowUniqueInfo={this.getRowUniqueInfo}
+                                rowUniqueInfo={this.state.rowUniqueInfo}
+                                handleChangeRowColor={this.handleChangeRowColor}
+                                datasetId = {this.state.datasetId}
+                            />
+                        :this.state.type!=null&&this.state.type.indexOf('POLYGON')!=-1?
+                            <PolygonSymbolizer
+                                column={this.state.stylePanelColumn}
+                                styles={this.state.stylePanelOptions}
+                                layerId={this.state.layerId}
+                                raster={this.state.layers.raster}
+                                getRowUniqueInfo={this.getRowUniqueInfo}
+                                rowUniqueInfo={this.state.rowUniqueInfo}
+                                handleChangeRowColor={this.handleChangeRowColor}
+                                datasetId = {this.state.datasetId}
+                            />
+                        :null}
                     </div>
-                    <div id="mapView" style={{height:'100%',width:'80%', float:'left'}}>
-
-                        
+                    <div id="mapView" style={{height:'100%', paddingLeft:400}}>
                     </div>
                        
                 </div>
             </main>
+                {/* 주제지도 편집 모달 */}
+                <Dialog
+                    title="주제지도 편집"
+                    actions={settingButton}
+                    modal={false}
+                    open={this.state.settingModal}
+                    onRequestClose={this.handleChangeSetting}
+                >
+                    <Subheader>Title</Subheader>
+                    <TextField 
+                        hintText="제목을 입력하세요" 
+                        value={this.state.changeTitle}
+                        onChange={this.handleChangeTitle}
+                        type='text'
+                    />
+                </Dialog>
             </div>
         );
     }

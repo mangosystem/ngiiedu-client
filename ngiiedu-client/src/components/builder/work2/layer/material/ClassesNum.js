@@ -7,7 +7,7 @@ class ClassesNum extends React.Component {
 
 	render() {
 		return (
-			<Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center'}}>
+			<Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
 				<Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
                     클래스
                 </Paper>

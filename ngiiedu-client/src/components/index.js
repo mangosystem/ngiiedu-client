@@ -71,6 +71,7 @@ import WorkFrameEditDataset from './builder/work2/dataset/edit/MainContainer';
 import WorkFrameMaps from './builder/work2/maps/setting/MainContainer';
 import WorkFrameEditLayer from './builder/work2/layer/setting/MainContainer';
 import DatasetPreview from './builder/work2/dataset/view/MainContainer';
+import LayerPreview from './builder/work2/layer/preView/MainContainer';
 
 import WorkFramePreviewMaps from './builder/work2/maps/preview/MainContainer';
 
@@ -312,6 +313,10 @@ class App extends Component {
 								<WorkFrameEditLayer />
 								<Footer />
 							</div>
+						</Route>
+
+						<Route path={contextPath +"/layer/preview/:LAYERID"}>
+							<LayerPreview loginStatus={this.state.loginStatus}/>
 						</Route>
 
 						{/* main */}

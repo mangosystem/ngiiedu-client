@@ -8,7 +8,7 @@ class FillColor extends React.Component {
 
 	render() {
 		return (
-			<Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center'}}>
+			<Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
 				<Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
 					채우기 색상
                 </Paper>

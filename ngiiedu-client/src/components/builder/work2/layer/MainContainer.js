@@ -80,7 +80,7 @@ class MainContainer extends React.Component {
     //데이터셋 불러오기
     getDatasetList(){
         ajaxJson(
-            ['GET', apiSvr + '/courses/' + 27 + '/workSubData.json'],
+            ['GET', apiSvr + '/courses/' + this.props.courseId + '/workSubDataByCourseId.json'],
             null,
             function (data) {
                 if(data.response.data !=null){
