@@ -63,10 +63,32 @@ class Work extends React.Component {
 
   //수업 과정 들어가기
   enterWork(id){
-    let courseId = this.props.match.params.COURSEID;
+
+    let courseId = this.props.match.params.COURSEID;    
+
+    ajaxJson(
+      ['GET', apiSvr + '/courses/' + id + '/workSubData.json'],
+      null,
+      function (data) {
+        console.log(data);
+          if(data.response.data.length!=0 && data.response.data!=null){
+            if (data.response.data[0].outputType == 'split') {
+              this.props.history.push("/ngiiedu/split");
+            } else if (data.response.data[0].outputType == 'swipe') {
+              this.props.history.push("/ngiiedu/swipe");
+            } else if (data.response.data[0].outputType == 'population') {
+              
+            } else {
+              //alert('수업 과정 아이디 : '+id+', 수업 과정 들어가기');
+              this.props.history.push("/ngiiedu/course/" + courseId + "/work2/" + id);
+            }
+          }
+      }.bind(this),
+      function (xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
     
-    //alert('수업 과정 아이디 : '+id+', 수업 과정 들어가기');
-    this.props.history.push("/ngiiedu/course/" + courseId + "/work2/" + id);
   };
 
   componentWillMount() {

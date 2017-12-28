@@ -62,6 +62,9 @@ import WorkFrameDataCollect from './builder/work/dataCollect/MainContainer';
 import StoryMapPreview from './builder/work/preView/storyMap/MainContainer';
 import MapPreview from './builder/work/preView/map/MainContainer';
 
+import WorkFrameSplit from './builder/work2/split/MainContainer';
+import WorkFrameSWipe from './builder/work2/swipe/MainContainer';
+
 //work ui 변경중 
 import WorkFrameContainer from './builder/work2/MainContainer';
 import WorkFrameEditDataset from './builder/work2/dataset/edit/MainContainer';
@@ -241,7 +244,7 @@ class App extends Component {
             				</div>
             			</Route>
 
-									<Route path={contextPath + "/course/:COURSEID/activity/:ACTIVITYID/:SUBWORKID"}>
+						<Route path={contextPath + "/course/:COURSEID/activity/:ACTIVITYID/:SUBWORKID"}>
             				<div>
             					<Header2 />
             					<CourseActivityContainer loginStatus={this.state.loginStatus}/>
@@ -249,7 +252,7 @@ class App extends Component {
             				</div>
             			</Route>
 									
-									<Route path={contextPath + "/course/:COURSEID/activity/:ACTIVITYID"}>
+						<Route path={contextPath + "/course/:COURSEID/activity/:ACTIVITYID"}>
             				<div>
             					<Header2 />
             					<CourseActivityContainer loginStatus={this.state.loginStatus}/>
@@ -257,9 +260,17 @@ class App extends Component {
             				</div>
             			</Route>
 
+						<Route path={contextPath + "/split"}>
+            				<div>
+            					<WorkFrameSplit loginStatus={this.state.loginStatus}/>
+            				</div>
+            			</Route>
 
-
-									
+						<Route path={contextPath + "/swipe"}>
+            				<div>
+            					<WorkFrameSWipe loginStatus={this.state.loginStatus}/>
+            				</div>
+            			</Route>
 
             			<Route path={contextPath + "/course/:COURSEID/work/:workId"}>
             				<WorkFrameDataCollect loginStatus={this.state.loginStatus}/>
