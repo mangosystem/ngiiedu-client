@@ -24,11 +24,6 @@ class MainContainer extends React.Component {
         };
     }
 
-    componentDidMount() {
-        
-
-    }    
-
     goCourseHome() {
         const courseId = this.props.match.params.COURSEID;
         this.props.history.push("/ngiiedu/course/" + courseId);
