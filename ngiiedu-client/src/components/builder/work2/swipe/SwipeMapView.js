@@ -126,10 +126,6 @@ class SwipeMapView extends React.Component {
         let map = new ol.Map({
             target: 'map',
             layers: [
-                new ol.layer.Tile({
-                    type: 'base',
-                    source: new ol.source.OSM()
-                }),
                 new ol.layer.Group({
                     title : 'Base Maps',
                     layers : [
@@ -162,12 +158,9 @@ class SwipeMapView extends React.Component {
             swipe.set('orientation', nextProps.typeKind);
         }
 
-        if (nextProps.map1Value != this.props.map1Value || nextProps.map2Value != this.props.map2Value) {
-            
+        if (nextProps.map1Value != this.props.map1Value) {
 
-            for (let i=0; i<swipe.layers.length; i++) {
-                swipe.removeLayer(swipe.layers[i]);
-            }
+            swipe.removeLayer(layers1[this.props.map1Value]);
               
             for (let i = 0; i < map.getLayers().getArray().length; i++) {
                 if (map.getLayers().getArray()[i] instanceof ol.layer.Group) {
@@ -184,17 +177,35 @@ class SwipeMapView extends React.Component {
             });
 
             map.addLayer(newLayerGroup);
-
             swipe.addLayer(layers1[nextProps.map1Value]);
-            swipe.addLayer(layers2[nextProps.map2Value], true);
 
+        } else if (nextProps.map2Value != this.props.map2Value) {
+            
+            swipe.removeLayer(layers2[this.props.map2Value]);
+              
+            for (let i = 0; i < map.getLayers().getArray().length; i++) {
+                if (map.getLayers().getArray()[i] instanceof ol.layer.Group) {
+                    map.removeLayer(map.getLayers().getArray()[i]);
+                }
+            }
+
+            let newLayerGroup = new ol.layer.Group({
+                title : 'Base Maps',
+                layers : [
+                    layers2[nextProps.map2Value],
+                    layers1[nextProps.map1Value]
+                ]
+            });
+
+            map.addLayer(newLayerGroup);
+            swipe.addLayer(layers2[nextProps.map2Value], true);
         }
 
     }
 
     componentDidUpdate() {
         let { map } = this.state;
-        map.render();
+        map.renderSync();
     }
 
     updateViewProjection(map, projection) {
