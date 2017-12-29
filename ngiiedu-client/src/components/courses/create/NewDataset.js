@@ -14,28 +14,43 @@ import Subheader from 'material-ui/Subheader';
 
 import update from 'react-addons-update';
  
+import BoundsModal from './BoundsModal.js';
 
 class NewDataset extends Component {
     constructor(){
         super();
 
         this.state={
-            options:{
-                photo:true,
-                date:true
-            },
+            title:'',
+            is_photo :true,
+            geometry_type:'POINT',
             columns:[
                 {
                     idx:0,
+                    name:'column0',
                     alias:'sample',
-                    type:'ANY_VALUE',
-                    text:'',
+                    value_type:'ANY_VALUE',
+                    type:'STRING',
+                    value_base:'',
                     required:true
                 }
             ],
+            wgs84Bounds:{
+                minY:34.44521717164801,
+                minX:124.14518712529437,
+                maxY:37.98947165211126,
+                maxX:131.29728673466937,
+            },
+            // wgs84Bounds:{
+            //     minY:124.14518712529437,
+            //     minX:34.44521717164801,
+            //     maxY:131.29728673466937,
+            //     maxX:37.98947165211126
+            // },//4326 wkt형식 bounds
             categoryValue:'',//카테고리 추가 값 입력 state
-            selectedColumn:'',
-            selectedCategory:'',
+            selectedColumn:'', //현재 선택된 컬럼
+            selectedCategory:'', //현재 선택된 카테고리
+            modalOpen:false, // 모달창 오픈
         }
 
         this.handleCategoryValue = this.handleCategoryValue.bind(this);//에러나서 추가... 기본value 문제인듯
@@ -49,54 +64,109 @@ class NewDataset extends Component {
         this.addColumn = this.addColumn.bind(this); //컬럼 추가
         
         //옵션 관련
-        this.changeOptions = this.changeOptions.bind(this);
+        this.changeOptions = this.changeOptions.bind(this); //사진옵션
+        this.changeGeometryType = this.changeGeometryType.bind(this); //geomety type 변경
         
         //범주관련
         this.onKeyPress = this.onKeyPress.bind(this); //범주 추가시 (엔터키)
         this.selectCategoryRow = this.selectCategoryRow.bind(this); // 카테고리 row 선택
         this.deleteCategory = this.deleteCategory.bind(this); // 카테고리 삭제
 
-        //범위 관령
-        this.changeRangedValues = this.changeRangedValues.bind(this); //범주값 변경시 text 생성
+        //범위 관련
+        this.changeRangedValues = this.changeRangedValues.bind(this); //범주값 변경시 value_base 생성
+
+        //지도관련 bound
+        this.handleModal = this.handleModal.bind(this) //모달온오프 헨들러.
+        this.saveWGS = this.saveWGS.bind(this) //모달 바운더리 save
+
+        //전달
+        this.onChangedDataset = this.onChangedDataset.bind(this);
     }
+
+    //모달온오프 헨들러.
+    handleModal(){
+        this.setState({
+            modalOpen: !this.state.modalOpen
+        })
+    }
+
+    //모달 바운더리 저장
+    saveWGS(extent){
+        console.log(extent)
+        this.setState({
+            wgs84Bounds:{
+                minX:extent[0],
+                minY:extent[1],
+                maxX:extent[2],
+                maxY:extent[3],
+            },
+            modalOpen:false
+        })
+
+        this.onChangedDataset();
+    }
+
+    //geometry type 변경
+    changeGeometryType(v){
+        this.setState({
+            geometry_type:v
+        })
+    }
+    /////---------------------------
 
     componentDidMount(){
         let moduleId = this.props.moduleId;
-        
-        
-        if(moduleId =='1'){
+        let d = this.props.datasetData;
+        if(d != ''){
+            this.setState({
+                title:d.title,
+                is_photo :d.is_photo,
+                geometry_type:d.geometry_type,
+                columns:d.columns,
+                wgs84Bounds:d.metadata.wgs84Bounds,
+            })
+        }else if(moduleId =='1'){
             //우리지역 소음지도
             this.setState({
                 columns:[
                     {
                         idx:0,
+                        name:'column1',
                         alias:'소음측정값',
-                        type:'ANY_VALUE',
-                        text:'',
+                        value_type:'ANY_VALUE',
+                        type:'STRING',
+                        value_base:'',
                         required:true
                     },
                     {
                         idx:1,
+                        name:'column2',
                         alias:'주요소음원',
-                        type:'ALLOWED_VALUES',
-                        text:'도로교통소음|공사장소음|생활소음|철도소음|기타소음',
+                        value_type:'ALLOWED_VALUES',
+                        type:'STRING',
+                        value_base:'도로교통소음|공사장소음|생활소음|철도소음|기타소음',
                         required:true
                     },
                     {
                         idx:2,
+                        name:'column3',
                         alias:'체감소음도',
-                        type:'ALLOWED_VALUES',
-                        text:'아주조용함|조용함|보통|시끄러움|아주시끄러움',
+                        value_type:'ALLOWED_VALUES',
+                        type:'STRING',
+                        value_base:'아주조용함|조용함|보통|시끄러움|아주시끄러움',
                         required:true
                     },
                     {
                         idx:3,
+                        name:'column4',
                         alias:'기타',
-                        type:'ANY_VALUE',
-                        text:'',
+                        value_type:'ANY_VALUE',
+                        type:'STRING',
+                        value_base:'',
                         required:true
                     }
-                ]
+                ],
+                title:'소음원 현장조사'
             })
         }else if(moduleId =='2'){
             //GPS 활용 위치학습
@@ -104,12 +174,15 @@ class NewDataset extends Component {
                 columns:[
                     {
                         idx:0,
+                        name:'column1',
                         alias:'장소명',
-                        type:'ANY_VALUE',
-                        text:'',
+                        value_type:'ANY_VALUE',
+                        type:'STRING',
+                        value_base:'',
                         required:true
                     }
-                ]
+                ],
+                title:'위치학습 현장조사'
             })
         }else if(moduleId =='4'){
             //통합적영토교육 -> 소음측정
@@ -117,13 +190,16 @@ class NewDataset extends Component {
                 columns:[
                     {
                         idx:0,
+                        name:'column1',
                         alias:'불편내용',
-                        type:'ANY_VALUE',
-                        text:'',
+                        value_type:'ANY_VALUE',
+                        type:'STRING',
+                        value_base:'',
                         required:true
                     }
                     
-                ]
+                ],
+                title:'불편지역 현장조사'
             })
         }else if(moduleId =='5'){
             //우리학교 운동장 생태지도
@@ -131,22 +207,25 @@ class NewDataset extends Component {
                 columns:[
                     {
                         idx:0,
+                        name:'column1',
                         alias:'나무종류',
-                        type:'ALLOWED_VALUES',
-                        text:'소나무|잣나무|낙엽송|리기다소나무|편백나무|상수리나무|신갈나무|침엽수|활엽수|기타',
+                        value_type:'ALLOWED_VALUES',
+                        type:'STRING',
+                        value_base:'소나무|잣나무|낙엽송|리기다소나무|편백나무|상수리나무|신갈나무|침엽수|활엽수|기타',
                         required:true
                     }
-                ]
+                ],
+                title:'생태지도 현장조사'
             })
         }
     }
 
     //옵션체크박스 선택시
-    changeOptions(v,key){
-        let options = this.state.options;
-        options[key]=v;
+    changeOptions(v){
         this.setState({
-            options:options
+            is_photo:v
+        },function(){
+            this.onChangedDataset();
         })
     }
 
@@ -163,15 +242,15 @@ class NewDataset extends Component {
             let selectedColumn = this.state.selectedColumn
             let value = $('#category').val();
             if(value==''){return console.log('값 없음')};
-            let textArray, text;
+            let textArray, value_base;
 
-            if(selectedColumn.text!=''){
-                textArray = selectedColumn.text.split('|');
+            if(selectedColumn.value_base!=''){
+                textArray = selectedColumn.value_base.split('|');
                 if(textArray.indexOf(value)>=0){return console.log('중복된값')}
                 textArray.push(value);
-                text = textArray.join('|');
+                value_base = textArray.join('|');
             }else{
-                text = value
+                value_base = value
             }
 
             let arrayIdx = this.findColumnIdx(selectedColumn.idx);
@@ -180,7 +259,7 @@ class NewDataset extends Component {
                     this.state.columns,
                     {
                         [arrayIdx] : {
-                            text : { $set : text}
+                            value_base : { $set : value_base}
                         }
                     }
                 ),
@@ -189,9 +268,11 @@ class NewDataset extends Component {
                 this.setState({
                     selectedColumn:this.state.columns[arrayIdx]
                 })
+                this.onChangedDataset();
             });
             
-            console.log(text)
+            // console.log(text)
+            
         }
     }
 
@@ -202,6 +283,7 @@ class NewDataset extends Component {
                 return idx
             } 
         }
+        
     }
 
     //컬럼선택
@@ -231,25 +313,34 @@ class NewDataset extends Component {
             this.setState({
                 selectedColumn:this.state.columns[arrayIdx]
             })
+            this.onChangedDataset();
         });
+
+        
     }
 
     //컬럼 타입변경
     changeColumnType(v, column){
         console.log('changeColumnType')
+        if(v==this.state.selectedColumn.value_type){
+            return;
+        }
         
         let arrayIdx = this.findColumnIdx(column.idx);
-        let text ='';
+        let value_base ='';
+        let type = 'STRING';
         if(v=='RANGE_VALUE'){
-            text = '1|10|1'
+            value_base = '1|10|1'
+            type = 'INTEGER'
         }
         this.setState({
             columns:update(
                 this.state.columns,
                 {
                     [arrayIdx] : {
-                        type : { $set : v},
-                        text : { $set : text}
+                        value_type : { $set : v},
+                        value_base : { $set : value_base},
+                        type : { $set : type}
                     }
                 }
             ),
@@ -258,7 +349,10 @@ class NewDataset extends Component {
             this.setState({
                 selectedColumn:this.state.columns[arrayIdx]
             })
+            this.onChangedDataset();
         });
+
+        
     }
 
     //컬럼 필수여부 변경
@@ -279,7 +373,10 @@ class NewDataset extends Component {
             this.setState({
                 selectedColumn:this.state.columns[arrayIdx]
             })
+            this.onChangedDataset();
         });
+
+        
     }
 
     //컬럼삭제
@@ -298,7 +395,10 @@ class NewDataset extends Component {
             this.setState({
                 selectedColumn:''
             })
+            this.onChangedDataset();
         });
+
+        
     }
 
     //컬럼 추가 
@@ -311,9 +411,10 @@ class NewDataset extends Component {
         
         let column ={
             idx: newColumnIdx,
+            name: 'column'+(newColumnIdx+1),
             alias:'',
-            type:'ANY_VALUE',
-            text:'',
+            value_type:'ANY_VALUE',
+            value_base:'',
             required:true
         }
 
@@ -325,7 +426,11 @@ class NewDataset extends Component {
                 }
             ),
             selectedCategory:''
+        },function(){
+            this.onChangedDataset();
         });
+
+        
     }
 
     //카테고리 삭제
@@ -333,10 +438,10 @@ class NewDataset extends Component {
         let selectedCategory = this.state.selectedCategory;
 
         let selectedColumn = this.state.selectedColumn;
-        let textArray = selectedColumn.text.split('|');
+        let textArray = selectedColumn.value_base.split('|');
         let idx = textArray.indexOf(selectedCategory);
         textArray.splice(idx,1)
-        let text = textArray.join('|');
+        let value_base = textArray.join('|');
 
         let arrayIdx = this.findColumnIdx(selectedColumn.idx);
         this.setState({
@@ -344,7 +449,7 @@ class NewDataset extends Component {
                 this.state.columns,
                 {
                     [arrayIdx] : {
-                        text : { $set : text}
+                        value_base : { $set : value_base}
                     }
                 }
             ),
@@ -353,7 +458,10 @@ class NewDataset extends Component {
             this.setState({
                 selectedColumn:this.state.columns[arrayIdx]
             })
+            this.onChangedDataset();
         });
+
+        
     }
 
     //카테고리 선택
@@ -370,7 +478,7 @@ class NewDataset extends Component {
         let max = $('#maxValue').val();
         let range = $('#rangeValue').val();
 
-        let text = min+'|'+max+'|'+range;
+        let value_base = min+'|'+max+'|'+range;
 
         let arrayIdx = this.findColumnIdx(selectedColumn.idx);
         this.setState({
@@ -378,7 +486,7 @@ class NewDataset extends Component {
                 this.state.columns,
                 {
                     [arrayIdx] : {
-                        text : { $set : text}
+                        value_base : { $set : value_base}
                     }
                 }
             )
@@ -386,8 +494,27 @@ class NewDataset extends Component {
             this.setState({
                 selectedColumn:this.state.columns[arrayIdx]
             })
+            this.onChangedDataset();
         });
 
+        
+
+    }
+
+    onChangedDataset(){
+        let result ={
+            title:this.state.title,
+            privacy :'TEAM',
+            geometry_type :this.state.geometry_type,
+            columns:this.state.columns,
+            is_photo:this.state.is_photo,
+            metadata:{
+                spatialType:'VECTOR',
+                geometryType:this.state.geometry_type,
+                wgs84Bounds:this.state.wgs84Bounds
+            }
+        }
+        this.props.onChangedDataset(result)
     }
 
     render() {
@@ -400,7 +527,7 @@ class NewDataset extends Component {
                     <Paper style={{gridColumn:'1',gridRow:'1'}}>
                         <div style={{display:'grid',gridTemplateColumns:'7% 35% 20% 15%',height:50}}>
                                 <h3 style={{gridColumn:'2',margin:'auto 0'}}> 컬럼명 </h3>
-                                <h3 style={{gridColumn:'3',margin:'auto 0'}}> 타입 </h3>
+                                <h3 style={{gridColumn:'3',margin:'auto 0'}}> 자료형식 </h3>
                                 <h3 style={{gridColumn:'4',margin:'auto auto'}}> 필수여부</h3>
                                 <div style={{gridColumn:'5',margin:'auto auto'}}>
                                     <FlatButton
@@ -434,7 +561,7 @@ class NewDataset extends Component {
                                 <div style={{gridColumn:'3',margin:'auto 0'}}>
                                 <SelectField
                                     style={{width:'80%'}}
-                                    value={row.type}
+                                    value={row.value_type}
                                     onChange={(e,i,v)=>this.changeColumnType(v,row)}
                                 >
                                     <MenuItem value={'ANY_VALUE'} primaryText="모든 값" />
@@ -455,28 +582,49 @@ class NewDataset extends Component {
                         </div>
                     </Paper>
                     <div style={{gridColumn:'2',gridRow:'1',padding:'0 10px'}}>
-                        <Paper style={{width:220, height:90,marginBottom:10,paddingLeft:20}}>
-                            <h3 style={{padding:'10px 0 10px 0'}}>옵션</h3>
-                            <Checkbox
-                                label="사진첨부"
-                                onCheck={(e,c)=>this.changeOptions(c,'photo')}
-                                checked={this.state.options.photo}
-                            />
-                            <Checkbox
-                                label="날짜첨부"
-                                onCheck={(e,c)=>this.changeOptions(c,'date')}
-                                checked={this.state.options.date}
-                            />
+                        <Paper style={{width:220, height:120,marginBottom:10,paddingLeft:10}}>
+                            <div style={{height:30,display:'flex',alignItems:'center'}}>
+                                <h3 >옵션 </h3>
+                            </div>
+                            <div style={{display:'flex'}}>
+                                <Checkbox
+                                    iconStyle={{marginRight:10}}
+                                    style={{width:'40%'}}
+                                    labelStyle={{width:52}}
+                                    label="사진첨부"
+                                    onCheck={(e,c)=>this.changeOptions(c)}
+                                    checked={this.state.is_photo}
+                                />
+                                <SelectField
+                                    floatingLabelText="데이터 타입"
+                                    style={{width:'50%',marginLeft:17,marginTop:-37}}
+                                    value={'POINT'}
+                                    onChange={(e,i,v)=>this.changeGeometryType(v)}
+                                >
+                                    <MenuItem value={'POINT'} primaryText="포인트" />
+                                    <MenuItem value={'LINESTRING'} primaryText="라인" />
+                                    <MenuItem value={'POLYGON'} primaryText="폴리곤" />
+                                </SelectField>
+                            </div>
+                            <div style={{marginTop:10,textAlign:'center'}}>
+                                <FlatButton
+                                    label="지도 범위 설정"
+                                    backgroundColor={'#3e81f6'}
+                                    style={{color: '#fff',width:'80%'}}
+                                    onClick={this.handleModal}
+                                />
+                            </div>
+                            
                         </Paper>
-                        {this.state.selectedColumn==''|| this.state.selectedColumn.type=='ANY_VALUE' ? //선택되지않거나 ANY_VALUE일 때
+                        {this.state.selectedColumn==''|| this.state.selectedColumn.value_type=='ANY_VALUE' ? //선택되지않거나 ANY_VALUE일 때
                             null
 
-                        :this.state.selectedColumn.type == 'ALLOWED_VALUES'? // ALLOWED_VALUES 일때
-                            <Paper style={{height:300}}>
-                                <div style={{height:50,display:'flex',alignItems:'center',paddingLeft:20}}>
+                        :this.state.selectedColumn.value_type == 'ALLOWED_VALUES'? // ALLOWED_VALUES 일때
+                            <Paper style={{height:270}}>
+                                <div style={{height:30,display:'flex',alignItems:'center',paddingLeft:10}}>
                                     <h3 > 범주 설정 </h3>
                                 </div>
-                                <Divider style={{marginBottom:20}}/>
+                                <Divider style={{marginBottom:10}}/>
                                 <Subheader style={{lineHeight:'',color:'#3e81f6',fontSize:13}}>범주 추가</Subheader>
                                 <TextField
                                     style={{width:'60%',margin:'0 10% 0 10%',height:40}}
@@ -490,7 +638,7 @@ class NewDataset extends Component {
                                     <Paper
                                         style={{width:'80%',height:150,overflow:'auto',paddingTop:10}}
                                     >
-                                    {this.state.selectedColumn.text.split("|").map((row,idx)=>(
+                                    {this.state.selectedColumn.value_base.split("|").map((row,idx)=>(
                                         <p 
                                             key={idx} 
                                             onClick={()=>this.selectCategoryRow(row)}
@@ -508,17 +656,17 @@ class NewDataset extends Component {
                                 </div>
                             </Paper>  
 
-                        :this.state.selectedColumn.type == 'RANGE_VALUE'? // RANGE_VALUE 일때
-                            <Paper style={{height:300}}>
-                                <div style={{height:50,display:'flex',alignItems:'center',paddingLeft:20}}>
+                        :this.state.selectedColumn.value_type == 'RANGE_VALUE'? // RANGE_VALUE 일때
+                            <Paper style={{height:270}}>
+                                <div style={{height:30,display:'flex',alignItems:'center',paddingLeft:10}}>
                                     <h3> 범위 설정 </h3>
                                 </div>
-                                <Divider style={{marginBottom:20}}/>
+                                <Divider style={{marginBottom:10}}/>
                                 <Subheader style={{lineHeight:'',color:'#3e81f6',fontSize:13}}>시작값</Subheader>
                                 <TextField
                                     style={{width:'80%',margin:'0 10% 0 10%',height:40}}
                                     hintText="값입력"
-                                    value={this.state.selectedColumn.text.split('|')[0]}
+                                    value={this.state.selectedColumn.value_base.split('|')[0]}
                                     id="minValue"
                                     onChange={this.changeRangedValues}
                                 />
@@ -526,7 +674,7 @@ class NewDataset extends Component {
                                 <TextField
                                     style={{width:'80%',margin:'0 10% 0 10%',height:40}}
                                     hintText="값입력"
-                                    value={this.state.selectedColumn.text.split('|')[1]}
+                                    value={this.state.selectedColumn.value_base.split('|')[1]}
                                     id="maxValue"
                                     onChange={this.changeRangedValues}
                                 />
@@ -534,7 +682,7 @@ class NewDataset extends Component {
                                 <TextField
                                     style={{width:'80%',margin:'0 10% 0 10%',height:40}}
                                     hintText="값입력"
-                                    value ={this.state.selectedColumn.text.split('|')[2]}
+                                    value ={this.state.selectedColumn.value_base.split('|')[2]}
                                     id="rangeValue"
                                     onChange={this.changeRangedValues}
                                 />
@@ -545,6 +693,18 @@ class NewDataset extends Component {
 
                 </div>
 
+                
+
+                {this.state.modalOpen?
+                    <BoundsModal
+                        open={this.state.modalOpen}
+                        wgs84Bounds={this.state.wgs84Bounds}
+                        handleModal={this.handleModal}
+                        saveWGS ={this.saveWGS}
+                    />
+                :
+                    null
+                }
 
             </div>
         );

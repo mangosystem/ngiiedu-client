@@ -10,7 +10,6 @@ import {
 
 import NewDataset from './NewDataset.js';
 
-
 class Step2Work extends React.Component {
 
 	constructor() {
@@ -25,12 +24,19 @@ class Step2Work extends React.Component {
 
     this.onSelectionWork = this.onSelectionWork.bind(this);
     this.isSelected = this.isSelected.bind(this);
+    this.handleNewDataset = this.handleNewDataset.bind(this);
 	}
 
+  handleNewDataset(){
+    this.setState({newDataset:true})
+  }
+
   componentDidMount() {
-    console.log('componentDidMount');
+    // console.log('componentDidMount');
 
     const {selectedModule} = this.state;
+
+    let handleNewDataset = this.handleNewDataset;
     ajaxJson(
       ['GET', apiSvr+'/modules/' + this.props.selectedModule + '/moduleWork.json'],
       null,
@@ -40,10 +46,13 @@ class Step2Work extends React.Component {
           items: data,
         });
 
+        let datasetWorkIdx ='';
+
         data.map((row,idx)=>{
           if(row.moduleWorkCourseType=="현장실습"){
+            datasetWorkIdx=row.idx;
             this.setState({
-              datasetWorkIdx:row.idx,
+              datasetWorkIdx:datasetWorkIdx,
               moduleId:row.moduleId
             })
           }
@@ -54,6 +63,10 @@ class Step2Work extends React.Component {
         for (let n of this.props.selectedItems) {
           this.state.items.map(function(v, i) {
             if (n == v.idx) {
+              if(n == datasetWorkIdx){
+                console.log('현장실습 체크중')
+                handleNewDataset() //newDataset =true
+              }
               console.log(n)
               workIds.push(i);
               return;
@@ -111,59 +124,59 @@ class Step2Work extends React.Component {
 
 	render() {
 		return (
-      <div style={{textAlign: 'center' }}>
-        {(() => {
-          const {items} = this.state;
-          if (items.length > 0) {
-            let tableRows = (
-              items.map((item, index) => (
-                <TableRow
-                  key={index}
-                  selected={this.isSelected(index)}
-                  
+      <div>
+        <div style={{width:'80%',marginLeft:'10%' }}>
+        <h2 style={{textAlign:'left',margin:10}}> * 수업과정</h2>
+          {(() => {
+            const {items} = this.state;
+            if (items.length > 0) {
+              let tableRows = (
+                items.map((item, index) => (
+                  <TableRow
+                    key={index}
+                    selected={this.isSelected(index)}
+                  >
+                    <TableRowColumn style={{width:100}} checked >{item.moduleWorkCourseType}</TableRowColumn>
+                    <TableRowColumn >{item.moduleWorkName}</TableRowColumn>
+                  </TableRow>
+                ))
+              );
+
+              return (
+                <Table
+                  selectable
+                  multiSelectable
+                  showCheckboxes
+                  onRowSelection={this.onSelectionWork}
+                  className="material-table"
                 >
-                  <TableRowColumn checked >{item.moduleWorkCourseType}</TableRowColumn>
-                  <TableRowColumn >{item.moduleWorkName}</TableRowColumn>
-                </TableRow>
-              ))
-            );
-
-            return (
-              <Table
-      					selectable
-      					multiSelectable
-      					showCheckboxes
-                onRowSelection={this.onSelectionWork}
-                className="material-table"
-      				>
-      					<TableBody
-      						displayRowCheckbox
-      						deselectOnClickaway={false}
-      					>
-                  {tableRows}
-                </TableBody>
-              </Table>
-            )
-          } else {
-            return(
-              <div>
-                <img src="https://react.semantic-ui.com//assets/images/wireframe/paragraph.png" />
-              </div>
-            )
-          }
-        })()}
-
+                  <TableBody
+                    displayRowCheckbox
+                    deselectOnClickaway={false}
+                  >
+                    {tableRows}
+                  </TableBody>
+                </Table>
+              )
+            } else {
+              return(
+                <div>
+                  <img src="https://react.semantic-ui.com//assets/images/wireframe/paragraph.png" />
+                </div>
+              )
+            }
+          })()}
+        </div>
         {this.state.newDataset ? 
-          <NewDataset moduleId = {this.state.moduleId}/>
+          <NewDataset 
+            moduleId = {this.state.moduleId}
+            onChangedDataset = {this.props.onChangedDataset}
+            datasetData = {this.props.datasetData}
+          />
          :
           null
         } 
-        
-
-
-
-
-
+       
 			</div>
 		)
 	}

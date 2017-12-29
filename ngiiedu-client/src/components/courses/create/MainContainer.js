@@ -39,7 +39,8 @@ class MainContainer extends React.Component {
 				studentClass: ''
 			},
 
-			courseId: ''
+			courseId: '',
+			datasetData:''//데이터셋 생성
 		};
 
 		this.handleNextStep = this.handleNextStep.bind(this);
@@ -53,6 +54,8 @@ class MainContainer extends React.Component {
 
 		this.onCourseCreate = this.onCourseCreate.bind(this);
 		this.onClickCoursePage = this.onClickCoursePage.bind(this);
+
+		this.onChangedDataset = this.onChangedDataset.bind(this);
 	}
 
 	handlePrevStep() {
@@ -73,6 +76,9 @@ class MainContainer extends React.Component {
 
 	handleNextStep() {
 		const {stepIndex} = this.state;
+		if (stepIndex == 1){//현장실습 데이터셋 생성예외처리.
+
+		}
 
 		if (stepIndex == 2) {
 			this.onCourseCreate();
@@ -88,7 +94,8 @@ class MainContainer extends React.Component {
 
 	onSelectedModule(itemId) {
 		this.setState({
-			selectedModule: itemId
+			selectedModule: itemId,
+			datasetData:''
 		});
 	}
 
@@ -144,18 +151,27 @@ class MainContainer extends React.Component {
 		this.props.history.push("/ngiiedu/course/" + courseId);
 	}
 
+	onChangedDataset(value){
+		this.setState({
+			datasetData:value
+		})
+		// console.dir(value)
+	}
+
 	render() {
 		return (
-			<main id="main">
-				<div className="inner">
+			<main id="main" style={{paddingTop:0}}>
+				<div className="inner" style={{paddingTop:0}}>
+				<div id="contentsWrap" style={{margin:'10px auto 0'}}>
+						<ul className="location">
+								<li>홈</li>
+								<li>메뉴</li>
+								<li>수업생성</li>
+						</ul>
+				</div>
 				<Paper style={{minHeight:700,paddingTop:20,paddingBottom:20}}>
 					<div style={{display:'flex',paddingLeft:20, paddingRight:20,justifyContent:'space-between'}}>
 						<h3 className="edge">수업생성</h3>
-						<ul className="location">
-							<li>홈</li>
-							<li>수업</li>
-							<li style={{fontWeight:'bold'}}>수업생성</li>
-						</ul>
 					</div>
 					<Stepper
 						activeStep={this.state.stepIndex}
@@ -192,6 +208,8 @@ class MainContainer extends React.Component {
 									selectedModule={this.state.selectedModule}
 									selectedItems={this.state.selectedWorks}
 									onSelectedWorks={this.onSelectedWorks}
+									onChangedDataset={this.onChangedDataset}
+									datasetData={this.state.datasetData}
 								/>
 							)
 						}	else if (this.state.stepIndex == 2) {

@@ -91,7 +91,12 @@ class MainContainer extends React.Component {
 
                 {/* 메인 container */}
                 {this.state.workType=='dataset' ? 
-                <DatasetMain/>
+                <DatasetMain
+                    courseId={this.props.match.params.COURSEID}
+                    workId={this.props.match.params.WORKID} 
+                    data={this.state.data}
+                    getDataList={this.getDataList}
+                />
                 :
                 this.state.workType=='layer'?
                 <LayerMain

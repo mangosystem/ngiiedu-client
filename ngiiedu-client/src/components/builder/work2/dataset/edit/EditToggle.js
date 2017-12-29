@@ -31,7 +31,7 @@ class EditToggle extends React.Component {
 
     render() {
         return (
-          <Paper style={{ padding: 10, backgroundColor:'#424242', textAlign: 'right', zIndex:9, borderRadius: 10,color:'white'}}>
+          <Paper style={{ padding: 10, backgroundColor:'#43444c', textAlign: 'right', zIndex:9, borderRadius: 10,color:'white'}}>
           <div style={{padding: '5px 10px 0px', textAlign:'right'}}>
             <Toggle
               label="편집모드 전환"

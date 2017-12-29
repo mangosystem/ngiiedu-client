@@ -110,65 +110,68 @@ class Step3Info extends React.Component {
 	render() {
 		return (
       <div>
-				<TextField
-					floatingLabelText="수업이름"
-					hintText="수업이름을 입력하세요. (필수입력)"
-					floatingLabelFixed={true}
-					fullWidth={true}
-					errorText=""
-					onChange={this.onChangeCourseName}
-				/>
-				<br />
-				<TextField
-					floatingLabelText="수업내용"
-					floatingLabelFixed={false}
-					fullWidth={true}
-					onChange={this.onChangeCourseDesc}
-				/>
-				<br />
+				<div style={{width:'50%',marginLeft:'25%' }}>
+				<h2 style={{textAlign:'left',margin:10}}> * 정보입력</h2>
+					<TextField
+						floatingLabelText="수업이름"
+						hintText="수업이름을 입력하세요. (필수입력)"
+						floatingLabelFixed={true}
+						fullWidth={true}
+						errorText=""
+						onChange={this.onChangeCourseName}
+					/>
+					<br />
+					<TextField
+						floatingLabelText="수업내용"
+						floatingLabelFixed={false}
+						fullWidth={true}
+						onChange={this.onChangeCourseDesc}
+					/>
+					<br />
 
-				<SelectField
-					floatingLabelText="학교급구분"
-					floatingLabelFixed={false}
-					value={this.state.schoolLevel}
-					onChange={this.onChangeSchoolLevel}
-				>
-					{stItems}
-				</SelectField>
-				<br />
-				<SelectField
-					floatingLabelText="시도교육청명"
-					floatingLabelFixed={false}
-					value={this.state.schoolOffice}
-					onChange={this.onChangeSchoolOffice}
-				>
-					{eoItems}
-				</SelectField>
-				<br />
-				<AutoComplete
-					floatingLabelText="학교명"
-					floatingLabelFixed={false}
-					searchText={this.state.searchText}
-					onUpdateInput={this.onChangeSchoolName}
-					dataSource={[]}
-					openOnFocus={true}
-				/>
-				<br />
-				<TextField
-					floatingLabelText="학년"
-					floatingLabelFixed={false}
-					inputStyle={{textAlign: 'center'}}
-					onChange={this.onChangeStudentGrade}
-					style={{width: '100px'}}
-				/>
-				-
-				<TextField
-					floatingLabelText="반"
-					floatingLabelFixed={false}
-					inputStyle={{textAlign: 'center'}}
-					onChange={this.onChangeStudentClass}
-					style={{width: '100px'}}
-				/>
+					<SelectField
+						floatingLabelText="학교급구분"
+						floatingLabelFixed={false}
+						value={this.state.schoolLevel}
+						onChange={this.onChangeSchoolLevel}
+					>
+						{stItems}
+					</SelectField>
+					<br />
+					<SelectField
+						floatingLabelText="시도교육청명"
+						floatingLabelFixed={false}
+						value={this.state.schoolOffice}
+						onChange={this.onChangeSchoolOffice}
+					>
+						{eoItems}
+					</SelectField>
+					<br />
+					<AutoComplete
+						floatingLabelText="학교명"
+						floatingLabelFixed={false}
+						searchText={this.state.searchText}
+						onUpdateInput={this.onChangeSchoolName}
+						dataSource={[]}
+						openOnFocus={true}
+					/>
+					<br />
+					<TextField
+						floatingLabelText="학년"
+						floatingLabelFixed={false}
+						inputStyle={{textAlign: 'center'}}
+						onChange={this.onChangeStudentGrade}
+						style={{width: '100px'}}
+					/>
+					-
+					<TextField
+						floatingLabelText="반"
+						floatingLabelFixed={false}
+						inputStyle={{textAlign: 'center'}}
+						onChange={this.onChangeStudentClass}
+						style={{width: '100px'}}
+					/>
+				</div>	
 			</div>
 		)
 	}

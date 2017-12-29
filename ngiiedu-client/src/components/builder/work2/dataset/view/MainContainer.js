@@ -1,9 +1,16 @@
 import React from 'react';
 
-import MapsPreviewPanel from './MapsPreviewPanel';
+import MapPreviewPanel from './MapPreviewPanel';
+
 import { withRouter } from "react-router-dom";
-import IconButton from 'material-ui/IconButton';
+
 import IconArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconNavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import Toggle from 'material-ui/Toggle';
+
 
 class MainContainer extends React.Component {
 
@@ -13,9 +20,12 @@ class MainContainer extends React.Component {
         selectedLayerId :'',
         raster : null,
         title:'',
-        bounds:''
+        bounds:'',
+        data:''
         
     }
+
+    this.setTitle = this.setTitle.bind(this);
   }
 
   
@@ -40,65 +50,75 @@ class MainContainer extends React.Component {
       raster:raster
     })
 
+
+  }
+
+  setTitle(value){
+    this.setState({title:value})
   }
 
   componentDidMount(){
     // 제목 받아오기 //bounds
-    let layerName = this.props.match.params.DATASETID;
-    
-    
-
-    ajaxJson(
-      ['GET', apiSvr + '/coursesWork/dataset/' + layerName + '.json'],
-      {},
-      function (res) {
-          let data = res.response.data.data;
-          if(data.bounds){
-            console.log('bounds :' +  data.bounds )
-            this.setState({
-                title:data.title,
-                bounds:data.bounds
-            });
-          }
-          
-      }.bind(this),
-      function (e) {
-          alert(e);
-      }
-    )
+ 
   }
 
 
   render() {
-   
+    let styles = {
+        thumbOff: {
+            backgroundColor: '#EAEAEA'
+        },
+        trackOff: {
+            backgroundColor: '#BDBDBD'
+        },
+        thumbSwitched: {
+            backgroundColor: '#3e81f6'
+        },
+        trackSwitched: {
+            backgroundColor: '#BDBDBD'
+        }
+    };
     return (
       <div>
         <header id="header">
-            <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor:'#424242'}}>
-                <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
-                    {/* 뒤로가기 */}
-                    <IconButton style={{width: 50, height: 50}}>
-                        <IconArrowBack 
-                            color='white'
-                            onClick={()=>this.props.history.goBack()}
-                        />
-                    </IconButton>
-                    {/* 활동 제목 */}
-                    <div style={{fontSize: 20, textAlign:'left',color:'white'}}>
-                        {this.state.title}
-                    </div>
-                </div>
+          <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white'}}>
+              <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
+              <IconMenu
+                  iconButtonElement={<IconButton><IconNavigationMenu color='white'/></IconButton>}
+                  anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                  targetOrigin={{horizontal: 'left', vertical: 'top'}}
+              >
+                  <MenuItem primaryText="수업 홈" onClick={()=>this.props.history.push("/ngiiedu/course/" +this.props.match.params.COURSEID)}/>
+                  <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
+              </IconMenu>
+              <div 
+                  style={{fontSize: 20, textAlign:'left'}}>
+                  {this.state.title}
+              </div>
+              </div>
 
-                <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
-                </div>
-            </div>
+              <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
+                <Toggle
+                      label="이미지 지도"
+                      labelStyle={{ color: 'white' }}
+                      defaultToggled={true}
+                      thumbStyle={styles.thumbOff}
+                      trackStyle={styles.trackOff}
+                      thumbSwitchedStyle={styles.thumbSwitched}
+                      trackSwitchedStyle={styles.trackSwitched}
+                      // onToggle={(e, v) => this.setState({ isInputChecked : v })}
+                  />
+              </div>
+          </div>
         </header>
         <main>
             <div style={{ position: 'absolute', top: 60, bottom: 0, left: 0,right:0 }}>
-                <MapsPreviewPanel 
+                <MapPreviewPanel 
                     layerName={this.props.match.params.DATASETID}
                     raster={this.state.raster}
                     bounds={this.state.bounds}
+                    data={this.state.data}
+                    setTitle={this.setTitle}
                 />
             </div>
         </main>

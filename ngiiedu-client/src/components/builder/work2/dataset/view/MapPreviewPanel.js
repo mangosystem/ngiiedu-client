@@ -1,0 +1,254 @@
+import React from 'react';
+
+import Paper from 'material-ui/Paper';
+import RaisedButton from 'material-ui/RaisedButton';
+import Toggle from 'material-ui/Toggle';
+
+class MapPreviewPanel extends React.Component {
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+
+      isEditMode: false,
+
+      map: new ol.Map({
+        view: new ol.View({
+          center: [14143701.095047, 4477593.930960],
+          zoom: 7,
+          minZoom: 1,	maxZoom: 18
+        }),
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.XYZ({
+              url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
+            })
+          })
+        ],
+        controls: ol.control.defaults({
+          zoom: true, rotate: false, attribution: true
+        }),
+        interactions: ol.interaction.defaults({
+          altShiftDragRotate: false, doubleClickZoom: true,
+          dragPan: true, pinchRotate: false,
+          pinchZoom: false, keyboard: false,
+          mouseWheelZoom: true, shiftDragZoom: true
+        })
+      }),
+
+      layers: {
+        raster: null, vector: null
+      }
+    };
+
+  }
+
+  componentDidMount(){
+
+    let { map } = this.state;
+    
+  
+    map.setTarget('mapView');
+
+    //배경지도 추가
+    let layerSwitcher = new ol.control.LayerSwitcher();
+    map.addControl(layerSwitcher);
+    this.addBaseLayer(map);
+    map.addLayer(this.props.raster);
+
+
+    let layerName = this.props.layerName;
+    let setTitle = this.props.setTitle;
+    ajaxJson(
+      ['GET', apiSvr + '/coursesWork/dataset/' + layerName + '.json'],
+      {},
+      function (res) {
+        let data = res.response.data.data;
+        setTitle(data.title);
+
+        if(data.metadata !="" && JSON.parse(data.metadata).wgs84Bounds != null){
+            var w = JSON.parse(data.metadata).wgs84Bounds;
+            var extent = [w.minX,w.minY,w.maxX,w.maxY];
+            var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
+            
+            this.state.map.getView().fit(
+                extent3857,
+                this.state.map.getSize()
+            );
+        }else{
+            let wkt = data.bounds;
+            if(wkt != null){
+                let format = new ol.format.WKT();
+                let feature = format.readFeature(wkt, {
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                });
+                this.state.map.getView().fit(
+                    feature.getGeometry().getExtent(),
+                    this.state.map.getSize()
+                );
+            }
+        }
+          
+      }.bind(this),
+      function (e) {
+          alert(e);
+      }
+    )
+    
+  }
+
+
+  
+
+addBaseLayer(map) {
+
+    // define epsg:5179 projection
+    proj4.defs("EPSG:5179","+proj=tmerc +lat_0=38 +lon_0=127.5 +k=0.9996 +x_0=1000000 +y_0=2000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+    let proj5179 = ol.proj.get('EPSG:5179');
+    proj5179.setExtent([90112, 1192896, 2187264, 2765760]);
+    
+    // define epsg:5181 projection
+    proj4.defs("EPSG:5181","+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+    let proj5181 = ol.proj.get('EPSG:5181');
+    proj5181.setExtent([-30000, -60000, 494288, 988576]);
+
+
+    let osm = new ol.layer.Tile({
+        title : 'OSM',
+        visible : false,
+        type : 'base',
+        source: new ol.source.OSM()
+    });
+    
+    let resolutions = [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25];
+    let extent      = [90112, 1192896, 2187264, 2765760];  // 4 * 3
+
+    let naver = new ol.layer.Tile({
+        title : 'Naver Street Map',
+        visible : true,
+        type : 'base',
+        source : new ol.source.XYZ({
+            projection: 'EPSG:5179',
+            tileSize: 256,
+            minZoom: 0,
+            maxZoom: resolutions.length - 1,
+            tileGrid: new ol.tilegrid.TileGrid({
+                extent: extent,
+                origin: [extent[0], extent[1]],
+                resolutions: resolutions
+            }),
+            tileUrlFunction: function (tileCoord, pixelRatio, projection) {
+                if (tileCoord == null) return undefined;
+
+                var s = Math.floor(Math.random() * 3) + 1;  // 1 ~ 4
+                var z = tileCoord[0] + 1;
+                var x = tileCoord[1];
+                var y = tileCoord[2];
+
+                return 'http://onetile' + s + '.map.naver.net/get/149/0/0/' + z + '/' + x + '/' + y + '/bl_vc_bg/ol_vc_an';
+            },
+            attributions: [
+                new ol.Attribution({ 
+                    html: ['<a href="http://map.naver.com"><img src="http://static.naver.net/maps2/logo_naver_s.png"></a>']
+                })
+            ]
+        })
+    });
+
+    extent = [-30000, -60000, 494288, 988576];
+    
+    let daum = new ol.layer.Tile({
+        title : 'Daum Street Map',
+        visible : false,
+        type : 'base',
+        source : new ol.source.XYZ({
+            projection: 'EPSG:5181',
+            tileSize: 256,
+            minZoom: 0,
+            maxZoom: resolutions.length - 1,
+            tileGrid: new ol.tilegrid.TileGrid({
+                origin: [extent[0], extent[1]],
+                resolutions: resolutions
+            }),
+            tileUrlFunction: function (tileCoord, pixelRatio, projection) {
+                if (tileCoord == null) return undefined;
+
+                var s = Math.floor(Math.random() * 4);  // 0 ~ 3
+                var z = resolutions.length - tileCoord[0];
+                var x = tileCoord[1];
+                var y = tileCoord[2];
+
+                return 'http://map' + s + '.daumcdn.net/map_2d/2fso49/L' + z + '/' + y + '/' + x + '.png';
+            },
+            attributions: [
+                new ol.Attribution({ 
+                    html: ['<a href="http://map.daum.net"><img src="http://i1.daumcdn.net/localimg/localimages/07/mapjsapi/m_bi.png"></a>']
+                })
+            ]
+        })
+    });
+    
+    let vworldBase = new ol.layer.Tile({
+        title : 'Vworld base',
+        visible : false,
+        type : 'base',
+        source:new ol.source.XYZ({
+            url: 'http://xdworld.vworld.kr:8080/2d/Base/201512/{z}/{x}/{y}.png'
+        })
+    });
+    
+    let vworldSatelite = new ol.layer.Tile({
+        title : 'Vworld satelite',
+        visible : false,
+        type : 'base',
+        source:new ol.source.XYZ({
+            url: 'http://xdworld.vworld.kr:8080/2d/Satellite/201301/{z}/{x}/{y}.jpeg'
+        })
+    });
+    
+    let vworldHybrid = new ol.layer.Tile({
+        title : 'Vworld hybrid',
+        visible : false,
+        type : 'base',
+        source:new ol.source.XYZ({
+            url: 'http://xdworld.vworld.kr:8080/2d/Hybrid/201310/{z}/{x}/{y}.png'
+        })
+    });
+
+    let layers = [];
+    layers.push($.extend(true, {}, vworldHybrid));
+    layers.push($.extend(true, {}, vworldSatelite));
+    layers.push($.extend(true, {}, vworldBase));
+    layers.push($.extend(true, {}, osm));
+    layers.push($.extend(true, {}, daum));
+    layers.push($.extend(true, {}, naver));
+
+    let layerGroup = new ol.layer.Group({
+        title : 'Base Maps',
+        layers : layers
+    });
+
+    map.addLayer(layerGroup);
+
+    }
+
+
+
+  render() {
+    return (
+    <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} >
+        <div id="mapView" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
+        
+        <div style={{position:'absolute',right:100,bottom:100,zIndex:1}}>
+        <img src={"http://1.234.82.19:8083/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:"+this.props.layerName}/>
+        </div>
+        </div>
+    </div>
+
+    );
+  }
+};
+
+export default MapPreviewPanel;

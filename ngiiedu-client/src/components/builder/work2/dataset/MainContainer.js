@@ -41,6 +41,8 @@ class MainContainer extends React.Component {
         this.thumbnailClick = this.thumbnailClick.bind(this);
         this.handleStep = this.handleStep.bind(this);
         this.deleteDatasetHandle = this.deleteDatasetHandle.bind(this);
+        this.downloadFile = this.downloadFile.bind(this);
+
     }
 
     componentDidMount(){
@@ -131,6 +133,11 @@ class MainContainer extends React.Component {
         }
     }
 
+    //파일 다운로드
+    downloadFile(value,datasetId){
+        console.log(datasetId+'('+value+') 파일 다운로드') ;       
+    }
+
     render() {
    
         return (
@@ -168,6 +175,29 @@ class MainContainer extends React.Component {
                                             >
                                                 <MenuItem primaryText="편집하기" onClick={()=>this.changeName(row)}/>
                                                 <MenuItem primaryText="삭제하기" onClick={()=>this.deleteDatasetHandle(row)}/>
+                                                {row.pngoData.spatialType=="VECTOR" ?
+                                                    <MenuItem primaryText="다운로드" 
+                                                        menuItems={
+                                                            [
+                                                                <MenuItem primaryText="KML" onClick={()=>this.downloadFile('KML',row.pinogioOutputId)}/>,
+                                                                <MenuItem primaryText="GML3" onClick={()=>this.downloadFile('GML3',row.pinogioOutputId)}/>,
+                                                                <MenuItem primaryText="GEOSJON" onClick={()=>this.downloadFile('GEOSJON',row.pinogioOutputId)}/>,
+                                                                <MenuItem primaryText="SHAPE" onClick={()=>this.downloadFile('SHAPE',row.pinogioOutputId)}/>
+                                                            ]
+                                                        }
+                                                    />
+                                                :row.pngoData.spatialType=="RASTER" ?
+                                                    <MenuItem primaryText="다운로드" 
+                                                        menuItems={
+                                                            [
+                                                                <MenuItem primaryText="TIFF" onClick={()=>this.downloadFile('TIFF',row.pinogioOutputId)}/>
+                                                            ]
+                                                        }
+                                                    />    
+                                                :null
+                                                }                                                
+                                                
+                                                
                                             </IconMenu>
                                         </div>    
                                     </div>

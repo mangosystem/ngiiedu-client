@@ -84,7 +84,7 @@ class Header extends React.Component {
         <header className="edu">
           <div id="headerWrap">
             <div className="header">
-              <h1 className="edge" onClick={()=>alert("홈으로 가야한다능")}>공간정보융합 활용지원정보</h1>
+              <h1 className="edge" onClick={()=>window.location.href=contextPath + '/main'}>공간정보융합 활용지원정보</h1>
               {this.props.loginStatus.userDivision==1 ?//교사
                <div className="gnb" >
                 <span className="teacher">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.
