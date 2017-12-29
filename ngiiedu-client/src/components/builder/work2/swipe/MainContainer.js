@@ -30,9 +30,8 @@ class MainContainer extends React.Component {
 
     }    
 
-    goCourseHome() {
-        const courseId = this.props.match.params.COURSEID;
-        this.props.history.push("/ngiiedu/course/" + courseId);
+    goCourseList() {
+        this.props.history.push("/ngiiedu/course/");
     }
 
     changeTypeKind(typeKind) {
@@ -55,7 +54,7 @@ class MainContainer extends React.Component {
                                 anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
                             >
-                                <MenuItem primaryText="수업 홈" onClick={this.goCourseHome.bind(this)}/>
+                                <MenuItem primaryText="수업 목록" onClick={this.goCourseList.bind(this)}/>
                                 <MenuItem primaryText="뒤로 가기" onClick={()=>this.props.history.goBack()}/>
                             </IconMenu>
                             <div 
