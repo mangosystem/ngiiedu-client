@@ -10,7 +10,7 @@ class MapsView extends React.Component {
     }
 
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         
         let { map1, map2, map3, map4 } = this.state;
 
@@ -20,12 +20,13 @@ class MapsView extends React.Component {
 
             map3.setView(map1.getView());
             map4.setView(map1.getView());
+            
+            map3.updateSize();
+            map4.updateSize();
         }
 
         map1.updateSize();
-        map2.updateSize();
-        map3.updateSize();
-        map4.updateSize();
+        map2.updateSize();        
 
     }
 
@@ -260,7 +261,7 @@ class MapsView extends React.Component {
             {(() => {
                 if (this.props.typekind == 'double1') {
                     return (
-                        <div style={{height: '100%'}}>
+                        <div style={{height: '100%', width: '100%', overflowY: 'hidden'}}>
                             <div 
                                 id="map1" 
                                 style={{ 
@@ -272,6 +273,18 @@ class MapsView extends React.Component {
                                 id="map2" 
                                 style={{ 
                                     height: '49.5%'
+                                }}>
+                            </div>
+                            <div 
+                                id="map3" 
+                                style={{ 
+                                    height: '0'
+                                }}>
+                            </div>
+                            <div 
+                                id="map4" 
+                                style={{ 
+                                    height: '0'
                                 }}>
                             </div>
                         </div>
@@ -292,11 +305,23 @@ class MapsView extends React.Component {
                                     width: '49.5%'
                                 }}>
                             </div>
+                            <div 
+                                id="map3" 
+                                style={{ 
+                                    width: '0'
+                                }}>
+                            </div>
+                            <div 
+                                id="map4" 
+                                style={{ 
+                                    width: '0'
+                                }}>
+                            </div>                            
                         </div>
                     );
                 } else if (this.props.typekind == 'quadruple') {
                     return (
-                        <div style={{width: '100%', height: '100%', display: 'flex', flexWrap: 'wrap'}}>
+                        <div style={{width: '100%', height: '100%', display: 'flex', flexWrap: 'wrap', overflowY: 'hidden'}}>
                             <div 
                                 id="map1" 
                                 style={{ 
