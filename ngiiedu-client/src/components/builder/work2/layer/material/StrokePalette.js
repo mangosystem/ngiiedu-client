@@ -6,7 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 import ColorPalette from './common/ColorPalette.js';
 
-class FillPalette extends React.Component {
+class StrokePalette extends React.Component {
 
 	constructor() {
 		super();
@@ -16,16 +16,16 @@ class FillPalette extends React.Component {
 		return (
 			<Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
 				<Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
-					색상표
+					외곽선 색상표
                 </Paper>
 				<Paper zDepth={0} style={{width:'50%', display:'flex',alignItems: 'center'}}>
                 <ColorPalette
                         handleChange={this.props.handleChange}
-                        value={this.props.fillPalette == null ? FillPalette.defaultProps.fillPalette : this.props.fillPalette}
-                        classesNumber={this.props.classesNumber == null ? FillPalette.defaultProps.classesNumber : this.props.classesNumber}
+                        value={this.props.strokePalette == null ? StrokePalette.defaultProps.strokePalette : this.props.strokePalette}
+                        classesNumber={this.props.classesNumber == null ? StrokePalette.defaultProps.classesNumber : this.props.classesNumber}
                     />
-                <DropDownMenu value={this.props.fillOpacity == null ? FillPalette.defaultProps.fillOpacity : this.props.fillOpacity} 
-                    onChange={this.props.handleChangeFillOpacity} 
+                <DropDownMenu value={this.props.strokeOpacity == null ? StrokePalette.defaultProps.strokeOpacity : this.props.strokeOpacity} 
+                    onChange={this.props.handleChangeStrokeOpacity} 
                     underlineStyle={{display:'none'}}
                     style={{marginLeft:10}}
 				>
@@ -58,15 +58,15 @@ class FillPalette extends React.Component {
 
 };
 
-FillPalette.propTypes = {
-	fillPalette: React.PropTypes.string,
+StrokePalette.propTypes = {
+	strokePalette: React.PropTypes.string,
 	opacity: React.PropTypes.number
 };
 
-FillPalette.defaultProps = {
-	fillPalette: 'Blues',
+StrokePalette.defaultProps = {
+	strokePalette: 'Blues',
     opacity: 0.8 ,
     classesNumber : 5
 };
 
-export default FillPalette;
+export default StrokePalette;

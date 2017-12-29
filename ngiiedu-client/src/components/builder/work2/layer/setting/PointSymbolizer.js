@@ -12,12 +12,19 @@ import FillPalette from '../material/FillPalette.js';
 import StrokeWidth from '../material/StrokeWidth.js';
 import StrokeColor from '../material/StrokeColor.js';
 import Reverse from '../material/Reverse.js';
-
+import RowColor from '../material/RowColor.js';
+import ColorMapType from '../material/ColorMapType.js';
+import ColorMapPalette from '../material/ColorMapPalette.js';
+import KernelType from '../material/KernelType.js';
+import CellSize from '../material/CellSize.js';
+import RadiusType from '../material/RadiusType.js';
 
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import { cyan500 } from 'material-ui/styles/colors';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 
 class PointSymbolizer extends React.Component {
@@ -25,10 +32,10 @@ class PointSymbolizer extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-            styleType:'SINGLE',
+            symbolizerType:'SINGLE',
 
-			markerType: null,
-			markerSize: null,
+			markType: null,
+			markSize: null,
 
             fillPalette: null,
             defaultFillColor: null,
@@ -48,6 +55,20 @@ class PointSymbolizer extends React.Component {
 
             column:[],
             layerId:null,
+            
+            colorMapType:null,
+            colorMapPalette:null,
+            colorMapOpacity:null,
+
+            kernelType:null,
+            searchRadius:'',
+            cellSize:'',
+
+            power:null,
+            raidusType:null,
+            numberOfPoints:null,
+            distance:null,
+            slideIndex: 0,
 
             // randomFillColor:null,
             // randomStrokeColor:null
@@ -68,27 +89,46 @@ class PointSymbolizer extends React.Component {
         this.handleChangeRangeSizeMax = this.handleChangeRangeSizeMax.bind(this);
         this.handleChangeFillPalette = this.handleChangeFillPalette.bind(this);
         this.handleChangeFillOpacity = this.handleChangeFillOpacity.bind(this);
+        this.handleChangeColorMapPalette=this.handleChangeColorMapPalette.bind(this);
+        this.handleChangeColorMapOpacity = this.handleChangeColorMapOpacity.bind(this);
+        this.handleChangeColorMapType = this.handleChangeColorMapType.bind(this);
+        this.handleChangeRowColor = this.handleChangeRowColor.bind(this);
+
+        this.handleChangeKernelType = this.handleChangeKernelType.bind(this);
+        this.handleChangeSearchRadius = this.handleChangeSearchRadius.bind(this);
+        this.handleChangeCellSize = this.handleChangeCellSize.bind(this);
+
+        this.handleChangeRadiusType = this.handleChangeRadiusType.bind(this);
+        this.handleChangePower = this.handleChangePower.bind(this);
+        this.handleChangeNumberOfPoints = this.handleChangeNumberOfPoints.bind(this);
+        this.handleChangeDistance = this.handleChangeDistance.bind(this);
+
+        this.handleChangeTab = this.handleChangeTab.bind(this);
 
         this.editStyle = this.editStyle.bind(this);
-        this.styleTypeChange = this.styleTypeChange.bind(this);
+        this.editRaster = this.editRaster.bind(this);
+        this.symbolizerTypeChange = this.symbolizerTypeChange.bind(this);
         
 	}
-///
-// componentDidMount() { console.log('componentDidMount'); }
-//   shouldComponentUpdate(nextProps, nextState) { console.log('shouldComponentUpdate'); return true / false; } 
-//   componentWillUpdate(nextProps, nextState) { console.log('componentWillUpdate'); } 
-//   componentDidUpdate(prevProps, prevState) { console.log('componentDidUpdate'); } 
-//   componentWillUnmount() { console.log('componentWillUnmount'); } 
 
 
-///
-
-
-	componentWillReceiveProps(nextProps) {
+	componentDidMount(nextProps) {
         if (this.props.styles != null) {
-            this.setState({
-                styleType: this.props.styles.styleType != undefined ? this.props.styles.styleType : 'SINGLE',
-            })
+            if(this.props.styles.symbolizerType!='COLORMAP'){
+                this.setState({
+                    symbolizerType: this.props.styles.symbolizerType != undefined ? this.props.styles.symbolizerType : 'SINGLE',
+                })
+            }else if(this.props.styles.symbolizerType=='COLORMAP'){
+                if(this.props.process.identifier=='kernelDensity'){
+                    this.setState({
+                        symbolizerType:'DENSITY'
+                    })
+                }else if(this.props.process.identifier=='inverseDistanceWeighted'){
+                    this.setState({
+                        symbolizerType:'INTERPOLATION'
+                    })
+                }
+            }
 			let options = this.props.styles.options;
 			if (options != undefined) {
                 if(options.fillColor != undefined &&options.fillOpacity != undefined ){
@@ -116,41 +156,65 @@ class PointSymbolizer extends React.Component {
                     this.setState({
                         defaultStrokeColor:result
                     })
-        
                 }
 
 
 				this.setState({
-					markerType: options.markerType != undefined ? options.markerType : Marker.defaultProps.value,
-					markerSize: options.markerSize != undefined ? options.markerSize : MarkerSize.defaultProps.value,
+                    markType: options.markType != undefined ? options.markType : Marker.defaultProps.value,
+                    markSize: options.markSize != undefined ? options.markSize : MarkerSize.defaultProps.value,
 
-					fillPalette: options.fillPalette != undefined ? options.fillPalette : FillPalette.defaultProps.fillPalette ,
-					fillColor: options.fillColor != undefined ? options.fillColor : FillColor.defaultProps.color,
-					fillOpacity: options.fillOpacity != undefined ? Number(options.fillOpacity) : 1,
+                    fillPalette: options.fillPalette != undefined ? options.fillPalette : FillPalette.defaultProps.fillPalette ,
+                    fillColor: options.fillColor != undefined ? options.fillColor : FillColor.defaultProps.color,
+                    fillOpacity: options.fillOpacity != undefined ? Number(options.fillOpacity) : 1,
 
-					strokeWidth: options.strokeWidth != undefined ? Number(options.strokeWidth) : StrokeWidth.defaultProps.value,
-					strokeColor: options.strokeColor != undefined ? options.strokeColor : StrokeColor.defaultProps.color,
-					strokeOpacity: options.strokeOpacity != undefined ? Number(options.strokeOpacity) : 1,
+                    strokeWidth: options.strokeWidth != undefined ? Number(options.strokeWidth) : StrokeWidth.defaultProps.value,
+                    strokeColor: options.strokeColor != undefined ? options.strokeColor : StrokeColor.defaultProps.color,
+                    strokeOpacity: options.strokeOpacity != undefined ? Number(options.strokeOpacity) : 1,
 
-					columnName: options.columnName != undefined ? options.columnName : Column.defaultProps.value,
-					classification: options.classification != undefined ? options.classification : Classification.defaultProps.value,
-					classesNumber: options.classesNumber != undefined ? Number(options.classesNumber) : ClassesNum.defaultProps.value,
+                    columnName: options.columnName != undefined ? options.columnName : Column.defaultProps.value,
+                    classification: options.classification != undefined ? options.classification : Classification.defaultProps.value,
+                    classesNumber: options.classesNumber != undefined ? Number(options.classesNumber) : ClassesNum.defaultProps.value,
 
-					reverse: options.reverse != undefined ? options.reverse : Reverse.defaultProps.value,
+                    reverse: options.reverse != undefined ? options.reverse : Reverse.defaultProps.value,
+                    
+                    colorMapType: options.colorMapType!=undefined? options.colorMapType:ColorMapType.defaultProps.value,
+                    colorMapPalette: options.colorMapPalette!=undefined? options.colorMapPalette:ColorMapPalette.defaultProps.colorMapPalette,
+                    colorMapOpacity: options.colorMapOpacity!=undefined? options.colorMapOpacity:1,
 
-					column: nextProps.column
+					//column: nextProps.column
 				});
-			}
+            }
+            
+            if(this.props.process!=null){
+                let process = this.props.process.options;
+                if(this.props.process.identifier=='kernelDensity'){
+                    this.setState({
+                        kernelType:process.kernelType!=undefined?process.kernelType:KernelType.defaultProps.value,
+                        columnName:process.populationField!=undefined?process.populationField:Column.defaultProps.value,
+                        searchRadius:process.searchRadius!=undefined?process.searchRadius:'',
+                        cellSize:process.cellSize!=undefined?process.cellSize:''
+                    })
+                }if(this.props.process.identifier=='inverseDistanceWeighted'){
+                    this.setState({
+                        columnName:process.inputField!=undefined?process.inputField:Column.defaultProps.value,
+                        power:process.power!=undefined?process.power:'',
+                        radiusType:process.radiusType!=undefined?process.radiusType:RadiusType.defaultProps.value,
+                        numberOfPoints:process.numberOfPoints=!undefined?process.numberOfPoints:'',
+                        distance:process.distance=!undefined?process.distance:''
+                    })
+                }
+            }
+
 		} else {
-			this.setState({
-				column: nextProps.column
-			});
+			// this.setState({
+            //     column: this.props.column,
+            //     columnName:this.props.column[0].name
+			// });
         }
 		
 	}
 
 	componentWillMount() {
-        console.debug('PointSymbolizer componentWillMount');
         //defaultRandomColor
         // var letters = '0123456789ABCDEF';
         // var defaultFillColor = '#';
@@ -169,7 +233,7 @@ class PointSymbolizer extends React.Component {
     //Marker
     handleChangeMarker(event, index, value){
         this.setState({
-            markerType:value
+            markType:value
         })
 
     }
@@ -177,7 +241,7 @@ class PointSymbolizer extends React.Component {
     //MarkerSize
     handleChangeMarkerSize(event, index, value){
         this.setState({
-            markerSize:value
+            markSize:value
         })
     }
 
@@ -272,7 +336,10 @@ class PointSymbolizer extends React.Component {
     handleChangeColumn(event, index, value){
         this.setState({
             columnName:value
-        })
+        });
+        if(this.state.symbolizerType == 'CATEGORY'){
+            this.props.getRowUniqueInfo(value);
+        };
     }
 
 	onChangeColumn(evt, data) {
@@ -328,19 +395,105 @@ class PointSymbolizer extends React.Component {
         })
     }
 
+    //ColorMapType
+    handleChangeColorMapType(event, index, value){
+        this.setState({
+            colorMapType:value
+        })
+    }
+
+    //ColorMapPalette
+    handleChangeColorMapPalette(event, index, value){
+        this.setState({
+            colorMapPalette:value
+        },function(){
+        })
+    }
+
+    //ColorMapPalette
+    handleChangeColorMapOpacity(event, index, value){
+        this.setState({
+            colorMapOpacity:value
+        },function(){
+        })
+    }
+
+    handleChangeRowColor(color, row){
+        this.props.handleChangeRowColor(color, row)
+    }
+
+    editRaster(){
+        let process={
+            identifier:null,
+            options:null,
+            inputDataset:null,
+        }
+        if(this.state.symbolizerType == 'INTERPOLATION'){
+            if(this.state.columnName==null){
+                alert('컬럼을 선택해주세요.');
+                return;
+            }
+            let identifierOption={
+                inputField:this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
+                power:this.state.power,
+                radiusType:this.state.radiusType==null?RadiusType.defaultProps.value:this.state.raidusType,
+                numberOfPoints:this.state.numberOfPoints,
+                distance:this.state.distance,
+                cellSize:this.cellSize
+            }
+            let inputDataset={
+                type:"dataset",
+                datasetId:this.props.datasetId,
+                filter:[]
+            }
+            process.identifier='inverseDistanceWeighted';
+            process.options=identifierOption;
+            process.inputDataset = inputDataset;
+        }else if(this.state.symbolizerType == 'DENSITY'){
+            let identifierOption={
+                kernelType:this.state.kernelType==null?KernelType.defaultProps.value:this.state.kernelType,
+                populationField:this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
+                searchRadius:this.state.searchRadius,
+                cellSize:this.state.cellSize,
+            }
+            let inputDataset={
+                type:"dataset",
+                datasetId:this.props.datasetId,
+                filter:[]
+            }
+            process.identifier='kernelDensity';
+            process.options=identifierOption;
+            process.inputDataset = inputDataset;
+        }
+        console.log(process)
+        var layerId = this.props.layerId;
+        ajaxJson(
+            ['PUT',apiSvr+'/coursesWork/layers/'+layerId+'/process.json'],
+            {
+                process: JSON.stringify(process)
+            },
+            function(res){
+                this.setState({
+                    workList:res.response.data
+                });
+                this.props.raster.getSource().updateParams({_:Date.now()});
+            }.bind(this)
+        );
+    }
+
     //editStyle
     editStyle(){
         let style={
-            styleType:null,
+            symbolizerType:null,
             options:null,
             isClassified:false,
-            geometryType:"MULTIPOINT"
+            symbolType:'POINT'
         }
-        if(this.state.styleType == 'SINGLE'){
+        if(this.state.symbolizerType == 'SINGLE'){
 
             let options ={
-                markerType: this.state.markerType==null ? Marker.defaultProps.value : this.state.markerType,
-                markerSize: this.state.markerSize==null ? MarkerSize.defaultProps.value : this.state.markerSize,
+                markType: this.state.markType==null ? Marker.defaultProps.value : this.state.markType,
+                markSize: this.state.markSize==null ? MarkerSize.defaultProps.value : this.state.markSize,
                 fillColor: this.state.fillColor==null ? FillColor.defaultProps.color : this.state.fillColor,
                 fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
                 strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
@@ -349,13 +502,13 @@ class PointSymbolizer extends React.Component {
             }
 
             style.options = options;
-            style.styleType = 'SINGLE'
+            style.symbolizerType = 'SINGLE'
 
-        }else if(this.state.styleType == 'GRADUATED'){
+        }else if(this.state.symbolizerType == 'GRADUATED'){
             let option = {
                 columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
                 // columnName: 'noise_value',
-                markerSize: this.state.markerSize==null ? MarkerSize.defaultProps.value : this.state.markerSize,
+                markSize: this.state.markSize==null ? MarkerSize.defaultProps.value : this.state.markSize,
                 classification:this.state.classification==null ? Classification.defaultProps.value : this.state.classification,
                 classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
                 fillPalette: this.state.fillPalette==null ? FillPalette.defaultProps.fillPalette : this.state.fillPalette,
@@ -368,64 +521,142 @@ class PointSymbolizer extends React.Component {
             }
 
             style.options = option;
-            style.styleType = 'GRADUATED';
+            style.symbolizerType = 'GRADUATED';
 
-        }else if(this.state.styleType == 'CATEGORIES'){
+        }else if(this.state.symbolizerType == 'CATEGORY'){
             let option = {
                 columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
-                // columnName: 'noise_value',
-                
+                markType: this.state.markType==null ? Marker.defaultProps.value : this.state.markType,
+                markSize: this.state.markSize==null ? MarkerSize.defaultProps.value : this.state.markSize,
                 strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
                 strokeColor: this.state.strokeColor==null ? StrokeColor.defaultProps.color : this.state.strokeColor,
                 strokeOpacity: this.state.strokeOpacity ==null ? 1 : this.state.strokeOpacity,
-            
+                fillColor: this.state.fillColor==null ? FillColor.defaultProps.color : this.state.fillColor,
+                fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
             }
-            style.options = option;
-            style.styleType = 'CATEGORIES';
+            let classes={}
 
-        }else if(this.state.styleType == 'BUBBLE'){
+            style.options = option;
+            style.classes = this.props.rowUniqueInfo;
+            style.symbolizerType = 'CATEGORY';
+
+        }else if(this.state.symbolizerType == 'BUBBLE'){
             let option = {
                 columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
                 classification:this.state.classification==null ? Classification.defaultProps.value : this.state.classification,
                 classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
                 fillPalette: this.state.fillPalette==null ? FillPalette.defaultProps.fillPalette : this.state.fillPalette,
                 fillOpacity: this.state.fillOpacity==null ? 1 : this.state.fillOpacity,
-                minSize : this.state.minSize==null ? RangeSize.defaultProps.minSize : this.state.minSize,
-                maxSize : this.state.maxSize==null ? RangeSize.defaultProps.maxSize : this.state.maxSize,
+                bubbleMinSize : this.state.minSize==null ? RangeSize.defaultProps.minSize : this.state.minSize,
+                bubbleMaxSize : this.state.maxSize==null ? RangeSize.defaultProps.maxSize : this.state.maxSize,
             }
             style.options = option;
-            style.styleType = 'BUBBLE';
+            style.symbolizerType = 'BUBBLE';
             
-        }else if(this.state.styleType == 'HEATMAP'){
-
+        }else if(this.state.symbolizerType == 'INTERPOLATION'){
+            let option = {
+                colorMapType: this.state.colorMapType == null? ColorMapType.defaultProps.value : this.state.colorMapType,
+                classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
+                colorMapPalette:this.state.colorMapPalette == null? ColorMapPalette.defaultProps.colorMapPalette : this.state.colorMapPalette,
+                colorMapOpacity:this.state.colorMapOpacity == null? 1:this.state.colorMapOpacity
+            }
+            style.options = option;
+            style.symbolizerType = 'COLORMAP';
+            style.symbolType = 'RASTER';
+        }else if(this.state.symbolizerType == 'DENSITY'){
+            let option = {
+                colorMapType: this.state.colorMapType == null? ColorMapType.defaultProps.value : this.state.colorMapType,
+                classesNumber: this.state.classesNumber==null ? ClassesNum.defaultProps.value : this.state.classesNumber,
+                colorMapPalette:this.state.colorMapPalette == null? ColorMapPalette.defaultProps.colorMapPalette : this.state.colorMapPalette,
+                colorMapOpacity:this.state.colorMapOpacity == null? 1:this.state.colorMapOpacity
+            }
+            style.options = option;
+            style.symbolizerType = 'COLORMAP';
+            style.symbolType = 'RASTER';
         }
         var layerId = this.props.layerId;
-        // var layerId = 'd=KjCXc4dmy9';
-        // var layerId = 'l=AnyangDong';
         ajaxJson(
             ['PUT',apiSvr+'/coursesWork/layers/'+layerId+'/styling.json'],
             {
                 styling: JSON.stringify(style)
             },
             function(res){
-              this.setState({
-                workList:res.response.data
-              });
-              this.props.raster.getSource().updateParams({_:Date.now()});
-              
+                this.setState({
+                    workList:res.response.data
+                });
+                this.props.raster.getSource().updateParams({_:Date.now()});
             }.bind(this)
         );
-
     }
 
-    styleTypeChange(styleType){
+    symbolizerTypeChange(symbolizerType){
         // var options = this.props.styles.options
         this.setState({
             // fillColor:options.fillColor !=undefined ? options.fillColor: FillColor.defaultProps.color ,
             // fillOpacity:options.fillOpacity !=undefined ? options.fillOpacity: 1 ,
             // strokeColor:options.strokeColor !=undefined ? options.strokeColor:  StrokeColor.defaultProps.color,
             // strokeOpacity:options.strokeOpacity !=undefined ? options.strokeOpacity: 1 ,
-            styleType:styleType
+            symbolizerType:symbolizerType
+        })
+        this.setState({
+        columnName:null
+        })
+        if(symbolizerType=='CATEGORY'){
+            this.props.getRowUniqueInfo(null);
+        }
+        if(symbolizerType=='DENSITY'||symbolizerType=='INTERPOLATION'){
+            this.setState({
+                slideIndex:0
+            })
+        }
+    }
+
+    //KernelType
+    handleChangeKernelType(event, index, value){
+        this.setState({
+            kernelType:value
+        })
+    }
+
+    handleChangeSearchRadius(event){
+        this.setState({
+            searchRadius:event.target.value
+        })
+    }
+
+    handleChangeCellSize(event){
+        this.setState({
+            cellSize:event.target.value
+        })
+    }
+
+    handleChangeRadiusType(event, index, value){
+        this.setState({
+            raidusType:value
+        })
+    }
+
+    handleChangePower(event){
+        this.setState({
+            power:event.target.value
+        })
+    }
+
+    handleChangeNumberOfPoints(event){
+        this.setState({
+            numberOfPoints:event.target.value
+        })
+    }
+
+    handleChangeDistance(event){
+        this.setState({
+            distance:event.target.value
+        })
+    }
+
+    handleChangeTab(value){
+        this.setState({
+            slideIndex:value
         })
     }
 
@@ -437,22 +668,25 @@ class PointSymbolizer extends React.Component {
                 minWidth:70,
                 backgroundColor:'#F6EFEF',
                 border: '3px solid',
-                borderColor: cyan500
+                borderColor: cyan500,
+                marginRight:20
             },
             unSelected:{
                 boxSizing: 'content-box',
                 height:100,
                 minWidth:70,
                 backgroundColor:'#F6EFEF',
+                marginRight:20
             }
 
         }
+
 		let style = null;
 
-		if (this.state.styleType == 'SINGLE') {
+		if (this.state.symbolizerType == 'SINGLE') {
 			// SINGLE
-			// markerType
-			// markerSize
+			// markType
+			// markSize
 			// fillColor
 			// fillOpacity
 			// outlineColor
@@ -462,12 +696,12 @@ class PointSymbolizer extends React.Component {
 			style = (
                 <Paper zDepth={0} style={{fontSize:13}}>
                     <Marker
-                        value={this.state.markerType}
+                        value={this.state.markType}
                         handleChange={this.handleChangeMarker}
                     />
                     <Divider style={{marginTop:1}}/>
                     <MarkerSize
-                        value={this.state.markerSize}
+                        value={this.state.markSize}
                         handleChange={this.handleChangeMarkerSize}
                     />
                     <Divider style={{marginTop:1}}/>
@@ -515,14 +749,15 @@ class PointSymbolizer extends React.Component {
 			);
         } 
         
-        else if (this.state.styleType == 'GRADUATED') {
+        else if (this.state.symbolizerType == 'GRADUATED') {
 			// GRADUATED 단계
 			// inputDataset, propertyName, methodName, numClasses
-			// markerSize, brewerPaletteName, fillOpacity
+			// markSize, brewerPaletteName, fillOpacity
 			// outlineOpacity, outlineWidth, outlineColor, reverse
 			style = (
 				<Paper zDepth={0} style={{fontSize:13}}>
                     <Column
+                        type={this.state.symbolizerType}
                         column={this.props.column}
                         value={this.state.columnName}
                         onChange={this.onChangeColumn}
@@ -531,7 +766,7 @@ class PointSymbolizer extends React.Component {
                     <Divider style={{marginTop:1}}/>
 
                     <MarkerSize
-                        value={this.state.markerSize}
+                        value={this.state.markSize}
                         handleChange={this.handleChangeMarkerSize}
                     />
                     
@@ -593,11 +828,12 @@ class PointSymbolizer extends React.Component {
 
                 </Paper>
 			);
-		} else if (this.state.styleType == 'CATEGORIES') {
+		} else if (this.state.symbolizerType == 'CATEGORY') {
             // 분류값 사용
             style = (
 				<Paper zDepth={0} style={{fontSize:13}}>
                     <Column
+                        type={this.state.symbolizerType}
                         column={this.props.column}
                         value={this.state.columnName}
                         onChange={this.onChangeColumn}
@@ -605,10 +841,18 @@ class PointSymbolizer extends React.Component {
                     />
                     <Divider style={{marginTop:1}}/>
 
-                    <StrokeWidth
-                        value={this.state.strokeWidth}
-                        handleChange={this.handleChangeStrokeWidth}
+                    <Marker
+                        value={this.state.markType}
+                        handleChange={this.handleChangeMarker}
                     />
+
+                    <Divider style={{marginTop:1}}/>
+
+                    <MarkerSize
+                        value={this.state.markSize}
+                        handleChange={this.handleChangeMarkerSize}
+                    />
+
                     <Divider style={{marginTop:1}}/>
 
                     {
@@ -629,101 +873,322 @@ class PointSymbolizer extends React.Component {
                         
                     }
 
+                    <Divider style={{marginTop:1}}/>
+
+                    <StrokeWidth
+                        value={this.state.strokeWidth}
+                        handleChange={this.handleChangeStrokeWidth}
+                    />
+
+                    <Divider style={{marginTop:1}}/>
+
+                    <RowColor
+                        type='FILL'
+                        rowInfo={this.props.rowUniqueInfo}
+                        handleChangeFillColor={this.handleChangeFillColor}
+                        handleChangeRowColor={this.handleChangeRowColor}
+                    />
+
                 </Paper>
 			);
             
-		} else if (this.state.styleType == 'BUBBLE') {
+		} else if (this.state.symbolizerType == 'BUBBLE') {
 			style = (
 				<Paper zDepth={0} style={{fontSize:13}}>
-                <Column
-                    column={this.props.column}
-                    value={this.state.columnName}
-                    onChange={this.onChangeColumn}
-                    handleChange={this.handleChangeColumn}
-                />
-                <Divider style={{marginTop:1}}/>
+                    <Column
+                        type={this.state.symbolizerType}
+                        column={this.props.column}
+                        value={this.state.columnName}
+                        onChange={this.onChangeColumn}
+                        handleChange={this.handleChangeColumn}
+                    />
+                    <Divider style={{marginTop:1}}/>
 
-                <Classification
-                    value={this.state.classification}
-                    handleChange={this.handleChangeClassification}
-                />
-                <Divider style={{marginTop:1}}/>
+                    <Classification
+                        value={this.state.classification}
+                        handleChange={this.handleChangeClassification}
+                    />
+                    <Divider style={{marginTop:1}}/>
 
-                <ClassesNum
-                    value={this.state.classesNumber}
-                    handleChange={this.handleChangeClassesNum}
+                    <ClassesNum
+                        value={this.state.classesNumber}
+                        handleChange={this.handleChangeClassesNum}
 
-                />
-                <Divider style={{marginTop:1}}/>
+                    />
+                    <Divider style={{marginTop:1}}/>
 
-                <FillPalette
-                    fillPalette={this.state.fillPalette}
-                    fillOpacity={this.state.fillOpacity}
-                    handleChange={this.handleChangeFillPalette}
-                    classesNumber={this.state.classesNumber}
-                    handleChangeFillOpacity={this.handleChangeFillOpacity}
-                />
-                <Divider style={{marginTop:1}}/>
+                    <FillPalette
+                        fillPalette={this.state.fillPalette}
+                        fillOpacity={this.state.fillOpacity}
+                        handleChange={this.handleChangeFillPalette}
+                        classesNumber={this.state.classesNumber}
+                        handleChangeFillOpacity={this.handleChangeFillOpacity}
+                    />
+                    <Divider style={{marginTop:1}}/>
 
-                <RangeSize
-                    minSize={this.state.minSize}
-                    maxSize={this.state.maxSize}
-                    handleChangeMin={this.handleChangeRangeSizeMin}
-                    handleChangeMax={this.handleChangeRangeSizeMax}
-                />
+                    <RangeSize
+                        minSize={this.state.minSize}
+                        maxSize={this.state.maxSize}
+                        handleChangeMin={this.handleChangeRangeSizeMin}
+                        handleChangeMax={this.handleChangeRangeSizeMax}
+                    />
 
                
-                </Paper>    
+                </Paper>
 			);
-		}// else if (this.state.styleType == 'HEATMAP') {
-        //     style =(
-        //         <div>
-                    
-        //         </div>
-        //     )
-		// }
+        } else if (this.state.symbolizerType == 'INTERPOLATION') {
+            style =(
+                <Paper zDepth={0} style={{fontSize:13}}>
+                    <Tabs
+                        onChange={this.handleChangeTab}
+                        value={this.state.slideIndex}
+                    >
+                        <Tab label="프로세스" value={0} >
+                            <Column
+                                type={this.state.symbolizerType}
+                                column={this.props.column}
+                                value={this.state.columnName}
+                                onChange={this.onChangeColumn}
+                                handleChange={this.handleChangeColumn}
+                            />
 
-      
+                            <Divider style={{marginTop:1}}/>
+
+                            <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
+                                <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
+                                    Power
+                                </Paper>
+                                <Paper zDepth={0} style={{width:'50%'}}>
+                                    <TextField
+                                        hintText="숫자를 입력해주세요"
+                                        value={this.state.power==null?'':this.state.power}
+                                        onChange={this.handleChangePower}
+                                        type='number'
+                                        style={{width:200}}
+                                    />
+                                </Paper>
+                            </Paper>
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <RadiusType
+                                value={this.state.raidusType}
+                                handleChange={this.handleChangeRadiusType}
+                            />
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
+                                <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
+                                    numberOfPoints
+                                </Paper>
+                                <Paper zDepth={0} style={{width:'50%'}}>
+                                    <TextField
+                                        hintText="숫자를 입력해주세요"
+                                        value={this.state.numberOfPoints==null?'':this.state.numberOfPoints}
+                                        onChange={this.handleChangeNumberOfPoints}
+                                        type='number'
+                                        style={{width:200}}
+                                    />
+                                </Paper>
+                            </Paper>
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
+                                <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
+                                distance
+                                </Paper>
+                                <Paper zDepth={0} style={{width:'50%'}}>
+                                    <TextField
+                                        hintText="숫자를 입력해주세요"
+                                        value={this.state.distance==null?'':this.state.distance}
+                                        onChange={this.handleChangeDistance}
+                                        type='number'
+                                        style={{width:200}}
+                                    />
+                                </Paper>
+                            </Paper>
+                            <RaisedButton 
+                                label="적 용" 
+                                style={{
+                                    marginTop:'10%',
+                                    marginLeft:'10%',
+                                    width:'30%'
+                                }}
+                                onClick={this.editRaster}
+                            />
+                        </Tab>
+                        <Tab label="레스터 스타일" value={1}>
+                            <ColorMapType
+                                value={this.state.colorMapType}
+                                handleChange={this.handleChangeColorMapType}
+                            />
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <ClassesNum
+                                value={this.state.classesNumber}
+                                handleChange={this.handleChangeClassesNum}
+                            />
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <ColorMapPalette
+                                colorMapPalette={this.state.colorMapPalette}
+                                colorMapOpacity={this.state.colorMapOpacity}
+                                handleChange={this.handleChangeColorMapPalette}
+                                handleChangeColorMapOpacity={this.handleChangeColorMapOpacity}
+                            />
+                            <RaisedButton 
+                                label="적 용" 
+                                style={{
+                                    marginTop:'10%',
+                                    marginLeft:'10%',
+                                    width:'30%'
+                                }}
+                                onClick={this.editStyle}
+                            />
+                        </Tab>
+                    </Tabs>
+                </Paper>
+            )
+		} else if (this.state.symbolizerType == 'DENSITY') {
+            style =(
+                <Paper zDepth={0} style={{fontSize:13}}>
+                    <Tabs
+                        onChange={this.handleChangeTab}
+                        value={this.state.slideIndex}
+                    >
+                        <Tab label="프로세스" value={0}>
+                            <KernelType
+                                value={this.state.kernelType}
+                                handleChange={this.handleChangeKernelType}
+                            />
+                            
+                            <Divider style={{marginTop:1}}/>
+
+                            <Column
+                                type={this.state.symbolizerType}
+                                column={this.props.column}
+                                value={this.state.columnName}
+                                onChange={this.onChangeColumn}
+                                handleChange={this.handleChangeColumn}
+                            />
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
+                                <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
+                                    SearchRadius
+                                </Paper>
+                                <Paper zDepth={0} style={{width:'50%'}}>
+                                    <TextField
+                                        hintText="숫자를 입력해주세요"
+                                        value={this.state.searchRadius}
+                                        onChange={this.handleChangeSearchRadius}
+                                        type='number'
+                                        style={{width:200}}
+                                    />
+                                </Paper>
+                            </Paper>
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <CellSize
+                                cellSize={this.state.cellSize}
+                                handleChangeCellSize={this.handleChangeCellSize}
+                            />
+                            <RaisedButton 
+                                label="적 용" 
+                                style={{
+                                    marginTop:'10%',
+                                    marginLeft:'10%',
+                                    width:'30%'
+                                }}
+                                onClick={this.editRaster}
+                            />
+                        </Tab>
+                        <Tab label="레스터 스타일" value={1}>
+                            <ColorMapType
+                                value={this.state.colorMapType}
+                                handleChange={this.handleChangeColorMapType}
+                            />
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <ClassesNum
+                                value={this.state.classesNumber}
+                                handleChange={this.handleChangeClassesNum}
+                            />
+
+                            <Divider style={{marginTop:1}}/>
+
+                            <ColorMapPalette
+                                colorMapPalette={this.state.colorMapPalette}
+                                colorMapOpacity={this.state.colorMapOpacity}
+                                handleChange={this.handleChangeColorMapPalette}
+                                handleChangeColorMapOpacity={this.handleChangeColorMapOpacity}
+                            />
+                            <RaisedButton 
+                                label="적 용" 
+                                style={{
+                                    marginTop:'10%',
+                                    marginLeft:'10%',
+                                    width:'30%'
+                                }}
+                                onClick={this.editStyle}
+                            />
+                        </Tab>
+                    </Tabs>
+                </Paper>
+            )
+		}
 
 		return (
             <div style={{paddingTop:10,paddingLeft:10,paddingRight:10}}>
                 <Paper zDepth={0} style={{paddingBottom: 10, fontSize: 13, borderBottom: '1px solid #eee', marginBottom:10}}>
                     <h2>스타일 도구</h2>
-                </Paper>   
+                </Paper>
 
-                <Paper zDepth={0} style={{padding:3,paddingBottom: 10,display:'flex',widht:100,overflowY:'auto',fontSize:12,height:135}}>
-                    <Paper style={this.state.styleType=='SINGLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('SINGLE') }>
-                        <img src="/ngiiedu/assets/images/single.png" style={{width:70,height:70}} alt="SINGLE"></img>
+                <Paper zDepth={0} style={{padding:3,paddingBottom: 10,display:'flex',widht:100,overflowX:'auto',fontSize:12}}>
+                    <Paper style={this.state.symbolizerType=='SINGLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('SINGLE') }>
+                        <img src="/ngiiedu/assets/images/symbol_point_simp.png" style={{width:70,height:70}} alt="SINGLE"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단일심볼</div>
                     </Paper>
-                    <Paper style={this.state.styleType=='GRADUATED'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('GRADUATED') }>
-                        <img src='/ngiiedu/assets/images/graduated.png' style={{width:70,height:70}} alt="GRADUATED"></img>
+                    <Paper style={this.state.symbolizerType=='GRADUATED'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('GRADUATED') }>
+                        <img src='/ngiiedu/assets/images/symbol_point_chor.png' style={{width:70,height:70}} alt="GRADUATED"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단계구분</div>
                     </Paper>
-                    <Paper style={this.state.styleType=='CATEGORIES'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('CATEGORIES') }>
-                        <img src='/ngiiedu/assets/images/categories.png' style={{width:70,height:70}} alt="CATEGORIES"></img>
+                    <Paper style={this.state.symbolizerType=='CATEGORY'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('CATEGORY') }>
+                        <img src='/ngiiedu/assets/images/symbol_point_cate.png' style={{width:70,height:70}} alt="CATEGORY"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>분류값사용</div>
                     </Paper>
-                    <Paper style={this.state.styleType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('BUBBLE') }>
-                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="BUBBLE"></img>
+                    <Paper style={this.state.symbolizerType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('BUBBLE') }>
+                        <img src='/ngiiedu/assets/images/symbol_point_bubb.png' style={{width:70,height:70}} alt="BUBBLE"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>거품형지도</div>
                     </Paper>
-                    {/* <Paper style={this.state.styleType=='HEATMAP'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.styleTypeChange('HEATMAP') }>
-                        <img src='/ngiiedu/assets/images/heatmap.png' style={{width:70,height:70}} alt="HEATMAP"></img>
-                        <div style={{width:70,height:30,textAlign:'center'}}>온도지도</div>
-                    </Paper> */}
+                    <Paper style={this.state.symbolizerType=='INTERPOLATION'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('INTERPOLATION') }>
+                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="INTERPOLATION"></img>
+                        <div style={{width:70,height:30,textAlign:'center'}}>보간법</div>
+                    </Paper>
+                    <Paper style={this.state.symbolizerType=='DENSITY'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('DENSITY') }>
+                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="DENSITY"></img>
+                        <div style={{width:70,height:30,textAlign:'center'}}>밀도지도</div>
+                    </Paper>
                 </Paper>
                 {style}
-
-                <RaisedButton 
-                    label="적 용" 
-                    style={{
-                        marginTop:'10%',
-                        marginLeft:'10%',
-                        width:'30%'
-                    }}
-                    onClick={this.editStyle}
-                />
+                {this.state.symbolizerType!='DENSITY'&&this.state.symbolizerType!='INTERPOLATION'?
+                    <RaisedButton 
+                        label="적 용" 
+                        style={{
+                            marginTop:'10%',
+                            marginLeft:'10%',
+                            width:'30%'
+                        }}
+                        onClick={this.editStyle}
+                    />
+                :null}
 
 
             </div>
@@ -734,7 +1199,7 @@ class PointSymbolizer extends React.Component {
 };
 
 PointSymbolizer.defaultProps = {
-    styleType :'SINGLE',
+    symbolizerType :'SINGLE',
     layerId : null
 }
 

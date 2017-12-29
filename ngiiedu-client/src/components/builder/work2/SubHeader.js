@@ -3,6 +3,7 @@ import React from 'react';
 import { withRouter } from "react-router-dom";
 
 import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
 
 import './workStyle.css';
 
@@ -48,7 +49,8 @@ class SubHeader extends React.Component {
               {this.props.data.map((row,index)=>(
                 <div className='iconButtonContainer' key={row.idx}>
                   <div>
-                    <Paper className={this.props.workType != row.outputType?'iconButtonUnSelected':'iconButtonSelected'}
+                    <FlatButton label={row.moduleWorkSubName} onClick={()=>this.changeWorkType(row.outputType)}/>
+                    {/* <Paper className={this.props.workType != row.outputType?'iconButtonUnSelected':'iconButtonSelected'}
                       onClick={()=>this.changeWorkType(row.outputType)}
                     >
                       <img 
@@ -58,7 +60,8 @@ class SubHeader extends React.Component {
                       <div className="buttonText" >
                         {row.moduleWorkSubName}
                       </div>
-                    </Paper>
+                    </Paper> */}
+
                   </div>
                 </div>
               ))}

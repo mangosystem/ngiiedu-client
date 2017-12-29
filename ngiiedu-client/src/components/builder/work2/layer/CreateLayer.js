@@ -121,6 +121,7 @@ class CreateLayer extends Component {
         {this.props.type=='create'?
         <div>
           <Subheader>Dataset</Subheader>
+          <div>
           <Paper style={{width:500, height:300, overflowY:'scroll'}}>
             {this.props.datasetList.map((row,index)=>(
               <SelectableList value={this.state.selDataset.idx} onChange={(i)=>this.handleRequestChange(row)} key={index}>
@@ -128,6 +129,7 @@ class CreateLayer extends Component {
               </SelectableList>
             ))}
           </Paper>
+          </div>
         </div>
         :null}<br/>
 

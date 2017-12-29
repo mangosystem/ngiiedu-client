@@ -58,12 +58,13 @@ class MainContainer extends React.Component {
         ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
         null,
         function(res){
-          console.log('bounds :' +  res.response.data.data.bounds )
-            this.setState({
-              title:res.response.data.data.title,
-              bounds:res.response.data.data.bounds!=null?res.response.data.data.bounds:null,
-              extent:res.response.data.data.metadata!=null?JSON.parse(res.response.data.data.metadata):null
-            });
+          let bounds = res.response.data.data.bounds;
+          let extent = res.response.data.data.metadata;
+          this.setState({
+            title:res.response.data.data.title,
+            bounds:bounds!=null?bounds:null,
+            extent:extent!=""&&extent!=null?JSON.parse(extent):null
+          });
         }.bind(this),
         function(e){
             alert(e);

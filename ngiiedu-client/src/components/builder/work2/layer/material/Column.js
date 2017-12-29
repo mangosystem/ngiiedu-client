@@ -12,50 +12,94 @@ class Column extends React.Component {
 		}
     }
 
-	componentDidMount () {
-		console.log('test')
-		console.log(this.props.column)
-		console.log('test')
-        let column = [];
-		this.props.column.map((value) => {
-			if (value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {
-				column.push({
-					text: value.name,
-					value: value.name,
-					dataType: value.dataType,
-					description: value.description
-				});
-			}
-        });
-
+	componentDidMount(){
+		let column = [];
+		console.log('test222')
+		if(this.props.type!='CATEGORY'){
+			this.props.column.map((value) => {
+				if (value.name!='pino_id' && value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {
+					column.push({
+						text: value.name,
+						value: value.name,
+						dataType: value.dataType,
+						description: value.description
+					});
+				}
+			});
+		}else if(this.props.type=='CATEGORY'){
+			this.props.column.map((value) => {
+				if (value.name != 'pino_id'&&value.name != 'the_geom') {
+					column.push({
+						text: value.name,
+						value: value.name,
+						dataType: value.dataType,
+						description: value.description
+					});
+				}
+			});
+		}
+		
 		this.setState({ 
-            column: column,
-        });
+			column: column,
+		});
 	}
-
-
+	componentWillReceiveProps (nextProps) {
+		let column = [];
+		if(nextProps.type!='CATEGORY'){
+			nextProps.column.map((value) => {
+				if (value.name!='pino_id' && value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {
+					column.push({
+						text: value.name,
+						value: value.name,
+						dataType: value.dataType,
+						description: value.description
+					});
+				}
+			});
+		}else if(nextProps.type=='CATEGORY'){
+			nextProps.column.map((value) => {
+					column.push({
+						text: value.name,
+						value: value.name,
+						dataType: value.dataType,
+						description: value.description
+					});
+			});
+		}
+		
+		this.setState({ 
+			column: column,
+		});
+	}
 
 	render() {
 		return (
-			<Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center'}}>
+			<Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
 				<Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
 					컬럼이름
-                </Paper>
+				</Paper>
 				<Paper zDepth={0} style={{width:'50%'}}>
 				
-				<DropDownMenu value={this.props.value == null ? (this.state.column.length==0 ? null : this.state.column[0].value) : this.props.value} 
-					onChange={this.props.handleChange} 
-					style={{width: '100%'}}
-					underlineStyle={{display:'none'}}
-					labelStyle={{paddingLeft:10}}
-				>
+					<DropDownMenu 
+						value={this.props.value == null ? 
+							(this.state.column.length==0 ? 
+							null 
+							: 
+							Column.defaultProps.value) 
+						: this.props.value} 
+						onChange={this.props.handleChange} 
+						style={{width: '100%'}}
+						underlineStyle={{display:'none'}}
+						labelStyle={{paddingLeft:10}}
+					>
+
 						{this.state.column.map((row,index)=>(
-                        	<MenuItem key={index} value={row.value} primaryText={row.text}/>
+							<MenuItem key={index} value={row.value} primaryText={row.text}/>
 						))}
 
-				</DropDownMenu>
-                </Paper>
-            </Paper>
+					</DropDownMenu>
+				</Paper>
+			</Paper>
 
          
 		)
@@ -73,21 +117,7 @@ Column.propTypes = {
 Column.defaultProps = {
 	name: 'columnName',
 	placeholder: 'Column',
-	column: [
-        {
-            name: '컬럼이름A',
-            value: '컬럼이름A',
-            datatype: 'INTEGER',
-            description: ""
-        },
-        {
-            name: '컬럼이름B',
-            value: '컬럼이름B',
-            datatype: 'INTEGER',
-            description: ""
-        }
-	],
-	value:'noise_value'
+	value:null
 };
 
 export default Column;

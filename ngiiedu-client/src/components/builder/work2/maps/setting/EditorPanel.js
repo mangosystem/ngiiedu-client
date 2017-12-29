@@ -143,7 +143,7 @@ class EditorPanel extends React.Component {
   render() {
     return (
         <div style={{ width: '100%', height: '100%' }}>
-          <div style={{ height: '85%', overflow: 'scroll' }}>
+          <div style={{ height: '85%', overflowY: 'scroll' }}>
             <textarea 
               name="smarteditor" 
               id="smarteditor" 
