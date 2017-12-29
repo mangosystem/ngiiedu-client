@@ -26,6 +26,7 @@ import BasicRight from './BasicRight';
 import BasicTop from './BasicTop';
 import StoryTab from './StoryTab';
 import Swipe from './Swipe';
+import SeriesSlide from './SeriesSlide';
 
 import BasicSetting from './BasicSetting';
 import StorySetting from './StorySetting';
@@ -159,7 +160,7 @@ class MainContainer extends React.Component {
             </div>
 
             <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
-                {this.state.mapsType == 'STORY' ?
+                {this.state.mapsType == 'STORY' || this.state.mapsType == 'SERIES' ?
                 <IconButton 
                   style={{width: 50, height: 50}}
                   onClick={this.sortingHandle.bind(this)}
@@ -231,6 +232,16 @@ class MainContainer extends React.Component {
                   maps={this.state.maps}
                 />
               );
+            } else if (this.state.mapsType == 'SERIES') {
+              if (this.state.typeKind == 'SLIDE') {
+                return (
+                  <SeriesSlide
+                    maps={this.state.maps}
+                    open={this.state.sortingOpen}
+                    sortingHandle={this.sortingHandle.bind(this)}
+                  />
+                );
+              }
             }
           })()}
           {(() => {

@@ -124,19 +124,40 @@ class EditorPanel extends React.Component {
     let contents = CKEDITOR.instances.smarteditor.getData();
     contents = encodeURIComponent(contents);
 
-    let { mapsId, itemId, pinoLayer } = this.props;
-    
-    //서버 데이터 수정
-    ajaxJson(
-      ['POST', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + itemId + '.json'],
-      { pinoLayer , description: contents },
-      function (data) {
-        this.props.modifyDescription(contents);
-      }.bind(this),
-      function (xhr, status, err) {
-        alert('Error');
-      }.bind(this)
-    );
+
+    //items의 description 수정할 경우
+    if (this.props.pinoLayer && this.props.itemId) {
+      let { mapsId, itemId, pinoLayer } = this.props;
+      
+      //서버 데이터 수정
+      ajaxJson(
+        ['POST', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + itemId + '.json'],
+        { pinoLayer , description: contents },
+        function (data) {
+          this.props.modifyDescription(contents);
+        }.bind(this),
+        function (xhr, status, err) {
+          alert('Error');
+        }.bind(this)
+      );
+
+    } else {
+      let { mapsId } = this.props;
+
+      //서버 데이터 수정
+      ajaxJson(
+        ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '.json'],
+        { description: contents },
+        function (data) {
+          this.props.modifyDescription(contents);
+        }.bind(this),
+        function (xhr, status, err) {
+          alert('Error');
+        }.bind(this)
+      );
+
+    }
+
 
   }
 
