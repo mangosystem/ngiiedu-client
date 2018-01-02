@@ -68,7 +68,11 @@ class MainContainer extends React.Component {
             changeTitle:null,
             rowUniqueInfo:[],
             process:null,
-            selCategoryType:0
+            selCategoryType:0,
+            iconColor:[
+                '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c',
+                '#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'
+            ]
 
         }
 
@@ -80,7 +84,6 @@ class MainContainer extends React.Component {
 
         this.addBaseLayer = this.addBaseLayer.bind(this);
         this.addBaseLayer = this.addBaseLayer.bind(this);
-        this.handleChangeIcon = this.handleChangeIcon.bind(this);
         this.handleChangeCategory=this.handleChangeCategory.bind(this);
     }
 
@@ -420,7 +423,7 @@ class MainContainer extends React.Component {
         }
 
         for(let i=0;i<this.state.rowUniqueInfo.length;i++){
-            if(this.state.rowUniqueInfo[i].value==row.value){
+            if(i==row){
                 let rowUniqueInfo = this.state.rowUniqueInfo;
                 rowUniqueInfo[i].color = color;
                 rowUniqueInfo[i].opacity = opacity;
@@ -469,15 +472,6 @@ class MainContainer extends React.Component {
         }.bind(this)
         );
     }
-    
-    handleChangeIcon(index, value){
-        let rowUniqueInfo = this.state.rowUniqueInfo;
-        rowUniqueInfo[index].color=value;
-        rowUniqueInfo[index].iconName='FA_tree';
-        this.setState({
-            rowUniqueInfo:rowUniqueInfo
-        });
-    }
 
     handleChangeCategory(event,index,value){
         this.setState({
@@ -495,6 +489,7 @@ class MainContainer extends React.Component {
                 let rowUniqueInfo = this.state.rowUniqueInfo;
                 for(var i=0; i<this.state.rowUniqueInfo.length;i++){
                     rowUniqueInfo[i].iconName='FA_tree';
+                    rowUniqueInfo[i].color=this.state.iconColor[i];
                 }
                 this.setState({
                     rowUniqueInfo:rowUniqueInfo
@@ -567,7 +562,6 @@ class MainContainer extends React.Component {
                                 datasetId = {this.state.datasetId}
                                 process={this.state.process}
                                 selCategoryType={this.state.selCategoryType}
-                                handleChangeIcon={this.handleChangeIcon}
                                 handleChangeCategory={this.handleChangeCategory}
                             />
                         :this.state.type!=null&&this.state.type.indexOf('LINE')!=-1?

@@ -12,6 +12,10 @@ class RowColor extends React.Component {
   constructor() {
     super();
     this.state = {
+      iconColor:[
+          '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c',
+          '#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'
+      ]
     }
     this.handleChange=this.handleChange.bind(this);
   }
@@ -23,6 +27,11 @@ class RowColor extends React.Component {
   }
 
   render() {
+
+    const menuItem=[
+      
+    ]
+    
     return (
       <div>
         <Paper zDepth={1} style={{justifyContent:'center', maxHeight:200, marginTop:10, overflow:'auto'}}>
@@ -38,38 +47,20 @@ class RowColor extends React.Component {
                         <ColorPicker
                           name="colorPicker"
                           defaultValue={row.color}
-                          onChange={(color)=>this.props.handleChangeRowColor(color,row)}
+                          onChange={(color)=>this.props.handleChangeRowColor(color,index)}
                         />
                       :this.props.categoryType==1?
                         <DropDownMenu 
-                          value='#a6cee3'
+                          value={row.color}
                           style={{width: '100%'}}
                           underlineStyle={{display:'none'}}
                           labelStyle={{paddingLeft:10}}
                           onChange={(e,k,v)=>this.handleChange(index, v)}
                         >
-                          <MenuItem value='#a6cee3' primaryText={<MoreVertIcon color={'#a6cee3'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#b2df8a' primaryText={<MoreVertIcon color={'#b2df8a'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#33a02c' primaryText={<MoreVertIcon color={'#33a02c'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#fb9a99' primaryText={<MoreVertIcon color={'#fb9a99'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#e31a1c' primaryText={<MoreVertIcon color={'#e31a1c'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#fdbf6f' primaryText={<MoreVertIcon color={'#fdbf6f'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#ff7f00' primaryText={<MoreVertIcon color={'#ff7f00'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#cab2d6' primaryText={<MoreVertIcon color={'#cab2d6'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#6a3d9a' primaryText={<MoreVertIcon color={'#6a3d9a'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#ffff99' primaryText={<MoreVertIcon color={'#ffff99'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
-                          <MenuItem value='#b15928' primaryText={<MoreVertIcon color={'#b15928'} style={{verticalAlign:'middle'}}/>}>
-                          </MenuItem>
+                          {this.state.iconColor.map((value, i)=>(
+                            <MenuItem value={value} primaryText={<i className="fa fa-tree" aria-hidden="true" style={{verticalAlign:'middle',color:value, fontSize:20}}/>}>
+                            </MenuItem>
+                          ))}
                         </DropDownMenu>
                       :null}
                     </td>

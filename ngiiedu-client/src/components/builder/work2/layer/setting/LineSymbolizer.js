@@ -457,6 +457,12 @@ class LineSymbolizer extends React.Component {
 
       style = (
         <Paper zDepth={0} style={{fontSize:13}}>
+          
+          <StrokeWidth
+            value={this.state.strokeWidth}
+            handleChange={this.handleChangeStrokeWidth}
+          />
+          <Divider style={{marginTop:1}}/>
           {this.state.strokeColor != null?
             <StrokeColor
               defaultColor={this.state.strokeColor}
@@ -472,13 +478,6 @@ class LineSymbolizer extends React.Component {
               handleChange={this.handleChangeStrokeColor}
             />
           }
-
-          <Divider style={{marginTop:1}}/>
-          
-          <StrokeWidth
-            value={this.state.strokeWidth}
-            handleChange={this.handleChangeStrokeWidth}
-          />
         </Paper>
       );
     }else if (this.state.symbolizerType == 'GRADUATED') {
@@ -559,6 +558,7 @@ class LineSymbolizer extends React.Component {
             rowInfo={this.props.rowUniqueInfo}
             handleChangeStrokeColor={this.handleChangeStrokeColor}
             handleChangeRowColor={this.handleChangeRowColor}
+            categoryType={0}
           />
 
         </Paper>

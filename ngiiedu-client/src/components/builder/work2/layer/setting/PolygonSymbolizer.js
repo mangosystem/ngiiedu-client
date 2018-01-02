@@ -450,6 +450,13 @@ class PolygonSymbolizer extends React.Component {
               handleChange={this.handleChangeFillColor}
             />
           }
+          
+          <Divider style={{marginTop:1}}/>
+
+          <StrokeWidth
+            value={this.state.strokeWidth}
+            handleChange={this.handleChangeStrokeWidth}
+          />
           <Divider style={{marginTop:1}}/>
           {this.state.strokeColor != null?
             <StrokeColor
@@ -467,12 +474,6 @@ class PolygonSymbolizer extends React.Component {
             />
           }
 
-          <Divider style={{marginTop:1}}/>
-
-          <StrokeWidth
-            value={this.state.strokeWidth}
-            handleChange={this.handleChangeStrokeWidth}
-          />
         </Paper>
       );
     }else if (this.state.symbolizerType == 'GRADUATED') {
@@ -585,6 +586,7 @@ class PolygonSymbolizer extends React.Component {
             rowInfo={this.props.rowUniqueInfo}
             handleChangeFillColor={this.handleChangeFillColor}
             handleChangeRowColor={this.handleChangeRowColor}
+            categoryType={0}
           />
 
         </Paper>

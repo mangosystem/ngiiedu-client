@@ -204,6 +204,8 @@ class MainContainer extends React.Component {
                                                         <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/map/preview/'+data.pngoData.layerId)}/>
                                                         <MenuItem primaryText="편집하기" onClick={()=>this.editLayer(data)}/>
                                                         <MenuItem primaryText="삭제하기" onClick={()=>this.deleteModalOpen(data)}/>
+                                                        <MenuItem primaryText="결과물 제출"/>
+                                                        <MenuItem primaryText="결과물 공유"/>
                                                     </IconMenu>
                                                 </div>    
                                             </div>

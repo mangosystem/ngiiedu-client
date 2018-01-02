@@ -111,7 +111,6 @@ class PointSymbolizer extends React.Component {
         this.editRaster = this.editRaster.bind(this);
         this.symbolizerTypeChange = this.symbolizerTypeChange.bind(this);
         this.handleChangeCategory = this.handleChangeCategory.bind(this);
-        this.handleChangeIcon = this.handleChangeIcon.bind(this);
 
 	}
 
@@ -669,11 +668,6 @@ class PointSymbolizer extends React.Component {
         this.props.handleChangeCategory(event,index,value)
     }
 
-    handleChangeIcon(index, value){
-        this.props.handleChangeIcon(index, value);
-    }
-    
-
 	render() {
         let styleStyle={
             selected:{
@@ -735,6 +729,13 @@ class PointSymbolizer extends React.Component {
                                 handleChange={this.handleChangeFillColor}
                             />
                     }
+
+                    <Divider style={{marginTop:1}}/>
+                    
+                    <StrokeWidth
+                        value={this.state.strokeWidth}
+                        handleChange={this.handleChangeStrokeWidth}
+                    />
                     <Divider style={{marginTop:1}}/>
                     {
                         this.state.strokeColor != null?
@@ -752,13 +753,6 @@ class PointSymbolizer extends React.Component {
                             handleChange={this.handleChangeStrokeColor}
                         />
                     }
-
-                    <Divider style={{marginTop:1}}/>
-                    
-                    <StrokeWidth
-                        value={this.state.strokeWidth}
-                        handleChange={this.handleChangeStrokeWidth}
-                    />
                 </Paper>
 			);
         } 
@@ -869,8 +863,14 @@ class PointSymbolizer extends React.Component {
 
                     <Divider style={{marginTop:1}}/>
 
-                    {
-                        this.state.strokeColor != null?
+                    <StrokeWidth
+                        value={this.state.strokeWidth}
+                        handleChange={this.handleChangeStrokeWidth}
+                    />
+
+                    <Divider style={{marginTop:1}}/>
+
+                    {this.state.strokeColor != null?
                         <StrokeColor
                             defaultColor={this.state.strokeColor}
                             color={this.state.strokeColor}
@@ -884,15 +884,7 @@ class PointSymbolizer extends React.Component {
                             opacity={this.state.strokeOpacity}
                             handleChange={this.handleChangeStrokeColor}
                         />
-                        
                     }
-
-                    <Divider style={{marginTop:1}}/>
-
-                    <StrokeWidth
-                        value={this.state.strokeWidth}
-                        handleChange={this.handleChangeStrokeWidth}
-                    />
 
                     <Divider style={{marginTop:1}}/>
 
@@ -917,7 +909,6 @@ class PointSymbolizer extends React.Component {
                         handleChangeFillColor={this.handleChangeFillColor}
                         handleChangeRowColor={this.handleChangeRowColor}
                         categoryType={this.props.selCategoryType}
-                        handleChangeIcon={this.handleChangeIcon}
                     />
 
                 </Paper>
