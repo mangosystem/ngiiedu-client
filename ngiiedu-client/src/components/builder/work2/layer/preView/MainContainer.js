@@ -9,6 +9,10 @@ import {List, ListItem} from 'material-ui/List';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import IconButton from 'material-ui/IconButton';
 import IconArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
+import IconNavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+
 
 import './Header.css';
 
@@ -81,12 +85,14 @@ class MainContainer extends React.Component {
           <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor:'#43444c'}}>
             <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
               {/* 뒤로가기 */}
-              <IconButton style={{width: 50, height: 50}}>
-                  <IconArrowBack 
-                      color='white'
-                      onClick={()=>this.props.history.goBack()}
-                  />
-              </IconButton>
+              <IconMenu
+                iconButtonElement={<IconButton><IconNavigationMenu color='white' /></IconButton>}
+                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+              >
+                <MenuItem primaryText="수업 홈" onClick={() => this.props.history.push('/ngiiedu/course/'+this.props.match.params.COURSEID)}/>
+                <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
+              </IconMenu>
               {/* 활동 제목 */}
               <div style={{fontSize: 20, textAlign:'left',color:'white'}}>
                   {this.state.title}

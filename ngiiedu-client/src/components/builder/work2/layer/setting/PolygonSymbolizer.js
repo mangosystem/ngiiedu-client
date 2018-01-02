@@ -243,7 +243,7 @@ class PolygonSymbolizer extends React.Component {
     this.setState({
       columnName:value
     })
-    if(this.state.symbolizerType == 'CATEGORY'){
+    if(this.state.symbolizerType == 'CATEGORIES'){
         this.props.getRowUniqueInfo(value);
     };
   }
@@ -342,7 +342,7 @@ class PolygonSymbolizer extends React.Component {
 
       style.options = option;
       style.symbolizerType = 'GRADUATED';
-    }else if(this.state.symbolizerType == 'CATEGORY'){
+    }else if(this.state.symbolizerType == 'CATEGORIES'){
       let option = {
         columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
         strokeWidth: this.state.strokeWidth==null ? StrokeWidth.defaultProps.value : this.state.strokeWidth,
@@ -353,7 +353,7 @@ class PolygonSymbolizer extends React.Component {
       }
       style.options = option;
       style.classes = this.props.rowUniqueInfo;
-      style.symbolizerType = 'CATEGORY';
+      style.symbolizerType = 'CATEGORIES';
     }else if(this.state.symbolizerType == 'BUBBLE'){
       let option = {
         columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
@@ -397,7 +397,7 @@ class PolygonSymbolizer extends React.Component {
     this.setState({
       columnName:null
     })
-    if(symbolizerType=='CATEGORY'){
+    if(symbolizerType=='CATEGORIES'){
       this.props.getRowUniqueInfo(null);
     }
   }
@@ -542,7 +542,7 @@ class PolygonSymbolizer extends React.Component {
           />
         </Paper>
       );
-    } else if (this.state.symbolizerType == 'CATEGORY') {
+    } else if (this.state.symbolizerType == 'CATEGORIES') {
       // 분류값 사용
       style = (
         <Paper zDepth={0} style={{fontSize:13}}>
@@ -646,8 +646,8 @@ class PolygonSymbolizer extends React.Component {
             <img src='/ngiiedu/assets/images/symbol_polygon_chor.png' style={{width:70,height:70}} alt="GRADUATED"></img>
             <div style={{width:70,height:30,textAlign:'center'}}>단계구분</div>
           </Paper>
-          <Paper style={this.state.symbolizerType=='CATEGORY'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('CATEGORY') }>
-            <img src='/ngiiedu/assets/images/symbol_polygon_cate.png' style={{width:70,height:70}} alt="CATEGORY"></img>
+          <Paper style={this.state.symbolizerType=='CATEGORIES'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('CATEGORIES') }>
+            <img src='/ngiiedu/assets/images/symbol_polygon_cate.png' style={{width:70,height:70}} alt="CATEGORIES"></img>
             <div style={{width:70,height:30,textAlign:'center'}}>분류값사용</div>
           </Paper>
           <Paper style={this.state.symbolizerType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('BUBBLE') }>

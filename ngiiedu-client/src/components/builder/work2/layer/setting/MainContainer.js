@@ -68,6 +68,7 @@ class MainContainer extends React.Component {
             changeTitle:null,
             rowUniqueInfo:[],
             process:null,
+            selCategoryType:0
 
         }
 
@@ -79,6 +80,8 @@ class MainContainer extends React.Component {
 
         this.addBaseLayer = this.addBaseLayer.bind(this);
         this.addBaseLayer = this.addBaseLayer.bind(this);
+        this.handleChangeIcon = this.handleChangeIcon.bind(this);
+        this.handleChangeCategory=this.handleChangeCategory.bind(this);
     }
 
     componentDidMount(){
@@ -115,6 +118,13 @@ class MainContainer extends React.Component {
                     type:res.response.data.data.geometryType,
                     process:res.response.data.data.process!=undefined&&res.response.data.data.process!=null ? JSON.parse(res.response.data.data.process):null
                 });
+
+                if(JSON.parse(res.response.data.data.styling).symbolizerType=='CATEGORIES'){
+                    this.setState({
+                        rowUniqueInfo:JSON.parse(res.response.data.data.styling).classes,
+                        selCategoryType:JSON.parse(res.response.data.data.styling).classes[0].iconName!=undefined?1:0
+                    });
+                }
 
                 let datasetId = JSON.parse(res.response.data.data.sources).inputDataset.datasetId
                 ajaxJson(
@@ -419,7 +429,6 @@ class MainContainer extends React.Component {
                 })
             }
         }
-        
     }
 
     handleChangeSingle (event, value) {
@@ -459,6 +468,39 @@ class MainContainer extends React.Component {
             alert('Error');
         }.bind(this)
         );
+    }
+    
+    handleChangeIcon(index, value){
+        let rowUniqueInfo = this.state.rowUniqueInfo;
+        rowUniqueInfo[index].color=value;
+        rowUniqueInfo[index].iconName='FA_tree';
+        this.setState({
+            rowUniqueInfo:rowUniqueInfo
+        });
+    }
+
+    handleChangeCategory(event,index,value){
+        this.setState({
+          selCategoryType:index
+        },function(){
+            if(index==0){
+                let rowUniqueInfo = this.state.rowUniqueInfo;
+                for(var i=0; i<this.state.rowUniqueInfo.length;i++){
+                    rowUniqueInfo[i].iconName=null;
+                }
+                this.setState({
+                    rowUniqueInfo:rowUniqueInfo
+                })
+            }else if(index==1){
+                let rowUniqueInfo = this.state.rowUniqueInfo;
+                for(var i=0; i<this.state.rowUniqueInfo.length;i++){
+                    rowUniqueInfo[i].iconName='FA_tree';
+                }
+                this.setState({
+                    rowUniqueInfo:rowUniqueInfo
+                })
+            }
+        })
     }
 
     render() {
@@ -524,6 +566,9 @@ class MainContainer extends React.Component {
                                 handleChangeRowColor={this.handleChangeRowColor}
                                 datasetId = {this.state.datasetId}
                                 process={this.state.process}
+                                selCategoryType={this.state.selCategoryType}
+                                handleChangeIcon={this.handleChangeIcon}
+                                handleChangeCategory={this.handleChangeCategory}
                             />
                         :this.state.type!=null&&this.state.type.indexOf('LINE')!=-1?
                             <LineSymbolizer

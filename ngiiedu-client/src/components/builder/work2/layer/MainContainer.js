@@ -173,7 +173,7 @@ class MainContainer extends React.Component {
                     <div className='thumbnailsContainer'>
                     {/* 새로만들기 버튼 */}
                         <div className='createButton'  >
-                            <FloatingActionButton onClick={this.createLayer}>
+                            <FloatingActionButton backgroundColor= '#3e81f6' onClick={this.createLayer}>
                                 <ContentAdd />
                             </FloatingActionButton>
                         </div>
@@ -185,29 +185,29 @@ class MainContainer extends React.Component {
                             row.outputType =='layer'?
                                 row.workOutputList.map((data,i)=>(
                                     <div className='thumbnailContainer' key={i}>
-                                            <Paper zDepth={1} className='thumbnailContainer2'>
-                                                <div 
-                                                className='thumbnail' 
-                                                onClick={()=>this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}>
-                                                    썸네일
+                                        <Paper zDepth={1} className='thumbnailContainer2'>
+                                            <div 
+                                            className='thumbnail' 
+                                            onClick={()=>this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}>
+                                                썸네일
+                                            </div>
+                                            <div className='thumbnailTitleContainer'>
+                                                <div className='thumbnailTitle'>
+                                                    {data.outputName}
                                                 </div>
-                                                <div className='thumbnailTitleContainer'>
-                                                    <div className='thumbnailTitle'>
-                                                        {data.outputName}
-                                                    </div>
-                                                    <div>
-                                                        <IconMenu
-                                                            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                                                            anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                            targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                        >
-                                                            <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/map/preview/'+data.pngoData.layerId)}/>
-                                                            <MenuItem primaryText="편집하기" onClick={()=>this.editLayer(data)}/>
-                                                            <MenuItem primaryText="삭제하기" onClick={()=>this.deleteModalOpen(data)}/>
-                                                        </IconMenu>
-                                                    </div>    
-                                                </div>
-                                            </Paper>
+                                                <div>
+                                                    <IconMenu
+                                                        iconButtonElement={<IconButton><MoreVertIcon color='white'/></IconButton>}
+                                                        anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                                                        targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                                    >
+                                                        <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/map/preview/'+data.pngoData.layerId)}/>
+                                                        <MenuItem primaryText="편집하기" onClick={()=>this.editLayer(data)}/>
+                                                        <MenuItem primaryText="삭제하기" onClick={()=>this.deleteModalOpen(data)}/>
+                                                    </IconMenu>
+                                                </div>    
+                                            </div>
+                                        </Paper>
                                     </div>
                                     ))
                             :null

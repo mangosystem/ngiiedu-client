@@ -1,34 +1,35 @@
 .workMainSubHeader{
     position: absolute;
-    top: 40px;
+    top: 0px;
     right: 0; 
     left: 0 ;
-    height: 100px;
-    background-color:#E0F7FA;
-    text-align:right;
-    display:flex;
+    height: 70px;
+    background-color:#43444c;
+    text-align:left;
     justify-content:space-between;
-    align-items:center
+    align-items:center;
+    display:flex;
 }
 
 .workMainSubHeader .iconButtonContainer{
-    display:flex;
+    float:right;
+    margin-top:15px;
 }
 
 .workMainSubHeader .iconButtonUnSelected{
-    box-sizing: content-box;
-    width: 80px;
-    height: 100px;
+    margin-right: 20px;
     text-align: center;
+    color:#f9f9f9;
+    border-radius: 15px;
+    float:right;
 }
 
-.workMainSubHeader .iconButtonSelected{
-    box-sizing: content-box;
-    width: 80px;
-    height: 100px;
+.workMainSubHeader .iconButton{
+    margin-right: 20px;
     text-align: center;
-    border: 3px solid;
-    border-color: #00BCD4;
+    color:#fee900;
+    border-radius: 15px;
+    float:right;
 }
 
 .workMainSubHeader .buttonImg{
@@ -41,7 +42,10 @@
 }
 
 .workMainSubHeader .subHeaderTitle{
-    margin-right:20px
+    margin-left:20px;
+    color:#f9f9f9;
+    float:left;
+    margin-top: 25px;
 }
 
 /* main */
@@ -51,7 +55,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    padding-top: 30px;
     /* padding-left: 100px; */
     display:flex;
     flex-wrap: wrap;
@@ -60,10 +63,9 @@
 }
 
 .workMainMainContainer .thumbnailsContainer{
-    padding-top: 30px;
+    /*padding-top: 30px;*/
     /* padding-left: 100px; */
     display:flex;
-    width:90%;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: left;
@@ -72,8 +74,8 @@
 
 /* position:'absolute',display:'flex',top:140,right:0,left:0,justifyContent:'center' */
 .workMainMainContainer .createButton{
-    height:200px;
-    width:200px; 
+    height:230px;
+    width:300px; 
     margin:30px;
     display:flex;
     justify-content: center;
@@ -85,18 +87,17 @@
 }
 
 .workMainMainContainer .thumbnailContainer2{
-    /* height: 200px; */
-    width: 200px;
+    /* height: 230px; */
+    width: 300px;
     margin: 30px;
 }
 
 .workMainMainContainer .thumbnail{
-    height:160px;
+    height:230px;
 }
 
 .workMainMainContainer .thumbnailTitleContainer{
-    height:40px;
-    background-color:#E0F7FA;
+    background-color:#3e81f6;
     display:flex;
     justify-content:space-between;
     align-items:center
@@ -104,7 +105,8 @@
 
 .workMainMainContainer .thumbnailTitle{
     margin-left: 10px;
-    max-width: 150px
+    max-width: 150px;
+    color: #f9f9f9;
 }
 
 .workMainMainContainer .thumbnailDescription{

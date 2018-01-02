@@ -309,7 +309,7 @@ class App extends Component {
 						{/* layer */}
 						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/layer/:LAYERID"}>
 							<div>
-								<Header slim={false} />
+								<Header slim={true} />
 								<WorkFrameEditLayer />
 								<Footer />
 							</div>
@@ -322,7 +322,6 @@ class App extends Component {
 						{/* main */}
 						<Route exact path={contextPath +"/course/:COURSEID/work2/:WORKID"}>
 							<div>
-								<Header slim={true} />
 								<WorkFrameContainer />
 								<Footer />
 							</div>

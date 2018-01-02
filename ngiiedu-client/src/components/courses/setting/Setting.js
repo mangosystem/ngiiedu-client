@@ -75,7 +75,7 @@ class Setting extends React.Component {
       return (
         <div>
           
-          <div style={{paddingTop: 20, paddingLeft: 40, paddingBottom:20}}>
+          <div style={{paddingLeft: 40, paddingBottom:20}}>
             <h3>수업 활성화</h3><br/>
             <div style={{paddingRight:'20px'}}>
               <Checkbox
@@ -89,7 +89,7 @@ class Setting extends React.Component {
             </div>
           </div>
 
-          <div style={{paddingTop: 20, paddingLeft: 40}}>
+          <div style={{paddingLeft: 40}}>
             <h3>수업 삭제</h3><br/>
             <div style={{textColor:'gray'}}>
               수업을 삭제합니다.
@@ -117,7 +117,7 @@ class Setting extends React.Component {
             <h1>수업 설정</h1>
           </div>
 
-          <div style={{paddingTop: 20, paddingLeft: 40}}>
+          <div style={{ paddingLeft: 40}}>
             <h3>수업 탈퇴</h3><br/>
             수업에서 탈퇴합니다.
             <FlatButton 

@@ -30,17 +30,21 @@ class LeaveCourse extends React.Component {
   //수업 탈퇴
   leaveCourse(){
     let id = this.props.match.params.COURSEID;
-    // ajaxJson(
-    //   ['DELETE',apiSvr+'/courses/'+id+'.json'],
-    //   {'courseId':id, 'password':this.state.password},
-    //   function(res){
-    //     this.props.leaveCourse();//탈퇴 모달 닫기
-    //     window.location.href='/course' //수업 리스트로 돌아가기
-    //   }.bind(this),
-    //   function(e){
-    //     console.log(e);
-    //   }
-    // );
+    ajaxJson(
+      ['DELETE',apiSvr+'/courses/'+id+'/member.json'],
+      {'courseId':id, 'userid':userId, 'password':this.state.password},
+      function(res){
+        if(res.response.message=="비밀번호 가 다릅니다."){
+          alert("비밀번호 가 다릅니다.");
+        }else{
+          this.props.leaveCourse();//탈퇴 모달 닫기
+          this.props.history.push('/ngiiedu/course/'); //수업 리스트로 돌아가기
+        }
+      }.bind(this),
+      function(e){
+        console.log(e);
+      }
+    );
   };
 
   render() {

@@ -4,6 +4,10 @@ import { withRouter } from "react-router-dom";
 
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
+import IconNavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
 
 import './workStyle.css';
 
@@ -42,38 +46,43 @@ class SubHeader extends React.Component {
   render() {
     return (
       <div>
-        {/* sub header */}
-        <div className='workMainSubHeader'>
-          {this.props.data.length >1? //type의 갯수가 2개 이상
-            <div style={{display:'flex'}}>
-              {this.props.data.map((row,index)=>(
-                <div className='iconButtonContainer' key={row.idx}>
-                  <div>
-                    <FlatButton label={row.moduleWorkSubName} onClick={()=>this.changeWorkType(row.outputType)}/>
-                    {/* <Paper className={this.props.workType != row.outputType?'iconButtonUnSelected':'iconButtonSelected'}
-                      onClick={()=>this.changeWorkType(row.outputType)}
-                    >
-                      <img 
-                        src="/ngiiedu/assets/images/TAB.png" 
-                        className="buttonImg"
-                      />
-                      <div className="buttonText" >
-                        {row.moduleWorkSubName}
-                      </div>
-                    </Paper> */}
+        <header id="header">
+          <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor:'#43444c', height:80}}>
 
-                  </div>
-                </div>
-              ))}
+            <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
+              {/* 뒤로가기 */}
+              <IconMenu
+                iconButtonElement={<IconButton><IconNavigationMenu color='white' /></IconButton>}
+                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+              >
+                <MenuItem primaryText="수업 목록" onClick={() => this.props.history.push('/ngiiedu/course/')}/>
+                <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
+              </IconMenu>
+              {/* 활동 제목 */}
+              <div style={{fontSize: 20, textAlign:'left',color:'white'}}>
+                  {this.state.subTitle}
+              </div>
             </div>
-            :this.props.data.length <= 1?
-              <div style={{display:'flex'}}></div>//type의 갯수가 1개
-            :null
-          }
-          <div>
-            <h1 className='subHeaderTitle'>{this.state.subTitle}</h1>
+
+            <div style={{display: 'flex', justifyContent: 'flex-end',  alignItems: 'center', marginRight: 10}}>
+              {this.props.data.length >1? //type의 갯수가 2개 이상
+                this.props.data.map((row,index)=>(
+                  <div className='iconButtonContainer' key={row.idx}>
+                    <FlatButton 
+                      label={row.moduleWorkSubName} 
+                      labelStyle={this.props.workType != row.outputType?{color: '#f9f9f9'}:{color:'#fee900'}}
+                      onClick={()=>this.changeWorkType(row.outputType)}
+                    />
+                  </div>
+                  ))
+                :this.props.data.length <= 1?
+                  <div style={{display:'flex'}}></div>//type의 갯수가 1개
+                :null
+              }
+            </div>
           </div>
-        </div>
+        </header>
       </div>
     );
   }

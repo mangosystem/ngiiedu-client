@@ -25,6 +25,7 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import { cyan500 } from 'material-ui/styles/colors';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 
 class PointSymbolizer extends React.Component {
@@ -69,6 +70,7 @@ class PointSymbolizer extends React.Component {
             numberOfPoints:null,
             distance:null,
             slideIndex: 0,
+            classes:null
 
             // randomFillColor:null,
             // randomStrokeColor:null
@@ -108,7 +110,9 @@ class PointSymbolizer extends React.Component {
         this.editStyle = this.editStyle.bind(this);
         this.editRaster = this.editRaster.bind(this);
         this.symbolizerTypeChange = this.symbolizerTypeChange.bind(this);
-        
+        this.handleChangeCategory = this.handleChangeCategory.bind(this);
+        this.handleChangeIcon = this.handleChangeIcon.bind(this);
+
 	}
 
 
@@ -337,8 +341,9 @@ class PointSymbolizer extends React.Component {
         this.setState({
             columnName:value
         });
-        if(this.state.symbolizerType == 'CATEGORY'){
+        if(this.state.symbolizerType == 'CATEGORIES'){
             this.props.getRowUniqueInfo(value);
+            this.props.handleChangeCategory('',0,'');
         };
     }
 
@@ -523,7 +528,7 @@ class PointSymbolizer extends React.Component {
             style.options = option;
             style.symbolizerType = 'GRADUATED';
 
-        }else if(this.state.symbolizerType == 'CATEGORY'){
+        }else if(this.state.symbolizerType == 'CATEGORIES'){
             let option = {
                 columnName: this.state.columnName ==null? Column.defaultProps.value : this.state.columnName,
                 markType: this.state.markType==null ? Marker.defaultProps.value : this.state.markType,
@@ -538,7 +543,7 @@ class PointSymbolizer extends React.Component {
 
             style.options = option;
             style.classes = this.props.rowUniqueInfo;
-            style.symbolizerType = 'CATEGORY';
+            style.symbolizerType = 'CATEGORIES';
 
         }else if(this.state.symbolizerType == 'BUBBLE'){
             let option = {
@@ -601,7 +606,7 @@ class PointSymbolizer extends React.Component {
         this.setState({
         columnName:null
         })
-        if(symbolizerType=='CATEGORY'){
+        if(symbolizerType=='CATEGORIES'){
             this.props.getRowUniqueInfo(null);
         }
         if(symbolizerType=='DENSITY'||symbolizerType=='INTERPOLATION'){
@@ -659,6 +664,15 @@ class PointSymbolizer extends React.Component {
             slideIndex:value
         })
     }
+
+    handleChangeCategory(event,index,value){
+        this.props.handleChangeCategory(event,index,value)
+    }
+
+    handleChangeIcon(index, value){
+        this.props.handleChangeIcon(index, value);
+    }
+    
 
 	render() {
         let styleStyle={
@@ -828,7 +842,7 @@ class PointSymbolizer extends React.Component {
 
                 </Paper>
 			);
-		} else if (this.state.symbolizerType == 'CATEGORY') {
+		} else if (this.state.symbolizerType == 'CATEGORIES') {
             // 분류값 사용
             style = (
 				<Paper zDepth={0} style={{fontSize:13}}>
@@ -882,11 +896,28 @@ class PointSymbolizer extends React.Component {
 
                     <Divider style={{marginTop:1}}/>
 
+                    <RadioButtonGroup name="selectStyle" valueSelected={this.props.selCategoryType} onChange={this.handleChangeCategory} style={{display:'flex', marginTop:20, marginBottom:20}}>
+                        <RadioButton
+                            value={0}
+                            label="색상"
+                            style={{width:'50%', paddingLeft:60}}
+                        />
+                        <RadioButton
+                            value={1}
+                            label="아이콘"
+                            style={{width:'50%'}}
+                        />
+                    </RadioButtonGroup>
+
+                    <Divider style={{marginTop:1}}/>
+
                     <RowColor
                         type='FILL'
                         rowInfo={this.props.rowUniqueInfo}
                         handleChangeFillColor={this.handleChangeFillColor}
                         handleChangeRowColor={this.handleChangeRowColor}
+                        categoryType={this.props.selCategoryType}
+                        handleChangeIcon={this.handleChangeIcon}
                     />
 
                 </Paper>
@@ -1160,8 +1191,8 @@ class PointSymbolizer extends React.Component {
                         <img src='/ngiiedu/assets/images/symbol_point_chor.png' style={{width:70,height:70}} alt="GRADUATED"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단계구분</div>
                     </Paper>
-                    <Paper style={this.state.symbolizerType=='CATEGORY'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('CATEGORY') }>
-                        <img src='/ngiiedu/assets/images/symbol_point_cate.png' style={{width:70,height:70}} alt="CATEGORY"></img>
+                    <Paper style={this.state.symbolizerType=='CATEGORIES'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('CATEGORIES') }>
+                        <img src='/ngiiedu/assets/images/symbol_point_cate.png' style={{width:70,height:70}} alt="CATEGORIES"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>분류값사용</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('BUBBLE') }>
