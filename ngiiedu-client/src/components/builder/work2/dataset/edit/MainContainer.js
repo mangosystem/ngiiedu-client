@@ -235,6 +235,27 @@ class MainContainer extends React.Component {
 
     }
 
+    addBoundaryLayer(layer, title) {
+        let boundaryLayer = new ol.layer.Image({
+          title: title,
+          visible: false,
+          opacity: 0.6,
+          source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+            params: {
+              'FORMAT': 'image/png',
+              'VERSION': '1.3.0',
+              'STYLES': '',
+              'LAYERS': 'pinogio:'+layer,
+              // 'LAYERS': 'pinogio:d=KjCXc4dmy9',
+            }
+          })
+        });
+    
+        return boundaryLayer;
+      }
+
 
     componentDidMount() {
         //templayerName
@@ -420,7 +441,24 @@ class MainContainer extends React.Component {
             //배경지도 추가
             let layerSwitcher = new ol.control.LayerSwitcher();
             map.addControl(layerSwitcher);
+            let boundaryLayer1 = this.addBoundaryLayer('tl_scco_ctprvn', '행정경계: 시도');
+            let boundaryLayer2 = this.addBoundaryLayer('tl_scco_sig', '행정경계: 시군구');
+            let boundaryLayer3 = this.addBoundaryLayer('tl_scco_emd', '행정경계: 읍면동');
+            let boundaryLayer4 = this.addBoundaryLayer('tl_scco_li', '행정경계: 리');
+            
+            let layerGroup2 = new ol.layer.Group({
+              title: 'Boundary Map',
+              layers: [
+                boundaryLayer1,
+                boundaryLayer2,
+                boundaryLayer3,
+                boundaryLayer4
+              ]
+            });
+            
+            
             this.addBaseLayer(map);
+            map.addLayer(layerGroup2);
 
 
             map.addLayer(this.state.layers.raster);
