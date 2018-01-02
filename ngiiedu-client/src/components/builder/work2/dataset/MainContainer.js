@@ -56,6 +56,7 @@ class MainContainer extends React.Component {
             ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
             null,
             function (response) {
+                
                 this.setState({
                     dataSetData : response.response.data
                 })
@@ -151,7 +152,7 @@ class MainContainer extends React.Component {
                     <div className='thumbnailsContainer'>
                     {/* 새로만들기 버튼 */}
                         <div className='createButton'  >
-                            <FloatingActionButton onClick={()=>this.handleStep('createDataset')}>
+                            <FloatingActionButton  backgroundColor= '#3e81f6' onClick={()=>this.handleStep('createDataset')}>
                                 <ContentAdd />
                             </FloatingActionButton>
                         </div>
