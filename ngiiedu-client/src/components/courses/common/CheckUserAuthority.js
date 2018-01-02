@@ -4,8 +4,9 @@ import react from 'react';
 
 const CheckUserAuthority = (courseId,Idx) => {
   
-    let isMember = false
-    let isOwner = false
+    let isMember = false;
+    let isOwner = false;
+    let userIdx = '';
     // let idx = this.props.loginStatus.userIdx
     //member여부 체크
     $.ajax({
@@ -18,7 +19,7 @@ const CheckUserAuthority = (courseId,Idx) => {
                 var data = res.response.data;
                 console.dir(data);
                   for(var i=0;i<data.length;i++){
-                    if(data[i].userId==Idx){
+                    if(data[i].userId==Idx && data[i].joinStatus == 'CJS02'){
                       console.log('isMember');
                       isMember=true;
                     }
@@ -45,11 +46,16 @@ const CheckUserAuthority = (courseId,Idx) => {
         }.bind(this)
     });
   
+    if(isMember==false && isOwner==false){
+      alert("수업참여자가 아닙니다.");
+      window.location.href=contextPath
+    }
 
     return (
         {
           isOwner : isOwner,
           isMember : isMember,
+          userIdx : userId
         }
     );
 };

@@ -107,24 +107,24 @@ class App extends Component {
             					<SchoolListMainContainer loginStatus={this.state.loginStatus}/>
             				</div>
             			</Route>
-            			<Route exact path={contextPath + "/cm-admin/schoolSync"}>
+            			{/* <Route exact path={contextPath + "/cm-admin/schoolSync"}>
             				<div>
             					<Header />
             					<SchoolsSyncContainer loginStatus={this.state.loginStatus}/>
             				</div>
-            			</Route>
-            			<Route path={contextPath + "/cm-admin/schoolSync/api"}>
+            			</Route> */}
+            			<Route path={contextPath + "/cm-admin/schoolSync"}>
             				<div>
             					<Header />
             					<SchoolsSyncApiContainer loginStatus={this.state.loginStatus}/>
             				</div>
             			</Route>
-            			<Route path={contextPath + "/cm-admin/schoolSync/file"}>
+            			{/* <Route path={contextPath + "/cm-admin/schoolSync/file"}>
             				<div>
             					<Header />
             					<SchoolsSyncFileContainer loginStatus={this.state.loginStatus}/>
             				</div>
-            			</Route>
+            			</Route> */}
 
             			<Route path={contextPath + "/cm-admin/user"}>
             				<div>
@@ -178,7 +178,7 @@ class App extends Component {
             				</div>
             			</Route>
 
-                        <Redirect exact from={contextPath} to={contextPath + "/course"} />
+									<Redirect exact from={contextPath} to={contextPath + "/course"} />
             			<Route path={contextPath + "/courseCreate"}>
             				<div>
             					<Header2 />

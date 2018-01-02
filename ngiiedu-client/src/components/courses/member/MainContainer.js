@@ -218,7 +218,11 @@ class MainContainer extends React.Component {
                         <div style={{fontSize:15}}>{row.userEmail}</div>
                       </div>
                       <div>
-                        <FlatButton label="차단" secondary={true} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'BLOCK')}/>
+                        {this.state.isAccessor && this.state.isOwner ?
+                          <FlatButton label="차단" secondary={true} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'BLOCK')}/>
+                        :
+                          null
+                        }
                       </div>
                     </div>
                     <Divider/>
