@@ -19,48 +19,48 @@ class SampleCheckList extends Component {
     render() {
 
         return (
-            <Paper >
-            <Table
-                headerStyle={{
-                    width:3000,
-                    height:50
-                }}
-                bodyStyle={{
-                    width:3000,
-                    height:232
-                }}
-                selectable={false}
-            >
-                <TableHeader
-                    displaySelectAll={false}
-                    adjustForCheckbox={false}
+            <div>
+                <Table
+                    headerStyle={{
+                        width:3000
+                    }}
+                    bodyStyle={{
+                        width:3000,
+                        height:300
+                    }}
+                    selectable={false}
+                    className="admin-table"
                 >
-                <TableRow>
-                {this.props.apiColumn.map( (row, index) => (
-                    <TableHeaderColumn key={index}>{row}</TableHeaderColumn>
-                ))}
-
-                </TableRow>
-                </TableHeader>
-                <TableBody
-                    displayRowCheckbox={false}
-                >
-
-
-                {this.props.tableData.map( (row, index) => (
-                    <TableRow key={row.학교ID}>
-                        {this.props.apiColumn.map( (row2,index2 ) => (
-                        <TableRowColumn key={index+'-'+index2}>{eval("row."+row2)}</TableRowColumn>
-                        ))}
-
-                    </TableRow>
-                ))}
-
-                </TableBody>
-            </Table>
-
-
-            </Paper>
+                    <TableHeader
+                        displaySelectAll={false}
+                        adjustForCheckbox={false}
+                        className="admin-thead"
+                    >
+                        <TableRow className="admin-tr">
+                            {this.props.apiColumn.map( (row, index) => (
+                                <TableHeaderColumn key={index} className="admin-th">{row}</TableHeaderColumn>
+                            ))}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody
+                        displayRowCheckbox={false}
+                        className="admin-tbody"
+                    >
+                    {this.props.tableData.map( (row, index) => (
+                        <TableRow key={row.학교ID} className="admin-tr">
+                            {this.props.apiColumn.map( (row2,index2 ) => (
+                            <TableRowColumn 
+                                key={index+'-'+index2}
+                                className="admin-td"
+                            >
+                                {eval("row."+row2)}
+                            </TableRowColumn>
+                            ))}
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </div>
         );
     }
 }

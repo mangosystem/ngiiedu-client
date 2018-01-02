@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 
 import { actionSearchSchool } from '../../../../actions/index';
 
-//학교구분 버튼
-import RaisedButton from 'material-ui/RaisedButton';
-
 //검색창
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -20,140 +17,51 @@ class Search extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            schoolLevel:'',
-            value: '',
-            allLevelButton:'#00838F',
-            elementaryLevelButton:'#00BCD4',
-            middleLevelButton:'#00BCD4',
-            highLevelButton:'#00BCD4',
-        };
-        this.schoolLevelChange = this.schoolLevelChange.bind(this);
-    };
+    }
 
     search() {
 
-        let schoolLevel = this.state.schoolLevel;
-        let keyword = this.state.value;
+        let keyword = $('#keyword').val();
 
-        this.props.searchList(schoolLevel, keyword);
+        this.props.searchList('', keyword);
 
-    };
+    }
 
     enterKey(e) {
         if (e.keyCode == 13) this.search();
-    };
-
-    //학교구분 버튼
-    schoolLevelChange(value){
-        if(value =='all'){
-            this.setState({
-                allLevelButton:'#00838F',
-                elementaryLevelButton:'#00BCD4',
-                middleLevelButton:'#00BCD4',
-                highLevelButton:'#00BCD4',
-                schoolLevel:'',
-            }, function(){
-                this.search();
-            });
-
-        }else{
-            this.setState({
-                schoolLevel:value
-            }, function(){
-                this.search();
-            });
-            if(value =='초등학교'){
-                this.setState({
-                    allLevelButton:'#00BCD4',
-                    elementaryLevelButton:'#00838F',
-                    middleLevelButton:'#00BCD4',
-                    highLevelButton:'#00BCD4',
-                });
-            }else if(value =='중학교'){
-                this.setState({
-                    allLevelButton:'#00BCD4',
-                    elementaryLevelButton:'#00BCD4',
-                    middleLevelButton:'#00838F',
-                    highLevelButton:'#00BCD4',
-                });
-            }else if(value =='고등학교'){
-                this.setState({
-                    allLevelButton:'#00BCD4',
-                    elementaryLevelButton:'#00BCD4',
-                    middleLevelButton:'#00BCD4',
-                    highLevelButton:'#00838F',
-                });
-            };
-        };
-    };
+    }
 
     render() {
         return (
             <div
                 style={{
-                    maxWidth: '100%'
+                    maxWidth: '100%',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
                 }}
             >
-
-                <div>
-                    <RaisedButton
-                        label="전체선택"
-                        backgroundColor={this.state.allLevelButton}
-                        style={{width:'25%'}}
-                        onClick={()=>this.schoolLevelChange('all')}
-                    />
-                    <RaisedButton
-                        label="초등학교"
-                        backgroundColor={this.state.elementaryLevelButton}
-                        style={{width:'25%'}}
-                        onClick={()=>this.schoolLevelChange('초등학교')}
-                    />
-                    <RaisedButton
-                        label="중학교"
-                        backgroundColor={this.state.middleLevelButton}
-                        style={{width:'25%'}}
-                        onClick={()=>this.schoolLevelChange('중학교')}
-                    />
-                    <RaisedButton
-                        label="고등학교"
-                        backgroundColor={this.state.highLevelButton}
-                        style={{width:'25%'}}
-                        onClick={()=>this.schoolLevelChange('고등학교')}
-                    />
-                </div>
-
-                <Paper
+                <TextField
+                    id="keyword"
+                    hintText="검색"
+                    errorStyle={{ color: '#444' }}
+                    errorText=" "
+                    inputStyle={{ paddingLeft: '5px'}}
+                    hintStyle={{ paddingLeft: '5px'}}
                     style={{
-                        maxWidth: '70%',
-                        margin: 'auto',
-                        marginTop:20
+                        maxWidth: '90%'
                     }}
+                    onKeyDown={(event) => this.enterKey(event)}
+                />
+                <i
+                    className="fa fa-search"
+                    aria-hidden="true"
+                    style={{
+                        cursor: 'pointer'
+                    }}
+                    onMouseUp={this.search.bind(this)}
                 >
-                    <TextField
-                        hintText="Search"
-                        style={{
-                            marginLeft: 20,
-                            maxWidth: '90%'
-                        }}
-                        fullWidth={true}
-                        underlineShow={false}
-                        onChange={(event, value) => this.setState({value: value})}
-                        onKeyDown={(event) => this.enterKey(event)}
-                    />
-                    <i
-                        className="fa fa-search"
-                        aria-hidden="true"
-                        style={{
-                            marginLeft: 10,
-                            color: 'grey',
-                            cursor: 'pointer'
-                        }}
-                        onMouseUp={this.search.bind(this)}
-                    >
-                    </i>
-                    <Divider />
-                </Paper>
+                </i>
             </div>
         );
     }

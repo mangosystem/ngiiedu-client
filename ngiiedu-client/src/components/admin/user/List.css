@@ -1,0 +1,44 @@
+/* 게시판 / 목록 */
+div.boardList {
+    position: relative;
+    vertical-align: middle;
+}
+
+.admin-table {
+    vertical-align: middle;
+    text-align: center !important;
+}
+
+.admin-th {
+	border-top: 2px solid #43444c;
+    border-bottom: 2px solid #43444c;
+    font-weight: bold !important;
+    color: #444 !important;
+    vertical-align: middle;
+    text-align: center !important;
+}
+
+.admin-td {
+	border-bottom: 1px solid #bcbdc7;
+    font-size: 12pt;
+    text-align: center !important;
+    vertical-align: middle;
+}
+
+.admin-td:nth-child(2) {
+	font-size: 10pt;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.admin-td:last-child {
+	font-size: 10pt;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.admin-td-left {
+	border-bottom: 1px solid #bcbdc7;
+    font-size: 12pt;
+    vertical-align: middle;
+}

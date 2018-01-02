@@ -34,19 +34,6 @@ import SchoolsSyncApiContainer from './admin/school/sync/api/MainContainer';
 // 관리자 - 사용자
 import UsersManageContainer from './admin/user/MainContainer';
 
-// 관리자 - 수업관리
-import CourseContainer from './admin/course/MainContainer';
-
-// 관리자 - 사용자지원
-import SupportContainer from './admin/support/MainContainer';
-import SupportPdsContainer from './admin/support/pds/MainContainer';
-import SupportFaqContainer from './admin/support/faq/MainContainer';
-import SupportQnaContainer from './admin/support/qna/MainContainer';
-
-// 관리자 - 수업모듈
-import ModuleContainer from './admin/module/MainContainer';
-import ModuleBuilderContainer from './builder/MainContainer';
-
 // 수업
 import CourseListContainer from './courses/list/MainContainer';
 import CourseCreateContainer from './courses/create/MainContainer';
@@ -104,77 +91,37 @@ class App extends Component {
             			<Route path={contextPath + "/cm-admin/school"}>
             				<div>
             					<Header />
-            					<SchoolListMainContainer loginStatus={this.state.loginStatus}/>
+								<SchoolListMainContainer loginStatus={this.state.loginStatus}/>
+								<Footer2 />
             				</div>
             			</Route>
             			{/* <Route exact path={contextPath + "/cm-admin/schoolSync"}>
             				<div>
             					<Header />
-            					<SchoolsSyncContainer loginStatus={this.state.loginStatus}/>
+								<SchoolsSyncContainer loginStatus={this.state.loginStatus}/>
+								<Footer2 />
             				</div>
             			</Route> */}
             			<Route path={contextPath + "/cm-admin/schoolSync"}>
             				<div>
             					<Header />
-            					<SchoolsSyncApiContainer loginStatus={this.state.loginStatus}/>
+								<SchoolsSyncApiContainer loginStatus={this.state.loginStatus}/>
+								<Footer2 />
             				</div>
             			</Route>
             			{/* <Route path={contextPath + "/cm-admin/schoolSync/file"}>
             				<div>
             					<Header />
-            					<SchoolsSyncFileContainer loginStatus={this.state.loginStatus}/>
+								<SchoolsSyncFileContainer loginStatus={this.state.loginStatus}/>
+								<Footer2 />
             				</div>
             			</Route> */}
 
             			<Route path={contextPath + "/cm-admin/user"}>
             				<div>
             					<Header />
-            					<UsersManageContainer loginStatus={this.state.loginStatus}/>
-            				</div>
-            			</Route>
-
-            			<Route path={contextPath + "/cm-admin/course"}>
-            				<div>
-            					<Header />
-            					<CourseContainer loginStatus={this.state.loginStatus}/>
-            				</div>
-            			</Route>
-
-            			<Route path={contextPath + "/cm-admin/support"}>
-            				<div>
-            					<Header />
-            					<SupportContainer loginStatus={this.state.loginStatus}/>
-            				</div>
-            			</Route>
-            			<Route path={contextPath + "/cm-admin/supportPds"}>
-            				<div>
-            					<Header />
-            					<SupportPdsContainer loginStatus={this.state.loginStatus}/>
-            				</div>
-            			</Route>
-            			<Route path={contextPath + "/cm-admin/supportFaq"}>
-            				<div>
-            					<Header />
-            					<SupportFaqContainer loginStatus={this.state.loginStatus}/>
-            				</div>
-            			</Route>
-            			<Route path={contextPath + "/cm-admin/supportQna"}>
-            				<div>
-            					<Header />
-            					<SupportQnaContainer loginStatus={this.state.loginStatus}/>
-            				</div>
-            			</Route>
-
-            			<Route path={contextPath + "/cm-admin/module"}>
-            				<div>
-            					<Header />
-            					<ModuleContainer loginStatus={this.state.loginStatus}/>
-            				</div>
-            			</Route>
-            			<Route path={contextPath + "/cm-admin/moduleBuilder"}>
-            				<div>
-            					<Header />
-            					<ModuleBuilderContainer loginStatus={this.state.loginStatus}/>
+								<UsersManageContainer loginStatus={this.state.loginStatus}/>
+								<Footer2 />
             				</div>
             			</Route>
 

@@ -24,6 +24,10 @@ import SearchBar from 'material-ui-search-bar';
 import TextField from 'material-ui/TextField';
 import update from 'react-addons-update';
 
+import { red500, cyan500 } from 'material-ui/styles/colors';
+
+import Search from './Search';
+
 class SchoolList extends React.Component {
     constructor(props){
         super(props);
@@ -34,7 +38,6 @@ class SchoolList extends React.Component {
             deleteArrModal:false,
             authkeyModal:false,
             authkeyData:'',
-            fixedHeader: true,
             selectable: false,
             showCheckboxes: false,
         };
@@ -137,7 +140,21 @@ class SchoolList extends React.Component {
             selectable:true,
             showCheckboxes:true,
             deleteButtonShow:''
+        }, function() {
+            // body
+            let headerCheckbox = $('.admin-tr th:eq(0)');
+            headerCheckbox.addClass('admin-th');
+
+            // let bodyCheckbox = $('.admin-tr td');
+            // bodyCheckbox.addClass('admin-td');
+
+            $('.admin-tr td').each(function(index) {
+                if ($(this).hasClass("admin-td") === false) {
+                    $(this).addClass('admin-td');
+                }
+            });
         });
+
     };
 
     deleteArrCancle(){
@@ -250,70 +267,74 @@ class SchoolList extends React.Component {
         //데이터 선택 삭제 확인 및 취소 버튼
         const deleteArrButton = [
             <FlatButton
-            label="확인"
-            primary={true}
-            onClick={this.deleteSelectData}
+                label="취소"
+                onClick={this.deleteArrModalClose}
             />,
             <FlatButton
-            label="취소"
-            primary={true}
-            onClick={this.deleteArrModalClose}
+                label="삭제"
+                backgroundColor={red500}
+                style={{color: 'white'}}
+                onClick={this.deleteSelectData}
             />
         ];
 
         const authkeyButton = [
             <FlatButton
-            label="닫기"
-            primary={true}
-            onClick={this.authkeyModalClose}
+                label="닫기"
+                onClick={this.authkeyModalClose}
             />
         ];
 
         return (
             <div>
-
+                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+                    <div>
+                        <IconButton tooltip="추가" onClick={this.addModalOpen}>
+                            <Add />
+                        </IconButton>
+                        <IconButton tooltip="삭제" onClick={this.deleteArrReady}>
+                            <Delete />
+                        </IconButton>
+                        <FlatButton label="취소" onClick={this.deleteArrCancle} style={{display:this.state.deleteButtonShow}}/>
+                        <FlatButton label="확인" onClick={this.deleteArrModalOpen} style={{display:this.state.deleteButtonShow}}/>
+                    </div>
+                    <div style={{ width: '50%'}}>
+                        <Search />
+                    </div>
+                </div>
                 {/* 전체 학교목록 */}
                 <Table
                     onRowSelection={this.tableRowSelection}
-                    fixedHeader={this.state.fixedHeader}
                     multiSelectable={true}
                     selectable={this.state.selectable}
                     height={'500px'}
+                    className="admin-table"
                 >
-                    <TableHeader displaySelectAll={this.state.showCheckboxes}>
-                        <TableRow>
-                            <TableHeaderColumn colSpan="4" style={{textAlign: 'right'}}>
-
-                                <FlatButton label="취소" onClick={this.deleteArrCancle} style={{display:this.state.deleteButtonShow}}/>
-                                <FlatButton label="확인" onClick={this.deleteArrModalOpen} style={{display:this.state.deleteButtonShow}}/>
-                                <IconButton tooltip="추가" onClick={this.addModalOpen}>
-                                    <Add />
-                                </IconButton>
-                                <IconButton tooltip="삭제" onClick={this.deleteArrReady}>
-                                    <Delete />
-                                </IconButton>
-                            </TableHeaderColumn>
-                        </TableRow>
-                        <TableRow>
-                            <TableHeaderColumn>ID</TableHeaderColumn>
-                            <TableHeaderColumn>학교이름</TableHeaderColumn>
-                            <TableHeaderColumn>교육지원청명</TableHeaderColumn>
-                            <TableHeaderColumn></TableHeaderColumn>
+                    <TableHeader 
+                        displaySelectAll={this.state.showCheckboxes}
+                        adjustForCheckbox={this.state.showCheckboxes}
+                        className="admin-thead"
+                    >
+                        <TableRow className="admin-tr">
+                            <TableHeaderColumn className="admin-th">ID</TableHeaderColumn>
+                            <TableHeaderColumn className="admin-th">학교이름</TableHeaderColumn>
+                            <TableHeaderColumn className="admin-th">교육지원청명</TableHeaderColumn>
+                            <TableHeaderColumn className="admin-th"></TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
-                    <TableBody displayRowCheckbox={this.state.showCheckboxes}>
+                    <TableBody displayRowCheckbox={this.state.showCheckboxes} className="admin-tbody">
                         {this.state.tableData.map((row,i) => (
-                            <TableRow selected={this.isSelected(i)} key={row.idx}>
-                                <TableRowColumn>
+                            <TableRow selected={this.isSelected(i)} key={row.idx} className="admin-tr">
+                                <TableRowColumn className="admin-td">
                                     {row.schoolId}
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td">
                                     {row.schoolName}
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td">
                                     {row.schoolEduOfficeName}
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td">
                                     {/* 행 안의 메뉴 버튼 */}
                                     <IconMenu
                                         iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}

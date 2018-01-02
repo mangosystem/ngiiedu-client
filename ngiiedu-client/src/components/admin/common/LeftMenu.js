@@ -61,69 +61,6 @@ class LeftMenu extends React.Component {
                         </Link>
                     </Menu>
                 </Paper>
-                <Paper className="mui-paper">
-                    <Menu desktop className="aside-menu">
-                        <Link to={contextPath + "/cm-admin/course"}>
-                            <MenuItem
-                                primaryText="수업관리"
-                                leftIcon={<IconWeb />}
-                                className={this.props.activeMenu == 'course' ? 'aml' : 'uml'}
-                            />
-                        </Link>
-                    </Menu>
-                </Paper>
-                <Paper className="mui-paper">
-                    <Menu desktop className="aside-menu">
-                        <Subheader>사용자지원</Subheader>
-                        <Link to={contextPath + "/cm-admin/support"}>
-                            <MenuItem
-                                primaryText="메인"
-                                leftIcon={<IconHome />}
-                                className={this.props.activeMenu == 'support' ? 'aml' : 'uml'}
-                            />
-                        </Link>
-                        <Link to={contextPath + "/cm-admin/supportPds"}>
-                            <MenuItem
-                                primaryText="자료실 관리"
-                                leftIcon={<IconFolderShared />}
-                                className={this.props.activeMenu == 'supportPds' ? 'aml' : 'uml'}
-                            />
-                        </Link>
-                        <Link to={contextPath + "/cm-admin/supportFaq"}>
-                            <MenuItem
-                                primaryText="FAQ 관리"
-                                leftIcon={<IconHelp />}
-                                className={this.props.activeMenu == 'supportFaq' ? 'aml' : 'uml'}
-                            />
-                        </Link>
-                        <Link to={contextPath + "/cm-admin/supportQna"}>
-                            <MenuItem
-                                primaryText="Q&A 관리"
-                                leftIcon={<IconHelpOutLine />}
-                                className={this.props.activeMenu == 'supportQna' ? 'aml' : 'uml'}
-                            />
-                        </Link>
-                    </Menu>
-                </Paper>
-                <Paper className="mui-paper">
-                    <Menu desktop className="aside-menu">
-                        <Subheader>수업모듈</Subheader>
-                        <Link to={contextPath + "/cm-admin/module"}>
-                            <MenuItem
-                                primaryText="수업모듈 관리"
-                                leftIcon={<IconSettings />}
-                                className={this.props.activeMenu == 'module' ? 'aml' : 'uml'}
-                            />
-                        </Link>
-                        <Link to={contextPath + "/cm-admin/moduleBuilder"}>
-                            <MenuItem
-                                primaryText="수업모듈 생성도구"
-                                leftIcon={<IconBuild />}
-                                className={this.props.activeMenu == 'moduleBuilder' ? 'aml' : 'uml'}
-                            />
-                        </Link>
-                    </Menu>
-                </Paper>
             </aside>
       </div>
     );

@@ -8,6 +8,8 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 
+import { red500 } from 'material-ui/styles/colors';
+
 class DeletePopup extends React.Component {
 
     constructor(props) {
@@ -53,14 +55,14 @@ class DeletePopup extends React.Component {
         //데이터 단일 삭제 확인 및 취소 버튼
         const deleteButton = [
             <FlatButton
-            label="확인"
-            primary={true}
-            onClick={this.deleteData}
+                label="취소"
+                onClick={this.handleClose.bind(this)}
             />,
             <FlatButton
-            label="취소"
-            primary={true}
-            onClick={this.handleClose.bind(this)}
+                label="삭제"
+                backgroundColor={red500}
+                style={{color: 'white'}}
+                onClick={this.deleteData}
             />
         ];
 

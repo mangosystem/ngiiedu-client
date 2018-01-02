@@ -13,6 +13,7 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import update from 'react-addons-update';
 
+import { cyan500 } from 'material-ui/styles/colors';
 import {
     Table,
     TableBody,
@@ -295,14 +296,14 @@ class AddPopup extends React.Component {
         //데이터 추가 확인 및 취소 버튼
         const addButton = [
             <FlatButton
-            label="확인"
-            primary={true}
-            onClick={this.addData}
+                label="취소"
+                onClick={this.handleClose.bind(this)}
             />,
             <FlatButton
-            label="취소"
-            primary={true}
-            onClick={this.handleClose.bind(this)}
+                label="추가"
+                backgroundColor={cyan500}
+                style={{color: 'white'}}
+                onClick={this.addData}
             />
         ];
 
@@ -320,35 +321,36 @@ class AddPopup extends React.Component {
                         fixedHeader={this.state.fixedHeader}
                         selectable={false}
                         height={'300px'}
+                        className="admin-table"
                     >
-                        <TableHeader displaySelectAll={false}>
-                            <TableRow>
-                                <TableHeaderColumn>컬럼명</TableHeaderColumn>
-                                <TableHeaderColumn>속성값</TableHeaderColumn>
+                        <TableHeader displaySelectAll={false} adjustForCheckbox={false} className="admin-thead">
+                            <TableRow className="admin-tr">
+                                <TableHeaderColumn className="admin-th">컬럼명</TableHeaderColumn>
+                                <TableHeaderColumn className="admin-th">속성값</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
-                        <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                                <TableRowColumn>
+                        <TableBody displayRowCheckbox={false} className="admin-tbody">
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교아이디
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="학교아이디" value={this.state.addDataObj.schoolId} onChange={this.schoolIdChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교이름
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="학교이름" value={this.state.addDataObj.schoolName} onChange={this.schoolNameChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교구분
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <SelectField
                                         value={this.state.addDataObj.schoolLevel}
                                         onChange={this.schoolLevelChange}
@@ -362,11 +364,11 @@ class AddPopup extends React.Component {
                                     </SelectField>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     운영상태
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <SelectField
                                         value={this.state.addDataObj.schoolStatus}
                                         onChange={this.schoolStatusChange}
@@ -379,19 +381,19 @@ class AddPopup extends React.Component {
                                     </SelectField>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     교육지원청명
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="교육지원청명" value={this.state.addDataObj.schoolEduOfficeName} onChange={this.schoolEduOfficeNameChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     교육지원청코드
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField
                                         hintText="교육지원청코드"
                                         value={this.state.addDataObj.schoolEduOfficeCode}
@@ -400,19 +402,19 @@ class AddPopup extends React.Component {
                                     />
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     시도교육청명
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="시도교육청명" value={this.state.addDataObj.schoolSidoOfficeName}  onChange={this.schoolSidoOfficeNameChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     시도교육청코드
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField
                                         hintText="시도교육청코드"
                                         value={this.state.addDataObj.schoolSidoOfficeCode}
@@ -421,51 +423,51 @@ class AddPopup extends React.Component {
                                     />
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                 소재지지번주소
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="소재지지번주소" value={this.state.addDataObj.schoolAddr} onChange={this.schoolAddrChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                 설립일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="설립일자" value={this.state.addDataObj.schoolBuildDate} onChange={this.schoolBuildDateChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     설립형태
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="설립형태"  value={this.state.addDataObj.schoolEstablishType} onChange={this.schoolEstablishTypeChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     위도
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="위도" value={this.state.addDataObj.schoolLat} onChange={this.schoolLatChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     경도
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="경도" value={this.state.addDataObj.schoolLon} onChange={this.schoolLonChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     본교분교구분
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <SelectField
                                         value={this.state.addDataObj.schoolBranchType}
                                         onChange={this.schoolBranchTypeChange}
@@ -478,35 +480,35 @@ class AddPopup extends React.Component {
                                     </SelectField>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     소재지도로명주소
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="소재지도로명주소" value={this.state.addDataObj.schoolAddrRoad} onChange={this.schoolAddrRoadChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     데이터기준일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="데이터기준일자" value={this.state.addDataObj.schoolRefDate} onChange={this.schoolRefDateChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     생성일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="생성일자" value={this.state.addDataObj.schoolCreateDate} onChange={this.schoolCreateDateChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     변경일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="변경일자" value={this.state.addDataObj.schoolEditDate} onChange={this.schoolEditDateChange}/>
                                 </TableRowColumn>
                             </TableRow>

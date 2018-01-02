@@ -12,26 +12,6 @@ import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 
-import IconButton from 'material-ui/IconButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import Badge from 'material-ui/Badge';
-import FontIcon from 'material-ui/FontIcon';
-
-import IconNotifications from 'material-ui/svg-icons/social/notifications';
-import IconChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
-import IconArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
-import IconMoreVert from 'material-ui/svg-icons/navigation/more-vert';
-import IconHelpOutline from 'material-ui/svg-icons/action/help-outline';
-
-import Avatar from 'material-ui/Avatar';
-
-import CourseJoinModal from '../../courses/join/ModalContainer';
-
-import './Header.css';
-
 class Header extends React.Component {
 
   constructor(props) {
@@ -64,68 +44,24 @@ class Header extends React.Component {
 
   render() {
     return (
-      <header id={this.props.slim ? "slimHeader" : "header"}>
-        <div className={this.props.wide ? "inner wide" : "inner"} style={{display: 'flex'}} >
-
-          <div style={{flex: 1, marginLeft: 0, paddingTop: this.props.slim? 8:20, paddingBottom: this.props.slim? 10:20}}>
-            <Link to="/ngiiedu/course"><h3>NGII-EDU LOGO</h3></Link>
+      <header className="adminHeader">
+        <div id="headerWrap">
+          <div className="header">
+            <h1 className="edge" onClick={()=>window.location.href=contextPath + '/main'}>공간정보융합 활용지원정보</h1>
+            {this.props.loginStatus.userDivision==1 ? //관리자. = 3
+              <div className="gnb">
+                <span className="admin">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.
+                <button type="button" title="로그아웃" onClick={()=>window.location.href=contextPath + "/logout"}>로그아웃</button>
+              </div> 
+            : //로그인 전  
+              <ul className="gnb">
+                <li onClick={() => this.props.history.push(contextPath + '/login')}>로그인</li>
+                <li onClick={() => this.props.history.push(contextPath + '/join')}>회원가입</li>
+              </ul>
+            }
           </div>
-
-          <div style={{flex: 4}}>
-          </div>
-
-          <div style={{flex: 1, marginRight: 0}}>
-            <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-              <CourseJoinModal
-                isOpen={this.state.isOpenJoinCourse}
-                onChangeOpen={this.onChangeCourseOpen}
-              />
-
-              {/*
-              <Badge
-                badgeContent={10}
-                secondary={true}
-                badgeStyle={{top: 15, right: 12}}
-                style={{padding: '12px 12px 0 0', margin: 'auto 10px'}}
-              >
-                <IconButton style={{paddingTop: '10px'}}>
-                  <IconNotifications  />
-                </IconButton>
-              </Badge>
-              */}
-
-              {/* stevie, veronika, jenny */}
-              <Avatar
-                src="https://semantic-ui.com/images/avatar/large/stevie.jpg"
-                size={30}
-                style={{margin: this.props.slim? '5px 10px' :'15px 10px', cursor: 'pointer'}}
-              />
-              <IconMenu
-                  iconButtonElement={
-                      <IconButton style={{width: 50, height: 50, marginTop: this.props.slim? -5:5, marginBottom: 5}}>
-                        <IconMoreVert />
-                      </IconButton>
-                  }
-                  anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                  targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                >
-                  <MenuItem primaryText="회원정보" />
-                  <MenuItem primaryText="수업목록" href={contextPath + "/course"} />
-                  <MenuItem primaryText="수업 참여하기" onClick={() => this.setState({ isOpenJoinCourse: true })}
-                  />
-                  <MenuItem primaryText="수업 만들기" href={contextPath + "/courseCreate"} />
-                  <MenuItem primaryText="로그아웃" href={contextPath + "/logout"} />
-              </IconMenu>
-              <IconButton style={{width: 50, height: 50, marginTop: this.props.slim? -5:5, marginBottom: 5}}>
-                <IconHelpOutline />
-              </IconButton>
-
-            </div>
-          </div>
-
         </div>
       </header>
-
     );
   }
 };
@@ -147,7 +83,7 @@ let mapStateToProps = (state) => {
 
 Header = connect(
   mapStateToProps,
-    mapDispatchToProps
+  mapDispatchToProps
 )(Header);
 
 

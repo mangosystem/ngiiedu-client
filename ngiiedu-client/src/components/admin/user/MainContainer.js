@@ -16,7 +16,8 @@ class MainContainer extends React.Component {
                             activeMenu="user"
                         />
                         <section>
-                            <Paper style={{padding:'20px 0'}}>
+                            <Paper style={{padding:'20px'}}>
+                                <h3 className="edge">회원관리</h3>
                                 <Search />
                                 <List />
                                 <UserPopup />

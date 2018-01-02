@@ -27,6 +27,8 @@ import {
 } from 'material-ui/Table';
 import Toggle from 'material-ui/Toggle';
 
+import './List.css';
+
 class List extends React.Component {
 
     constructor(props) {
@@ -37,7 +39,6 @@ class List extends React.Component {
             value: '',
             isAscById: false,
             isAscByName: true,
-            isAscByEmail: true,
             isAscByDivision: false,
             isAscByState: true
         };
@@ -151,14 +152,6 @@ class List extends React.Component {
                 users: this.state.users.sort(this.sortJsonDesc(name)),
                 isAscByName: !this.state.isAscByName
             });
-        } else if (name == 'userEmail') {
-            this.state.isAscByEmail ? this.setState({
-                users: this.state.users.sort(this.sortJsonAsc(name)),
-                isAscByEmail: !this.state.isAscByEmail
-            }) : this.setState({
-                users: this.state.users.sort(this.sortJsonDesc(name)),
-                isAscByEmail: !this.state.isAscByEmail
-            });
         } else if (name == 'userDivision') {
             this.state.isAscByDivision ? this.setState({
                 users: this.state.users.sort(this.sortJsonAsc(name)),
@@ -250,17 +243,19 @@ class List extends React.Component {
         };
 
         return (
-            <div>
+            <div className="boardList">
                 <Table
                    selectable={false}
-                   className="Table"
+                   className="admin-table"
+                   height={'500px'}
                 >
                     <TableHeader
                         displaySelectAll={false}
                         adjustForCheckbox={false}
+                        className="admin-thead"
                     >
-                        <TableRow>
-                            <TableHeaderColumn style={tableStyle}>
+                        <TableRow className="admin-tr">
+                            <TableHeaderColumn className="admin-th">
                                 아이디
                                 <i
                                     className="fa fa-sort"
@@ -268,23 +263,15 @@ class List extends React.Component {
                                     onMouseUp={() => this.sortJson("userid")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn style={tableStyle}>
-                                이름
+                            <TableHeaderColumn className="admin-th">
+                                별명
                                 <i
                                     className="fa fa-sort"
                                     aria-hidden="true"
                                     onMouseUp={() => this.sortJson("userName")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn style={tableStyle}>
-                                이메일
-                                <i
-                                    className="fa fa-sort"
-                                    aria-hidden="true"
-                                    onMouseUp={() => this.sortJson("userEmail")}>
-                                </i>
-                            </TableHeaderColumn>
-                            <TableHeaderColumn style={tableStyle}>
+                            <TableHeaderColumn className="admin-th">
                                 사용자구분
                                 <i
                                     className="fa fa-sort"
@@ -292,7 +279,7 @@ class List extends React.Component {
                                     onMouseUp={() => this.sortJson("userDivision")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn style={tableStyle}>
+                            <TableHeaderColumn className="admin-th">
                                 상태
                                 <i
                                     className="fa fa-sort"
@@ -300,27 +287,26 @@ class List extends React.Component {
                                     onMouseUp={() => this.sortJson("userState")}>
                                 </i>
                             </TableHeaderColumn>
-                            <TableHeaderColumn style={tableStyle}>
+                            <TableHeaderColumn className="admin-th">
                                 상세정보
                             </TableHeaderColumn>
                             </TableRow>
                     </TableHeader>
-                    <TableBody displayRowCheckbox={false} className="TableBody">
+                    <TableBody displayRowCheckbox={false} className="admin-tbody">
                             {this.state.users.map((contact, i) => {
                                 return (
-                                    <TableRow key={i} className="TableRow">
-                                        <TableRowColumn style={tableStyle}>{contact.userid}</TableRowColumn>
-                                        <TableRowColumn style={tableStyle}>{contact.userName}</TableRowColumn>
-                                        <TableRowColumn style={tableStyle}>{contact.userEmail}</TableRowColumn>
-                                        <TableRowColumn style={tableStyle}>{contact.userDivision==1? '교사':'학생'}</TableRowColumn>
-                                        <TableRowColumn>
+                                    <TableRow key={i} className="admin-tr">
+                                        <TableRowColumn className="admin-td">{contact.userid}</TableRowColumn>
+                                        <TableRowColumn className="admin-td">{contact.userName}</TableRowColumn>
+                                        <TableRowColumn className="admin-td">{contact.userDivision==1? '교사': contact.userDivision==2? '학생' : '관리자'}</TableRowColumn>
+                                        <TableRowColumn className="admin-td">
                                         <Toggle
                                             toggled={contact.userState}
                                             style={{maxWidth: '20%', margin: 'auto'}}
                                             onToggle={(event, value, i) => this.changeToggle(event, value, contact)}
                                         />
                                         </TableRowColumn>
-                                        <TableRowColumn style={tableStyle}>
+                                        <TableRowColumn className="admin-td">
                                             <IconButton onClick={(i) => this.showDetail(contact.userid)}>
                                                 <Assignment color={blue400}/>
                                             </IconButton>

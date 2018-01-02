@@ -38,8 +38,8 @@ class SampleCheckContainer extends Component {
 
     render() {
         return (
-            <div >
-                <h1 style={{padding:20}}>학교 목록 확인</h1>
+            <div style={{ padding: '20px' }}>
+                <h3 className="edge">동기화</h3>
                     <Divider style={{marginTop: '20px', marginBottom: '20px'}} />
                     <div className="SampleCheckEdit">
                         <SampleCheckEdit apiColumn={this.state.apiColumns}
@@ -50,7 +50,7 @@ class SampleCheckContainer extends Component {
                     <Divider style={{marginTop: '20px', marginBottom: '20px'}} />
                     <div className="SampleCheckList">
                         <SampleCheckList tableData={this.state.tableData}
-                        apiColumn={this.state.apiColumns}
+                            apiColumn={this.state.apiColumns}
                         />
                     </div>
                 </div>

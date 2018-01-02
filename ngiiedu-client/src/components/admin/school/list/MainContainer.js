@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SchoolList from  './SchoolList';
-import Search from './Search';
+import CategorySearch from './CategorySearch';
 import InfoPopup from './popup/InfoPopup';
 import EditPopup from './popup/EditPopup';
 import AddPopup from './popup/AddPopup';
@@ -19,8 +19,10 @@ class MainContainer extends React.Component {
                             activeMenu="schoolList"
                         />
                         <section>
-                            <Paper>
-                                <Search/>
+                            <Paper style={{padding:'20px'}}>
+                                <h3 className="edge">학교목록</h3>
+                                <CategorySearch/>
+                                <br />
                                 <SchoolList/>
                                 <InfoPopup/>
                                 <EditPopup/>

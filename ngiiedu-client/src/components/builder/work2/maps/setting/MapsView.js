@@ -57,32 +57,35 @@ class MapsView extends React.Component {
       }
     }
 
-    ajaxJson(
-      ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
-      null,
-      function(res){
+    if (this.props.maps.mapsType != 'SERIES') {
+      ajaxJson(
+        ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
+        null,
+        function(res){
 
-        let data = res.response.data.data;
+          let data = res.response.data.data;
 
-        if(data.bounds){
-          let wkt = data.bounds;
-          let format = new ol.format.WKT();
-          let feature = format.readFeature(wkt, {
-              dataProjection: 'EPSG:4326',
-              featureProjection: 'EPSG:3857'
-          });
-          map.getView().fit(
-              feature.getGeometry().getExtent(),
-              map.getSize()
-          );
+          if(data.bounds){
+            let wkt = data.bounds;
+            let format = new ol.format.WKT();
+            let feature = format.readFeature(wkt, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857'
+            });
+            map.getView().fit(
+                feature.getGeometry().getExtent(),
+                map.getSize()
+            );
+          }
+          
+        }.bind(this),
+        function(e){
+          alert(e);
         }
+      );
+    }
 
-        
-      }.bind(this),
-      function(e){
-        alert(e);
-      }
-    );      
+
     map.addLayer(raster);
     
   }

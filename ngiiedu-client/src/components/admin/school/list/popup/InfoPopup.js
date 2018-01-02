@@ -52,7 +52,6 @@ class InfoPopup extends React.Component {
         const infoButton = [
             <FlatButton
                 label="확인"
-                primary={true}
                 onClick={this.handleClose.bind(this)}
             />
         ];
@@ -71,155 +70,156 @@ class InfoPopup extends React.Component {
                         fixedHeader={true}
                         selectable={false}
                         height={'300px'}
+                        className="admin-table"
                     >
-                        <TableHeader displaySelectAll={false}>
-                            <TableRow>
-                                <TableHeaderColumn>컬럼명</TableHeaderColumn>
-                                <TableHeaderColumn>속성값</TableHeaderColumn>
+                        <TableHeader displaySelectAll={false} adjustForCheckbox={false} className="admin-thead">
+                            <TableRow className="admin-tr">
+                                <TableHeaderColumn className="admin-th">컬럼명</TableHeaderColumn>
+                                <TableHeaderColumn className="admin-th">속성값</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
-                        <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                                <TableRowColumn>
+                        <TableBody displayRowCheckbox={false} className="admin-tbody">
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교아이디
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolId}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교이름
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolName}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교구분
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolLevel}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     운영상태
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolStatus}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     교육지원청명
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolEduOfficeName}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     교육지원청코드
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolEduOfficeCode}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     시도교육청명
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolSidoOfficeName}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     시도교육청코드
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolSidoOfficeCode}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                 소재지지번주소
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolAddr}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                 설립일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolBuildDate}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     설립형태
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolEstablishType}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     위도
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolLat}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     경도
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolLon}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     본교분교구분
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolBranchType}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     소재지도로명주소
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolAddrRoad}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     데이터기준일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolReferenceDate}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     생성일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolDataCreateDate}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     변경일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolDateEditDate}
                                 </TableRowColumn>
                             </TableRow>

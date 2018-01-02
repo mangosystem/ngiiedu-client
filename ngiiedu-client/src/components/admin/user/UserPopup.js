@@ -62,7 +62,6 @@ class UserPopup extends React.Component {
         const actions = [
             <FlatButton
               label="확인"
-              primary={true}
               onClick={this.handleClose.bind(this)}
             />
         ];
@@ -77,27 +76,29 @@ class UserPopup extends React.Component {
                 onRequestClose={this.handleClose.bind(this)}
                 autoScrollBodyContent={false}
                 >
-                    <Table selectable={false}>
-                        <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                                <TableRowColumn>아이디</TableRowColumn>
-                                <TableRowColumn>{this.state.detail.userid}</TableRowColumn>
+                    <Table selectable={false} className="admin-table">
+                        <TableHeader displaySelectAll={false} adjustForCheckbox={false} className="admin-thead">
+                            <TableRow className="admin-tr">
+                                <TableHeaderColumn className="admin-th">분류</TableHeaderColumn>
+                                <TableHeaderColumn className="admin-th">정보</TableHeaderColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>이름</TableRowColumn>
-                                <TableRowColumn>{this.state.detail.userName}</TableRowColumn>
+                        </TableHeader>
+                        <TableBody displayRowCheckbox={false} className="admin-tbody">
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td">아이디</TableRowColumn>
+                                <TableRowColumn className="admin-td">{this.state.detail.userid}</TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>이메일</TableRowColumn>
-                                <TableRowColumn>{this.state.detail.userEmail}</TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td">이름</TableRowColumn>
+                                <TableRowColumn className="admin-td">{this.state.detail.userName}</TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>사용자구분</TableRowColumn>
-                                <TableRowColumn>{this.state.detail.userDivision==1? '교사' : '학생'}</TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td">사용자구분</TableRowColumn>
+                                <TableRowColumn className="admin-td">{this.state.detail.userDivision==1? '교사' : this.state.detail.userDivision==2? '학생' : '관리자'}</TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>활성화여부</TableRowColumn>
-                                <TableRowColumn>{this.state.detail.userState? '활성화' : '비활성화'}</TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td">활성화여부</TableRowColumn>
+                                <TableRowColumn className="admin-td">{this.state.detail.userState? '활성화' : '비활성화'}</TableRowColumn>
                             </TableRow>
                         </TableBody>
                     </Table>

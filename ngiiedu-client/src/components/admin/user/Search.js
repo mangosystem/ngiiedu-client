@@ -41,39 +41,33 @@ class Search extends React.Component {
         return (
             <div
                 style={{
-                    maxWidth: '100%'
+                    maxWidth: '100%',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
                 }}
             >
-                <Paper
+                <TextField
+                    id="keyword"
+                    hintText="검색"
+                    errorStyle={{ color: '#444' }}
+                    errorText=" "
+                    inputStyle={{ paddingLeft: '5px'}}
+                    hintStyle={{ paddingLeft: '5px'}}
                     style={{
-                        maxWidth: '70%',
-                        margin: 'auto'
+                        maxWidth: '90%'
                     }}
+                    onKeyDown={(event) => this.enterKey(event)}
+                />
+                <i
+                    className="fa fa-search"
+                    aria-hidden="true"
+                    style={{
+                        cursor: 'pointer'
+                    }}
+                    onMouseUp={this.search.bind(this)}
                 >
-                    <TextField
-                        id="keyword"
-                        hintText="Search"
-                        style={{
-                            marginLeft: 20,
-                            maxWidth: '90%'
-                        }}
-                        fullWidth={true}
-                        underlineShow={false}
-                        onKeyDown={(event) => this.enterKey(event)}
-                    />
-                    <i
-                        className="fa fa-search"
-                        aria-hidden="true"
-                        style={{
-                            marginLeft: 10,
-                            color: 'grey',
-                            cursor: 'pointer'
-                        }}
-                        onMouseUp={this.search.bind(this)}
-                    >
-                    </i>
-                    <Divider />
-                </Paper>
+                </i>
             </div>
         );
     }

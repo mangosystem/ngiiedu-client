@@ -13,6 +13,9 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import update from 'react-addons-update';
 
+import { cyan500 } from 'material-ui/styles/colors';
+
+
 import {
     Table,
     TableBody,
@@ -274,14 +277,14 @@ class EditPopup extends React.Component {
         //데이터 수정 확인 및 취소 버튼
         const editButton = [
             <FlatButton
-            label="확인"
-            primary={true}
-            onClick={this.editData}
+                label="취소"
+                onClick={this.handleClose.bind(this)}
             />,
             <FlatButton
-            label="취소"
-            primary={true}
-            onClick={this.handleClose.bind(this)}
+                label="변경"
+                backgroundColor={cyan500}
+                style={{color: 'white'}}
+                onClick={this.editData}
             />
         ];
 
@@ -299,35 +302,36 @@ class EditPopup extends React.Component {
                         fixedHeader={this.state.fixedHeader}
                         selectable={false}
                         height={'300px'}
+                        className="admin-table"
                     >
-                        <TableHeader displaySelectAll={false}>
-                            <TableRow>
-                                <TableHeaderColumn>컬럼명</TableHeaderColumn>
-                                <TableHeaderColumn>속성값</TableHeaderColumn>
+                        <TableHeader displaySelectAll={false} adjustForCheckbox={false} className="admin-thead">
+                            <TableRow className="admin-tr">
+                                <TableHeaderColumn className="admin-th">컬럼명</TableHeaderColumn>
+                                <TableHeaderColumn className="admin-th">속성값</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
-                        <TableBody displayRowCheckbox={false}>
-                            <TableRow>
-                                <TableRowColumn>
+                        <TableBody displayRowCheckbox={false}  className="admin-tbody">
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교아이디
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     {this.state.selectTableData.schoolId}
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교이름
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="학교이름" value={this.state.selectTableData.schoolName||''} onChange={this.editSchoolNameChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     학교구분
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <SelectField
                                         value={this.state.selectTableData.schoolLevel||''}
                                         onChange={this.editSchoolLevelChange}
@@ -341,11 +345,11 @@ class EditPopup extends React.Component {
                                     </SelectField>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     운영상태
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <SelectField
                                         value={this.state.selectTableData.schoolStatus||''}
                                         onChange={this.editSchoolStatusChange}
@@ -358,19 +362,19 @@ class EditPopup extends React.Component {
                                     </SelectField>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     교육지원청명
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="교육지원청명" value={this.state.selectTableData.schoolEduOfficeName||''} onChange={this.editSchoolEduOfficeNameChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     교육지원청코드
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField
                                         hintText="교육지원청코드"
                                         value={this.state.selectTableData.schoolEduOfficeCode||''}
@@ -379,19 +383,19 @@ class EditPopup extends React.Component {
                                     />
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     시도교육청명
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="시도교육청명" value={this.state.selectTableData.schoolSidoOfficeName||''} onChange={this.editSchoolSidoOfficeNameChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     시도교육청코드
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField
                                         hintText="시도교육청코드"
                                         value={this.state.selectTableData.schoolSidoOfficeCode||''}
@@ -400,51 +404,51 @@ class EditPopup extends React.Component {
                                     />
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                 소재지지번주소
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="소재지지번주소" value={this.state.selectTableData.schoolAddr||''} onChange={this.editSchoolAddrChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     설립일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="설립일자" value={this.state.selectTableData.schoolBuildDate||''} onChange={this.editSchoolBuildDateChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     설립형태
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="설립형태" value={this.state.selectTableData.schoolEstablishType||''} onChange={this.editSchoolEstablishTypeChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     위도
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="위도" value={this.state.selectTableData.schoolLat||''} onChange={this.editSchoolLatChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     경도
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="경도" value={this.state.selectTableData.schoolLon||''} onChange={this.editSchoolLonChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     본교분교구분
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <SelectField
                                         value={this.state.selectTableData.schoolBranchType||''}
                                         onChange={this.editSchoolBranchTypeChange}
@@ -457,35 +461,35 @@ class EditPopup extends React.Component {
                                     </SelectField>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     소재지도로명주소
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="소재지도로명주소" value={this.state.selectTableData.schoolAddrRoad||''} onChange={this.editSchoolAddrRoadChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     데이터기준일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="데이터기준일자" value={this.state.selectTableData.schoolReferenceDate||''} onChange={this.editSchoolRefDateChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     생성일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="생성일자" value={this.state.selectTableData.schoolDataCreateDate||''} onChange={this.editSchoolCreateDateChange}/>
                                 </TableRowColumn>
                             </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
+                            <TableRow className="admin-tr">
+                                <TableRowColumn className="admin-td-left">
                                     변경일자
                                 </TableRowColumn>
-                                <TableRowColumn>
+                                <TableRowColumn className="admin-td-left">
                                     <TextField hintText="변경일자" value={this.state.selectTableData.schoolDateEditDate||''} onChange={this.editSchoolEditDateChange}/>
                                 </TableRowColumn>
                             </TableRow>
