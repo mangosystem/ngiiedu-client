@@ -2,11 +2,15 @@ import React from 'react';
 
 import { withRouter } from "react-router-dom";
 
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import FontIcon from 'material-ui/FontIcon';
-
+import Checkbox from 'material-ui/Checkbox';
+import Paper from 'material-ui/Paper';
 import {orange500, cyan500} from 'material-ui/styles/colors';
+import Dialog from 'material-ui/Dialog';
+
 
 
 class MainContainer extends React.Component {
@@ -26,8 +30,43 @@ class MainContainer extends React.Component {
             idCheck: false,
             pwdCheck: false,
             // emailCheck: false,
-            authkeyCheck: false
+            authkeyCheck: false,
+            termsCheck:false, //이용약관 default false
+            termsModal:false, //약관 모달 오프너
+        
         };
+
+        this.termsModalHandler = this.termsModalHandler.bind(this);//모달창 온오프 헨들러
+        this.termsAgree = this.termsAgree.bind(this);
+        this.thermsModalClose = this.thermsModalClose.bind(this);
+    }
+
+    termsModalHandler(){
+        if(this.state.termsCheck==true){
+            //check 상태 일때 클릭시 취소
+            this.setState({
+                termsCheck:false
+            })
+        }else{
+            //uncheck 상태일때 클릭시 모달생성과 함께 이용약관 확인
+            this.setState({
+                termsModal:!this.state.termsModal
+            })
+        }
+    }
+
+    //모달창 닫기
+    thermsModalClose(){
+        this.setState({
+            termsModal:!this.state.termsModal
+        })
+    }
+
+    termsAgree(){
+        this.setState({
+            termsCheck:true,
+            termsModal:!this.state.termsModal
+        })
     }
 
     submit() {
@@ -43,6 +82,9 @@ class MainContainer extends React.Component {
         //     return;
         } else if ($('#userName').val() == '') {
             alert('이름을 입력해주세요.');
+            return;
+        } else if(!this.state.termsCheck){
+            alert('이용약관을 확인해 주세요.');
             return;
         }
 
@@ -246,10 +288,10 @@ class MainContainer extends React.Component {
         return (
             <main id="main">
                 <div id="contentsWrap">
-                    <div className="contents">
-                    <h3 style={{textAlign: 'center'}}>회원가입</h3>
-                    <p style={{textAlign: 'center', fontSize: '11px'}}>로그인정보 및 가입정보를 입력하세요.</p>
-                    <p style={{textAlign: 'right', fontSize: '10px'}}>*표시는 필수입력 사항입니다.</p>
+                    <Paper style={{padding:30}}>
+                    <h3 className="edge">회원가입</h3>
+                    {/* <p style={{textAlign: 'center', fontSize: '11px'}}>로그인정보 및 가입정보를 입력하세요.</p> */}
+                    <p style={{textAlign: 'right', fontSize: '13px'}}>*표시는 필수입력 사항입니다.</p>
                     <form method="post" id="join">
                         <div style={{maxWidth: '60%', textAlign: 'center', margin: 'auto'}}>
                             <TextField
@@ -309,20 +351,90 @@ class MainContainer extends React.Component {
                                 floatingLabelFocusStyle={this.state.authkeyErrorStyle}
                                 onChange={(e) => this.checkAuthkey(e.target.value)}
                             />
+                            <div style={{textAlign:'left',marginTop:20}}>
+                                <Checkbox
+                                    label="이용약관 동의"
+                                    checked={this.state.termsCheck}
+                                    onCheck={()=>this.termsModalHandler()}
+                                />
+                            </div>
                         </div>
                         <div style={{textAlign: 'center', maxWidth: '30%', margin: 'auto'}}>
-                            <br />
-                            <RaisedButton
+                            <br /> <br /> <br /> 
+                            <FlatButton
+                                label="가입하기"
+                                fullWidth={true}
+                                backgroundColor={'#3e81f6'}
+                                style={{color: 'white'}}
+                                onClick={this.submit.bind(this)}
+                            />
+                            {/* <RaisedButton
                                 label="가입하기"
                                 fullWidth={true}
                                 primary={true}
                                 icon={<FontIcon className="fa fa-check" />}
                                 onClick={this.submit.bind(this)}
-                            />
+                            /> */}
                         </div>
                     </form>
-                    </div>
+                    </Paper>
                 </div>
+
+                <Dialog
+                    title="이용약관"
+                    actions={[
+                            <FlatButton
+                              label="동의안함"
+                              style={{backgroundColor:'#43444c',color:'#fff'}}
+                              primary={true}
+                              onClick={this.thermsModalClose}
+                            />,
+                            <FlatButton
+                              label="동의함"
+                              style={{backgroundColor:'#fff',color:'#43444c',border:'1px solid #43444c'}}
+                              primary={true}
+                              onClick={this.termsAgree}
+                            />
+                    ]}
+                    autoScrollBodyContent={true}
+                    autoDetectWindowHeight={true}
+                    modal={true}
+                    open={this.state.termsModal}
+                    >
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+                    이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ이용약관 솸닝뢴ㅁ아ㅗ림나올ㄴㅇ
+
+                </Dialog>
+
             </main>
         );
     }
