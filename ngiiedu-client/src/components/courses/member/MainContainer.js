@@ -215,7 +215,7 @@ class MainContainer extends React.Component {
                     <div  style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:10}}>
                       <div style={{display:'flex'}}>
                         <div style={{marginRight:20,fontSize:18,width:100}}>{row.userName}</div>
-                        <div style={{fontSize:15}}>{row.userEmail}</div>
+                        {/* <div style={{fontSize:15}}>{row.userEmail}</div> */}
                       </div>
                       <div>
                         {this.state.isAccessor && this.state.isOwner ?
@@ -259,7 +259,7 @@ class MainContainer extends React.Component {
                           <div  style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:10}}>
                             <div style={{display:'flex'}}>
                               <div style={{marginRight:20,fontSize:18,width:100}}>{row.userName}</div>
-                              <div style={{fontSize:15}}>{row.userEmail}</div>
+                              {/* <div style={{fontSize:15}}>{row.userEmail}</div> */}
                             </div>
                             <div>
                               <FlatButton label="승인" primary={true}  style={{marginLeft:10}} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'ACTIVE')}/>
@@ -301,7 +301,7 @@ class MainContainer extends React.Component {
                           <div  style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:10}}>
                             <div style={{display:'flex'}}>
                               <div style={{marginRight:20,fontSize:18,width:100}}>{row.userName}</div>
-                              <div style={{fontSize:15}}>{row.userEmail}</div>
+                              {/* <div style={{fontSize:15}}>{row.userEmail}</div> */}
                             </div>
                             <div>
                               <FlatButton label="차단해제" primary={true} onClick={(userId,status) => this.handleJoinStatusChange(row.userId,'WAITING')}/>
