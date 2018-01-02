@@ -58,8 +58,7 @@ class JoinDataset extends Component {
     render() {
 
         return (
-            <div style={{marginTop:50,
-                paddingRight:70
+            <div style={{marginTop:50
             }}>
                 <div>
                     <p>제목</p>

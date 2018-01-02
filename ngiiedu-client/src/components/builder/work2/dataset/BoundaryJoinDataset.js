@@ -48,8 +48,7 @@ class BoundaryJoinDataset extends Component {
     render() {
 
         return (
-            <div style={{marginTop:50,
-                paddingRight:70
+            <div style={{marginTop:50
             }}>
                 <div>
                     <p>제목</p>
@@ -86,13 +85,18 @@ class BoundaryJoinDataset extends Component {
                         </div>
                     </div>
                     <Divider style={{marginTop:20,marginBottom:20}}/>
-
-                    <FlatButton
-                        label="생성"
-                        backgroundColor={cyan500}
-                        style={{color: 'white',position:'absolute',right:0,marginRight:70}}
-                        onClick={this.createDataset}
-                    />
+                    <div style={{display:'flex',justifyContent:'space-between'}}>
+                        <FlatButton
+                            label="취소"
+                            style={{color: 'white',backgroundColor:'#3e81f6'}}
+                            onClick={()=>this.props.handleStep('main')}
+                        />
+                        <FlatButton
+                            label="생성"
+                            style={{color: 'white',backgroundColor:'#3e81f6'}}
+                            // onClick={this.createDataset}
+                        />
+                    </div>
                 </div>
             </div>
         );

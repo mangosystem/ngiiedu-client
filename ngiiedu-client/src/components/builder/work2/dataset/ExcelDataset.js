@@ -36,13 +36,14 @@ class ExcelDataset extends Component {
             dataType:null
         }
 
-        this.handleNextStep = this.handleNextStep.bind(this);
         this.handleChange = this.handleChange.bind(this);
         // this.xlfEvent = this.xlfEvent.bind(this);
         this.doFile = this.doFile.bind(this)
         this.changeTitle = this.changeTitle.bind(this);
+        this.createDataset = this.createDataset.bind(this);
         
     }
+
 
     // componentWillMount() { console.log('componentWillMount');} 
     componentDidMount() {
@@ -52,6 +53,16 @@ class ExcelDataset extends Component {
             let type = nameSplit[nameSplit.length-1].toLowerCase();
             setType(type);
         });
+        //  초기화
+        // this.setState({
+        //     step:'step1',
+        //     xValue : 'temp1',
+        //     yValue : 'temp2',
+        //     excelJson : [],
+        //     sheetNames: [],
+        //     title:'',
+        //     dataType:null
+        // })
     } 
     
     setType(type){
@@ -59,34 +70,40 @@ class ExcelDataset extends Component {
             dataType: type
         })
     }
-    // componentWillReceiveProps(nextProps) { console.log('componentWillReceiveProps'); } 
-    // shouldComponentUpdate(nextProps, nextState) { console.log('shouldComponentUpdate'); return true / false; }
-    // componentWillUpdate(nextProps, nextState) { console.log('componentWillUpdate'); } 
-    // componentDidUpdate(prevProps, prevState) { console.log('componentDidUpdate'); } 
-    // componentWillUnmount() { console.log('componentWillUnmount'); } 
-    
+
    
     
     // 다음단계로..
-    handleNextStep(value){
+    createDataset(){
         var files = document.getElementById('uploadForm');
         
         // let type = files.files[0].name.split('.')[files[0].name.split('.').length-1].toLowerCase();
         var form = new FormData(files);
         form.append("title",this.state.title);
         form.append("courseWorkSubId",this.props.match.params.COURSEID);
+        let Xfiled = $('#Xfiled').val();
+        let Yfiled = $('#Yfiled').val();
+        let disition = null;
+        if(this.state.dataType=='csv'){
+            division = $('#division').val();
+        }else{
+            division = null;
+        }
 
-        $.ajax({
-            type: "post",
-            url: apiSvr + '/coursesWork/dataset.json',
-            data: form,
-            dataType: "text",
-            processData: false,
-            contentType: false,
-            success:function(data){
-                alert(data);
-            }
-        })
+        console.log(Xfiled);
+        console.log(Yfiled);
+        console.log(division);
+        // $.ajax({
+        //     type: "post",
+        //     url: apiSvr + '/coursesWork/dataset.json',
+        //     data: form,
+        //     dataType: "text",
+        //     processData: false,
+        //     contentType: false,
+        //     success:function(data){
+        //         alert(data);
+        //     }
+        // })
         // if(value=='step1'){
         //     // document.getElementById('xlf')=this.state.files
         //     this.setState({
@@ -223,39 +240,60 @@ class ExcelDataset extends Component {
     render() {
 
         let dataOption = 
-            this.state.dataType =='csv' || this.state.dataType =='xlsx' || this.state.dataType =='xls' ?
-            <div>
-                {/* <p style={{fontSize:15}}>좌표값 지정</p> */}
-                <TextField
-                    hintText="경도 필드를 입력하세요 (ex:X)"
-                    floatingLabelText="경도"
-                    floatingLabelFixed={true}
-                />
-                <br/>
-                <TextField
-                    hintText="경도 필드를 입력하세요 (ex:Y)"
-                    floatingLabelText="위도"
-                    floatingLabelFixed={true}
-                />
-            </div>
-            :
-            this.state.dataType == 'zip' || this.state.dataType =='geojson' ||this.state.dataType == null ?
-            null 
-            :
-            <div>올바른 파일형식이 아닙니다.</div>
+            <Paper style={{width:500,margin:'auto',marginTop:10}}>
+                {this.state.dataType =='xlsx' || this.state.dataType =='xls' || this.state.dataType =='csv'?
+                
+                <div>
+                    {/* <p style={{fontSize:15}}>좌표값 지정</p> */}
+                    <TextField
+                        hintText="경도 필드를 입력하세요 (ex:X)"
+                        floatingLabelText="경도"
+                        id='Xfiled'
+                        floatingLabelFixed={true}
+                    />
+                    <br/>
+                    <TextField
+                        hintText="경도 필드를 입력하세요 (ex:Y)"
+                        floatingLabelText="위도"
+                        id='Yfiled'
+                        floatingLabelFixed={true}
+                    />
+                    {this.state.dataType == 'csv' ?
+                        <TextField
+                            hintText="구분자를 입력하세요 (ex:,)"
+                            floatingLabelText="구분자"
+                            id='division'
+                            floatingLabelFixed={true}
+                        />
+                    :
+                        null
+                    }
+                    
+                    
+                </div>
+                :
+                this.state.dataType == 'zip' || this.state.dataType =='geojson' ||this.state.dataType == 'geotiff' ?
+                null 
+                :
+                this.state.dataType == null ?
+                null
+                :
+                <div>올바른 파일형식이 아닙니다.</div>
+            }
+            </Paper>
 
         return (
             //step1
-            <div style={{marginTop:50,
-                paddingRight:70
+            <div style={{marginTop:50
             }}>
-            {this.state.step=='step1' ? 
+            {/* {this.state.step=='step1' ?  */}
                 <div style={{textAlign:'center'}}>
-                    <p>제목</p>
                     <TextField
                         style={{marginLeft:'0%'}}
                         hintText="Hint Text"
                         defaultValue={this.state.title}
+                        floatingLabelText="제목"
+                        floatingLabelFixed={true}
                         onChange={(event,newValue)=>this.changeTitle(newValue)}
 
                     />
@@ -263,22 +301,20 @@ class ExcelDataset extends Component {
                     <form id="uploadForm" style={{marginTop:30,marginBottom:20}}>
                         <input type="file" id="uploadFile" name="uFile"/>
                     </form>
-                    <Divider style={{marginTop:20,marginBottom:40}}/>
+                    {/* <Divider style={{marginTop:20,marginBottom:40}}/> */}
                     
-                    <div>
                       {dataOption}
-                    </div>
 
-                    <FlatButton
+                    {/* <FlatButton
                         label="생성"
                         backgroundColor={cyan500}
                         style={{color: 'white',position:'absolute',right:0,marginRight:70}}
                         onClick={()=>this.handleNextStep('upload')}
-                    />
+                    /> */}
                 </div>
-            :
+            {/* : */}
 
-            //step2
+            {/* //step2
                 <div>
                     <p>좌표값 설정</p>
                     <div style={{display:'flex', marginTop:10,marginLeft:10, alignItems:'center'}}>
@@ -300,9 +336,9 @@ class ExcelDataset extends Component {
                             </DropDownMenu>
                         :null}
 
-                    </div>
+                    </div> */}
                    {/* <div style={{width:900}}> */}
-                    <div style={{width:900,overflow:'auto',marginTop:20}}>
+                    {/* <div style={{width:900,overflow:'auto',marginTop:20}}>
                         {this.state.sheetNames.length !=0 ?
                             <Table
                                 fixedHeader={true}
@@ -344,12 +380,9 @@ class ExcelDataset extends Component {
                             :
                             null
                         }
-                    </div>
-                    <div style={{marginTop:20}}>
-                        
-                    <Divider style={{marginTop:20,marginBottom:20}}/>
-                    </div>
-                    <FlatButton
+                    </div> */}
+                    
+                    {/* <FlatButton
                         label="이전"
                         backgroundColor={cyan500}
                         style={{color: 'white',position:'absolute',left:0}}
@@ -360,10 +393,22 @@ class ExcelDataset extends Component {
                         backgroundColor={cyan500}
                         style={{color: 'white',position:'absolute',right:0,marginRight:70}}
                         onClick={()=>this.handleNextStep('complete')}
+                    /> */}
+                {/* </div> */}
+            {/* } */}
+                <Divider style={{marginTop:20,marginBottom:20}}/>
+                <div style={{display:'flex',justifyContent:'space-between'}}>
+                    <FlatButton
+                        label="취소"
+                        style={{color: 'white',backgroundColor:'#3e81f6'}}
+                        onClick={()=>this.props.handleStep('main')}
+                    />
+                    <FlatButton
+                        label="생성"
+                        style={{color: 'white',backgroundColor:'#3e81f6'}}
+                        onClick={this.createDataset}
                     />
                 </div>
-            }
-
             </div>
         );
     }

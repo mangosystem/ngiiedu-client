@@ -180,8 +180,7 @@ class GoogleDataset extends Component {
     render() {
 
         return (
-            <div style={{marginTop:50,
-                paddingRight:70
+            <div style={{marginTop:50
             }}>
             {this.state.step=='step1' ? 
                 <div style={{textAlign:'center'}}>
@@ -227,15 +226,23 @@ class GoogleDataset extends Component {
                     :
                     null}
                         
-                    <Divider style={{marginTop:20,marginBottom:20}}/>
+
                     </div>
 
-                    <FlatButton
-                        label="다음"
-                        backgroundColor={cyan500}
-                        style={{color: 'white',position:'absolute',right:0,marginRight:70}}
-                        onClick={()=>this.handleNextStep('step2')}
-                    />
+
+                    <Divider style={{marginTop:20,marginBottom:20}}/>
+                    <div style={{display:'flex',justifyContent:'space-between'}}>
+                        <FlatButton
+                            label="취소"
+                            style={{color: 'white',backgroundColor:'#3e81f6'}}
+                            onClick={()=>this.props.handleStep('main')}
+                        />
+                        <FlatButton
+                            label="생성"
+                            style={{color: 'white',backgroundColor:'#3e81f6'}}
+                            // onClick={this.createDataset}
+                        />
+                    </div>
                 </div>
             :
 

@@ -212,7 +212,9 @@ class MainContainer extends React.Component {
                 //데이터 새로만들기 메뉴선택화면
                 this.state.step=='createDataset'? 
                     <div className='workMainMainContainer'>
-                        <CreateDataset/>
+                        <CreateDataset
+                            handleStep = {this.handleStep}
+                        />
                     </div>
                 :
                 //데이터 이름바꾸기 화면

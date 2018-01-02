@@ -11,6 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import DeleteButton from 'material-ui/svg-icons/toggle/indeterminate-check-box';
 import AddButton from 'material-ui/svg-icons/content/add-box';
 import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 
 //component
 import NewDataset from './NewDataset';
@@ -23,54 +24,130 @@ class CreateDataset extends Component {
     constructor(){
         super();
         this.state={
-            columns:[]
+            columns:[],
+            tabStep:'file', //file google join
         }
+
+        this.tapChange = this.tapChange.bind(this);
+
     }
 
 
+    tapChange(value){
+        
+        if(value != this.state.tabStep){
+            this.setState({
+                tabStep:value
+            });
+            
+        }
+    }
+
+  
     render() {
 
         return (
-            <div style={{width:'90%',textAlign:'center',display:'flex',justifyContent:'center'}}>
-                <Tabs
-                    style={{marginTop:50,marginLeft:100}}
-                    tabItemContainerStyle={{backgroundColor:'rgba(0,0,0,0)'}}
-                    inkBarStyle={{width:200,marginRight:70}}
-                >
-                    {/* <Tab label="데이터셋 생성" 
-                        buttonStyle={{color:'black'}}
-                        style={{width:120,marginRight:70}}
+            <div>
+                <Paper style={{width:1000, padding:20,paddingBottom:50}}>
+                    <h3 className='edge'> 데이터셋 추가 </h3>
+                    <div >
+                    <Tabs
+                        tabItemContainerStyle={{backgroundColor:'#3e81f6'}}
                     >
-                        <NewDataset/>
-                    </Tab> */}
-                    <Tab label="파일 업로드" 
-                        buttonStyle={{color:'black'}}
-                        style={{width:200,marginRight:70}}
-                    >
-                        <ExcelDataset/>
-                    </Tab>
+                        <Tab label="파일 업로드" 
+                            buttonStyle={{fontSize:20}}
+                            onActive={()=>this.tapChange('file')}
+                            
+                            
+                        >   
+                            {this.state.tabStep == 'file'?
+                                <ExcelDataset
+                                    handleStep={this.props.handleStep}
+                                />
+                            :
+                                null
+                            }
+                        </Tab>
+                        
+                        <Tab label="구글 시트" 
+                            buttonStyle={{fontSize:20}}
+                            onActive={()=>this.tapChange('google')}
+                            
+                        >
+                            {this.state.tabStep == 'google'?
+                                <GoogleDataset
+                                    handleStep={this.props.handleStep}
+                                />
+                            :
+                                null
+                            }
+                            
+                        </Tab>
+
+                        <Tab label="행정경계 결합" 
+                            buttonStyle={{fontSize:20}}
+                            onActive={()=>this.tapChange('join')}
+                            
+                        >
+                            {this.state.tabStep == 'join'?
+                                <BoundaryJoinDataset
+                                    handleStep={this.props.handleStep}
+                                />
+                            :
+                                null
+                            }
+                            
+                        </Tab>
+                    </Tabs>
+                    </div>
                     
-                    <Tab label="구글 시트" 
-                        buttonStyle={{color:'black'}}
-                        style={{width:200,marginRight:70}}
-                    >
-                        <GoogleDataset/>
-                    </Tab>
 
-                    <Tab label="데이터셋 결합" 
-                        buttonStyle={{color:'black'}}
-                        style={{width:200,marginRight:70}}
+                </Paper>
+                {/* <div style={{width:'90%',textAlign:'center',display:'flex',justifyContent:'center'}}>
+                    <Tabs
+                        style={{marginTop:50,marginLeft:100}}
+                        tabItemContainerStyle={{backgroundColor:'rgba(0,0,0,0)'}}
+                        inkBarStyle={{width:200,marginRight:70}}
+                    >
+                        <Tab label="데이터셋 생성" 
+                            buttonStyle={{color:'black'}}
+                            style={{width:120,marginRight:70}}
+                        >
+                            <NewDataset/>
+                        </Tab>
 
-                    >
-                        <JoinDataset/>
-                    </Tab>
-                    <Tab label="행정경계 결합" 
-                        buttonStyle={{color:'black'}}
-                        style={{width:200,marginRight:70}}
-                    >
-                        <BoundaryJoinDataset/>
-                    </Tab>
-                </Tabs>
+                        <Tab label="파일 업로드" 
+                            buttonStyle={{color:'black'}}
+                            style={{width:200,marginRight:70}}
+                        >
+                            <ExcelDataset/>
+                        </Tab>
+                        
+                        <Tab label="구글 시트" 
+                            buttonStyle={{color:'black'}}
+                            style={{width:200,marginRight:70}}
+                        >
+                            <GoogleDataset/>
+                        </Tab>
+
+                        <Tab label="데이터셋 결합" 
+                            buttonStyle={{color:'black'}}
+                            style={{width:200,marginRight:70}}
+
+                        >
+                            <JoinDataset/>
+                        </Tab>
+
+
+                        <Tab label="행정경계 결합" 
+                            buttonStyle={{color:'black'}}
+                            style={{width:200,marginRight:70}}
+                        >
+                            <BoundaryJoinDataset/>
+                        </Tab>
+                    </Tabs>
+                </div> */}
+
             </div>
         );
     }
