@@ -39,7 +39,8 @@ class MapPreviewPanel extends React.Component {
 
       layers: {
         raster: null, vector: null
-      }
+      },
+      vector:''
     };
 
   }
@@ -72,7 +73,8 @@ class MapPreviewPanel extends React.Component {
     this.addBaseLayer(map);
     map.addLayer(layerGroup2);
     
-    map.addLayer(this.props.raster);
+    map.addLayer(this.props.layers.raster);
+    map.addLayer(this.props.layers.vector);
 
 
     let layerName = this.props.layerName;
@@ -84,17 +86,42 @@ class MapPreviewPanel extends React.Component {
         let data = res.response.data.data;
         setTitle(data.title);
 
-        if(data.metadata !="" && JSON.parse(data.metadata).wgs84Bounds != null){
+        // if(data.metadata !="" && JSON.parse(data.metadata).wgs84Bounds != null){
+        //     var w = JSON.parse(data.metadata).wgs84Bounds;
+        //     var extent = [w.minX,w.minY,w.maxX,w.maxY];
+        //     var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
+            
+        //     this.state.map.getView().fit(
+        //         extent3857,
+        //         this.state.map.getSize()
+        //     );
+        // }else{
+        //     let wkt = data.bounds;
+        //     if(wkt != null){
+        //         let format = new ol.format.WKT();
+        //         let feature = format.readFeature(wkt, {
+        //             dataProjection: 'EPSG:4326',
+        //             featureProjection: 'EPSG:3857'
+        //         });
+        //         this.state.map.getView().fit(
+        //             feature.getGeometry().getExtent(),
+        //             this.state.map.getSize()
+        //         );
+        //     }
+        // }
+
+        if(data.spatialType=='RASTER'){
             var w = JSON.parse(data.metadata).wgs84Bounds;
             var extent = [w.minX,w.minY,w.maxX,w.maxY];
             var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
             
             this.state.map.getView().fit(
-                extent3857,
-                this.state.map.getSize()
+              extent3857,
+              this.state.map.getSize()
             );
         }else{
             let wkt = data.bounds;
+
             if(wkt != null){
                 let format = new ol.format.WKT();
                 let feature = format.readFeature(wkt, {
@@ -114,6 +141,13 @@ class MapPreviewPanel extends React.Component {
       }
     )
     
+    // var cache = {};
+    // var iconCache = {};
+    
+
+   
+
+    // this.setState({vector:vector},function(){map.addLayer(this.state.vector)})
   }
 
 

@@ -114,9 +114,10 @@ class MainContainer extends React.Component {
     //썸네일 클릭시 들어가기
     thumbnailClick(value){
         // alert(value+' 썸네일 들어가기');
+        const courseId = this.props.match.params.COURSEID;
         const workId = this.props.match.params.WORKID;
         // /course/:COURSEID/work2/dataset/edit/:DATASETID
-        this.props.history.push("/ngiiedu/course/" + workId+"/work2/dataset/edit/"+value);
+        this.props.history.push("/ngiiedu/course/" + courseId+"/work2/" +workId + "/dataset/"+value);
     }
 
     //데이터셋 다얄로그
@@ -156,11 +157,19 @@ class MainContainer extends React.Component {
                         </div>
 
                     {/* 컨텐츠 내용 map */}
-                
+                    {/* backgroundImage: this.props.selectedItem == item.idx ? 'url(/ngiiedu/assets/images/' + item.moduleMetadata + '_on.png)' : 'url(/ngiiedu/assets/images/' + item.moduleMetadata + '.png)', */}
+
                         {this.state.dataSetData[0].workOutputList.map((row,index)=>(
                             <div className='thumbnailContainer'  key={index} >
                                 <Paper zDepth={1} className='thumbnailContainer2'>
-                                    <div className='thumbnail' onClick={()=>this.thumbnailClick(row.pinogioOutputId)}>
+                                    <div className='thumbnail' onClick={()=>this.thumbnailClick(row.pinogioOutputId)} 
+                                        style={{
+                                            // backgroundImage:'url(/ngiiedu/api/v1/coursesWork/dataset/thumbNail/'+row.pinogioOutputId+'?width=300&height=300)',
+                                            backgroundImage:'url(http://www.ddaily.co.kr/data/photos/20160624/art_1465834335.jpg)',
+                                            backgroundSize: 'contain',
+                                            backgroundRepeat: 'no-repeat',
+                                            // backgroundPosition: 'center center',
+                                            }}>
                                         썸네일 {index}
                                     </div>
                                     <div className='thumbnailTitleContainer'>

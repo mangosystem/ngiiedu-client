@@ -236,8 +236,8 @@ class App extends Component {
             			</Route>
 
 
-						{/* dataset */}
-						<Route path={contextPath +"/course/:COURSEID/work2/dataset/edit/:DATASETID"}>
+							{/* dataset */}
+							<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/dataset/:DATASETID"}>
 							<div>
 								<Header slim={true} />
 								<WorkFrameEditDataset />
@@ -245,11 +245,11 @@ class App extends Component {
 							</div>
 						</Route>
 						{/* dataset preview */}
-						<Route path={contextPath +"/dataset/preview/:DATASETID"}>
+						<Route path={contextPath +"/course/dataset/preview/:DATASETID"}>
 							<div>
-								<Header slim={true} />
+								{/* <Header slim={true} /> */}
 								<DatasetPreview />
-								<Footer />
+								{/* <Footer /> */}
 							</div>
 						</Route>
 

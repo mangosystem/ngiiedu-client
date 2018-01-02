@@ -1142,8 +1142,9 @@ class MainContainer extends React.Component {
                             <IconButton 
                             style={{width: 50, height: 50}}
                             tooltip="미리보기"
-                            onClick={() => this.props.history.push('/ngiiedu/dataset/preview/'+this.props.match.params.DATASETID)}
+                            onClick={() => this.props.history.push('/ngiiedu/course/dataset/preview/'+this.props.match.params.DATASETID)}
                             >
+                            
                                 <IconPageView
                                     color='white'                    
                                 />
