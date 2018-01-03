@@ -128,30 +128,30 @@ class MainContainer extends React.Component {
 		}
 
 		console.dir(a);
-		// ajaxJson(
-		// 	['POST', apiSvr+'/courses.json'],
-		// 	{
-		// 		moduleId: state.selectedModule,
-		// 		moduleWorkIds: state.selectedWorks,
-		// 		courseName: state.courseName,
-		// 		courseMetadata: JSON.stringify(state.courseMetadata),
-		// 		emptyTemplate:JSON.stringify(state.datasetData)
-		// 	},
-		// 	function(res) {
+		ajaxJson(
+			['POST', apiSvr+'/courses.json'],
+			{
+				moduleId: state.selectedModule,
+				moduleWorkIds: state.selectedWorks,
+				courseName: state.courseName,
+				courseMetadata: JSON.stringify(state.courseMetadata),
+				emptyTemplate:JSON.stringify(state.datasetData)
+			},
+			function(res) {
 
-		// 		const courseData = JSON.parse(JSON.stringify(res)).response.data;
+				const courseData = JSON.parse(JSON.stringify(res)).response.data;
 
-		// 		this.setState({
-		// 			stepIndex: 3,
-		// 			finished: true,
-		// 			courseId: courseData.idx
-		// 		});
+				this.setState({
+					stepIndex: 3,
+					finished: true,
+					courseId: courseData.idx
+				});
 
-		// 	}.bind(this),
-		// 	function(xhr, status, err) {
-		// 		alert('Error');
-		// 	}.bind(this)
-		// );
+			}.bind(this),
+			function(xhr, status, err) {
+				alert('Error');
+			}.bind(this)
+		);
 	}
 
 	onClickCoursePage() {
