@@ -239,26 +239,20 @@ class App extends Component {
 							{/* dataset */}
 							<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/dataset/:DATASETID"}>
 							<div>
-								<Header slim={true} />
 								<WorkFrameEditDataset />
-								<Footer />
 							</div>
 						</Route>
 						{/* dataset preview */}
 						<Route path={contextPath +"/course/dataset/preview/:DATASETID"}>
 							<div>
-								{/* <Header slim={true} /> */}
 								<DatasetPreview />
-								{/* <Footer /> */}
 							</div>
 						</Route>
 
 						{/* layer */}
 						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/layer/:LAYERID"}>
 							<div>
-								<Header slim={true} />
 								<WorkFrameEditLayer />
-								<Footer />
 							</div>
 						</Route>
 
@@ -270,7 +264,6 @@ class App extends Component {
 						<Route exact path={contextPath +"/course/:COURSEID/work2/:WORKID"}>
 							<div>
 								<WorkFrameContainer />
-								<Footer />
 							</div>
 						</Route>
 

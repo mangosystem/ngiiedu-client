@@ -17,6 +17,29 @@ class MainContainer extends React.Component {
   constructor(props){
     super(props);
     this.state={
+        map: new ol.Map({
+            view: new ol.View({
+              center: [14143701.095047, 4477593.930960],
+              zoom: 7,
+              minZoom: 1,	maxZoom: 18
+            }),
+            layers: [
+              new ol.layer.Tile({
+                source: new ol.source.XYZ({
+                  url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
+                })
+              })
+            ],
+            controls: ol.control.defaults({
+                zoom: true, rotate: false, attribution: true
+            }),
+            interactions: ol.interaction.defaults({
+                altShiftDragRotate: false, doubleClickZoom: true,
+                dragPan: true, pinchRotate: false,
+                pinchZoom: false, keyboard: false,
+                mouseWheelZoom: true, shiftDragZoom: true
+            })
+        }),
         selectedLayerId :'',
         layers:{
             vector:null,raster:null
@@ -51,20 +74,47 @@ class MainContainer extends React.Component {
       })
     });
 
+
+
+    // function getMeta(url){   
+    //     var img = new Image();
+    //     img.onload = function(){
+    //         alert( this.width+' '+ this.height );
+    //     };
+    //     img.src = url;
+    // }
+
+
+
     var cache = {};
+    var w ;
+    var map = this.state.map;
     let vector = new ol.layer.Vector({
         visible: false,
-        style: function(feature){
+        style: function(feature,resolution){
             var pino_photo = feature.get('pino_photo');
-            var url =" http://1.234.82.19:8083/pinogio-web/data/photo/"+pino_photo;
+            var url ="http://1.234.82.19:8083/pinogio-web/data/photo/"+pino_photo;
             if(!cache[url]){
                 cache[url] = new ol.style.Style({
                     image:new ol.style.Icon({
-                        scale:0.5,
-                        // size:[50,50],
+                        // scale:0.5,
+                        // size:[500,500],
+                        // anchor: [0.5, 46],
+                        // anchorXUnits: 'fraction',
+                        // anchorYUnits: 'pixels',
                         src:url
                     })
                 });
+                if(pino_photo!=null){
+                    var img = new Image();
+                    // img.src = url;
+                    img.onload = function(){
+                        w= this.width;
+                        console.log( this.width+' '+ this.height );
+                        cache[url].getImage().setScale(128/w);
+                    };
+                    img.src = url;
+                }
             }
             return[cache[url]];
         },
@@ -217,8 +267,8 @@ class MainContainer extends React.Component {
     };
     return (
       <div>
-        <header id="header">
-          <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white'}}>
+        <header id="header" >
+          <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white',height:60}}>
               <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
               <IconMenu
                   iconButtonElement={<IconButton><IconNavigationMenu color='white'/></IconButton>}
@@ -258,6 +308,7 @@ class MainContainer extends React.Component {
                     layerName={this.props.match.params.DATASETID}
                     // raster={this.state.raster}
                     // vector={this.state.vector}
+                    map={this.state.map}
                     layers={this.state.layers}
                     bounds={this.state.bounds}
                     data={this.state.data}

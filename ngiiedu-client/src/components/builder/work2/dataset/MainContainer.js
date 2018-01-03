@@ -165,13 +165,10 @@ class MainContainer extends React.Component {
                                 <Paper zDepth={1} className='thumbnailContainer2'>
                                     <div className='thumbnail' onClick={()=>this.thumbnailClick(row.pinogioOutputId)} 
                                         style={{
-                                            // backgroundImage:'url(/ngiiedu/api/v1/coursesWork/dataset/thumbNail/'+row.pinogioOutputId+'?width=300&height=300)',
-                                            backgroundImage:'url(http://www.ddaily.co.kr/data/photos/20160624/art_1465834335.jpg)',
-                                            backgroundSize: 'contain',
+                                            background:'url('+apiSvr+'/coursesWork/dataset/thumbNail/'+row.pinogioOutputId+'?width=300&height=230)',
+                                            backgroundSize: 'cover',
                                             backgroundRepeat: 'no-repeat',
-                                            // backgroundPosition: 'center center',
                                             }}>
-                                        썸네일 {index}
                                     </div>
                                     <div className='thumbnailTitleContainer'>
                                         <div className='thumbnailTitle'>
