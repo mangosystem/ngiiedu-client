@@ -261,18 +261,18 @@ class MapsView extends React.Component {
             {(() => {
                 if (this.props.typekind == 'double1') {
                     return (
-                        <div style={{height: '100%', width: '100%', overflowY: 'hidden'}}>
+                        <div style={{height: '100%', width: '100%', overflowY: 'hidden', backgroundColor: 'white'}}>
                             <div 
                                 id="map1" 
                                 style={{ 
-                                    height: '49.5%',
-                                    marginBottom: '0.5%'
+                                    height: 'calc(50% - 2.5px)',
+                                    marginBottom: '5px'
                                 }}>
                             </div>
                             <div 
                                 id="map2" 
                                 style={{ 
-                                    height: '49.5%'
+                                    height: 'calc(50% - 2.5px)'
                                 }}>
                             </div>
                             <div 
@@ -291,18 +291,18 @@ class MapsView extends React.Component {
                     );
                 } else if (this.props.typekind == 'double2') {
                     return (
-                        <div style={{width: '100%', height: '100%', display: 'flex'}}>
+                        <div style={{width: '100%', height: '100%', display: 'flex', backgroundColor: 'white'}}>
                             <div 
                                 id="map1" 
                                 style={{ 
-                                    width: '49.5%',
-                                    marginRight: '1%'
+                                    width: 'calc(50% - 2.5px)',
+                                    marginRight: '5px'
                                 }}>
                             </div>
                             <div 
                                 id="map2" 
                                 style={{ 
-                                    width: '49.5%'
+                                    width: 'calc(50% - 2.5px)'
                                 }}>
                             </div>
                             <div 
@@ -321,37 +321,37 @@ class MapsView extends React.Component {
                     );
                 } else if (this.props.typekind == 'quadruple') {
                     return (
-                        <div style={{width: '100%', height: '100%', display: 'flex', flexWrap: 'wrap', overflowY: 'hidden'}}>
+                        <div style={{width: '100%', height: '100%', display: 'flex', flexWrap: 'wrap', overflowY: 'hidden', backgroundColor: 'white'}}>
                             <div 
                                 id="map1" 
                                 style={{ 
-                                    width: '49.5%',
-                                    marginRight: '1%',
-                                    height: '49.5%',
-                                    marginBottom: '0.5%'
+                                    width: 'calc(50% - 2.5px)',
+                                    marginRight: '5px',
+                                    height: 'calc(50% - 2.5px)',
+                                    marginBottom: '5px'
                                 }}>
                             </div>
                             <div 
                                 id="map2" 
                                 style={{ 
-                                    width: '49.5%',
-                                    height: '49.5%',
-                                    marginBottom: '0.5%'
+                                    width: 'calc(50% - 2.5px)',
+                                    height: 'calc(50% - 2.5px)',
+                                    marginBottom: '5px'
                                 }}>
                             </div>
                             <div 
                                 id="map3" 
                                 style={{ 
-                                    width: '49.5%',
-                                    marginRight: '1%',
-                                    height: '49.5%'
+                                    width: 'calc(50% - 2.5px)',
+                                    marginRight: '5px',
+                                    height: 'calc(50% - 2.5px)'
                                 }}>
                             </div>
                             <div 
                                 id="map4" 
                                 style={{ 
-                                    width: '49.5%',
-                                    height: '49.5%'
+                                    width: 'calc(50% - 2.5px)',
+                                    height: 'calc(50% - 2.5px)'
                                 }}>
                             </div>
                         </div>

@@ -40,7 +40,7 @@ class MainContainer extends React.Component {
         return (
             <div>
                 <header id="header">
-                    <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white'}}>
+                    <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white', height: 60}}>
 
                         <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
                             <IconMenu
