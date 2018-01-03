@@ -186,11 +186,18 @@ class MainContainer extends React.Component {
                                 row.workOutputList.map((data,i)=>(
                                     <div className='thumbnailContainer' key={i}>
                                         <Paper zDepth={1} className='thumbnailContainer2'>
-                                            <div 
+                                            <div className='thumbnail' onClick={()=>this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}
+                                                style={{
+                                                    background:'url('+apiSvr+'/coursesWork/layers/thumbNail/'+data.pinogioOutputId+'?width=300&height=230)',
+                                                    backgroundSize: 'cover',
+                                                    backgroundRepeat: 'no-repeat',
+                                                    }}>
+                                            </div>
+                                            {/* <div 
                                             className='thumbnail' 
                                             onClick={()=>this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}>
                                                 썸네일
-                                            </div>
+                                            </div> */}
                                             <div className='thumbnailTitleContainer'>
                                                 <div className='thumbnailTitle'>
                                                     {data.outputName}

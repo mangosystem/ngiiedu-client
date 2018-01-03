@@ -518,7 +518,7 @@ class MainContainer extends React.Component {
         return (
             <div>
                 <header id="header">
-                    <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor:'#43444c'}}>
+                    <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor:'#43444c',height:60}}>
 
                         <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
                             {/* 뒤로가기 */}
