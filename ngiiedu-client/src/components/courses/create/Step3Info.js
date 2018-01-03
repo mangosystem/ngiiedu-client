@@ -26,20 +26,20 @@ class Step3Info extends React.Component {
 		this.state = {
 			courseName: null,
 			courseDesc: null,
-			schoolLevel: null,
-			schoolOffice: null,
-			schoolName: null,
-			studentGrade: null,
-			studentClass: null
+			// schoolLevel: null,
+			// schoolOffice: null,
+			// schoolName: null,
+			// studentGrade: null,
+			// studentClass: null
 		};
 
 		this.onChangeCourseName = this.onChangeCourseName.bind(this);
 		this.onChangeCourseDesc = this.onChangeCourseDesc.bind(this);
-		this.onChangeSchoolLevel = this.onChangeSchoolLevel.bind(this);
-		this.onChangeSchoolOffice = this.onChangeSchoolOffice.bind(this);
-		this.onChangeSchoolName = this.onChangeSchoolName.bind(this);
-		this.onChangeStudentGrade = this.onChangeStudentGrade.bind(this);
-		this.onChangeStudentClass = this.onChangeStudentClass.bind(this);
+		// this.onChangeSchoolLevel = this.onChangeSchoolLevel.bind(this);
+		// this.onChangeSchoolOffice = this.onChangeSchoolOffice.bind(this);
+		// this.onChangeSchoolName = this.onChangeSchoolName.bind(this);
+		// this.onChangeStudentGrade = this.onChangeStudentGrade.bind(this);
+		// this.onChangeStudentClass = this.onChangeStudentClass.bind(this);
 
 		this.onChangedCourseMetadata = this.onChangedCourseMetadata.bind(this);
 	}
@@ -58,50 +58,50 @@ class Step3Info extends React.Component {
 		this.onChangedCourseMetadata(v);
 	}
 
-	onChangeSchoolLevel(e, i, v) {
-		this.setState({
-			schoolLevel: v
-		});
-		this.onChangedCourseMetadata();
-	}
+	// onChangeSchoolLevel(e, i, v) {
+	// 	this.setState({
+	// 		schoolLevel: v
+	// 	});
+	// 	this.onChangedCourseMetadata();
+	// }
 
-	onChangeSchoolOffice(e, i, v) {
-		this.setState({
-			schoolOffice: v
-		});
-		this.onChangedCourseMetadata();
-	}
+	// onChangeSchoolOffice(e, i, v) {
+	// 	this.setState({
+	// 		schoolOffice: v
+	// 	});
+	// 	this.onChangedCourseMetadata();
+	// }
 
-	onChangeSchoolName(e, i, v) {
-		this.setState({
-			schoolName: v
-		});
-		this.onChangedCourseMetadata();
-	}
+	// onChangeSchoolName(e, i, v) {
+	// 	this.setState({
+	// 		schoolName: v
+	// 	});
+	// 	this.onChangedCourseMetadata();
+	// }
 
-	onChangeStudentGrade(e, v) {
-		this.setState({
-			studentGrade: v
-		});
-		this.onChangedCourseMetadata();
-	}
+	// onChangeStudentGrade(e, v) {
+	// 	this.setState({
+	// 		studentGrade: v
+	// 	});
+	// 	this.onChangedCourseMetadata();
+	// }
 
-	onChangeStudentClass(e, v) {
-		this.setState({
-			studentClass: v
-		});
-		this.onChangedCourseMetadata();
-	}
+	// onChangeStudentClass(e, v) {
+	// 	this.setState({
+	// 		studentClass: v
+	// 	});
+	// 	this.onChangedCourseMetadata();
+	// }
 
 	onChangedCourseMetadata() {
 		const {state} = this;
 		let metadata = {
 			courseDesc: state.courseDesc,
-			schoolLevel: state.schoolLevel,
-			schoolOffice: state.schoolOffice,
-			schoolName: state.schoolName,
-			studentGrade: state.studentGrade,
-			studentClass: state.studentClass
+			// schoolLevel: state.schoolLevel,
+			// schoolOffice: state.schoolOffice,
+			// schoolName: state.schoolName,
+			// studentGrade: state.studentGrade,
+			// studentClass: state.studentClass
 		}
 
 		this.props.onChangedCourseMetadata(metadata);
@@ -110,7 +110,7 @@ class Step3Info extends React.Component {
 	render() {
 		return (
       <div>
-				<div style={{width:'50%',marginLeft:'25%' }}>
+				<div style={{width:'50%',marginLeft:'25%',marginTop:100,marginBottom:100 }}>
 				<h2 style={{textAlign:'left',margin:10}}> * 정보입력</h2>
 					<TextField
 						floatingLabelText="수업이름"
@@ -129,7 +129,7 @@ class Step3Info extends React.Component {
 					/>
 					<br />
 
-					<SelectField
+					{/* <SelectField
 						floatingLabelText="학교급구분"
 						floatingLabelFixed={false}
 						value={this.state.schoolLevel}
@@ -170,7 +170,7 @@ class Step3Info extends React.Component {
 						inputStyle={{textAlign: 'center'}}
 						onChange={this.onChangeStudentClass}
 						style={{width: '100px'}}
-					/>
+					/> */}
 				</div>	
 			</div>
 		)

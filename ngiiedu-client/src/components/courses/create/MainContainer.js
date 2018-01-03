@@ -119,30 +119,39 @@ class MainContainer extends React.Component {
 
 	onCourseCreate() {
 		const {state} = this;
+		let a = 	{
+			moduleId: state.selectedModule,	//모듈 id	
+			moduleWorkIds: state.selectedWorks,	//선택한 코스 id 배열
+			courseName: state.courseName,	//코스 이름
+			courseMetadata: JSON.stringify(state.courseMetadata), //수업내용
+			emptyTemplate:JSON.stringify(state.datasetData)	//데이터셋 데이터
+		}
 
-		ajaxJson(
-			['POST', apiSvr+'/courses.json'],
-			{
-				moduleId: state.selectedModule,
-				moduleWorkIds: state.selectedWorks,
-				courseName: state.courseName,
-				courseMetadata: JSON.stringify(state.courseMetadata)
-			},
-			function(res) {
+		console.dir(a);
+		// ajaxJson(
+		// 	['POST', apiSvr+'/courses.json'],
+		// 	{
+		// 		moduleId: state.selectedModule,
+		// 		moduleWorkIds: state.selectedWorks,
+		// 		courseName: state.courseName,
+		// 		courseMetadata: JSON.stringify(state.courseMetadata),
+		// 		emptyTemplate:JSON.stringify(state.datasetData)
+		// 	},
+		// 	function(res) {
 
-				const courseData = JSON.parse(JSON.stringify(res)).response.data;
+		// 		const courseData = JSON.parse(JSON.stringify(res)).response.data;
 
-				this.setState({
-					stepIndex: 3,
-					finished: true,
-					courseId: courseData.idx
-				});
+		// 		this.setState({
+		// 			stepIndex: 3,
+		// 			finished: true,
+		// 			courseId: courseData.idx
+		// 		});
 
-			}.bind(this),
-			function(xhr, status, err) {
-				alert('Error');
-			}.bind(this)
-		);
+		// 	}.bind(this),
+		// 	function(xhr, status, err) {
+		// 		alert('Error');
+		// 	}.bind(this)
+		// );
 	}
 
 	onClickCoursePage() {
@@ -155,7 +164,7 @@ class MainContainer extends React.Component {
 		this.setState({
 			datasetData:value
 		})
-		// console.dir(value)
+		console.dir(value)
 	}
 
 	render() {

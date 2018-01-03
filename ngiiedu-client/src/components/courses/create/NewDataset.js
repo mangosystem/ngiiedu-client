@@ -167,6 +167,8 @@ class NewDataset extends Component {
                     }
                 ],
                 title:'소음원 현장조사'
+            },function(){
+                this.onChangedDataset();
             })
         }else if(moduleId =='2'){
             //GPS 활용 위치학습
@@ -183,6 +185,8 @@ class NewDataset extends Component {
                     }
                 ],
                 title:'위치학습 현장조사'
+            },function(){
+                this.onChangedDataset();
             })
         }else if(moduleId =='4'){
             //통합적영토교육 -> 소음측정
@@ -200,6 +204,8 @@ class NewDataset extends Component {
                     
                 ],
                 title:'불편지역 현장조사'
+            },function(){
+                this.onChangedDataset();
             })
         }else if(moduleId =='5'){
             //우리학교 운동장 생태지도
@@ -216,6 +222,8 @@ class NewDataset extends Component {
                     }
                 ],
                 title:'생태지도 현장조사'
+            },function(){
+                this.onChangedDataset();
             })
         }
     }
@@ -504,7 +512,7 @@ class NewDataset extends Component {
     onChangedDataset(){
         let result ={
             title:this.state.title,
-            privacy :'TEAM',
+            // privacy :'TEAM',
             geometry_type :this.state.geometry_type,
             columns:this.state.columns,
             is_photo:this.state.is_photo,
