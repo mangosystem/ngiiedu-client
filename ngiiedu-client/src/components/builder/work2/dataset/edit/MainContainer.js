@@ -987,8 +987,26 @@ class MainContainer extends React.Component {
                         })
                         :
                         this.state.layerColumns.map((row,idx)=>{
-                            if (row.name == 'the_geom' || row.name =='pino_id'||row.name =='pino_photo') {
+                            if (row.name == 'the_geom' || row.name =='pino_id') {
                                 return null;
+                            } else if (row.name =='pino_photo'){
+                                if(this.state.wmsFeatureInfo[row.name]!=null ){
+                                    return(
+                                        <div>
+                                            <br/>
+                                            <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
+                                            <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
+                                                background:'url(http://1.234.82.19:8083/pinogio-web/data/photo/'+this.state.wmsFeatureInfo[row.name]+')',
+                                                backgroundSize:'cover'
+                                            }}
+                                                onClick={()=>window.open('http://1.234.82.19:8083/pinogio-web/data/photo/'+this.state.wmsFeatureInfo[row.name])}
+                                            >
+                                            </div>
+                                        </div>
+                                    )
+                                }else{
+                                    return null;
+                                }
                             } else {
                                 return(
                                     <div key={idx} style={listStyle}>
@@ -1016,8 +1034,26 @@ class MainContainer extends React.Component {
                     <h2 style={{paddingLeft:10}}>속성정보</h2>
                 <div style={{maxHeight:500,overflow:'auto',width:'90%',paddingLeft:10,paddingBottom:40}}>
                     {this.state.layerColumns.map((row, idx) => {
-                        if (row.name == 'the_geom' || row.name =='pino_id'|| row.name =='pino_photo') {
+                        if (row.name == 'the_geom' || row.name =='pino_id') {
                             return null;
+                        } else if (row.name =='pino_photo'){
+                            if(this.state.wfsFeatureInfo[row.name]!=null ){
+                                return(
+                                    <div>
+                                        <br/>
+                                        <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
+                                        <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
+                                            background:'url(http://1.234.82.19:8083/pinogio-web/data/photo/'+this.state.wfsFeatureInfo[row.name]+')',
+                                            backgroundSize:'cover'
+                                        }}
+                                            onClick={()=>window.open('http://1.234.82.19:8083/pinogio-web/data/photo/'+this.state.wfsFeatureInfo[row.name])}
+                                        >
+                                        </div>
+                                    </div>
+                                )
+                            }else{
+                                return null;
+                            }
                         } else {
                         if(row.valueType=='ALLOWED_VALUES'){
                                 var
@@ -1113,7 +1149,7 @@ class MainContainer extends React.Component {
         return (
             <div>
                 <header id="header">
-                    <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white'}}>
+                    <div className="inner wide" style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#43444c', color: 'white',height:60}}>
                         <div style={{display: 'flex', marginLeft: 10, alignItems: 'center'}}>
                         <IconMenu
                             iconButtonElement={<IconButton><IconNavigationMenu color='white'/></IconButton>}
@@ -1136,7 +1172,7 @@ class MainContainer extends React.Component {
                             tooltip="설정"
                             >
                             <IconSettings 
-                                color='white'                    
+                                color='white'
                             />
                             </IconButton> */}
                             <IconButton 
@@ -1146,7 +1182,7 @@ class MainContainer extends React.Component {
                             >
                             
                                 <IconPageView
-                                    color='white'                    
+                                    color='white'
                                 />
                             </IconButton>
                         </div>
