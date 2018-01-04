@@ -100,18 +100,19 @@
     background-color:#3e81f6;
     display:flex;
     justify-content:space-between;
-    align-items:center
+    align-items:center;
 }
 
 .workMainMainContainer .thumbnailTitle{
     margin-left: 10px;
-    max-width: 150px;
+    max-width: 200px;
     color: #f9f9f9;
 }
 
 .workMainMainContainer .thumbnailDescription{
-    background-color:#E0F7FA;
+    background-color:#3e81f6;
     padding: 10px;
     text-align: left;
     font-size: 0.5em;
+    color: #f9f9f9;
 }

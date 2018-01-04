@@ -15,7 +15,7 @@ import SubHeader from './SubHeader';
 import DatasetMain from './dataset/MainContainer';
 import LayerMain from './layer/MainContainer';
 import MapsMain from './maps/main/MainContainer';
-
+import Population from './population/MainContainer';
 
 //testdata
 //"안양시 동안구 소음지도"
@@ -100,7 +100,13 @@ class MainContainer extends React.Component {
                 />
                 :
                 this.state.workType=='maps'?
-                <MapsMain handleWorkType={this.handleWorkType}/>
+                <MapsMain 
+                    data={this.state.data}
+                    getDataList={this.getDataList}
+                />
+                :
+                this.state.workType=='population'?
+                <Population />
                 :
                 null}
             </main>

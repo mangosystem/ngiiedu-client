@@ -218,17 +218,17 @@ class App extends Component {
             				<div>
             					<WorkFrameSWipe loginStatus={this.state.loginStatus}/>
             				</div>
-            			</Route>
+						</Route>
 
             			<Route path={contextPath + "/course/:COURSEID/work/:workId"}>
             				<WorkFrameDataCollect loginStatus={this.state.loginStatus}/>
             			</Route>
 
             			<Route path={contextPath +"/storymap/preview/:LAYERID"}>
-										<div>
-											<Header slim={true} />
-											<StoryMapPreview loginStatus={this.state.loginStatus}/>
-										</div>
+							<div>
+								{/* <Header slim={true} /> */}
+								<StoryMapPreview loginStatus={this.state.loginStatus}/>
+							</div>
             			</Route>
 
                   		<Route path={contextPath +"/map/preview/:LAYERID"}>
@@ -284,7 +284,7 @@ class App extends Component {
 						</Route>
 						
 						{/* maps preview */}
-						<Route path={contextPath +"/course/:COURSEID/work2/:WORKID/:MAPSID/preview"}>
+						<Route path={contextPath +"/maps/preview/:MAPSID"}>
 							<div>
 								<WorkFramePreviewMaps />
 							</div>

@@ -311,7 +311,7 @@ class ModifyMaps extends Component {
         return (
             <div>
                 <div 
-                    style={{ textAlign: 'center' }}
+                    style={{ textAlign: 'center', width: 600 }}
                 >
                     {this.getStepContent(stepIndex)}
                     <br />

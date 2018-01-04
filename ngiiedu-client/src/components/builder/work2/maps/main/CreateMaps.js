@@ -16,7 +16,7 @@ class CreateMaps extends Component {
         super(props);
 
         this.state = {
-            mapsType: 'default',
+            mapsType: 'BASIC',
             stepIndex: 0,
             typeKind: '',
             title: '',
@@ -209,7 +209,7 @@ class CreateMaps extends Component {
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
-                                        changeLayerId={this.changeLayerId.bind(this)}
+                                        changeLayerId={this.changeLayerId.bind(this)}                                       
                                     /> 
                         } else if (mapsType == 'SPLIT') { 
                             return <SplitMaps 
@@ -361,7 +361,7 @@ class CreateMaps extends Component {
                 </div>
                 :
                 <div 
-                    style={{ textAlign: 'center' }}
+                    style={{ textAlign: 'center', width: 600 }}
                 >
                     {this.getStepContent(stepIndex)}
                     <br />

@@ -2,6 +2,7 @@
     height: 300px;
     width: 500px;
     overflow-y: scroll;
+    margin: auto;
 }
 
 .settingPaper {

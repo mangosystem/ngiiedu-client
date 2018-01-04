@@ -130,6 +130,10 @@ class StorySetting extends Component {
 
             itemUnselected: {
 
+            },
+
+            text: {
+                textAlign: 'center'
             }
         };
 
@@ -151,8 +155,8 @@ class StorySetting extends Component {
                         style={{ marginBottom: '8px' }}
                     />
                     <Subheader>템플릿 변경</Subheader>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        <img 
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                        {/*<img 
                             src="/ngiiedu/assets/images/TAB.png" 
                             // src="/assets/images/tab.png" 
                             alt="tab" 
@@ -165,10 +169,19 @@ class StorySetting extends Component {
                                 설명 텍스트에 대한 옵션 패널과 함께 탭을 사용하여 <br />
                                 맵과 다른 콘텐츠를 나타냅니다.
                             </p>
-                        </div>
+                        </div>*/}
+                        <figure>
+                            <img 
+                                src="/ngiiedu/assets/images/TAB.png" 
+                                // src="/assets/images/accordion.png" 
+                                alt="tab" 
+                                style={typeKind == "TAB"? style.selected : style.unselected}
+                                onClick={() => this.changeTypeKind('TAB')}/>
+                            <figcaption style={style.text}>탭</figcaption>
+                        </figure>
                     </div>
                     <br />
-                    <div style={{display: 'flex', alignItems: 'center'}}>
+                    {/*<div style={{display: 'flex', alignItems: 'center'}}>
                         <img 
                             src="/ngiiedu/assets/images/ACCORDION.png" 
                             // src="/assets/images/accordion.png" 
@@ -183,7 +196,7 @@ class StorySetting extends Component {
                                 맵과 다른 콘텐츠를 나타냅니다.
                             </p>
                         </div>
-                    </div>
+                    </div>*/}
                 </div>
             </Dialog>
         );

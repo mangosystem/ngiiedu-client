@@ -22,7 +22,7 @@ class BasicMaps extends Component {
         
         this.state = {
             stepIndex: 0,
-            typeKind: 'BOTTOM',
+            typeKind: 'RIGHT',
             items: [
                 { value: 1, text: '레이어1'},
                 { value: 2, text: '레이어2'},

@@ -126,11 +126,9 @@ class MainContainer extends React.Component {
   }
 
   previewMaps() {
-    const courseId = this.props.match.params.COURSEID;
-    const workId = this.props.match.params.WORKID;
     const mapsId = this.props.match.params.MAPSID;
     
-    this.props.history.push("/ngiiedu/course/" + courseId + "/work2/" + workId + "/" + mapsId + "/preview");
+    this.props.history.push("/ngiiedu/maps/preview/" + mapsId);
   }
 
   goCourseHome() {

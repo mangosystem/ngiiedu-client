@@ -39,76 +39,18 @@ class MainContainer extends React.Component {
 
     }
 
-    componentDidMount(){
+    componentWillMount(){
 
         const courseId = this.props.match.params.COURSEID;
         const workId = this.props.match.params.WORKID;
-        const sortingField = "id";
-    
-        ajaxJson(
-          ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
-          null,
-          function (data) {
-            
-            let workSubData = JSON.parse(JSON.stringify(data)).response.data;
-            let maps = [];
-            let idx = 0;
 
-            try {
-                maps = workSubData.filter(val => (val.outputType == 'maps'))[0].workOutputList;
-                idx = workSubData.filter(val => (val.outputType == 'maps'))[0].idx;                
-            } catch (error) {
-                maps = [{
-                    "idx": 62,
-                    "courseWorkSubId": 26,
-                    "outputTeamId": 0,
-                    "outputUserid": 40,
-                    "outputDivision": "1",
-                    "pinogioOutputId": "m=ai3FFsE4",
-                    "outputType": "maps",
-                    "pngoData": {
-                        "id": 1,
-                        "projectId": "p=pppppppp",
-                        "mapsId": "m=ai3FFsE4",
-                        "ownerId": 1,
-                        "title": "맵스1",
-                        "description": null,
-                        "metadata": null,
-                        "mapsType": "STORY",
-                        "typeKind": "TAB",
-                        "privacy": "PUBLIC",
-                        "createdDate": 1512005385765,
-                        "updatedDate": 1512005385765,
-                        "ownerUsername": "admin",
-                        "commentCount": 0,
-                        "viewCount": 0,
-                        "likeCount": 0,
-                        "ratingScore": 0,
-                        "items": [{
-                            "id": 1,
-                            "mapsId": 1,
-                            "title": "아이템1",
-                            "description": "아이템설명1",
-                            "metadata": null,
-                            "createdDate": 1512023809373,
-                            "updatedDate": 1512023809373
-                        }]
-                    },
-                    "outputName": "맵스1"
-                }];
-                idx = 0;
-            }
-            
-            this.setState({
-                maps: maps,
-                idx: idx
-            });
-    
-          }.bind(this),
-          function (xhr, status, err) {
-            alert('Error');
-          }.bind(this)
-        );
+        let maps = this.props.data.filter(val => (val.outputType == 'maps'))[0].workOutputList || [];
+        let idx = this.props.data.filter(val => (val.outputType == 'maps'))[0].idx || 0;
+
+        this.setState({
+            maps,
+            idx
+        });
 
     }
 
@@ -201,111 +143,90 @@ class MainContainer extends React.Component {
    
         return (
             <main>
-                    <div className='workMainSubHeader'>
-                        <div className='iconButtonContainer'>
-                            <Paper className='iconButtonUnSelected'
-                                onClick={()=>this.changeWorkType('layer')}
-                            >
-                                <img 
-                                    src="/ngiiedu/assets/images/TAB.png" 
-                                    className="buttonImg"
-                                />
-                                <div className="buttonText" >
-                                    주제지도만들기
-                                </div>
-                            </Paper>
-                            <Paper className='iconButtonSelected'
-                                onClick={()=>this.changeWorkType('maps')}
-                            >
-                                <img 
-                                    src="/ngiiedu/assets/images/TAB.png" 
-                                    className="buttonImg"
-                                />
-                                <div className="buttonText" >
-                                    스토리맵만들기
-                                </div>
-                            </Paper>
+                {/* 메인 container */}
+                {this.state.step=='main'? 
+                //main 화면일때
+                <div className='workMainMainContainer'>
+                    <div className='thumbnailsContainer'>
+                    {/* 새로만들기 버튼 */}
+                        <div className='createButton'  >
+                            <FloatingActionButton backgroundColor= '#3e81f6' onClick={() => this.setState({ step: 'createMaps' })}>
+                                <ContentAdd />
+                            </FloatingActionButton>
                         </div>
-                        <div>
-                            <h1 className='subHeaderTitle'>소음지도 - 스토리맵 만들기</h1>
-                        </div>
-                    </div>
-                    {/* 메인 container */}
-                    {this.state.step=='main'? 
-                    //main 화면일때
-                    <div className='workMainMainContainer'>
-                        <div className='thumbnailsContainer'>
-                        {/* 새로만들기 버튼 */}
-                            <div className='createButton'  >
-                                <FloatingActionButton onClick={() => this.setState({ step: 'createMaps' })}>
-                                    <ContentAdd />
-                                </FloatingActionButton>
+                    {/* 컨텐츠 내용 map */}                
+                        {this.state.maps.map((row,index)=>(
+                            <div className='thumbnailContainer'  key={index} >
+                                <Paper zDepth={1} className='thumbnailContainer2'>
+                                    <div 
+                                        className='thumbnail' 
+                                        onClick={()=>this.thumbnailClick(row)}
+                                        style={{
+                                            backgroundImage:'url(/ngiiedu/assets/images/' + row.pngoData.typeKind +'.png)',
+                                            backgroundSize: '300px 230px',
+                                            backgroundRepeat: 'no-repeat'
+                                        }}
+                                    >
+                                    </div>
+                                    <div className='thumbnailTitleContainer'>
+                                        <div className='thumbnailTitle'>
+                                            {row.outputName}
+                                        </div>
+                                        <div>
+                                            <IconMenu
+                                                iconButtonElement={<IconButton><MoreVertIcon color='white'/></IconButton>}
+                                                anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                                                targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                                            >
+                                                <MenuItem primaryText="미리보기" onClick={(index) => this.props.history.push('/ngiiedu/maps/preview/'+row.pinogioOutputId)}/>
+                                                <MenuItem primaryText="편집하기" onClick={(index)=> this.setState({ step: 'modifyMaps', map: row})}/>
+                                                <MenuItem primaryText="삭제하기" onClick={()=>this.deleteMaps(row)}/>
+                                                <MenuItem primaryText="결과물 제출"/>
+                                                <MenuItem primaryText="결과물 공유"/>
+                                            </IconMenu>
+                                        </div>
+                                    </div>
+                                    <div className="thumbnailDescription">
+                                        <span>{row.pngoData.privacy}&nbsp;&nbsp;|</span><span>&nbsp;&nbsp;{row.pngoData.mapsType}</span>
+                                    </div>
+                                </Paper>
                             </div>
 
-                        {/* 컨텐츠 내용 map */}
-                    
-                            {this.state.maps.map((row,index)=>(
-                                <div className='thumbnailContainer'  key={index} >
-                                    <Paper zDepth={1} className='thumbnailContainer2'>
-                                        <div className='thumbnail' onClick={()=>this.thumbnailClick(row)}>
-                                            썸네일 {index}
-                                        </div>
-                                        <div className='thumbnailTitleContainer'>
-                                            <div className='thumbnailTitle'>
-                                                {row.outputName}
-                                            </div>
-                                            <div>
-                                                <IconMenu
-                                                    iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                                                    anchorOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                                                >
-                                                    <MenuItem primaryText="설정변경" onClick={(index)=> this.setState({ step: 'modifyMaps', map: row})}/>
-                                                    <MenuItem primaryText="삭제하기" onClick={()=>this.deleteMaps(row)}/>
-                                                </IconMenu>
-                                            </div>
-                                        </div>
-                                        <div className="thumbnailDescription">
-                                            <span>{row.pngoData.privacy}&nbsp;&nbsp;|</span><span>&nbsp;&nbsp;{row.pngoData.mapsType}</span>
-                                        </div>
-                                    </Paper>
-                                </div>
-
-                            ))}
-                            
-                        </div>
+                        ))}
+                        
                     </div>
-                    :
-                    //데이터 새로만들기 메뉴선택화면
-                    this.state.step=='createMaps'? 
-                        <div className='workMainMainContainer'>
-                            <CreateMaps 
-                                viewMain={this.viewMain.bind(this)}
-                                idx={this.state.idx}
-                                createMaps={this.createMaps.bind(this)}
-                            />
-                        </div>
-                    :
-                    this.state.step == 'modifyMaps'?
-                        <div className='workMainMainContainer'>
-                            <ModifyMaps 
-                                viewMain={this.viewMain.bind(this)}
-                                map={this.state.map}
-                                modifyMaps={this.modifyMaps.bind(this)}
-                            />
-                        </div>
-                    :
-                    //에러에러
-                        <div className='workMainMainContainer'>
-                            에러에러에러 component
-                        </div>
-                    }
-                    <DeleteMaps
-                        open={this.state.deleteMapOpen}
-                        deleteMapHandle={this.deleteMapHandle.bind(this)}
-                        map={this.state.map}
-                        deleteMap={this.deleteMaps.bind(this)}
-                    />
+                </div>
+                :
+                //데이터 새로만들기 메뉴선택화면
+                this.state.step=='createMaps'? 
+                    <div className='workMainMainContainer'>
+                        <CreateMaps 
+                            viewMain={this.viewMain.bind(this)}
+                            idx={this.state.idx}
+                            createMaps={this.createMaps.bind(this)}
+                        />
+                    </div>
+                :
+                this.state.step == 'modifyMaps'?
+                    <div className='workMainMainContainer'>
+                        <ModifyMaps 
+                            viewMain={this.viewMain.bind(this)}
+                            map={this.state.map}
+                            modifyMaps={this.modifyMaps.bind(this)}
+                        />
+                    </div>
+                :
+                //에러에러
+                    <div className='workMainMainContainer'>
+                        에러에러에러 component
+                    </div>
+                }
+                <DeleteMaps
+                    open={this.state.deleteMapOpen}
+                    deleteMapHandle={this.deleteMapHandle.bind(this)}
+                    map={this.state.map}
+                    deleteMap={this.deleteMaps.bind(this)}
+                />
             </main>
         );
     }

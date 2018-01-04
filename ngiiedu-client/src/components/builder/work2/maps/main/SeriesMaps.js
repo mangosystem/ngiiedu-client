@@ -19,7 +19,7 @@ class SeriesMaps extends Component {
         
         this.state = {
             stepIndex: 0,
-            typeKind: 'CAROUSEL',
+            typeKind: 'SLIDE',
             items: [
                 { value: 1, text: '레이어1'},
                 { value: 2, text: '레이어2'},
@@ -130,6 +130,10 @@ class SeriesMaps extends Component {
 
             radioButton: {
                 marginBottom: 16,
+            },
+
+            text: {
+                textAlign: 'center'
             }
         };
 
@@ -138,6 +142,7 @@ class SeriesMaps extends Component {
           case 1:
             return (
                 <div style={{textAlign: 'left'}}>
+                    <br />
                     <Subheader>제목</Subheader>
                     <TextField 
                         fullWidth={true}
@@ -146,7 +151,7 @@ class SeriesMaps extends Component {
                         defaultValue={this.props.map ? this.props.map.outputName : ''}
                     />
                     <br /><br />
-                    <div style={{display: 'flex', alignItems: 'center'}}>
+                    {/*<div style={{display: 'flex', alignItems: 'center'}}>
                         <img 
                             src="/ngiiedu/assets/images/c1.png" 
                             // src="/assets/images/tab.png" 
@@ -162,9 +167,9 @@ class SeriesMaps extends Component {
                             </p>
                         </div>
                     </div>
-                    <br />
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        <img 
+                    <br />*/}
+                    <div style={{display: 'flex', alignItems: 'center',justifyContent: 'center'}}>
+                        {/*<img 
                             src="/ngiiedu/assets/images/c2.png" 
                             // src="/assets/images/accordion.png" 
                             alt="c2" 
@@ -177,7 +182,16 @@ class SeriesMaps extends Component {
                                 설명 텍스트를 포함하는 확장 가능한 컨트롤을 사용하여 <br />
                                 맵과 다른 콘텐츠를 나타냅니다.
                             </p>
-                        </div>
+                        </div>*/}
+                        <figure>
+                            <img 
+                                src="/ngiiedu/assets/images/SLIDE.png" 
+                                // src="/assets/images/accordion.png" 
+                                alt="c2" 
+                                style={typeKind == "SLIDE"? style.selected : style.unselected}
+                                onClick={() => this.changeTypeKind('SLIDE')}/>
+                            <figcaption style={style.text}>슬라이더형</figcaption>
+                        </figure>
                     </div>
                 </div>
             );

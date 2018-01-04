@@ -145,6 +145,10 @@ class StoryMaps extends Component {
 
             radioButton: {
                 marginBottom: 16,
+            },
+
+            text: {
+                textAlign: 'center'
             }
         };
 
@@ -152,7 +156,7 @@ class StoryMaps extends Component {
         switch (stepIndex) {
             case 1:
             return (
-                <div style={{textAlign: 'left'}}>
+                <div style={{textAlign: 'left', width: '100%'}}>
                     <br />
                     <Subheader>제목</Subheader>
                     <TextField 
@@ -163,8 +167,8 @@ class StoryMaps extends Component {
                         value={this.props.title}
                     />
                     <br /><br />
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                        <img 
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                        {/*<img 
                             src="/ngiiedu/assets/images/TAB.png" 
                             // src="/assets/images/tab.png" 
                             alt="tab" 
@@ -177,10 +181,19 @@ class StoryMaps extends Component {
                                 설명 텍스트에 대한 옵션 패널과 함께 탭을 사용하여 <br />
                                 맵과 다른 콘텐츠를 나타냅니다.
                             </p>
-                        </div>
+                        </div>*/}
+                        <figure>
+                            <img 
+                                src="/ngiiedu/assets/images/TAB.png" 
+                                // src="/assets/images/accordion.png" 
+                                alt="tab" 
+                                style={typeKind == "TAB"? style.selected : style.unselected}
+                                onClick={() => this.changeTypeKind('TAB')}/>
+                            <figcaption style={style.text}>탭</figcaption>
+                        </figure>
                     </div>
                     <br />
-                    <div style={{display: 'flex', alignItems: 'center'}}>
+                    {/*<div style={{display: 'flex', alignItems: 'center'}}>
                         <img 
                             src="/ngiiedu/assets/images/ACCORDION.png" 
                             // src="/assets/images/accordion.png" 
@@ -195,7 +208,7 @@ class StoryMaps extends Component {
                                 맵과 다른 콘텐츠를 나타냅니다.
                             </p>
                         </div>
-                    </div>
+                    </div>*/}
                 </div>
             );
           case 2:

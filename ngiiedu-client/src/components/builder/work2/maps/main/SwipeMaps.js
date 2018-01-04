@@ -185,7 +185,7 @@ class SwipeMaps extends Component {
             );
           case 2:
             return (
-                <table style={{textAlign: 'left', marginTop: '10px'}}>
+                <table style={{textAlign: 'left', margin: '10px auto'}}>
                     <tbody>
                         <tr style={{verticalAlign: 'top'}}>
                             <td className="td">
@@ -210,7 +210,7 @@ class SwipeMaps extends Component {
                                     <SelectableList value={this.props.layerId2}>
                                     {items.map((item, i) => (
                                         <ListItem 
-                                            key={item.idx}
+                                            key={item.pinogioOutputId}
                                             value={item.pinogioOutputId} 
                                             primaryText={item.outputName}
                                             onClick={(i) => this.props.changeLayerId2(item.pinogioOutputId)}

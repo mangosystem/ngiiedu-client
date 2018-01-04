@@ -134,6 +134,7 @@ class SplitMaps extends Component {
           case 1:
             return (
                 <div style={{textAlign: 'left'}}>
+                    <br />
                     <Subheader>제목</Subheader>
                     <TextField 
                         id="title"

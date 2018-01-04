@@ -13,6 +13,7 @@ import MenuItem from 'material-ui/MenuItem';
 import IconNavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
 import MapsView from './MapsView';
+import Pyramid from '../population/Pyramid';
 
 class MainContainer extends React.Component {
 
