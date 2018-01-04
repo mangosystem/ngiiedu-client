@@ -47,7 +47,7 @@ class MainContainer extends React.Component {
   }
 
 
-  componentWillMount() {
+  componentDidMount() {
     
     const mapsId = this.props.match.params.MAPSID;
 
@@ -136,6 +136,13 @@ class MainContainer extends React.Component {
     this.props.history.push("/ngiiedu/course/" + courseId);
   }
 
+  goBack() {
+    const mapsId = this.props.match.params.MAPSID;
+    let backUrl = this.props.history.location.pathname.split("/" + mapsId)[0];
+    this.props.history.push(backUrl, "maps");
+  }
+
+
   render() {
     return (
       <div>
@@ -149,7 +156,7 @@ class MainContainer extends React.Component {
                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
               >
                 <MenuItem primaryText="수업 홈" onClick={this.goCourseHome.bind(this)}/>
-                <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
+                <MenuItem primaryText="이전 목록" onClick={this.goBack.bind(this)}/>
               </IconMenu>
               <div 
                 style={{fontSize: 20, textAlign:'left'}}>

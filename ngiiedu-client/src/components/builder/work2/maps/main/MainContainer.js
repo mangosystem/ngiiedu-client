@@ -39,7 +39,7 @@ class MainContainer extends React.Component {
 
     }
 
-    componentWillMount(){
+    componentDidMount(){
 
         const courseId = this.props.match.params.COURSEID;
         const workId = this.props.match.params.WORKID;

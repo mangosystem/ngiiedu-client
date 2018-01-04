@@ -37,6 +37,7 @@ class MainContainer extends React.Component {
     }
 
     componentDidMount(){
+        //console.log(this.props.history);
         this.getDataList();
     }
 	
@@ -49,18 +50,26 @@ class MainContainer extends React.Component {
             function (data) {
                 if(data.response.data.length!=0 && data.response.data!=null){
                     this.setState({
-                        data:data.response.data,
-                        //현재 수행과정번호로 데이터셋인지 (레이어,맵스) 과정인지 조회하여 화면 전환, 2개 이상일 때는 첫번째 활동이 첫 페이지
-                        workType:data.response.data[0].outputType 
+                        data:data.response.data
                     },function(){
-                        console.log(this.state.data)
-                    })
+                        //console.log(this.state.data)
+                    });
+
+                    if (this.props.history.action == 'PUSH' && this.props.history.location.state) {
+                        this.setState({
+                            workType: this.props.history.location.state
+                        });
+                    } else {
+                        this.setState({
+                            workType: data.response.data[0].outputType 
+                        });
+                    }
                 }
             }.bind(this),
             function (xhr, status, err) {
               alert('Error');
             }.bind(this)
-        )
+        );
 	}
 
     //활동 변경(2개 이상일 때)

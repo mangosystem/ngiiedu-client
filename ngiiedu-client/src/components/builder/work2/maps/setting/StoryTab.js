@@ -24,17 +24,18 @@ class StoryTab extends Component {
 
         this.state = {
             maps: {},
-            items: [],
+            items: [{}],
             itemMode: 'map',
             itemOpen: false,
             deleteOpen: false,
             layerId: '',
             itemTitle: '',
-            itemIndex: []
+            itemIndex: 0,
+            isMount: false
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
 
         let items = this.props.maps.items;
 
@@ -51,7 +52,8 @@ class StoryTab extends Component {
             items,
             tempTitle: items[0].title,
             itemIndex: 0,
-            description: items[0].description
+            description: items[0].description,
+            isMount: true
         });
     }
 
@@ -231,7 +233,8 @@ class StoryTab extends Component {
                 <div style={{ position: 'absolute', top: 60, left: 0, right: 0, height: 40, backgroundColor: '#43444c' }}>
                     <div style={{display: 'flex', height: 40}}>        
                         <div style={{display: 'flex'}}>
-                            {this.state.items.map((item, index) => (
+                            {this.state.isMount ?
+                            this.state.items.map((item, index) => (
                                 <FlatButton 
                                     id={item.id}
                                     key={item.id}
@@ -240,7 +243,7 @@ class StoryTab extends Component {
                                     style={itemIndex == index ? style.seletedTab : style.unSelectedTab}
                                 >
                                 </FlatButton>
-                            ))}
+                            )):null}
                         </div>
                         <div style={{display: 'flex', alignItems: 'center', marginLeft: 30}}>
                             <IconButton 
@@ -276,7 +279,8 @@ class StoryTab extends Component {
                         </div>
                     </div>
                 </div>
-                {this.state.items[this.state.itemIndex].pinoLayer != '' ? 
+                {this.state.isMount && 
+                    this.state.items[this.state.itemIndex].pinoLayer != '' ? 
                 <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0, right: 0 }}>
                     <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 400, height: '100%' }}>
                         <EditorPanel
@@ -296,6 +300,7 @@ class StoryTab extends Component {
                     </div>
                 </div>
                 :
+                this.state.isMount ?
                 <div style={{ position: 'absolute', top: 100, bottom: 0, left: 0, right: 0 }}>
                     <EditorPanel
                         description={this.state.description}
@@ -305,7 +310,7 @@ class StoryTab extends Component {
                         pinoLayer=""
                     />
                 </div>
-                }
+                : null }
                 <div>
                     <CreateItems 
                         open={this.state.itemOpen}
