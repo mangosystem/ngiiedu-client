@@ -47,9 +47,11 @@ class CourseList extends React.Component {
             ['GET', apiSvr + '/courses/list/courseInfoListJoin.json'],
             params,
             function (res) {
-                this.setState({
-                    courseInfoListJoinData: res.response.data
-                });
+                if(res.response.data !=null){
+                    this.setState({
+                        courseInfoListJoinData: res.response.data
+                    });
+                }
             }.bind(this),
             function (xhr, status, err) {
                 console.log(err);
@@ -60,9 +62,11 @@ class CourseList extends React.Component {
             ['GET', apiSvr + '/courses/list/courseInfoListOwn.json'],
             params,
             function (res) {
-                this.setState({
-                    courseInfoListOwnData: res.response.data
-                });
+                if(res.response.data !=null){
+                    this.setState({
+                        courseInfoListOwnData: res.response.data
+                    });
+                }
             }.bind(this),
             function (xhr, status, err) {
                 console.log(err);

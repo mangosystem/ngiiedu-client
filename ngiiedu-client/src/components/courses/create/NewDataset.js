@@ -50,7 +50,7 @@ class NewDataset extends Component {
             categoryValue:'',//카테고리 추가 값 입력 state
             selectedColumn:'', //현재 선택된 컬럼
             selectedCategory:'', //현재 선택된 카테고리
-            modalOpen:false, // 모달창 오픈
+            boundModalOpen:false, // 모달창 오픈
         }
 
         this.handleCategoryValue = this.handleCategoryValue.bind(this);//에러나서 추가... 기본value 문제인듯
@@ -76,17 +76,18 @@ class NewDataset extends Component {
         this.changeRangedValues = this.changeRangedValues.bind(this); //범주값 변경시 value_base 생성
 
         //지도관련 bound
-        this.handleModal = this.handleModal.bind(this) //모달온오프 헨들러.
+        this.boundHandleModal = this.boundHandleModal.bind(this) //모달온오프 헨들러.
         this.saveWGS = this.saveWGS.bind(this) //모달 바운더리 save
 
         //전달
         this.onChangedDataset = this.onChangedDataset.bind(this);
+
     }
 
     //모달온오프 헨들러.
-    handleModal(){
+    boundHandleModal(){
         this.setState({
-            modalOpen: !this.state.modalOpen
+            boundModalOpen: !this.state.boundModalOpen
         })
     }
 
@@ -100,11 +101,13 @@ class NewDataset extends Component {
                 maxX:extent[2],
                 maxY:extent[3],
             },
-            modalOpen:false
+            boundModalOpen:false
         })
 
         this.onChangedDataset();
     }
+
+
 
     //geometry type 변경
     changeGeometryType(v){
@@ -606,7 +609,7 @@ class NewDataset extends Component {
                                 <SelectField
                                     floatingLabelText="데이터 타입"
                                     style={{width:'50%',marginLeft:17,marginTop:-37}}
-                                    value={'POINT'}
+                                    value={this.state.geometry_type}
                                     onChange={(e,i,v)=>this.changeGeometryType(v)}
                                 >
                                     <MenuItem value={'POINT'} primaryText="포인트" />
@@ -619,7 +622,7 @@ class NewDataset extends Component {
                                     label="지도 범위 설정"
                                     backgroundColor={'#3e81f6'}
                                     style={{color: '#fff',width:'80%'}}
-                                    onClick={this.handleModal}
+                                    onClick={this.boundHandleModal}
                                 />
                             </div>
                             
@@ -703,17 +706,17 @@ class NewDataset extends Component {
 
                 
 
-                {this.state.modalOpen?
+                {this.state.boundModalOpen?
                     <BoundsModal
-                        open={this.state.modalOpen}
+                        open={this.state.boundModalOpen}
                         wgs84Bounds={this.state.wgs84Bounds}
-                        handleModal={this.handleModal}
+                        handleModal={this.boundHandleModal}
                         saveWGS ={this.saveWGS}
                     />
                 :
                     null
                 }
-
+                
             </div>
         );
     }

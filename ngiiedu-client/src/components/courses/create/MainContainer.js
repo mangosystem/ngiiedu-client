@@ -15,6 +15,8 @@ import Step4Complete from './Step4Complete';
 
 import { withRouter } from "react-router-dom";
 
+import NewWarnModal from './NewWarnModal';
+
 
 class MainContainer extends React.Component {
 
@@ -40,7 +42,9 @@ class MainContainer extends React.Component {
 			},
 
 			courseId: '',
-			datasetData:''//데이터셋 생성
+			datasetData:'',//데이터셋 생성
+			warnModalOpen:false // 데이터셋 생성 모달 오픈
+
 		};
 
 		this.handleNextStep = this.handleNextStep.bind(this);
@@ -56,6 +60,38 @@ class MainContainer extends React.Component {
 		this.onClickCoursePage = this.onClickCoursePage.bind(this);
 
 		this.onChangedDataset = this.onChangedDataset.bind(this);
+
+		//모달
+		this.warnModalHandler = this.warnModalHandler.bind(this);
+		this.agreeModalHandle = this.agreeModalHandle.bind(this);
+
+	}
+
+	componentDidMount(){
+
+		let datasetModuleCourseIds=[];
+		ajaxJson(
+      ['GET', apiSvr+'/modules/moduleWork.json'],
+      null,
+      function(res) {
+				let data = res.response.data;
+				for(var i = 0 ; i <data.length; i++){
+						let tempData = data[i]
+					if(tempData.moduleWorkCourseType=="현장실습"){
+						datasetModuleCourseIds.push(tempData.idx);
+					}
+				}
+
+				// console.dir(datasetModuleCourseIds);
+				this.setState({
+					datasetIds:datasetModuleCourseIds
+				})
+
+      }.bind(this),
+      function(xhr, status, err) {
+        alert('Error');
+      }.bind(this)
+    );
 	}
 
 	handlePrevStep() {
@@ -76,8 +112,26 @@ class MainContainer extends React.Component {
 
 	handleNextStep() {
 		const {stepIndex} = this.state;
-		if (stepIndex == 1){//현장실습 데이터셋 생성예외처리.
+		if (stepIndex == 1){//현장실습 데이터셋 경고창 오픈
 
+			const {state} = this;
+	
+			let selectedWorks = state.selectedWorks;
+			let datasetData = false;
+			for(var i =0;i<selectedWorks.length;i++){
+				if(state.datasetIds.indexOf(selectedWorks[i])!=-1){
+					datasetData = true;
+					this.setState({
+						warnModalOpen:!this.state.warnModalOpen
+					})
+					if(this.state.warnModalOpen==false){
+						return;
+					}
+				}
+			}
+
+
+			
 		}
 
 		if (stepIndex == 2) {
@@ -119,15 +173,30 @@ class MainContainer extends React.Component {
 
 	onCourseCreate() {
 		const {state} = this;
-		let a = 	{
-			moduleId: state.selectedModule,	//모듈 id	
-			moduleWorkIds: state.selectedWorks,	//선택한 코스 id 배열
-			courseName: state.courseName,	//코스 이름
-			courseMetadata: JSON.stringify(state.courseMetadata), //수업내용
-			emptyTemplate:JSON.stringify(state.datasetData)	//데이터셋 데이터
+		// let a = 	{
+		// 	moduleId: state.selectedModule,	//모듈 id	
+		// 	moduleWorkIds: state.selectedWorks,	//선택한 코스 id 배열
+		// 	courseName: state.courseName,	//코스 이름
+		// 	courseMetadata: JSON.stringify(state.courseMetadata), //수업내용
+		// 	emptyTemplate:JSON.stringify(state.datasetData)	//데이터셋 데이터
+		// }
+
+		let selectedWorks = state.selectedWorks;
+		let datasetData = false;
+		for(var i =0;i<selectedWorks.length;i++){
+			if(state.datasetIds.indexOf(selectedWorks[i])!=-1){
+				datasetData = true;
+			}
+		}
+		
+		var emptyTemplate ;
+		if(datasetData){
+			emptyTemplate = JSON.stringify(state.datasetData);
+		} else{
+			emptyTemplate = null;
 		}
 
-		console.dir(a);
+		console.log(emptyTemplate);
 		ajaxJson(
 			['POST', apiSvr+'/courses.json'],
 			{
@@ -135,7 +204,7 @@ class MainContainer extends React.Component {
 				moduleWorkIds: state.selectedWorks,
 				courseName: state.courseName,
 				courseMetadata: JSON.stringify(state.courseMetadata),
-				emptyTemplate:JSON.stringify(state.datasetData)
+				emptyTemplate:emptyTemplate
 			},
 			function(res) {
 
@@ -165,6 +234,19 @@ class MainContainer extends React.Component {
 			datasetData:value
 		})
 		console.dir(value)
+	}
+
+	//모달
+	warnModalHandler(){
+		this.setState({
+			warnModalOpen : !this.state.warnModalOpen
+		})
+	}
+
+	agreeModalHandle(){
+		console.log('aggreModal')
+		console.log(this.state.warnModalOpen)
+		this.handleNextStep();
 	}
 
 	render() {
@@ -277,6 +359,11 @@ class MainContainer extends React.Component {
 					})()}
 					</Paper>
 				</div>
+				<NewWarnModal
+						open={this.state.warnModalOpen}
+						cancle={this.warnModalHandler}
+						agree={this.agreeModalHandle}
+				/>
 			</main>
 		)
 	}

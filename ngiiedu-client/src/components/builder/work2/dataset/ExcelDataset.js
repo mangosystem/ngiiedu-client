@@ -240,7 +240,7 @@ class ExcelDataset extends Component {
     render() {
 
         let dataOption = 
-            <Paper style={{width:500,margin:'auto',marginTop:10}}>
+            <Paper style={{width:500,margin:'auto',marginTop:10,textAlign:'center'}}>
                 {this.state.dataType =='xlsx' || this.state.dataType =='xls' || this.state.dataType =='csv'?
                 
                 <div>
@@ -258,7 +258,7 @@ class ExcelDataset extends Component {
                         id='Yfiled'
                         floatingLabelFixed={true}
                     />
-                    {this.state.dataType == 'csv' ?
+                    {/* {this.state.dataType == 'csv' ?
                         <TextField
                             hintText="구분자를 입력하세요 (ex:,)"
                             floatingLabelText="구분자"
@@ -267,12 +267,12 @@ class ExcelDataset extends Component {
                         />
                     :
                         null
-                    }
+                    } */}
                     
                     
                 </div>
                 :
-                this.state.dataType == 'zip' || this.state.dataType =='geojson' ||this.state.dataType == 'geotiff' ?
+                this.state.dataType == 'zip' ||this.state.dataType == 'geotiff' ? // this.state.dataType =='geojson' ||
                 null 
                 :
                 this.state.dataType == null ?
@@ -283,14 +283,14 @@ class ExcelDataset extends Component {
             </Paper>
 
         return (
-            //step1
-            <div style={{marginTop:50
-            }}>
+            <div style={{margin:'30px 0',textAlign:'left'}}>
+
+            <h2>파일 업로드</h2>
             {/* {this.state.step=='step1' ?  */}
-                <div style={{textAlign:'center'}}>
+                <div style={{textAlign:'left',marginBottom:10}}>
                     <TextField
-                        style={{marginLeft:'0%'}}
-                        hintText="Hint Text"
+                        // style={{marginLeft:'0%'}}
+                        hintText="제목을 입력하세요"
                         defaultValue={this.state.title}
                         floatingLabelText="제목"
                         floatingLabelFixed={true}
@@ -301,102 +301,13 @@ class ExcelDataset extends Component {
                     <form id="uploadForm" style={{marginTop:30,marginBottom:20}}>
                         <input type="file" id="uploadFile" name="uFile"/>
                     </form>
-                    {/* <Divider style={{marginTop:20,marginBottom:40}}/> */}
-                    
                       {dataOption}
 
-                    {/* <FlatButton
-                        label="생성"
-                        backgroundColor={cyan500}
-                        style={{color: 'white',position:'absolute',right:0,marginRight:70}}
-                        onClick={()=>this.handleNextStep('upload')}
-                    /> */}
                 </div>
-            {/* : */}
+                
+                
+                <Divider style={{marginTop:20,marginBottom:20,zIndex:100}}/>
 
-            {/* //step2
-                <div>
-                    <p>좌표값 설정</p>
-                    <div style={{display:'flex', marginTop:10,marginLeft:10, alignItems:'center'}}>
-                        <span>X좌표</span>
-                        {this.state.sheetNames.length !=0 ?
-                            <DropDownMenu value={this.state.xValue} style={{width:200,marginLeft:0}} onChange={(event,index,value)=>this.handleChange('x',value)}>
-                                {this.state.excelJson[this.state.sheetNames[0]][0].map((row,index)=>(
-                                    <MenuItem key={index} value={row} primaryText={row} />
-                                ))}
-                                
-                            </DropDownMenu>
-                        :null}
-                        <span style={{marginLeft:100}}>Y좌표</span>
-                        {this.state.sheetNames.length !=0 ?
-                            <DropDownMenu value={this.state.yValue} style={{width:200,marginLeft:0}} onChange={(event,index,value)=>this.handleChange('y',value)}>
-                                {this.state.excelJson[this.state.sheetNames[0]][0].map((row,index)=>(
-                                    <MenuItem key={index} value={row} primaryText={row} />
-                                ))}
-                            </DropDownMenu>
-                        :null}
-
-                    </div> */}
-                   {/* <div style={{width:900}}> */}
-                    {/* <div style={{width:900,overflow:'auto',marginTop:20}}>
-                        {this.state.sheetNames.length !=0 ?
-                            <Table
-                                fixedHeader={true}
-                                height={'300px'}
-                                headerStyle={{
-                                    width:this.state.excelJson[this.state.sheetNames[0]][0].length*150,
-                                    minWidth:900,
-                                    height:50
-                                }}
-                                bodyStyle={{
-                                    width:this.state.excelJson[this.state.sheetNames[0]][0].length*150,
-                                    minWidth:900,
-                                    height:232
-                                }}
-                            >
-                                <TableHeader
-                                    displaySelectAll={false}
-                                    adjustForCheckbox={false}
-                                >
-                                    <TableRow>
-                                        {this.state.excelJson[this.state.sheetNames[0]][0].map((row,index)=>(
-                                            <TableHeaderColumn key={index}>{row}</TableHeaderColumn>
-                                        ))}
-                                    </TableRow>
-                                </TableHeader>
-                                        
-                                <TableBody
-                                    displayRowCheckbox={false}
-                                >
-                                    {this.state.excelJson[this.state.sheetNames[0]].slice(1,20).map((row,index)=>(
-                                        <TableRow key={index}>
-                                            {row.map((row2,index2)=>(
-                                                <TableRowColumn key={index2}>{row2}</TableRowColumn>
-                                            ))}
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                            :
-                            null
-                        }
-                    </div> */}
-                    
-                    {/* <FlatButton
-                        label="이전"
-                        backgroundColor={cyan500}
-                        style={{color: 'white',position:'absolute',left:0}}
-                        onClick={()=>this.handleNextStep('step1')}
-                    />
-                    <FlatButton
-                        label="생성"
-                        backgroundColor={cyan500}
-                        style={{color: 'white',position:'absolute',right:0,marginRight:70}}
-                        onClick={()=>this.handleNextStep('complete')}
-                    /> */}
-                {/* </div> */}
-            {/* } */}
-                <Divider style={{marginTop:20,marginBottom:20}}/>
                 <div style={{display:'flex',justifyContent:'space-between'}}>
                     <FlatButton
                         label="취소"

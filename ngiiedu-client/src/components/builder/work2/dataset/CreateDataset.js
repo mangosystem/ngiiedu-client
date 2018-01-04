@@ -25,7 +25,7 @@ class CreateDataset extends Component {
         super();
         this.state={
             columns:[],
-            tabStep:'file', //file google join
+            tabStep:'newDataset', //file google join
         }
 
         this.tapChange = this.tapChange.bind(this);
@@ -48,12 +48,27 @@ class CreateDataset extends Component {
 
         return (
             <div>
-                <Paper style={{width:1000, padding:20,paddingBottom:50}}>
+                <Paper style={{width:1024, padding:20,paddingBottom:50}}>
                     <h3 className='edge'> 데이터셋 추가 </h3>
                     <div >
                     <Tabs
                         tabItemContainerStyle={{backgroundColor:'#3e81f6'}}
                     >
+                        <Tab label="데이터셋 생성" 
+                            buttonStyle={{fontSize:20}}
+                            onActive={()=>this.tapChange('newDataset')}
+                            
+                            
+                        >   
+                            {this.state.tabStep == 'newDataset'?
+                                <NewDataset
+                                    handleStep={this.props.handleStep}
+                                />
+                            :
+                                null
+                            }
+                        </Tab>
+
                         <Tab label="파일 업로드" 
                             buttonStyle={{fontSize:20}}
                             onActive={()=>this.tapChange('file')}
@@ -69,7 +84,7 @@ class CreateDataset extends Component {
                             }
                         </Tab>
                         
-                        <Tab label="구글 시트" 
+                        {/* <Tab label="구글 시트" 
                             buttonStyle={{fontSize:20}}
                             onActive={()=>this.tapChange('google')}
                             
@@ -97,7 +112,7 @@ class CreateDataset extends Component {
                                 null
                             }
                             
-                        </Tab>
+                        </Tab> */}
                     </Tabs>
                     </div>
                     
