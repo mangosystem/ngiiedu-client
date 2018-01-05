@@ -69,17 +69,19 @@
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: left;
+    min-width: 1440px;
+    width: 80%;
 }
 
 
 /* position:'absolute',display:'flex',top:140,right:0,left:0,justifyContent:'center' */
 .workMainMainContainer .createButton{
-    height:230px;
     width:300px; 
-    margin:30px;
+    height: 278px;
     display:flex;
     justify-content: center;
     align-items:center;
+    padding: 30px;    
 }
 
 .workMainMainContainer .thumbnailContainer{

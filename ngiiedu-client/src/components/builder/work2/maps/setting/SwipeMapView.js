@@ -240,6 +240,8 @@ class SwipeMapView extends React.Component {
     let boundaryLayer2 = this.addBoundaryLayer('tl_scco_sig', '행정경계: 시군구');
     let boundaryLayer3 = this.addBoundaryLayer('tl_scco_emd', '행정경계: 읍면동');
     let boundaryLayer4 = this.addBoundaryLayer('tl_scco_li', '행정경계: 리');
+    let boundaryLayer5 = this.addBoundaryLayer('seoul_road', '서울시 도로');
+    let boundaryLayer6 = this.addBoundaryLayer('seoul_building', '서울시 건물');
     
     let layerGroup2 = new ol.layer.Group({
       title: 'Boundary Map',
@@ -247,7 +249,9 @@ class SwipeMapView extends React.Component {
         boundaryLayer1,
         boundaryLayer2,
         boundaryLayer3,
-        boundaryLayer4
+        boundaryLayer4,
+        boundaryLayer5,
+        boundaryLayer6
       ]
     });
     
@@ -383,6 +387,43 @@ class SwipeMapView extends React.Component {
         })
     });
 
+    resolutions = [1954.597389, 977.2986945, 488.64934725, 244.324673625, 122.1623368125, 61.08116840625, 30.540584203125, 15.2702921015625, 7.63514605078125, 3.817573025390625, 1.9087865126953125, 0.9543932563476563, 0.4771966281738281, 0.2385983140869141];
+    extent     = [-200000.00, -28024123.62, 31824123.62, 4000000.00];  // 4 * 3
+
+    //배경지도로 활용할 지원 위성지도 URL
+    var ngiiURL     = 'http://emap.ngii.go.kr/proxy/proxyTile.jsp?URL=http://210.117.198.62:8081/2015_map/korean_map_tile';
+
+
+    let ngiiStreet = new ol.layer.Tile({
+        title : 'Ngii Street Map',
+        visible : true,
+        type : 'base',
+        source : new ol.source.XYZ({
+            projection: 'EPSG:5179',
+            tileSize: [256, 256],
+            minZoom: 0,
+            maxZoom: resolutions.length - 1,
+            tileGrid: new ol.tilegrid.TileGrid({
+                extent: extent,
+                origin: [extent[0], extent[1]],
+                resolutions: resolutions
+            }),
+            tileUrlFunction: function (tileCoord, pixelRatio, projection) {
+                if (tileCoord == null) return undefined;
+
+                var z = ('00'+ (tileCoord[0] + 6)).slice(-2);
+                var x = tileCoord[1];
+                var y = tileCoord[2];
+                return 'http://mango.iptime.org:28086/postdata/tileMap?tileType=ngii_base&zxyUrl='+'/L' + z + '/' + x + '/' + y + '.png';
+            },
+            attributions: [
+                new ol.Attribution({ 
+                    html: ['<a href="http://emap.ngii.go.kr">NGII</a>']
+                })
+            ]
+        })
+    });
+
     let layers = [];
     layers.push($.extend(true, {}, vworldHybrid));
     layers.push($.extend(true, {}, vworldSatelite));
@@ -390,6 +431,7 @@ class SwipeMapView extends React.Component {
     layers.push($.extend(true, {}, osm));
     layers.push($.extend(true, {}, daum));
     layers.push($.extend(true, {}, naver));
+    layers.push($.extend(true, {}, ngiiStreet));
 
     let layerGroup = new ol.layer.Group({
       title : 'Base Maps',

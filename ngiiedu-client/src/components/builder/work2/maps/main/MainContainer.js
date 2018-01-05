@@ -186,9 +186,9 @@ class MainContainer extends React.Component {
                                             </IconMenu>
                                         </div>
                                     </div>
-                                    <div className="thumbnailDescription">
+                                    {/*<div className="thumbnailDescription">
                                         <span>{row.pngoData.privacy}&nbsp;&nbsp;|</span><span>&nbsp;&nbsp;{row.pngoData.mapsType}</span>
-                                    </div>
+                                    </div>*/}
                                 </Paper>
                             </div>
 

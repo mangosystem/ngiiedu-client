@@ -91,7 +91,7 @@ class MainContainer extends React.Component {
                 anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
               >
-                <MenuItem primaryText="수업 홈" onClick={this.goCourseHome.bind(this)}/>
+                {/*<MenuItem primaryText="수업 홈" onClick={this.goCourseHome.bind(this)}/>*/}
                 <MenuItem primaryText="뒤로 가기" onClick={()=>this.props.history.goBack()}/>
               </IconMenu>
               <div 
