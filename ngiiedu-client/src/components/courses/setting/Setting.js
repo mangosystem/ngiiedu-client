@@ -10,6 +10,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import IconButton from 'material-ui/IconButton';
 
 import DeleteCourse from './DeleteCourse.js';
 import LeaveCourse from './LeaveCourse.js';
@@ -74,25 +75,39 @@ class Setting extends React.Component {
     if (this.props.isAccessor && this.props.isOwner) {
       return (
         <div>
-          
-          <div style={{paddingLeft: 40, paddingBottom:20}}>
-            <h3>수업 활성화</h3><br/>
-            <div style={{paddingRight:'20px'}}>
-              <Checkbox
-                checkedIcon={<Visibility />}
-                uncheckedIcon={<VisibilityOff />}
-                checked = {this.state.courseData.status}
-                label="수업을 활성화 / 비활성화 상태로 변경합니다."
-                labelPosition="left"
-                onCheck={this.courseChecked}
-              />
-            </div>
-          </div>
 
-          <div style={{paddingLeft: 40}}>
-            <h3>수업 삭제</h3><br/>
-            <div style={{textColor:'gray'}}>
-              수업을 삭제합니다.
+          <Paper style={{display:'grid',gridTemplateColumns:'85% 15%',marginBottom:20, marginRight:20, marginLeft:20}} className="mouseOverBlue">
+            <div style={{padding:'50px 20px',fontSize:20,overflow:'hidden',textOverflow:'ellipsis',fontWeight:'bold'}}>
+              <div style={{paddingBottom:20,height:22,fontSize:15}}>
+                    <p>수업 활성화</p>
+              </div>
+              <div>
+                수업을 활성화 / 비활성화 상태로 변경합니다.
+              </div>
+            </div>
+            <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+            {this.state.courseData.status ?
+                <IconButton onClick={this.courseChecked}>
+                  <Visibility color='#3e81f6'/>
+                </IconButton>
+            :
+                <IconButton onClick={this.courseChecked}>
+                  <VisibilityOff />
+                </IconButton>
+            }
+            </div>
+          </Paper>
+
+          <Paper style={{display:'grid',gridTemplateColumns:'85% 15%',marginBottom:20, marginRight:20, marginLeft:20}} className="mouseOverBlue">
+            <div style={{padding:'50px 20px',fontSize:20,overflow:'hidden',textOverflow:'ellipsis',fontWeight:'bold'}}>
+              <div style={{paddingBottom:20,height:22,fontSize:15}}>
+                    <p>수업 삭제</p>
+              </div>
+              <div>
+                수업을 삭제합니다.
+              </div>
+            </div>
+            <div style={{display:'flex',alignItems:'center', justifyContent:'center'}}>
               <FlatButton 
                 label="삭제" 
                 secondary={true} 
@@ -100,7 +115,7 @@ class Setting extends React.Component {
                 onClick={this.deleteCourse}
               />
             </div>
-          </div>
+          </Paper>
 
           <DeleteCourse 
             deleteOpen={this.state.deleteOpen} 
@@ -116,17 +131,24 @@ class Setting extends React.Component {
           <div style={{padding: 20}}>
             <h1>수업 설정</h1>
           </div>
-
-          <div style={{ paddingLeft: 40}}>
-            <h3>수업 탈퇴</h3><br/>
-            수업에서 탈퇴합니다.
-            <FlatButton 
-              label="탈퇴" 
-              secondary={true} 
-              style={{float:'right', marginRight:10}}
-              onClick={this.leaveCourse}
-            />
-          </div>
+          <Paper style={{display:'grid',gridTemplateColumns:'85% 15%',marginBottom:20}} className="mouseOverBlue">
+            <div style={{padding:'50px 20px',fontSize:20,overflow:'hidden',textOverflow:'ellipsis',fontWeight:'bold'}}>
+              <div style={{paddingBottom:20,height:22,fontSize:15}}>
+                    <p>수업 탈퇴</p>
+              </div>
+              <div>
+                수업에서 탈퇴합니다.
+              </div>
+            </div>
+            <div style={{display:'flex',alignItems:'center', justifyContent:'center'}}>
+              <FlatButton 
+                label="탈퇴" 
+                secondary={true} 
+                style={{float:'right', marginRight:10}}
+                onClick={this.leaveCourse}
+              />
+            </div>
+          </Paper>
 
           <LeaveCourse 
             leaveOpen={this.state.leaveOpen}
