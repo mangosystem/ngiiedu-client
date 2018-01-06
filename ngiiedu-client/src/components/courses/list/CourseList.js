@@ -7,8 +7,10 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Avatar from 'material-ui/Avatar';
-import { withRouter } from "react-router-dom";
+import LockOutline from 'material-ui/svg-icons/action/lock-outline';
+import LockOpen from 'material-ui/svg-icons/action/lock-open';
 
+import { withRouter } from "react-router-dom";
 
 import { connect } from 'react-redux';
 import { actionUserid, actionOpen } from '../../../actions/index';
@@ -33,7 +35,7 @@ class CourseList extends React.Component {
             isAccessor: true,
             isOwner: true,
             isMember: false,
-            userid: '1',
+            // userid: '1',
             selectedCourse:'',//선택된 카드
         };
 
@@ -146,8 +148,14 @@ class CourseList extends React.Component {
                                     <Avatar src={'/ngiiedu/assets/images/' + row.moduleMetadata + '.png'} />
                                 </div>
                                 <div style={{gridColumn:2,paddingLeft:20}} onClick={()=>this.handleExpandChange("own_"+row.idx)}>
-                                    <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px'}}>
-                                    </div>
+                                    {/* <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px'}}> */}
+                                    {/* </div> */}
+                                    {row.status == 't'?
+                                    <LockOpen color={'#3e81f6'} />
+                                        :
+                                    <LockOutline color={'#ff5d00'} />
+                                    }
+                                    
                                     <div style={{fontSize:22,fontWeight:'bold'}}>{row.courseName}</div>
                                 </div>
                                 <div style={{gridColumn:3,textAlign:'right'}}>

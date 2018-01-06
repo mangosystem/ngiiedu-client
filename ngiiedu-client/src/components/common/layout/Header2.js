@@ -65,7 +65,7 @@ class Header extends React.Component {
     }
     if(value == 'introduce'){
       window.location.href=contextPath + '/'+value;
-    }else if(value == 'gallary'){
+    }else if(value == 'gallery'){
       window.location.href=contextPath + '/'+value;
     }else if(value == 'surport'){
       window.location.href=contextPath + '/'+value+'/notice';
@@ -103,7 +103,7 @@ class Header extends React.Component {
                 </div> 
               : this.props.loginStatus.userDivision==3 ? //관리자.
                 <div className="gnb">
-                  <span className="teacher">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.
+                  <span className="admin">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.
                   <button type="button" title="로그아웃" onClick={()=>window.location.href=contextPath + "/logout"}>로그아웃</button>
                 </div> 
               : //로그인 전  
@@ -120,7 +120,7 @@ class Header extends React.Component {
             <div className="lnbWrap">
               <ul className="lnb">
                 <li onClick={()=>this.handleMainTitle("introduce")} className={this.state.mainTitle=="introduce" ? 'on' : null}>수업소개</li>
-                <li onClick={()=>this.handleMainTitle("gallary")} className={this.state.mainTitle=="gallary" ? 'on' : null}>수업활동갤러리</li>
+                <li onClick={()=>this.handleMainTitle("gallery")} className={this.state.mainTitle=="gallery" ? 'on' : null}>수업활동갤러리</li>
                 <li onClick={()=>this.handleMainTitle("surport")} className={this.state.mainTitle=="surport" ? 'on' : null}>사용지원</li>
                 <li onClick={()=>this.handleMainTitle("class")} className={this.state.mainTitle=="class" ? 'on' : null}>나의수업</li>
               </ul>	

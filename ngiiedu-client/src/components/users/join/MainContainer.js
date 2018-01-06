@@ -110,12 +110,12 @@ class MainContainer extends React.Component {
                 // schoolName: $('form[id=join] input[name=schoolName]').val(),
                 userDivision: userDivision
             }, function(res) {
-                if (res.response.code == 200) {
-                    alert('가입이 완료되었습니다. 로그인 페이지로 이동합니다.')
+                // if (res.response.code == 200) {
+                    // alert('가입이 완료되었습니다. 로그인 페이지로 이동합니다.')
                     document.location = './login';
-                } else {
-                    alert('가입시 오류가 발생하였습니다. 다시 시도해 주세요!')
-                }
+                // } else {
+                //     alert('가입시 오류가 발생하였습니다. 다시 시도해 주세요!')
+                // }
             }.bind(this),
             function(xhr, status, err) {
                 alert('Error');

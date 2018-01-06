@@ -209,7 +209,10 @@ class MainContainer extends React.Component {
 			function(res) {
 
 				const courseData = JSON.parse(JSON.stringify(res)).response.data;
-
+				if(courseData==null){
+					alert('수업 생성에 실패하였습니다. 현장실습 데이터 생성을 확인하세요.')
+					return;
+				}
 				this.setState({
 					stepIndex: 3,
 					finished: true,
