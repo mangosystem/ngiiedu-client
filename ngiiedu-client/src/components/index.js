@@ -290,6 +290,24 @@ class App extends Component {
 							</div>
 						</Route>
 
+						{/* galleryPreview */}
+						{/* layer */}
+						<Route path={contextPath +"/gallery/view/l/:LAYERID"}>
+							<LayerPreview loginStatus={this.state.loginStatus}/>
+						</Route>
+						{/* maps */}
+						{/* maps preview */}
+						<Route path={contextPath +"/gallery/view/m/:MAPSID"}>
+							<div>
+								<WorkFramePreviewMaps />
+							</div>
+						</Route>
+
+
+
+
+
+
             			<Route component={Error404} />
             		</Switch>
             	</div>
@@ -297,6 +315,8 @@ class App extends Component {
         );
     }
 }
+
+
 
 let mapStateToProps = (state) => {
 	return {
