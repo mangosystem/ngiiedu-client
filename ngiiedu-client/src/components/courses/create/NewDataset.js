@@ -102,9 +102,10 @@ class NewDataset extends Component {
                 maxY:extent[3],
             },
             boundModalOpen:false
+        },function(){
+            this.onChangedDataset();
         })
 
-        this.onChangedDataset();
     }
 
 
@@ -533,7 +534,7 @@ class NewDataset extends Component {
         return (
             <div style={{margin:30,textAlign:'left'}}>
                 {/* <div onClick={()=>console.log(this.state)}>state확인</div> */}
-                <h2>현장실습 데이터셋 생성</h2>
+                <h2>현장실습 데이터 생성</h2>
                 <div style={{display:'grid',gridTemplateColumns:'75% 25%',height:400, marginTop:20}}>
                     <Paper style={{gridColumn:'1',gridRow:'1'}}>
                         <div style={{display:'grid',gridTemplateColumns:'7% 35% 20% 15%',height:50}}>

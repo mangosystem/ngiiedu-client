@@ -126,9 +126,11 @@ class NewDataset extends Component {
                 maxY:extent[3],
             },
             modalOpen:false
+        },function(){
+            this.onChangedDataset();
+
         })
 
-        this.onChangedDataset();
     }
 
     //geometry type 변경

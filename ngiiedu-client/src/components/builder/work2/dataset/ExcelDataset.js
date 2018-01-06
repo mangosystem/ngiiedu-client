@@ -11,6 +11,7 @@ import update from 'react-addons-update';
 import Divider from 'material-ui/Divider';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
 import {
     Table,
     TableBody,
@@ -20,7 +21,7 @@ import {
     TableRowColumn,
   } from 'material-ui/Table';
 
-
+import './FileInput.css';
 import XLSX from 'xlsx'
 
 class ExcelDataset extends Component {
@@ -33,7 +34,9 @@ class ExcelDataset extends Component {
             excelJson : [],
             sheetNames: [],
             title:'',
-            dataType:null
+            dataType:null,
+            fileName:'파일선택',
+            sridCode:3857
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,29 +44,32 @@ class ExcelDataset extends Component {
         this.doFile = this.doFile.bind(this)
         this.changeTitle = this.changeTitle.bind(this);
         this.createDataset = this.createDataset.bind(this);
+        this.sridHandler = this.sridHandler.bind(this);
         
     }
 
 
     // componentWillMount() { console.log('componentWillMount');} 
     componentDidMount() {
+        var setFileName = this.setFileName.bind(this);
         let setType = this.setType.bind(this);
          $('#uploadForm').change(function () {
             let nameSplit = document.getElementById('uploadFile').files[0].name.split('.');
             let type = nameSplit[nameSplit.length-1].toLowerCase();
             setType(type);
+            setFileName(document.getElementById('uploadFile').files[0].name)
         });
-        //  초기화
-        // this.setState({
-        //     step:'step1',
-        //     xValue : 'temp1',
-        //     yValue : 'temp2',
-        //     excelJson : [],
-        //     sheetNames: [],
-        //     title:'',
-        //     dataType:null
-        // })
+     
+        
+
+
     } 
+
+    setFileName(v){
+        this.setState({
+            fileName : v
+        })
+    }
     
     setType(type){
         this.setState({
@@ -80,59 +86,22 @@ class ExcelDataset extends Component {
         // let type = files.files[0].name.split('.')[files[0].name.split('.').length-1].toLowerCase();
         var form = new FormData(files);
         form.append("title",this.state.title);
-        form.append("courseWorkSubId",this.props.match.params.COURSEID);
-        let Xfiled = $('#Xfiled').val();
-        let Yfiled = $('#Yfiled').val();
-        let disition = null;
-        if(this.state.dataType=='csv'){
-            division = $('#division').val();
-        }else{
-            division = null;
+        form.append("courseId",this.props.match.params.COURSEID);
+        form.append("courseWorkId",this.props.match.params.WORKID);
+        form.append("")
+        let xFiled =false
+        let yFiled =false
+        let srid = this.state.sridCode;
+        if(this.state.dataType =='xlsx' || this.state.dataType =='xls' || this.state.dataType =='csv'){
+            xFiled = $('#Xfiled').val();
+            yFiled = $('#Yfiled').val();
+            if(xFiled ==''){
+                xField = 'X'
+            }
+            if(yFiled ==''){
+                yField = 'Y'
+            }
         }
-
-        console.log(Xfiled);
-        console.log(Yfiled);
-        console.log(division);
-        // $.ajax({
-        //     type: "post",
-        //     url: apiSvr + '/coursesWork/dataset.json',
-        //     data: form,
-        //     dataType: "text",
-        //     processData: false,
-        //     contentType: false,
-        //     success:function(data){
-        //         alert(data);
-        //     }
-        // })
-        // if(value=='step1'){
-        //     // document.getElementById('xlf')=this.state.files
-        //     this.setState({
-        //         step:value
-        //     })
-
-        // }else if(value=='step2'){
-        //     //엑셀데이터 로딩..
-        //     var files = document.getElementById('xlf').files
-        //     if(this.state.excelJson.length==0 && files.length==0){
-        //         alert('파일을 선택해 주세요')
-        //     }else if(this.state.title==''){
-        //         alert('제목을 입력해 주세요')
-        //     }else if(files.length!=0){
-        //         this.doFile(files)
-        //         this.setState({
-        //             step:value
-        //         })
-        //     }else(
-        //         this.setState({
-        //             step:value
-        //         })
-        //     )
-            
-
-        // }else if(value='upload'){
-        //     alert('데이터셋 생성')
-
-        // }
         
     }
     
@@ -150,49 +119,6 @@ class ExcelDataset extends Component {
         }
         
     }
-
-
-    // 파일선택 이벤트 생성
-    // xlfEvent(){
-    //     var xlf = document.getElementById('xlf');
-    //     function handleFile(e) { 
-    //         this.setState({
-    //             fileName :  e.target.files[0].name
-    //         },function(){
-    //             console.log(this.state.fileName)
-    //         });
-    //     }
-    //     xlf.addEventListener('change', handleFile, false);
-
-    //     // var excelJson = null;
-
-    //     // function saveFile(file){
-    //     //     var f = file[0]; 
-    //     //     var reader = new FileReader();
-
-    //     //     reader.onload = function(e) {
-    //     //         var data = e.target.result;
-    //     //         const wb = XLSX.read(data, {type:'binary'});
-                
-    //     //         var result = {};
-    //     //         var sheetNames = wb.SheetNames;
-    //     //         sheetNames.forEach(function(sheetName) {
-    //     //             var roa =XLSX.utils.sheet_to_json(wb.Sheets[sheetName], {header:1});
-    //     //             if(roa.length) result[sheetName] = roa;
-    //     //         });
-                
-    //     //         // ExcelDataset.setState({
-    //     //         //     excelJson:result
-    //     //         // })
-    //     //         setExcelJson(result , sheetNames);
-
-    //     //         // return JSON.stringify(result, 2, 2);
-    //     //     }
-    //     //     reader.readAsBinaryString(f)
-    //     // }
-    
-    // }
-
 
     doFile(file){
         var setExcelJson = this.setExcelJson.bind(this) //this 문제 해결
@@ -222,9 +148,6 @@ class ExcelDataset extends Component {
             excelJson:result,
             sheetNames:sheetNames
         })
-
-        // console.log('result')
-        // console.dir(result);
     }
 
     changeTitle(value){
@@ -235,17 +158,71 @@ class ExcelDataset extends Component {
         // console.log(value)
     }
 
+    sridHandler(e, i, v){
+        this.setState({
+            sridCode:v
+        })
+    }
+
 
 
     render() {
 
+        let srid =[
+            {value: 5179, text:'UTM-K (GRS80) - EPSG:5179'},
+            {value: 3857, text:'Google Mercator - EPSG:3857'},
+            {value: 4326, text:'WGS84 - EPSG:4326'},
+            {value: 5178, text:'UTM-K (Bessel) - EPSG:5178'},
+            {value: 5185, text:'서부원점(GRS80) - EPSG:5185'},
+            {value: 5186, text:'중부원점(GRS80) - EPSG:5186'},
+            {value: 5187, text:'동부원점(GRS80) - EPSG:5187'},
+            {value: 5188, text:'동해(울릉)원점(GRS80) - EPSG:5188'},
+            {value: 2096, text:'동부원점(Bessel) - EPSG:2096'},
+            {value: 2097, text:'중부원점(Bessel) - EPSG:2097'},
+            {value: 2098, text:'서부원점(Bessel) - EPSG:2098'},
+            {value: 5173, text:'보정된 서부원점(Bessel) - EPSG:5173'},
+            {value: 5174, text:'보정된 중부원점(Bessel) - EPSG:5174'},
+            {value: 5175, text:'보정된 제주원점(Bessel) - EPSG:5175'},
+            {value: 5176, text:'보정된 동부원점(Bessel) - EPSG:5176'},
+            {value: 5177, text:'보정된 동해(울릉)원점(Bessel) - EPSG:5177'}
+        ]
+
+        let uploadexplan = {
+            xlxs : ['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
+            xls:['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
+            csv:['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
+            zip:['좌표정보를 가진 PRJ파일을 동봉한 zip파일을 업로드해야 합니다.','PRJ 파일이 없을 시 기본 SRID는 3857 입니다.'],
+            geotiff:['geotiff 업로드 주의사항'],
+        }
+        
         let dataOption = 
-            <Paper style={{width:500,margin:'auto',marginTop:10,textAlign:'center'}}>
-                {this.state.dataType =='xlsx' || this.state.dataType =='xls' || this.state.dataType =='csv'?
-                
-                <div>
+            this.state.dataType =='xlsx' || this.state.dataType =='xls' || this.state.dataType =='csv'?
+                <Paper  style={{width:600,margin:'auto',marginTop:10,textAlign:'left',padding:20}}>
+                    <div>
+                            <h3>참고</h3>
+                        {uploadexplan[this.state.dataType].map((row,idx)=>(
+                            <div>
+                                {row}<br/>
+                            </div>
+                        ))}
+                    </div>
+                    <div style={{textAlign:'center'}}>
+                    <SelectField
+                        style={{textAlign:'left',width:350}}
+                        floatingLabelFixed={true}
+                        floatingLabelText="SRID"
+                        value={this.state.sridCode}
+                        onChange={this.sridHandler}
+                        maxHeight={200}
+                    >
+                    {srid.map((row,idx)=>(
+                        <MenuItem key={idx} value={row.value} primaryText={row.text} />
+                    ))}
+                    </SelectField>
+                    <br/>
                     {/* <p style={{fontSize:15}}>좌표값 지정</p> */}
                     <TextField
+                        style={{width:350}}
                         hintText="경도 필드를 입력하세요 (ex:X)"
                         floatingLabelText="경도"
                         id='Xfiled'
@@ -253,6 +230,7 @@ class ExcelDataset extends Component {
                     />
                     <br/>
                     <TextField
+                        style={{width:350}}
                         hintText="경도 필드를 입력하세요 (ex:Y)"
                         floatingLabelText="위도"
                         id='Yfiled'
@@ -268,42 +246,60 @@ class ExcelDataset extends Component {
                     :
                         null
                     } */}
-                    
-                    
-                </div>
+                    </div>
+            </Paper>
                 :
                 this.state.dataType == 'zip' ||this.state.dataType == 'geotiff' ? // this.state.dataType =='geojson' ||
-                null 
+                <Paper  style={{width:600,margin:'auto',marginTop:10,textAlign:'left',padding:20}}>
+                    <div>
+                        <h3>참고</h3>
+                        {uploadexplan[this.state.dataType].map((row,idx)=>(
+                            <div>
+                                {row}<br/>
+                            </div>
+                        ))}
+                    </div>
+                </Paper>
                 :
                 this.state.dataType == null ?
                 null
                 :
-                <div>올바른 파일형식이 아닙니다.</div>
-            }
-            </Paper>
+                <Paper  style={{width:600,margin:'auto',marginTop:10,textAlign:'center',padding:20}}>
+                 <h2>올바른 파일형식이 아닙니다.</h2>
+                </Paper>
+                
+            
+            
 
         return (
             <div style={{margin:'30px 0',textAlign:'left'}}>
 
             <h2>파일 업로드</h2>
             {/* {this.state.step=='step1' ?  */}
-                <div style={{textAlign:'left',marginBottom:10}}>
-                    <TextField
-                        // style={{marginLeft:'0%'}}
-                        hintText="제목을 입력하세요"
-                        defaultValue={this.state.title}
-                        floatingLabelText="제목"
-                        floatingLabelFixed={true}
-                        onChange={(event,newValue)=>this.changeTitle(newValue)}
+            <TextField
+                // style={{marginLeft:'0%'}}
+                hintText="제목을 입력하세요"
+                defaultValue={this.state.title}
+                floatingLabelText="제목"
+                floatingLabelFixed={true}
+                onChange={(event,newValue)=>this.changeTitle(newValue)}
 
-                    />
-                    <br/>
+            />
+            <br/>
+            <Paper style={{marginTop:20,marginBottom:20,textAlign:'center',padding:'20px 0'}}>
+                    
                     <form id="uploadForm" style={{marginTop:30,marginBottom:20}}>
-                        <input type="file" id="uploadFile" name="uFile"/>
+                        <div className="filebox">
+                            {/* <input type="file" id="uploadFile" name="uFile"/> */}
+
+                            <input className="upload-name" value={this.state.fileName} disabled="disabled"/> 
+                            <label htmlFor="uploadFile">업로드</label>
+                            <input type="file" id="uploadFile" className="upload-hidden"/> 
+                        </div>
                     </form>
                       {dataOption}
 
-                </div>
+                </Paper>
                 
                 
                 <Divider style={{marginTop:20,marginBottom:20,zIndex:100}}/>
