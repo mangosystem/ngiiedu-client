@@ -38,8 +38,8 @@ class NewWarnModal extends React.Component {
         open={this.props.open}
         >
         <div style={{height:150,padding:30}}>
-          <p style={{fontSize:30,height:70}}>현장수집 데이터셋을 생성하시겠습니까? </p>
-          <p style={{fontSize:20}}>한번 생성된 데이터셋은 편집할 수 없습니다. </p>
+          <p style={{fontSize:30,height:70}}>현장수집 데이터를 생성하시겠습니까? </p>
+          <p style={{fontSize:20}}>한번 생성된 데이터는 편집할 수 없습니다. </p>
         </div>
       </Dialog>
     );

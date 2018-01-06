@@ -41,7 +41,7 @@ class BoundaryJoinDataset extends Component {
     }
 
     createDataset(){
-        alert('데이터셋 생성완료 페이지이동')
+        alert('데이터 생성완료 페이지이동')
     }
 
 
@@ -60,7 +60,7 @@ class BoundaryJoinDataset extends Component {
 
                     <div style={{marginTop:20}}>
                         <div style={{display:'flex'}}>
-                            <span style={{width:300}}>행정경계 데이터셋</span>
+                            <span style={{width:300}}>행정경계 데이터</span>
                         </div>
                         <div style={{display:'flex'}}>
                             <DropDownMenu value={this.state.boundaryDataset} style={{marginLeft:0, width:300}} onChange={(event,index,value)=>this.handleChange('BD',value)}>
@@ -73,7 +73,7 @@ class BoundaryJoinDataset extends Component {
 
                     <div style={{marginTop:20}}>
                         <div style={{display:'flex'}}>
-                            <span style={{width:300}}>타겟 데이터셋</span>
+                            <span style={{width:300}}>타겟 데이터</span>
                         </div>
                         <div style={{display:'flex'}}>
                             <DropDownMenu value={this.state.targetDataset} style={{marginLeft:0, width:300}} onChange={(event,index,value)=>this.handleChange('TD',value)}>

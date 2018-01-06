@@ -49,12 +49,12 @@ class CreateDataset extends Component {
         return (
             <div>
                 <Paper style={{width:1024, padding:20,paddingBottom:50}}>
-                    <h3 className='edge'> 데이터셋 추가 </h3>
+                    <h3 className='edge'> 데이터 추가 </h3>
                     <div >
                     <Tabs
                         tabItemContainerStyle={{backgroundColor:'#3e81f6'}}
                     >
-                        <Tab label="데이터셋 생성" 
+                        <Tab label="데이터 생성" 
                             buttonStyle={{fontSize:20}}
                             onActive={()=>this.tapChange('newDataset')}
                             
@@ -124,7 +124,7 @@ class CreateDataset extends Component {
                         tabItemContainerStyle={{backgroundColor:'rgba(0,0,0,0)'}}
                         inkBarStyle={{width:200,marginRight:70}}
                     >
-                        <Tab label="데이터셋 생성" 
+                        <Tab label="데이터 생성" 
                             buttonStyle={{color:'black'}}
                             style={{width:120,marginRight:70}}
                         >
@@ -145,7 +145,7 @@ class CreateDataset extends Component {
                             <GoogleDataset/>
                         </Tab>
 
-                        <Tab label="데이터셋 결합" 
+                        <Tab label="데이터 결합" 
                             buttonStyle={{color:'black'}}
                             style={{width:200,marginRight:70}}
 

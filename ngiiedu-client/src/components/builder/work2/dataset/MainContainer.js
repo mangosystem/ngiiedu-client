@@ -80,7 +80,7 @@ class MainContainer extends React.Component {
 
     //삭제 함수
     deleteDataset(row){
-        alert(row+' 데이터셋 삭제')
+        alert(row+' 데이터 삭제')
     }
 
     // //데이터 생성

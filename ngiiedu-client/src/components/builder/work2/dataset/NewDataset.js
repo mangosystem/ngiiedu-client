@@ -455,7 +455,7 @@ class NewDataset extends Component {
         return (
             <div style={{margin:'30px 0',textAlign:'left'}}>
                 {/* <div onClick={()=>console.log(this.state)}>state확인</div> */}
-                <h2>현장실습 데이터셋 생성</h2>
+                <h2>현장실습 데이터 생성</h2>
                 <TextField
                     floatingLabelText="제목"
                     floatingLabelFixed={true}

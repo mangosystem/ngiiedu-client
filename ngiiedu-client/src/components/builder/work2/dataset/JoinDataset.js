@@ -51,7 +51,7 @@ class JoinDataset extends Component {
     }
 
     createDataset(){
-        alert('데이터셋 생성완료 페이지이동')
+        alert('데이터 생성완료 페이지이동')
     }
 
 
@@ -70,7 +70,7 @@ class JoinDataset extends Component {
 
                     <div style={{marginTop:20}}>
                         <div style={{display:'flex'}}>
-                            <span style={{width:300}}>베이스 데이터셋</span>
+                            <span style={{width:300}}>베이스 데이터</span>
                             <span >조인 컬럼</span>
                         </div>
                         <div style={{display:'flex'}}>
@@ -90,7 +90,7 @@ class JoinDataset extends Component {
 
                     <div style={{marginTop:20}}>
                         <div style={{display:'flex'}}>
-                            <span style={{width:300}}>타겟 데이터셋</span>
+                            <span style={{width:300}}>타겟 데이터</span>
                             <span >조인 컬럼</span>
                         </div>
                         <div style={{display:'flex'}}>

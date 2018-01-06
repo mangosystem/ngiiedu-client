@@ -43,7 +43,7 @@ class CreateLayer extends Component {
     if(this.state.title==''){
       alert('주제지도의 제목을 입력해주세요.');
     }else if(Object.keys(this.state.selDataset).length ==0){
-      alert('추가할 데이터셋을 선택해주세요.');
+      alert('추가할 데이터을 선택해주세요.');
     }else{
       ajaxJson(
         ['POST', apiSvr + '/coursesWork/layers.json'],
