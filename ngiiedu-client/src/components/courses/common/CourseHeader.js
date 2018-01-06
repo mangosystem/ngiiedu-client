@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
+import LockOutline from 'material-ui/svg-icons/action/lock-outline';
+import LockOpen from 'material-ui/svg-icons/action/lock-open';
+
+import CheckUserAuthority from './CheckUserAuthority.js';
 
 
 class CourseHeader extends Component {
@@ -9,14 +13,17 @@ class CourseHeader extends Component {
     super();
     this.state={
       courseData:'',
-      moduleMetadata:''
+      moduleMetadata:'',
+      isAccessor: true,
+      isOwner: true,
+      isMember: false
     }
  
   }
-
+ 
+ 
   componentDidMount(){    
-    const courseId = this.props.match.params.COURSEID;
-    
+    let courseId = this.props.match.params.COURSEID;
     ajaxJson(
 			['GET', apiSvr + '/courses/' + courseId + '.json'],
 			null,
@@ -57,9 +64,15 @@ class CourseHeader extends Component {
           }
         </div>
         <div>
-          <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px'}}>
-            이미지변경요
-          </div>
+          {this.props.isOwner ?
+            this.state.courseData.status == true?
+            <LockOpen color={'#3e81f6'} />
+                :
+            <LockOutline color={'#ff5d00'} />
+          :
+            null
+          }
+           
           <div style={{fontSize:22,fontWeight:'bold'}}>
             {this.state.courseData.courseName}
           </div>

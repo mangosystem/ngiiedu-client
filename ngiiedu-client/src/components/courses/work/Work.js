@@ -19,7 +19,8 @@ import MenuPanel from '../common/MenuPanel.js';
 import Checkbox from 'material-ui/Checkbox';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-
+import LockOutline from 'material-ui/svg-icons/action/lock-outline';
+import LockOpen from 'material-ui/svg-icons/action/lock-open';
 import update from 'react-addons-update';
 
 class Work extends React.Component {
@@ -135,13 +136,13 @@ class Work extends React.Component {
               <Paper style={{display:'grid',gridTemplateColumns:'90% 10%',marginBottom:20}} className="mouseOverBlue">
                 <div style={{padding:'50px 20px',fontSize:20,overflow:'hidden',textOverflow:'ellipsis',fontWeight:'bold'}}>
                   {work.status ?
-                  <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px',fontSize:15}}>
-                    <p>공개 이미지</p>
-                  </div>
+                  // <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px',fontSize:15}}>
+                    <LockOpen color={'#3e81f6'} />
+                  // </div>
                   :
-                  <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px',fontSize:15}}>
-                    <p>비공개 이미지</p>
-                  </div>
+                  // <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px',fontSize:15}}>
+                     <LockOutline color={'#ff5d00'} />
+                  // </div>
                   }
                   <div>
                     {work.moduleWorkName}

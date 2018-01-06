@@ -65,7 +65,11 @@ class MainContainer extends React.Component {
     return (
       <main id="main">
 				<div className="inner">
-          <CourseHeader/>
+          <CourseHeader
+            isAccessor={this.state.isAccessor}
+            isOwner={this.state.isOwner}
+            isMember={this.state.isMember}
+          />
           <div className="flexible">
             <MenuPanel
               isAccessor={this.state.isAccessor}
