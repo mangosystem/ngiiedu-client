@@ -71,7 +71,7 @@ class Work extends React.Component {
       ['GET', apiSvr + '/courses/' + id + '/workSubData.json'],
       null,
       function (data) {
-          if(data.response.data.length!=0 && data.response.data!=null){
+          if(data.response.data!=null && data.response.data.length!=0){
             if (data.response.data[0].outputType == 'split') {
               this.props.history.push("/ngiiedu/split");
             } else if (data.response.data[0].outputType == 'swipe') {
