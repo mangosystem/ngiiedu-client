@@ -31,7 +31,9 @@ class MainContainer extends React.Component {
             type:'',
             deleteModal:false,
             datasetList:[],
-            courseWorkSubId:null
+            courseWorkSubId:null,
+            sharemodal:false,
+            doneModal:false,
         }
 
         this.createLayer = this.createLayer.bind(this);
@@ -42,10 +44,21 @@ class MainContainer extends React.Component {
         this.deleteModalOpen = this.deleteModalOpen.bind(this);
         this.deleteModalClose = this.deleteModalClose.bind(this);
         this.deleteLayer = this.deleteLayer.bind(this);
+        this.doneModalOpen = this.doneModalOpen.bind(this);
+        this.doneModalClose = this.doneModalClose.bind(this);
+        this.doneOutput = this.doneOutput.bind(this);
+        this.notDoneOutput = this.notDoneOutput.bind(this);
+        this.shareModalOpen = this.shareModalOpen.bind(this);
+        this.shareModalClose = this.shareModalClose.bind(this);
+        this.shareOutput = this.shareOutput.bind(this);
+        this.notShareOutput = this.notShareOutput.bind(this);
     }
 
     componentDidMount(){
-        
+        this.setState({
+            isDone:this.props.data.isDone,
+            isShared:this.props.data.isShared
+        })
     }
 
     //주제지도 생성
@@ -123,7 +136,6 @@ class MainContainer extends React.Component {
     deleteModalClose(){
         this.setState({
             deleteModal:false,
-            selectRow:{}
         });
     }
 
@@ -143,9 +155,101 @@ class MainContainer extends React.Component {
         );
         this.setState({
             deleteModal:false,
-            selectRow:{}
         });
     }
+
+    doneModalOpen(row){
+        this.setState({
+            doneModal:true,
+            selectRow:row
+        });
+    }
+
+    doneModalClose(){
+        this.setState({
+            doneModal:false,
+        });
+    }
+
+    doneOutput(){
+        // let layerId = this.state.selectRow.pinogioOutputId;
+        // ajaxJson(
+        //     ['PUT', apiSvr + '/coursesWork/layers/' + layerId + '/done.json'],
+        //     {
+        //       isDone:'true'
+        //     },
+        //     function (data) {
+        //         console.log(data);
+        //         alert('결과물이 제출 되었습니다.')
+        //     }.bind(this),
+        //     function (xhr, status, err) {
+        //       alert('Error');
+        //     }.bind(this)
+        // );
+    }
+
+    notDoneOutput(row){
+        // ajaxJson(
+        //     ['PUT', apiSvr + '/coursesWork/layers/' + row.pinogioOutputId + '/done.json'],
+        //     {
+        //       isDone:'false'
+        //     },
+        //     function (data) {
+        //         console.log(data);
+        //         alert('결과물이 제출이 취소되었습니다.')
+        //     }.bind(this),
+        //     function (xhr, status, err) {
+        //       alert('Error');
+        //     }.bind(this)
+        // );
+    }
+
+    shareModalOpen(row){
+        this.setState({
+            shareModal:true,
+            selectRow:row
+        });
+    }
+
+    shareModalClose(){
+        this.setState({
+            shareModal:false,
+        });
+    }
+
+    shareOutput(){
+        // let layerId = this.state.selectRow.pinogioOutputId;
+        // ajaxJson(
+        //     ['PUT', apiSvr + '/coursesWork/layers/' + layerId + '/share.json'],
+        //     {
+        //         isShared:'true'
+        //     },
+        //     function (data) {
+        //         console.log(data);
+        //         alert('결과물이 공유 되었습니다.')
+        //     }.bind(this),
+        //     function (xhr, status, err) {
+        //       alert('Error');
+        //     }.bind(this)
+        // );
+    }
+
+    notShareOutput(row){
+        // ajaxJson(
+        //     ['PUT', apiSvr + '/coursesWork/layers/' + row.pinogioOutputId + '/share.json'],
+        //     {
+        //         isShared:'false'
+        //     },
+        //     function (data) {
+        //         console.log(data);
+        //         alert('결과물이 공유가 취소되었습니다.')
+        //     }.bind(this),
+        //     function (xhr, status, err) {
+        //       alert('Error');
+        //     }.bind(this)
+        // );
+    }
+
 
     render() {
    
@@ -161,6 +265,34 @@ class MainContainer extends React.Component {
                 hoverColor="#FFCDD2"
                 label="삭제"
                 onClick={this.deleteLayer}
+            />
+        ];
+
+        const doneButton = [
+            <FlatButton
+                hoverColor="#FAFAFA"
+                label="취소"
+                onClick={this.doneModalClose}
+            />,
+            <FlatButton
+                backgroundColor="#F44336"
+                hoverColor="#FFCDD2"
+                label="제출"
+                onClick={this.doneOutput}
+            />
+        ];
+
+        const shareButton = [
+            <FlatButton
+                hoverColor="#FAFAFA"
+                label="취소"
+                onClick={this.shareModalClose}
+            />,
+            <FlatButton
+                backgroundColor="#F44336"
+                hoverColor="#FFCDD2"
+                label="공유"
+                onClick={this.shareOutput}
             />
         ];
 
@@ -211,8 +343,16 @@ class MainContainer extends React.Component {
                                                         <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/map/preview/'+data.pngoData.layerId)}/>
                                                         <MenuItem primaryText="편집하기" onClick={()=>this.editLayer(data)}/>
                                                         <MenuItem primaryText="삭제하기" onClick={()=>this.deleteModalOpen(data)}/>
-                                                        <MenuItem primaryText="결과물 제출"/>
-                                                        <MenuItem primaryText="결과물 공유"/>
+                                                        {data.isDone==false?
+                                                        <MenuItem primaryText="결과물 제출" onClick={()=>this.doneModalOpen(data)}/>
+                                                        :
+                                                        <MenuItem primaryText="결과물 제출 취소" onClick={()=>this.notDoneOutput(data)}/>
+                                                        }
+                                                        {data.isShared == false?
+                                                        <MenuItem primaryText="결과물 공유" onClick={()=>this.shareModalOpen(data)}/>
+                                                        :
+                                                        <MenuItem primaryText="결과물 공유 취소" onClick={()=>this.notShareOutput(data)}/>
+                                                        }
                                                     </IconMenu>
                                                 </div>    
                                             </div>
@@ -268,6 +408,29 @@ class MainContainer extends React.Component {
                 >
                     선택한 주제지도를 삭제하시겠습니까?
                 </Dialog>
+
+                {/* 레이어 선택 삭제 모달 */}
+                <Dialog
+                    title="결과물 제출"
+                    actions={doneButton}
+                    modal={false}
+                    open={this.state.doneModal}
+                    onRequestClose={this.doneModalClose}
+                >
+                    선택한 주제지도를 제출하시겠습니까?
+                </Dialog>
+
+                {/* 레이어 선택 삭제 모달 */}
+                <Dialog
+                    title="결과물 공유"
+                    actions={shareButton}
+                    modal={false}
+                    open={this.state.sharemodal}
+                    onRequestClose={this.shareModalClose}
+                >
+                    선택한 주제지도를 공유하시겠습니까?
+                </Dialog>
+
             </div>
         );
     }

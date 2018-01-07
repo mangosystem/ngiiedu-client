@@ -47,8 +47,9 @@ class ColorMapSymbolizer extends React.Component {
 	}
 
 
-	componentDidMount(nextProps) {
+	componentWillReceiveProps(nextProps) {
         if (this.props.styles != null) {
+            console.log('rastertest');
             this.setState({
                 symbolizerType: this.props.styles.symbolizerType != undefined ? this.props.styles.symbolizerType : 'COLORMAP',
             })
@@ -65,12 +66,6 @@ class ColorMapSymbolizer extends React.Component {
 					//column: nextProps.column
 				});
             }
-
-		} else {
-			// this.setState({
-            //     column: this.props.column,
-            //     columnName:this.props.column[0].name
-			// });
         }
 		
 	}
@@ -159,7 +154,8 @@ class ColorMapSymbolizer extends React.Component {
                 backgroundColor:'#F6EFEF',
                 border: '3px solid',
                 borderColor: cyan500,
-                marginRight:20
+                marginLeft:'auto',
+                marginRight:'auto'
             }
         }
 

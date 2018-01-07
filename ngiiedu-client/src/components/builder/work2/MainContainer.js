@@ -48,7 +48,7 @@ class MainContainer extends React.Component {
             ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
             null,
             function (data) {
-                if(data.response.data.length!=0 && data.response.data!=null){
+                if(data.response.data!=null && data.response.data.length!=0){
                     this.setState({
                         data:data.response.data
                     },function(){
