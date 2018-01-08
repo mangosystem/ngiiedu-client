@@ -32,7 +32,7 @@ class MainContainer extends React.Component {
             deleteModal:false,
             datasetList:[],
             courseWorkSubId:null,
-            sharemodal:false,
+            shareModal:false,
             doneModal:false,
         }
 
@@ -172,36 +172,39 @@ class MainContainer extends React.Component {
     }
 
     doneOutput(){
-        // let layerId = this.state.selectRow.pinogioOutputId;
-        // ajaxJson(
-        //     ['PUT', apiSvr + '/coursesWork/layers/' + layerId + '/done.json'],
-        //     {
-        //       isDone:'true'
-        //     },
-        //     function (data) {
-        //         console.log(data);
-        //         alert('결과물이 제출 되었습니다.')
-        //     }.bind(this),
-        //     function (xhr, status, err) {
-        //       alert('Error');
-        //     }.bind(this)
-        // );
+        let layerId = this.state.selectRow.pinogioOutputId;
+        ajaxJson(
+            ['PUT', apiSvr + '/coursesWork/layers/' + layerId + '/done.json'],
+            {
+              isDone:'true'
+            },
+            function (data) {
+                alert('결과물이 제출 되었습니다.')
+                this.props.getDataList();
+                this.setState({
+                    doneModal:false,
+                });
+            }.bind(this),
+            function (xhr, status, err) {
+              alert('Error');
+            }.bind(this)
+        );
     }
 
     notDoneOutput(row){
-        // ajaxJson(
-        //     ['PUT', apiSvr + '/coursesWork/layers/' + row.pinogioOutputId + '/done.json'],
-        //     {
-        //       isDone:'false'
-        //     },
-        //     function (data) {
-        //         console.log(data);
-        //         alert('결과물이 제출이 취소되었습니다.')
-        //     }.bind(this),
-        //     function (xhr, status, err) {
-        //       alert('Error');
-        //     }.bind(this)
-        // );
+        ajaxJson(
+            ['PUT', apiSvr + '/coursesWork/layers/' + row.pinogioOutputId + '/done.json'],
+            {
+              isDone:'false'
+            },
+            function (data) {
+                alert('결과물이 제출이 취소되었습니다.')
+                this.props.getDataList();
+            }.bind(this),
+            function (xhr, status, err) {
+              alert('Error');
+            }.bind(this)
+        );
     }
 
     shareModalOpen(row){
@@ -218,36 +221,39 @@ class MainContainer extends React.Component {
     }
 
     shareOutput(){
-        // let layerId = this.state.selectRow.pinogioOutputId;
-        // ajaxJson(
-        //     ['PUT', apiSvr + '/coursesWork/layers/' + layerId + '/share.json'],
-        //     {
-        //         isShared:'true'
-        //     },
-        //     function (data) {
-        //         console.log(data);
-        //         alert('결과물이 공유 되었습니다.')
-        //     }.bind(this),
-        //     function (xhr, status, err) {
-        //       alert('Error');
-        //     }.bind(this)
-        // );
+        let layerId = this.state.selectRow.pinogioOutputId;
+        ajaxJson(
+            ['PUT', apiSvr + '/coursesWork/layers/' + layerId + '/share.json'],
+            {
+                isShared:'true'
+            },
+            function (data) {
+                alert('결과물이 공유 되었습니다.')
+                this.props.getDataList();
+                this.setState({
+                    shareModal:false,
+                });
+            }.bind(this),
+            function (xhr, status, err) {
+              alert('Error');
+            }.bind(this)
+        );
     }
 
     notShareOutput(row){
-        // ajaxJson(
-        //     ['PUT', apiSvr + '/coursesWork/layers/' + row.pinogioOutputId + '/share.json'],
-        //     {
-        //         isShared:'false'
-        //     },
-        //     function (data) {
-        //         console.log(data);
-        //         alert('결과물이 공유가 취소되었습니다.')
-        //     }.bind(this),
-        //     function (xhr, status, err) {
-        //       alert('Error');
-        //     }.bind(this)
-        // );
+        ajaxJson(
+            ['PUT', apiSvr + '/coursesWork/layers/' + row.pinogioOutputId + '/share.json'],
+            {
+                isShared:'false'
+            },
+            function (data) {
+                alert('결과물이 공유가 취소되었습니다.')
+                this.props.getDataList();
+            }.bind(this),
+            function (xhr, status, err) {
+              alert('Error');
+            }.bind(this)
+        );
     }
 
 
@@ -275,8 +281,8 @@ class MainContainer extends React.Component {
                 onClick={this.doneModalClose}
             />,
             <FlatButton
-                backgroundColor="#F44336"
-                hoverColor="#FFCDD2"
+                backgroundColor="#00BCD4"
+                hoverColor="#B2EBF2"
                 label="제출"
                 onClick={this.doneOutput}
             />
@@ -289,8 +295,8 @@ class MainContainer extends React.Component {
                 onClick={this.shareModalClose}
             />,
             <FlatButton
-                backgroundColor="#F44336"
-                hoverColor="#FFCDD2"
+                backgroundColor="#00BCD4"
+                hoverColor="#B2EBF2"
                 label="공유"
                 onClick={this.shareOutput}
             />
@@ -425,7 +431,7 @@ class MainContainer extends React.Component {
                     title="결과물 공유"
                     actions={shareButton}
                     modal={false}
-                    open={this.state.sharemodal}
+                    open={this.state.shareModal}
                     onRequestClose={this.shareModalClose}
                 >
                     선택한 주제지도를 공유하시겠습니까?

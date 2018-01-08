@@ -73,7 +73,7 @@ class MainContainer extends React.Component {
     )
 
 
-    alert(courseId+', '+userId+', '+status);
+    // alert(courseId+', '+userId+', '+status);
   }
 
   handleExpandChange(expand) {

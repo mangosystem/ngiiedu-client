@@ -42,6 +42,7 @@ class MainContainer extends React.Component {
         this.handleStep = this.handleStep.bind(this);
         this.deleteDatasetHandle = this.deleteDatasetHandle.bind(this);
         this.downloadFile = this.downloadFile.bind(this);
+        this.ajaxCall = this.ajaxCall.bind(this);
         
 
     }
@@ -52,6 +53,11 @@ class MainContainer extends React.Component {
         // this.setState({
         //     dataSetData:response.data
         // })
+        this.ajaxCall();
+
+    }
+
+    ajaxCall(){
         const workId = this.props.match.params.WORKID;
         ajaxJson(
             ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
@@ -66,9 +72,7 @@ class MainContainer extends React.Component {
               alert('Error');
             }.bind(this)
         );
-
     }
-
     //이름변경 함수
     changeName(row){
         this.handleStep('changeName');
@@ -128,6 +132,13 @@ class MainContainer extends React.Component {
             this.setState({ 
                 deleteDatasetOpen: !this.state.deleteDatasetOpen 
             });
+        }else if(data=='save'){
+            this.setState({ 
+                deleteDatasetOpen: !this.state.deleteDatasetOpen 
+            },function(){
+                this.ajaxCall()
+            });
+            
         }else{
             this.setState({ 
                 selectedDatasetData: data,

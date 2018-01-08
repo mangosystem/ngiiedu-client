@@ -61,7 +61,7 @@ class EditDataset extends Component {
         return (
             <div style={{width:'90%',textAlign:'center',display:'flex',justifyContent:'center'}}>
                 <div>
-                  <Subheader>Title</Subheader>
+                  <Subheader>제목</Subheader>
                   <TextField 
                     hintText="제목을 입력하세요" 
                     value={this.state.title}

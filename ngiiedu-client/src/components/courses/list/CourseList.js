@@ -195,45 +195,51 @@ class CourseList extends React.Component {
                     <div className="contents">
                         <h3 className="edge">참여한 수업</h3>
 
-                        {this.state.courseInfoListJoinData.map((row, i) => (
-
-                        <Card key={i} expanded={this.state.selectedCourse=="join_"+row.idx} style={{marginBottom:20,border:this.state.selectedCourse=="join_"+row.idx?'solid 2px #3e81f6': null}} className="mouseOverBlue">
-                            <CardHeader
-                                actAsExpander={true}
-                                    
-                                textStyle={{display:'none'}}
-                            >
-                                <div style={{display:'grid',gridTemplateColumns:'15% 75% 10%'}}>
-                                    <div style={{gridColumn:1,textAlign:'right'}} onClick={()=>this.handleExpandChange("join_"+row.idx)}>
-                                        <Avatar src={'/ngiiedu/assets/images/' + row.moduleMetadata + '.png'} />
-                                    </div>
-                                    <div style={{gridColumn:2,paddingLeft:20,display:'flex',alignItems:'center'}} onClick={()=>this.handleExpandChange("join_"+row.idx)}>
-                                        <div style={{fontSize:22,fontWeight:'bold'}}>{row.courseName}</div>
-                                    </div>
-                                    <div style={{gridColumn:3,textAlign:'right'}}>
-                                        <IconMenu
-                                            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                                            anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                            targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                            style={{ float: 'right' }}
+                        {this.state.courseInfoListJoinData.map((row, i) => {
+                            if(row.status=='CJS02'){
+                                return (
+                                    <Card key={i} expanded={this.state.selectedCourse=="join_"+row.idx} style={{marginBottom:20,border:this.state.selectedCourse=="join_"+row.idx?'solid 2px #3e81f6': null}} className="mouseOverBlue">
+                                        <CardHeader
+                                            actAsExpander={true}
+                                                
+                                            textStyle={{display:'none'}}
                                         >
-                                            <MenuItem
-                                                primaryText="이동하기"
-                                                onClick={() => this.props.history.push(contextPath + '/course/'+row.idx)}
-                                            />
-                                        </IconMenu>
-                                    </div>
-                                </div>
-                            </CardHeader>
+                                            <div style={{display:'grid',gridTemplateColumns:'15% 75% 10%'}}>
+                                                <div style={{gridColumn:1,textAlign:'right'}} onClick={()=>this.handleExpandChange("join_"+row.idx)}>
+                                                    <Avatar src={'/ngiiedu/assets/images/' + row.moduleMetadata + '.png'} />
+                                                </div>
+                                                <div style={{gridColumn:2,paddingLeft:20,display:'flex',alignItems:'center'}} onClick={()=>this.handleExpandChange("join_"+row.idx)}>
+                                                    <div style={{fontSize:22,fontWeight:'bold'}}>{row.courseName}</div>
+                                                </div>
+                                                <div style={{gridColumn:3,textAlign:'right'}}>
+                                                    <IconMenu
+                                                        iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+                                                        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                        targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                        style={{ float: 'right' }}
+                                                    >
+                                                        <MenuItem
+                                                            primaryText="이동하기"
+                                                            onClick={() => this.props.history.push(contextPath + '/course/'+row.idx)}
+                                                        />
+                                                    </IconMenu>
+                                                </div>
+                                            </div>
+                                        </CardHeader>
+                                    
+                                        <CardText expandable={true}>
+                                            <div style={{marginLeft:'15%',marginRight:'15%'}}>
+                                                {JSON.parse(row.courseMetadata).courseDesc}
+                                            </div>
+                                        </CardText>
+                                    </Card>
+                                )
+                            }else{
+                                return null
+                            }
                         
-                            <CardText expandable={true}>
-                                <div style={{marginLeft:'15%',marginRight:'15%'}}>
-                                    {JSON.parse(row.courseMetadata).courseDesc}
-                                </div>
-                            </CardText>
-                        </Card>
                         
-                        ))}
+                        })}
 
                     </div>
                 </div>

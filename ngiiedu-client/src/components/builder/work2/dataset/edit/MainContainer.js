@@ -720,7 +720,7 @@ class MainContainer extends React.Component {
         let layerName = this.props.match.params.DATASETID;
         let type = this.state.saveType;
         var properties = {}
-        var value = '';
+       
         
         
 
@@ -731,7 +731,7 @@ class MainContainer extends React.Component {
 
             for(const column of layerColumns ){
                 // row.name == 'the_geom' || row.name =='pino_id'
-                
+                var value = '';
                 if(column.name == 'pino_id'|| column.name=="pino_photo"){
                     value = this.state.wfsFeatureInfo[column.name];
                 }else if(column.name=='the_geom'){
@@ -779,7 +779,7 @@ class MainContainer extends React.Component {
             var sourceCRS = 'EPSG:3857';
             var transformCRS = 'EPSG:4326';
             for(const column of layerColumns ){
-
+                var value = null;
                 if(column.name=='the_geom'){
                     var geometry = this.state.featureGeometry;
                     var the_geom = this.geometryTransform(geometry,sourceCRS,transformCRS)
@@ -990,9 +990,11 @@ class MainContainer extends React.Component {
                             if (row.name == 'the_geom' || row.name =='pino_id') {
                                 return null;
                             } else if (row.name =='pino_photo'){
-                                if(this.state.wmsFeatureInfo[row.name]!=null ){
+                                if(this.state.wmsFeatureInfo[row.name]==null ||this.state.wmsFeatureInfo[row.name]==''||this.state.wmsFeatureInfo[row.name]==undefined){
+                                    return null;
+                                }else{
                                     return(
-                                        <div>
+                                        <div key={idx}>
                                             <br/>
                                             <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
                                             <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
@@ -1004,8 +1006,7 @@ class MainContainer extends React.Component {
                                             </div>
                                         </div>
                                     )
-                                }else{
-                                    return null;
+                                    
                                 }
                             } else {
                                 return(
