@@ -1134,11 +1134,11 @@ class PointSymbolizer extends React.Component {
                         <div style={{width:70,height:30,textAlign:'center'}}>거품형지도</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='INTERPOLATION'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('INTERPOLATION') }>
-                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="INTERPOLATION"></img>
+                        <img src='/ngiiedu/assets/images/interpolation.png' style={{width:70,height:70}} alt="INTERPOLATION"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>보간법</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='DENSITY'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('DENSITY') }>
-                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="DENSITY"></img>
+                        <img src='/ngiiedu/assets/images/density.png' style={{width:70,height:70}} alt="DENSITY"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>밀도지도</div>
                     </Paper>
                 </Paper>

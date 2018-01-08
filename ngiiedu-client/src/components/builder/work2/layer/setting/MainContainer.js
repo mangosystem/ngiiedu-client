@@ -146,7 +146,7 @@ class MainContainer extends React.Component {
                     console.log('test33')
                         let column =[];
                         for(var i=0;i<data.response.data.data.length;i++){
-                            if(data.response.data.data[i].name!='pino_id'&&data.response.data.data[i].name!='the_geom'){
+                            if(data.response.data.data[i].name!='pino_id'&&data.response.data.data[i].name!='the_geom'&&data.response.data.data[i].name!='pino_photo'){
                                 column.push(data.response.data.data[i])
                             }
                         }
