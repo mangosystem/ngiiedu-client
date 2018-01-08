@@ -249,14 +249,15 @@ class SwipeSetting extends Component {
                                     <Subheader>{typeKind == 'VERTICAL' ? '왼쪽맵' : '아래쪽맵'}</Subheader>
                                     <Paper className="settingSwipePaper">
                                         <SelectableList value={this.props.layerId}>
-                                        {items.map((item, i) => (
+                                        {"pinogioOutputId" in items[0] ?
+                                            items.map((item, i) => (
                                             <ListItem 
                                                 key={item.idx}
                                                 value={item.pinogioOutputId} 
                                                 primaryText={item.outputName}
                                                 onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
                                             />
-                                        ))}
+                                        )): null}
                                         </SelectableList>
                                     </Paper>
                                     <br />
@@ -265,14 +266,15 @@ class SwipeSetting extends Component {
                                     <Subheader>{typeKind == 'VERTICAL' ? '오른쪽맵' : '위쪽맵'}</Subheader>
                                     <Paper className="settingSwipePaper">
                                         <SelectableList value={this.props.layerId2}>
-                                        {items.map((item, i) => (
+                                        {"pinogioOutputId" in items[0] ?
+                                            items.map((item, i) => (
                                             <ListItem 
                                                 key={item.idx}
                                                 value={item.pinogioOutputId} 
                                                 primaryText={item.outputName}
                                                 onClick={(i) => this.props.changeLayerId2(item.pinogioOutputId)}
                                             />
-                                        ))}
+                                        )): null}
                                         </SelectableList>
                                     </Paper>
                                     <br />

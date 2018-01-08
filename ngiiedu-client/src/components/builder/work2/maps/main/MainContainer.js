@@ -139,6 +139,70 @@ class MainContainer extends React.Component {
         this.setState({ deleteMapOpen: !this.state.deleteMapOpen });
     }
 
+    //결과물 제출
+    mapsDoneModify(mapsId, isDone) {
+
+        let { maps } = this.state;
+        let newMaps = maps;
+
+        ajaxJson(
+            ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/done.json'],
+            {
+                isDone: String(!isDone)
+            },
+            function (data) {
+                
+                //state수정
+                for (let i=0; i<maps.length; i++) {
+                    if (maps[i].pinogioOutputId == mapsId) {
+                        newMaps[i].isDone = !isDone;
+                    }
+                }
+
+                this.setState({
+                    maps: newMaps
+                });
+
+        
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
+    }
+
+    //결과물 공유
+    mapsShareModify(mapsId, isShared) {
+
+        let { maps } = this.state;
+        let newMaps = maps;
+
+        ajaxJson(
+            ['PUT', apiSvr + '/coursesWork/maps/' + mapsId + '/share.json'],
+            {
+                isShared: String(!isShared)
+            },
+            function (data) {
+                
+                //state수정
+                for (let i=0; i<maps.length; i++) {
+                    if (maps[i].pinogioOutputId == mapsId) {
+                        newMaps[i].isShared = !isShared;
+                    }
+                }
+
+                this.setState({
+                    maps: newMaps
+                });
+
+        
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
+    }
+
     render() {
    
         return (
@@ -181,8 +245,14 @@ class MainContainer extends React.Component {
                                                 <MenuItem primaryText="미리보기" onClick={(index) => this.props.history.push('/ngiiedu/maps/preview/'+row.pinogioOutputId)}/>
                                                 <MenuItem primaryText="편집하기" onClick={(index)=> this.setState({ step: 'modifyMaps', map: row})}/>
                                                 <MenuItem primaryText="삭제하기" onClick={()=>this.deleteMaps(row)}/>
-                                                <MenuItem primaryText="결과물 제출"/>
-                                                <MenuItem primaryText="결과물 공유"/>
+                                                <MenuItem 
+                                                    primaryText={row.isDone ? "결과물 제출 취소" : "결과물 제출"}
+                                                    onClick={() => this.mapsDoneModify(row.pinogioOutputId, row.isDone)}
+                                                />
+                                                <MenuItem 
+                                                    primaryText={row.isShared? "결과물 공유 취소" : "결과물 공유"}
+                                                    onClick={() => this.mapsShareModify(row.pinogioOutputId, row.isShared)}
+                                                />
                                             </IconMenu>
                                         </div>
                                     </div>

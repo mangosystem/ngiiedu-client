@@ -43,7 +43,7 @@ class SeriesMaps extends Component {
                 typeKind: this.props.map.pngoData.typeKind
             });
         } else {
-            this.props.changeTypeKind("CAROUSEL");
+            this.props.changeTypeKind("SLIDE");
         }
 
         const workId = this.props.match.params.WORKID;
@@ -202,14 +202,15 @@ class SeriesMaps extends Component {
                     <Subheader>레이어 선택</Subheader>
                     <Paper className="paper">
                         <SelectableList value={this.props.layerId}>
-                        {items.map((item, i) => (
+                        {"pinogioOutputId" in items[0] ?                         
+                            items.map((item, i) => (
                             <ListItem 
                                 key={item.idx}
                                 value={item.pinogioOutputId} 
                                 primaryText={item.outputName}
                                 onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
                             />
-                        ))}
+                        )): null}
                         </SelectableList>
                     </Paper>
                 </div>

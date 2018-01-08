@@ -48,17 +48,12 @@ class Header extends React.Component {
         <div id="headerWrap">
           <div className="header">
             <h1 className="edge" onClick={()=>window.location.href=contextPath + '/main'}>공간정보융합 활용지원정보</h1>
-            {this.props.loginStatus.userDivision==1 ? //관리자. = 3
+            {this.props.loginStatus.userDivision==3 ? //관리자. = 3
               <div className="gnb">
                 <span className="admin">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.
                 <button type="button" title="로그아웃" onClick={()=>window.location.href=contextPath + "/logout"}>로그아웃</button>
               </div> 
-            : //로그인 전  
-              <ul className="gnb">
-                <li onClick={() => this.props.history.push(contextPath + '/login')}>로그인</li>
-                <li onClick={() => this.props.history.push(contextPath + '/join')}>회원가입</li>
-              </ul>
-            }
+            : null}
           </div>
         </div>
       </header>

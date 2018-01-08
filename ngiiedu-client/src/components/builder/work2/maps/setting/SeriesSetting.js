@@ -18,10 +18,8 @@ class SeriesSetting extends Component {
         super(props);
         
         this.state = {
-            stepIndex: 1,
-            itemValue: 1,
             items: [
-                { idx: 1, text: '레이어1'}
+                {}
             ]
         };
     }
@@ -105,7 +103,7 @@ class SeriesSetting extends Component {
             />
         ];
 
-        const { itemValue, typeKind, items, mapsTitle } = this.state;
+        const { typeKind, items, mapsTitle } = this.state;
         
         const style = {
             selected: {

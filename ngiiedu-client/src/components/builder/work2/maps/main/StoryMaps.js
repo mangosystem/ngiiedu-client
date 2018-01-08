@@ -241,7 +241,8 @@ class StoryMaps extends Component {
                     </RadioButtonGroup>
                     <Paper className="paper">
                         <SelectableList value={radioType == 'layer' ? this.props.layerId : null}>
-                        {items.map((item, i) => (
+                        {"pinogioOutputId" in items[0] ? 
+                            items.map((item, i) => (
                             <ListItem
                                 disabled={radioType == 'layer'? false : true}
                                 style={radioType == 'layer'? style.abled : style.disabled}
@@ -250,7 +251,7 @@ class StoryMaps extends Component {
                                 primaryText={item.outputName}
                                 onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
                             />
-                        ))}
+                        )): null}
                         </SelectableList>
                     </Paper>
                 </div>

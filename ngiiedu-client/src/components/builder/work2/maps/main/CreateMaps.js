@@ -304,6 +304,7 @@ class CreateMaps extends Component {
         const style = {
             selected: {
                 border: '3px solid',
+                borderRadius: '15px',
                 borderColor: cyan500,
                 width: '300px',
                 height: '206px'
@@ -322,41 +323,53 @@ class CreateMaps extends Component {
             
                 <div style={{ textAlign: 'center' }}>
                     <h1>스토리맵 만들기</h1>
-                    <br />
+                    <br /><br />
                     <div style={{display: 'flex'}}>
-                        <img 
-                            className="img"
-                            src="/ngiiedu/assets/images/basic.png" 
-                            alt="basic" 
-                            onClick={() => this.setState({ mapsType: 'BASIC' })}
-                            style={this.state.mapsType == "BASIC"? style.selected : style.unselected} 
-                        />
+                        <figure>
+                            <img 
+                                className="img"
+                                src="/ngiiedu/assets/images/LEFT.png" 
+                                alt="basic" 
+                                onClick={() => this.setState({ mapsType: 'BASIC' })}
+                                style={this.state.mapsType == "BASIC"? style.selected : style.unselected} 
+                            />
+                            <figcaption style={style.text}>기본형</figcaption>
+                        </figure>
                         &nbsp;&nbsp;&nbsp;
-                        <img 
-                            className="img"
-                            src="/ngiiedu/assets/images/story.png" 
-                            alt="story" 
-                            onClick={() => this.setState({ mapsType: 'STORY' })}
-                            style={this.state.mapsType == "STORY" ? style.selected : style.unselected} 
-                        />                        
+                        <figure>
+                            <img 
+                                className="img"
+                                src="/ngiiedu/assets/images/TAB.png" 
+                                alt="story" 
+                                onClick={() => this.setState({ mapsType: 'STORY' })}
+                                style={this.state.mapsType == "STORY" ? style.selected : style.unselected} 
+                            />
+                            <figcaption style={style.text}>스토리형</figcaption>
+                        </figure>           
                     </div>
                     <br />
                     <div style={{display: 'flex'}}>
-                        <img 
-                            className="img"
-                            src="/ngiiedu/assets/images/cData.png" 
-                            alt="SERIES" 
-                            onClick={() => this.setState({ mapsType: 'SERIES' })}
-                            style={this.state.mapsType == "SERIES" ? style.selected : style.unselected} 
-                        />
+                        <figure>
+                            <img 
+                                className="img"
+                                src="/ngiiedu/assets/images/SLIDE.png" 
+                                alt="SERIES" 
+                                onClick={() => this.setState({ mapsType: 'SERIES' })}
+                                style={this.state.mapsType == "SERIES" ? style.selected : style.unselected} 
+                            />
+                            <figcaption style={style.text}>연속데이터형</figcaption>
+                        </figure>  
                         &nbsp;&nbsp;&nbsp;
-                        <img
-                            className="img"
-                            src="/ngiiedu/assets/images/swipe.png" 
-                            alt="SWIPE" 
-                            onClick={() => this.setState({ mapsType: 'SWIPE' })}
-                            style={this.state.mapsType == "SWIPE" ? style.selected : style.unselected} 
-                        />
+                        <figure>
+                            <img
+                                className="img"
+                                src="/ngiiedu/assets/images/VERTICAL.png" 
+                                alt="SWIPE" 
+                                onClick={() => this.setState({ mapsType: 'SWIPE' })}
+                                style={this.state.mapsType == "SWIPE" ? style.selected : style.unselected} 
+                            />
+                            <figcaption style={style.text}>스와이프형</figcaption>
+                        </figure>  
                     </div>
                 </div>
                 :

@@ -187,14 +187,15 @@ class BasicMaps extends Component {
                     <Subheader>레이어 선택</Subheader>
                     <Paper className="paper">
                         <SelectableList value={this.props.layerId}>
-                        {items.map((item, i) => (
+                        {"pinogioOutputId" in items[0] ?                         
+                            items.map((item, i) => (
                             <ListItem 
                                 key={item.idx}
                                 value={item.pinogioOutputId} 
                                 primaryText={item.outputName}
                                 onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
                             />
-                        ))}
+                        )): null}
                         </SelectableList>
                     </Paper>
                 </div>

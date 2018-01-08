@@ -21,7 +21,7 @@ class CreateItems extends Component {
         
         this.state = {
             radioType: 'layer',
-            items: [],
+            items: [{}],
             mode: 'add'
         };
     }
@@ -206,7 +206,8 @@ class CreateItems extends Component {
                         <Paper className="paper">
                             {this.props.mode == 'add' ? 
                             <SelectableList value={radioType == 'layer' ? this.props.layerId : null}>
-                            {items.map((item, i) => (
+                            {"pinogioOutputId" in items[0] ?
+                                items.map((item, i) => (
                                 <ListItem
                                     disabled={radioType == 'layer'? false : true}
                                     style={radioType == 'layer'? style.abled : style.disabled}
@@ -215,11 +216,12 @@ class CreateItems extends Component {
                                     primaryText={item.outputName}
                                     onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
                                 />
-                            ))}
+                            )):null}
                             </SelectableList>
                             :
                             <SelectableList value={radioType == 'layer' ? this.state.layerId : null}>
-                            {items.map((item, i) => (
+                            {"pinogioOutputId" in items[0] ?
+                                items.map((item, i) => (
                                 <ListItem
                                     disabled={radioType == 'layer'? false : true}
                                     style={radioType == 'layer'? style.abled : style.disabled}
@@ -228,7 +230,7 @@ class CreateItems extends Component {
                                     primaryText={item.outputName}
                                     onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
                                 />
-                            ))}
+                            )):null}
                             </SelectableList>
                             }
                         </Paper>
