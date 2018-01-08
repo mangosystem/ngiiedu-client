@@ -15,7 +15,7 @@ class Column extends React.Component {
 	componentDidMount(){
 		let column = [];
 		console.log('test222')
-		if(this.props.type!='CATEGORY'){
+		if(this.props.type!='CATEGORIES'){
 			this.props.column.map((value) => {
 				if (value.name!='pino_id' && value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {
 					column.push({
@@ -26,7 +26,7 @@ class Column extends React.Component {
 					});
 				}
 			});
-		}else if(this.props.type=='CATEGORY'){
+		}else if(this.props.type=='CATEGORIES'){
 			this.props.column.map((value) => {
 				if (value.name != 'pino_id'&&value.name != 'the_geom') {
 					column.push({
@@ -45,7 +45,7 @@ class Column extends React.Component {
 	}
 	componentWillReceiveProps (nextProps) {
 		let column = [];
-		if(nextProps.type!='CATEGORY'){
+		if(nextProps.type!='CATEGORIES'){
 			nextProps.column.map((value) => {
 				if (value.name!='pino_id' && value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {
 					column.push({
@@ -56,7 +56,7 @@ class Column extends React.Component {
 					});
 				}
 			});
-		}else if(nextProps.type=='CATEGORY'){
+		}else if(nextProps.type=='CATEGORIES'){
 			nextProps.column.map((value) => {
 					column.push({
 						text: value.name,

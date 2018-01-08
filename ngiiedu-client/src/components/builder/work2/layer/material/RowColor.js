@@ -58,7 +58,7 @@ class RowColor extends React.Component {
                           onChange={(e,k,v)=>this.handleChange(index, v)}
                         >
                           {this.state.iconColor.map((value, i)=>(
-                            <MenuItem value={value} primaryText={<i className="fa fa-tree" aria-hidden="true" style={{verticalAlign:'middle',color:value, fontSize:20}}/>}>
+                            <MenuItem key={i} value={value} primaryText={<i className="fa fa-tree" aria-hidden="true" style={{verticalAlign:'middle',color:value, fontSize:20}}/>}>
                             </MenuItem>
                           ))}
                         </DropDownMenu>

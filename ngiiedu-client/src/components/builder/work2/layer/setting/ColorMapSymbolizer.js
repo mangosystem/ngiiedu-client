@@ -47,8 +47,9 @@ class ColorMapSymbolizer extends React.Component {
 	}
 
 
-	componentDidMount(nextProps) {
+	componentWillReceiveProps(nextProps) {
         if (this.props.styles != null) {
+            console.log('rastertest');
             this.setState({
                 symbolizerType: this.props.styles.symbolizerType != undefined ? this.props.styles.symbolizerType : 'COLORMAP',
             })
@@ -65,12 +66,6 @@ class ColorMapSymbolizer extends React.Component {
 					//column: nextProps.column
 				});
             }
-
-		} else {
-			// this.setState({
-            //     column: this.props.column,
-            //     columnName:this.props.column[0].name
-			// });
         }
 		
 	}
@@ -159,7 +154,8 @@ class ColorMapSymbolizer extends React.Component {
                 backgroundColor:'#F6EFEF',
                 border: '3px solid',
                 borderColor: cyan500,
-                marginRight:20
+                marginLeft:'auto',
+                marginRight:'auto'
             }
         }
 
@@ -171,7 +167,7 @@ class ColorMapSymbolizer extends React.Component {
 
                 <Paper zDepth={0} style={{padding:3,paddingBottom: 10,display:'flex',widht:100,overflowX:'auto',fontSize:12}}>
                     <Paper style={styleStyle.selected}>
-                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="COLORMAP"></img>
+                        <img src='/ngiiedu/assets/images/colormap.png' style={{width:70,height:70}} alt="COLORMAP"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>맵스타일링</div>
                     </Paper>
                 </Paper>

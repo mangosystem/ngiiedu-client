@@ -21,6 +21,7 @@ import IconNavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import PointSymbolizer from './PointSymbolizer.js';
 import LineSymbolizer from './LineSymbolizer.js';
 import PolygonSymbolizer from './PolygonSymbolizer.js';
+import ColorMapSymbolizer from'./ColorMapSymbolizer.js';
 
 class MainContainer extends React.Component {
 
@@ -72,7 +73,8 @@ class MainContainer extends React.Component {
             iconColor:[
                 '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c',
                 '#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'
-            ]
+            ],
+            spatialType:null
 
         }
 
@@ -85,6 +87,7 @@ class MainContainer extends React.Component {
         this.addBaseLayer = this.addBaseLayer.bind(this);
         this.addBaseLayer = this.addBaseLayer.bind(this);
         this.handleChangeCategory=this.handleChangeCategory.bind(this);
+        this.handleChangeSpatialType = this.handleChangeSpatialType.bind(this);
     }
 
     componentDidMount(){
@@ -109,6 +112,11 @@ class MainContainer extends React.Component {
                     let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
                     let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
                     this.state.map.getView().fit(transformExtent, this.state.map.getSize());
+
+                    let spatialType = JSON.parse(res.response.data.data.metadata).spatialType;
+                    this.setState({
+                        spatialType:spatialType
+                    })
                 }
                 console.log(res.response.data.data)
                 console.log('testtest')
@@ -122,7 +130,7 @@ class MainContainer extends React.Component {
                     process:res.response.data.data.process!=undefined&&res.response.data.data.process!=null ? JSON.parse(res.response.data.data.process):null
                 });
 
-                if(JSON.parse(res.response.data.data.styling).symbolizerType=='CATEGORIES'){
+                if(JSON.parse(res.response.data.data.styling)!=null && JSON.parse(res.response.data.data.styling).symbolizerType=='CATEGORIES'){
                     this.setState({
                         rowUniqueInfo:JSON.parse(res.response.data.data.styling).classes,
                         selCategoryType:JSON.parse(res.response.data.data.styling).classes[0].iconName!=undefined?1:0
@@ -138,7 +146,7 @@ class MainContainer extends React.Component {
                     console.log('test33')
                         let column =[];
                         for(var i=0;i<data.response.data.data.length;i++){
-                            if(data.response.data.data[i].name!='pino_id'&&data.response.data.data[i].name!='the_geom'){
+                            if(data.response.data.data[i].name!='pino_id'&&data.response.data.data[i].name!='the_geom'&&data.response.data.data[i].name!='pino_photo'){
                                 column.push(data.response.data.data[i])
                             }
                         }
@@ -498,6 +506,13 @@ class MainContainer extends React.Component {
         })
     }
 
+    handleChangeSpatialType(type){
+        this.setState({
+            spatialType:type,
+            type:'COLORMAP'
+        });
+    }
+
     render() {
 
         //주제지도 삭제 확인 및 취소 버튼
@@ -550,7 +565,7 @@ class MainContainer extends React.Component {
             <main>
                 <div style={{ position: 'absolute', top: 60, bottom:0, left: 0, right: 0 }}>
                     <div style={{width:400, height:'100%', float:'left', backgroundColor:'white'}}>
-                        {this.state.type!=null&&this.state.type.indexOf('POINT')!=-1 || this.state.stylePanelOptions!=null&&this.state.stylePanelOptions.symbolizerType =="COLORMAP"?
+                        {this.state.type!=null&&this.state.type.indexOf('POINT')!=-1?
                             <PointSymbolizer 
                                 column={this.state.stylePanelColumn}
                                 styles={this.state.stylePanelOptions}
@@ -563,6 +578,7 @@ class MainContainer extends React.Component {
                                 process={this.state.process}
                                 selCategoryType={this.state.selCategoryType}
                                 handleChangeCategory={this.handleChangeCategory}
+                                handleChangeSpatialType = {this.handleChangeSpatialType}
                             />
                         :this.state.type!=null&&this.state.type.indexOf('LINE')!=-1?
                             <LineSymbolizer
@@ -585,6 +601,12 @@ class MainContainer extends React.Component {
                                 rowUniqueInfo={this.state.rowUniqueInfo}
                                 handleChangeRowColor={this.handleChangeRowColor}
                                 datasetId = {this.state.datasetId}
+                            />
+                        :this.state.spatialType!=null&&this.state.spatialType=='RASTER'?
+                            <ColorMapSymbolizer
+                                styles={this.state.stylePanelOptions}
+                                layerId={this.state.layerId}
+                                raster={this.state.layers.raster}
                             />
                         :null}
                     </div>

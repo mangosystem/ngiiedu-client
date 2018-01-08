@@ -111,7 +111,7 @@ class CreateLayer extends Component {
           <h1>주제지도 편집</h1>
         :null}
 
-        <Subheader style={{marginTop:20}}>Title</Subheader>
+        <Subheader style={{marginTop:20}}>제목</Subheader>
         <TextField 
           hintText="제목을 입력하세요" 
           value={this.state.title}
@@ -120,7 +120,7 @@ class CreateLayer extends Component {
         />
         {this.props.type=='create'?
         <div>
-          <Subheader style={{marginTop:20}}>Dataset</Subheader>
+          <Subheader style={{marginTop:20}}>데이터</Subheader>
           <Paper style={{width:500, height:300, overflowY:'scroll', marginRight:'auto', marginLeft:'auto'}}>
             {this.props.datasetList.map((row,index)=>(
               <SelectableList value={this.state.selDataset.idx} onChange={(i)=>this.handleRequestChange(row)} key={index}>

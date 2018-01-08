@@ -26,6 +26,8 @@ import Divider from 'material-ui/Divider';
 import { cyan500 } from 'material-ui/styles/colors';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
 
 
 class PointSymbolizer extends React.Component {
@@ -70,7 +72,9 @@ class PointSymbolizer extends React.Component {
             numberOfPoints:null,
             distance:null,
             slideIndex: 0,
-            classes:null
+            classes:null,
+
+            changeTypeModal:false
 
             // randomFillColor:null,
             // randomStrokeColor:null
@@ -481,6 +485,7 @@ class PointSymbolizer extends React.Component {
                     workList:res.response.data
                 });
                 this.props.raster.getSource().updateParams({_:Date.now()});
+                this.props.handleChangeSpatialType('RASTER');
             }.bind(this)
         );
     }
@@ -961,211 +966,149 @@ class PointSymbolizer extends React.Component {
         } else if (this.state.symbolizerType == 'INTERPOLATION') {
             style =(
                 <Paper zDepth={0} style={{fontSize:13}}>
-                    <Tabs
-                        onChange={this.handleChangeTab}
-                        value={this.state.slideIndex}
-                    >
-                        <Tab label="프로세스" value={0} >
-                            <Column
-                                type={this.state.symbolizerType}
-                                column={this.props.column}
-                                value={this.state.columnName}
-                                onChange={this.onChangeColumn}
-                                handleChange={this.handleChangeColumn}
+                    <Column
+                        type={this.state.symbolizerType}
+                        column={this.props.column}
+                        value={this.state.columnName}
+                        onChange={this.onChangeColumn}
+                        handleChange={this.handleChangeColumn}
+                    />
+
+                    <Divider style={{marginTop:1}}/>
+
+                    <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
+                        <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
+                            Power
+                        </Paper>
+                        <Paper zDepth={0} style={{width:'50%'}}>
+                            <TextField
+                                hintText="숫자를 입력해주세요"
+                                value={this.state.power==null?'':this.state.power}
+                                onChange={this.handleChangePower}
+                                type='number'
+                                style={{width:200}}
                             />
+                        </Paper>
+                    </Paper>
 
-                            <Divider style={{marginTop:1}}/>
+                    <Divider style={{marginTop:1}}/>
 
-                            <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
-                                <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
-                                    Power
-                                </Paper>
-                                <Paper zDepth={0} style={{width:'50%'}}>
-                                    <TextField
-                                        hintText="숫자를 입력해주세요"
-                                        value={this.state.power==null?'':this.state.power}
-                                        onChange={this.handleChangePower}
-                                        type='number'
-                                        style={{width:200}}
-                                    />
-                                </Paper>
-                            </Paper>
+                    <RadiusType
+                        value={this.state.raidusType}
+                        handleChange={this.handleChangeRadiusType}
+                    />
 
-                            <Divider style={{marginTop:1}}/>
+                    <Divider style={{marginTop:1}}/>
 
-                            <RadiusType
-                                value={this.state.raidusType}
-                                handleChange={this.handleChangeRadiusType}
+                    <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
+                        <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
+                            numberOfPoints
+                        </Paper>
+                        <Paper zDepth={0} style={{width:'50%'}}>
+                            <TextField
+                                hintText="숫자를 입력해주세요"
+                                value={this.state.numberOfPoints==null?'':this.state.numberOfPoints}
+                                onChange={this.handleChangeNumberOfPoints}
+                                type='number'
+                                style={{width:200}}
                             />
+                        </Paper>
+                    </Paper>
 
-                            <Divider style={{marginTop:1}}/>
+                    <Divider style={{marginTop:1}}/>
 
-                            <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
-                                <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
-                                    numberOfPoints
-                                </Paper>
-                                <Paper zDepth={0} style={{width:'50%'}}>
-                                    <TextField
-                                        hintText="숫자를 입력해주세요"
-                                        value={this.state.numberOfPoints==null?'':this.state.numberOfPoints}
-                                        onChange={this.handleChangeNumberOfPoints}
-                                        type='number'
-                                        style={{width:200}}
-                                    />
-                                </Paper>
-                            </Paper>
-
-                            <Divider style={{marginTop:1}}/>
-
-                            <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
-                                <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
-                                distance
-                                </Paper>
-                                <Paper zDepth={0} style={{width:'50%'}}>
-                                    <TextField
-                                        hintText="숫자를 입력해주세요"
-                                        value={this.state.distance==null?'':this.state.distance}
-                                        onChange={this.handleChangeDistance}
-                                        type='number'
-                                        style={{width:200}}
-                                    />
-                                </Paper>
-                            </Paper>
-                            <RaisedButton 
-                                label="적 용" 
-                                style={{
-                                    marginTop:'10%',
-                                    marginLeft:'10%',
-                                    width:'30%'
-                                }}
-                                onClick={this.editRaster}
+                    <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
+                        <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
+                        distance
+                        </Paper>
+                        <Paper zDepth={0} style={{width:'50%'}}>
+                            <TextField
+                                hintText="숫자를 입력해주세요"
+                                value={this.state.distance==null?'':this.state.distance}
+                                onChange={this.handleChangeDistance}
+                                type='number'
+                                style={{width:200}}
                             />
-                        </Tab>
-                        <Tab label="레스터 스타일" value={1}>
-                            <ColorMapType
-                                value={this.state.colorMapType}
-                                handleChange={this.handleChangeColorMapType}
-                            />
-
-                            <Divider style={{marginTop:1}}/>
-
-                            <ClassesNum
-                                value={this.state.classesNumber}
-                                handleChange={this.handleChangeClassesNum}
-                            />
-
-                            <Divider style={{marginTop:1}}/>
-
-                            <ColorMapPalette
-                                colorMapPalette={this.state.colorMapPalette}
-                                colorMapOpacity={this.state.colorMapOpacity}
-                                handleChange={this.handleChangeColorMapPalette}
-                                handleChangeColorMapOpacity={this.handleChangeColorMapOpacity}
-                            />
-                            <RaisedButton 
-                                label="적 용" 
-                                style={{
-                                    marginTop:'10%',
-                                    marginLeft:'10%',
-                                    width:'30%'
-                                }}
-                                onClick={this.editStyle}
-                            />
-                        </Tab>
-                    </Tabs>
+                        </Paper>
+                    </Paper>
+                    <RaisedButton 
+                        label="적 용" 
+                        style={{
+                            marginTop:'10%',
+                            marginLeft:'10%',
+                            width:'30%'
+                        }}
+                        onClick={()=>this.setState({changeTypeModal:true})}
+                    />
                 </Paper>
             )
 		} else if (this.state.symbolizerType == 'DENSITY') {
             style =(
                 <Paper zDepth={0} style={{fontSize:13}}>
-                    <Tabs
-                        onChange={this.handleChangeTab}
-                        value={this.state.slideIndex}
-                    >
-                        <Tab label="프로세스" value={0}>
-                            <KernelType
-                                value={this.state.kernelType}
-                                handleChange={this.handleChangeKernelType}
+                    <KernelType
+                        value={this.state.kernelType}
+                        handleChange={this.handleChangeKernelType}
+                    />
+                    
+                    <Divider style={{marginTop:1}}/>
+
+                    <Column
+                        type={this.state.symbolizerType}
+                        column={this.props.column}
+                        value={this.state.columnName}
+                        onChange={this.onChangeColumn}
+                        handleChange={this.handleChangeColumn}
+                    />
+
+                    <Divider style={{marginTop:1}}/>
+
+                    <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
+                        <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
+                            SearchRadius
+                        </Paper>
+                        <Paper zDepth={0} style={{width:'50%'}}>
+                            <TextField
+                                hintText="숫자를 입력해주세요"
+                                value={this.state.searchRadius}
+                                onChange={this.handleChangeSearchRadius}
+                                type='number'
+                                style={{width:200}}
                             />
-                            
-                            <Divider style={{marginTop:1}}/>
+                        </Paper>
+                    </Paper>
 
-                            <Column
-                                type={this.state.symbolizerType}
-                                column={this.props.column}
-                                value={this.state.columnName}
-                                onChange={this.onChangeColumn}
-                                handleChange={this.handleChangeColumn}
-                            />
+                    <Divider style={{marginTop:1}}/>
 
-                            <Divider style={{marginTop:1}}/>
-
-                            <Paper zDepth={0} style={{ display:'flex',alignItems: 'center',justifyContent:'center', height:66}}>
-                                <Paper zDepth={0} style={{width:'30%',textAlign:'left'}}>
-                                    SearchRadius
-                                </Paper>
-                                <Paper zDepth={0} style={{width:'50%'}}>
-                                    <TextField
-                                        hintText="숫자를 입력해주세요"
-                                        value={this.state.searchRadius}
-                                        onChange={this.handleChangeSearchRadius}
-                                        type='number'
-                                        style={{width:200}}
-                                    />
-                                </Paper>
-                            </Paper>
-
-                            <Divider style={{marginTop:1}}/>
-
-                            <CellSize
-                                cellSize={this.state.cellSize}
-                                handleChangeCellSize={this.handleChangeCellSize}
-                            />
-                            <RaisedButton 
-                                label="적 용" 
-                                style={{
-                                    marginTop:'10%',
-                                    marginLeft:'10%',
-                                    width:'30%'
-                                }}
-                                onClick={this.editRaster}
-                            />
-                        </Tab>
-                        <Tab label="레스터 스타일" value={1}>
-                            <ColorMapType
-                                value={this.state.colorMapType}
-                                handleChange={this.handleChangeColorMapType}
-                            />
-
-                            <Divider style={{marginTop:1}}/>
-
-                            <ClassesNum
-                                value={this.state.classesNumber}
-                                handleChange={this.handleChangeClassesNum}
-                            />
-
-                            <Divider style={{marginTop:1}}/>
-
-                            <ColorMapPalette
-                                colorMapPalette={this.state.colorMapPalette}
-                                colorMapOpacity={this.state.colorMapOpacity}
-                                handleChange={this.handleChangeColorMapPalette}
-                                handleChangeColorMapOpacity={this.handleChangeColorMapOpacity}
-                            />
-                            <RaisedButton 
-                                label="적 용" 
-                                style={{
-                                    marginTop:'10%',
-                                    marginLeft:'10%',
-                                    width:'30%'
-                                }}
-                                onClick={this.editStyle}
-                            />
-                        </Tab>
-                    </Tabs>
+                    <CellSize
+                        cellSize={this.state.cellSize}
+                        handleChangeCellSize={this.handleChangeCellSize}
+                    />
+                    <RaisedButton 
+                        label="적 용" 
+                        style={{
+                            marginTop:'10%',
+                            marginLeft:'10%',
+                            width:'30%'
+                        }}
+                        onClick={()=>this.setState({changeTypeModal:true})}
+                    />
                 </Paper>
             )
-		}
+        }
+        
+        const changeType = [
+            <FlatButton
+                hoverColor="#FAFAFA"
+                label="취소"
+                onClick={()=>this.setState({changeTypeModal:false})}
+            />,
+            <FlatButton
+                backgroundColor="#00BCD4"
+                hoverColor="#B2EBF2"
+                label="확인"
+                onClick={()=>this.editRaster()}
+            />
+        ];
 
 		return (
             <div style={{paddingTop:10,paddingLeft:10,paddingRight:10}}>
@@ -1191,11 +1134,11 @@ class PointSymbolizer extends React.Component {
                         <div style={{width:70,height:30,textAlign:'center'}}>거품형지도</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='INTERPOLATION'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('INTERPOLATION') }>
-                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="INTERPOLATION"></img>
+                        <img src='/ngiiedu/assets/images/interpolation.png' style={{width:70,height:70}} alt="INTERPOLATION"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>보간법</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='DENSITY'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('DENSITY') }>
-                        <img src='/ngiiedu/assets/images/bubble.png' style={{width:70,height:70}} alt="DENSITY"></img>
+                        <img src='/ngiiedu/assets/images/density.png' style={{width:70,height:70}} alt="DENSITY"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>밀도지도</div>
                     </Paper>
                 </Paper>
@@ -1212,7 +1155,18 @@ class PointSymbolizer extends React.Component {
                     />
                 :null}
 
-
+                
+                {/* 레이어 선택 삭제 모달 */}
+                <Dialog
+                    title="주제지도 프로세스"
+                    actions={changeType}
+                    modal={false}
+                    open={this.state.changeTypeModal}
+                    onRequestClose={()=>this.setState({changeTypeModal:false})}
+                >
+                    프로세스를 실행하면 타입이 바뀌어 기존의 스타일링을 할 수 없습니다. <br/>
+                    프로세스를 진행하시겠습니까?
+                </Dialog>
             </div>
 
 		)
