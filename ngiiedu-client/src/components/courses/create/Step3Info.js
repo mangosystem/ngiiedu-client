@@ -114,7 +114,7 @@ class Step3Info extends React.Component {
 				<h2 style={{textAlign:'left',margin:10}}> * 정보입력</h2>
 					<TextField
 						floatingLabelText="수업이름"
-						hintText="수업이름을 입력하세요. (필수입력)"
+						// hintText="수업이름을 입력하세요. (필수입력)"
 						floatingLabelFixed={true}
 						fullWidth={true}
 						errorText=""
@@ -123,7 +123,7 @@ class Step3Info extends React.Component {
 					<br />
 					<TextField
 						floatingLabelText="수업내용"
-						floatingLabelFixed={false}
+						floatingLabelFixed={true}
 						fullWidth={true}
 						onChange={this.onChangeCourseDesc}
 					/>

@@ -180,6 +180,7 @@ class NewDataset extends Component {
                 columns:[
                     {
                         idx:0,
+                        // name:'column100',
                         name:'column1',
                         alias:'장소명',
                         value_type:'ANY_VALUE',

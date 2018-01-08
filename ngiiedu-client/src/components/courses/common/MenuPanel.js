@@ -195,62 +195,57 @@ class MenuPanel extends React.Component {
                         </Link>
                     </Menu>
                 </Paper>
-                <Paper className="mui-paper">
-                <Menu desktop className="aside-menu">
-                    <Subheader>활동</Subheader>
-
-                    {this.state.workAndSubWork.map((row,idx)=>{
-                        if(row.status){
-                            if(row.courseWorkSubInfos.length>=2){
-                                return(
-                                    <div key={idx}>
-                                    {/* <Link key={idx} to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.moduleWorkId}> */}
-                                    <MenuItem
-                                        primaryText={row.moduleWorkCourseType}
-                                        leftIcon={<CircleImg style={{fill:'black'}}/>}
-                                        //leftIcon={<CircleImg style={{fill: this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.moduleWorkId ?'#fff' : null}}/>}
-                                        className={'uml'}
-                                    />
-                                    {/* </Link> */}
-                                    {row.courseWorkSubInfos.map((row2,idx2)=>(
-                                        <Link key={idx2} to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.idx+'/'+row2.idx}>
-                                        <MenuItem
-                                            primaryText={row2.moduleWorkSubName}
-                                            leftIcon={<SubDirection style={{fill: this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.idx &&this.props.match.params.SUBWORKID==row2.idx ?'#fff' : null}}/>}
-                                            className={this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.idx && this.props.match.params.SUBWORKID==row2.idx  ? 'aml' : 'uml'}
-                                        />
-                                        </Link>
-                                    ))}
-                                    </div>
-                                )
-                            }else{
-                                return(
-                                    <Link key={idx} to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.idx}>
-                                    <MenuItem
-                                        primaryText={row.moduleWorkCourseType}
-                                        leftIcon={<CircleImg style={{fill: this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.moduleWorkId ?'#fff' : null}}/>}
-                                        className={this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.idx ? 'aml' : 'uml'}
-                                    />
-                                    </Link>
-                                )
-                                    
+                {this.props.isOwner ?
+                    <Paper className="mui-paper">
+                    <Menu desktop className="aside-menu">
+                        <Subheader>활동</Subheader>
+                            {this.state.workAndSubWork != null ||this.state.workAndSubWork!=undefined?
+                                this.state.workAndSubWork.map((row,idx)=>{
+                                    if(row.status){
+                                        if(row.courseWorkSubInfos.length>=2){
+                                            return(
+                                                <div key={idx}>
+                                                {/* <Link key={idx} to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.moduleWorkId}> */}
+                                                <MenuItem
+                                                    primaryText={row.moduleWorkCourseType}
+                                                    leftIcon={<CircleImg style={{fill:'black'}}/>}
+                                                    //leftIcon={<CircleImg style={{fill: this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.moduleWorkId ?'#fff' : null}}/>}
+                                                    className={'uml'}
+                                                />
+                                                {/* </Link> */}
+                                                {row.courseWorkSubInfos.map((row2,idx2)=>(
+                                                    <Link key={idx2} to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.idx+'/'+row2.idx}>
+                                                    <MenuItem
+                                                        primaryText={row2.moduleWorkSubName}
+                                                        leftIcon={<SubDirection style={{fill: this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.idx &&this.props.match.params.SUBWORKID==row2.idx ?'#fff' : null}}/>}
+                                                        className={this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.idx && this.props.match.params.SUBWORKID==row2.idx  ? 'aml' : 'uml'}
+                                                    />
+                                                    </Link>
+                                                ))}
+                                                </div>
+                                            )
+                                        }else{
+                                            return(
+                                                <Link key={idx} to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.idx}>
+                                                <MenuItem
+                                                    primaryText={row.moduleWorkCourseType}
+                                                    leftIcon={<CircleImg style={{fill: this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.moduleWorkId ?'#fff' : null}}/>}
+                                                    className={this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.idx ? 'aml' : 'uml'}
+                                                />
+                                                </Link>
+                                            )
+                                        }
+                                    }
+                                })
+                            :
+                                null
                             }
-                        }
-                    })}
-
-
-                    {/* {this.state.workList.map((row,index)=>(
-                        <Link key={index} to={contextPath + "/course/" + this.state.courseId + "/activity/"+row.moduleWorkId}>
-                            <MenuItem
-                                primaryText={row.moduleWorkCourseType}
-                                leftIcon={<CircleImg style={{fill: this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.moduleWorkId ?'#fff' : null}}/>}
-                                className={this.props.activeMenu == 'ACTIVITY' && this.props.match.params.ACTIVITYID ==row.moduleWorkId ? 'aml' : 'uml'}
-                            />
-                        </Link>
-                    ))} */}
-                    
-                </Menu>
-            </Paper>
+                    </Menu>
+                </Paper>
+                :
+                null
+                }
+                
             </aside>
         );
     }

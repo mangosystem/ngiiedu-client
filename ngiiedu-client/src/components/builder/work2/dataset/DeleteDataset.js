@@ -20,22 +20,23 @@ class DeleteDataset extends React.Component {
         let datasetId = this.props.data.pinogioOutputId;
         let idx = this.props.data.idx;
 
-
-        console.log(datasetId)
-        console.log(idx)
+        let deleteDataseHandle = this.props.deleteDatasetHandle;
+        // console.log(datasetId)
+        // console.log(idx)
         // DB 데이터에서 삭제
-        // ajaxJson(
-        //     ['DELETE', apiSvr + '/coursesWork/dataset/' + datasetId + '.json'],
-        //     { worksOutputId: idx }, //{ works_output_id: tempIndex },
-        //     function (data) {
-        //     }.bind(this),
-        //     function (xhr, status, err) {
-        //         alert('Error');
-        //     }.bind(this)
-        // );
+        ajaxJson(
+            ['DELETE', apiSvr + '/coursesWork/dataset/' + datasetId + '.json'],
+            { worksOutputId: idx }, //{ works_output_id: tempIndex },
+            function (data) {
+                deleteDataseHandle('save');
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
 
-        this.props.deleteDataset(this.props.data);
-        this.props.deleteDatasetHandle();
+        // this.props.deleteDataset(this.props.data);
+       
     }
 
     render() {
