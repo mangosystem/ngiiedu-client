@@ -17,10 +17,13 @@ class BasicRight extends Component {
     }
 
     componentWillMount() {
+
+        let description = decodeURIComponent(this.props.maps.items[0].description);
+
         this.setState({
             maps: this.props.maps,
             items: this.props.maps.items,
-            description: this.props.maps.items[0].description
+            description
         });
     }
 

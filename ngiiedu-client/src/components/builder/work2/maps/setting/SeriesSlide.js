@@ -6,7 +6,6 @@ import Slider from 'material-ui/Slider';
 
 import MapsView from './MapsView';
 import EditorPanel from './EditorPanel';
-import StorySetting from './StorySetting';
 import CreateSeriesItems from './CreateSeriesItems';
 import DeleteItems from './DeleteItems';
 
@@ -30,7 +29,7 @@ class SeriesSlide extends Component {
             deleteOpen: false,
             layerId: '',
             itemTitle: '',
-            itemIndex: []
+            itemIndex: 0
         };
     }
 
@@ -56,9 +55,20 @@ class SeriesSlide extends Component {
     }
 
     setDefaultLayerId(defaultLayerId) {
-        this.setState({
-            defaultLayerId
-        });
+
+        let { itemMode } = this.state;
+
+        if (itemMode == 'add') {
+            this.setState({
+                layerId: defaultLayerId,
+                defaultLayerId
+            });
+        } else {
+            this.setState({
+                defaultLayerId
+            });
+        }
+
     }
 
     changeItemIndex(newIndex) {
@@ -117,12 +127,20 @@ class SeriesSlide extends Component {
 
     modifyItems(item) {
         let { items, itemIndex } = this.state;
-        items[itemIndex] = item;
 
-        this.setState({
-            items: items
-        });
+        if (items.length == 1) {
+            let newItems = [];
+            newItems.push(item);
 
+            this.setState({
+                items: newItems
+            });
+        } else {
+            items[itemIndex] = item;
+            this.setState({
+                items: items
+            });
+        }
     }
 
     changeItemTitle(itemTitle) {
@@ -156,6 +174,11 @@ class SeriesSlide extends Component {
         const mapsId = maps.mapsId;
         const itemId = items[itemIndex].id;
 
+        if (items.length == 1) {
+            alert('더 이상 삭제할 수 없습니다.');
+            return;
+        }
+
         ajaxJson(
             ['DELETE', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + itemId + '.json'],
             null,
@@ -169,8 +192,16 @@ class SeriesSlide extends Component {
 
         items.splice(itemIndex, 1);
 
+        let newIndex = itemIndex;
+
+        if (newIndex == items.length) {
+            newIndex -= 1;
+        }
+
         this.setState({
-            items
+            items,
+            tempTitle: items[newIndex].title,
+            itemIndex: newIndex
         });
 
     }
@@ -214,22 +245,15 @@ class SeriesSlide extends Component {
                 borderRadius: '15px',
                 color: 'white',
                 marginLeft: '10px'
-            },
-
-            unSelectedTab: {
-                backgroundColor: null,
-                borderRadius: '15px',
-                color: 'white',
-                marginLeft: '10px',
-                border: '1.5px solid white'
             }
+            
         }
 
         return (
             <div>
                 <div style={{ position: 'absolute', top: 60, left: 0, right: 0, height: 40, backgroundColor: '#43444c', color: 'white', display: 'flex', justifyContent: 'space-between' }}>
                     <div style={{display: 'flex', height: 40, alignItems: 'center'}}>
-                        <div 
+                        {/*<div 
                             style={{ 
                                 display: 'flex', 
                                 alignItems: 'center', 
@@ -240,7 +264,12 @@ class SeriesSlide extends Component {
                             }}
                         >
                             {this.state.items[itemIndex].title}
-                        </div>
+                        </div>*/}
+                        <FlatButton 
+                            label={this.state.items[itemIndex].title}
+                            style={style.seletedTab}
+                        >
+                        </FlatButton>
                         <div style={{display: 'flex', alignItems: 'center', marginLeft: 30, height: '80%'}}>
                             <IconButton 
                                 //style={{width: 40, height: 30}}

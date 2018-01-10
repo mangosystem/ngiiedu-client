@@ -24,18 +24,7 @@ class SwipeMaps extends Component {
         this.state = {
             stepIndex: 0,
             typeKind: 'HORIZONTAL',
-            items: [
-                { value: 1, text: '레이어1'},
-                { value: 2, text: '레이어2'},
-                { value: 3, text: '레이어3'},
-                { value: 4, text: '레이어4'},
-                { value: 5, text: '레이어5'},
-                { value: 6, text: '레이어6'},
-                { value: 7, text: '레이어7'},
-                { value: 8, text: '레이어8'},
-                { value: 9, text: '레이어9'},
-                { value: 10, text: '레이어10'}
-            ]
+            items: [{}]
         };
     }
 
@@ -49,31 +38,12 @@ class SwipeMaps extends Component {
             this.props.changeTypeKind("HORIZONTAL");
         }
 
-        const workId = this.props.match.params.WORKID;
+        let items = this.props.items;
 
-        ajaxJson(
-            ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
-            null,
-            function (data) {
-                
-                let workSubData = JSON.parse(JSON.stringify(data)).response.data;
-                let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+        this.setState({
+            items: items
+        });
 
-                this.setState({
-                    items: items
-                });
-
-                if (!this.props.map) {
-                    this.props.changeLayerId(items[0].pinogioOutputId);
-                    this.props.changeLayerId2(items[0].pinogioOutputId);
-                }
-
-        
-            }.bind(this),
-            function (xhr, status, err) {
-                alert('Error');
-            }.bind(this)
-        );
     }
 
     componentWillMount() {
@@ -91,6 +61,14 @@ class SwipeMaps extends Component {
 
             this.props.changeLayerId(items[0].pinoLayer);
             this.props.changeLayerId2(items[1].pinoLayer);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.items != nextProps.items) {
+            this.setState({
+                items: nextProps.items
+            });
         }
     }
 

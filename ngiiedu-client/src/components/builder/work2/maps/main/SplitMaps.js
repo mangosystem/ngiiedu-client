@@ -27,11 +27,7 @@ class SplitMaps extends Component {
             itemValue4: 1,
             splitType: '2',
             defaultSplitType: '2',
-            items: [
-                { value: 1, text: '구글지도'},
-                { value: 2, text: '네이버지도'},
-                { value: 3, text: '다음지도'}
-            ]
+            items: [{}]
         };
     }
 

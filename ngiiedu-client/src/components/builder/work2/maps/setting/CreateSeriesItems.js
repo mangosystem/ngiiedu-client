@@ -36,11 +36,17 @@ class CreateSeriesItems extends Component {
                 let workSubData = JSON.parse(JSON.stringify(data)).response.data;
                 let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
 
+                if (items.length == 0) {
+                    items = [{}];
+                }
+
                 this.setState({
                     items: items
                 });
 
-                this.props.setDefaultLayerId(items[0].pinogioOutputId);
+                if ("pinogioOutputId" in items[0]) {
+                    this.props.setDefaultLayerId(items[0].pinogioOutputId);
+                }
         
             }.bind(this),
             function (xhr, status, err) {

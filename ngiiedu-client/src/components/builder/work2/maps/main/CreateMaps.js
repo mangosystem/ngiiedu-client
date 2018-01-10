@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
 import { cyan500 } from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
@@ -23,7 +25,8 @@ class CreateMaps extends Component {
             itemTitle: '',
             layerId: '',
             layerId2: '',
-            radioType: 'layer'
+            radioType: 'layer',
+            items: [{}]
         };
     }
 
@@ -49,7 +52,15 @@ class CreateMaps extends Component {
 
     createMaps() {
 
-        let { mapsType, title, typeKind, itemTitle, layerId } = this.state;
+        let { mapsType, title, typeKind, itemTitle, layerId, items, radioType } = this.state;
+
+        if (mapsType != 'STORY' && !("pinogioOutputId" in items[0])) {
+            alert('주제지도를 먼저 만들어주세요.');
+            return;
+        } else if (mapsType == 'STORY' && !("pinogioOutputId" in items[0]) && radioType == 'layer') {
+            alert('주제지도를 먼저 만들어주세요.');
+            return;
+        }
 
         let courseWorkSubId = this.props.idx;
         let privacy = "PUBLIC";
@@ -88,6 +99,37 @@ class CreateMaps extends Component {
         
         this.props.viewMain();
 
+    }
+
+    componentWillMount() {
+        const workId = this.props.match.params.WORKID;
+
+        ajaxJson(
+            ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
+            null,
+            function (data) {
+                
+                let workSubData = JSON.parse(JSON.stringify(data)).response.data;
+                let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+                
+                if (!items.length) {
+                    items = [{}];
+                }
+
+                this.setState({
+                    items: items
+                });
+
+                if ("pinogioOutputId" in items[0]) {
+                    this.changeLayerId(items[0].pinogioOutputId);
+                    this.changeLayerId2(items[0].pinogioOutputId);
+                }
+
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
     }
 
     createMapsItem(maps, itemTitle, layerId, layerId2) {
@@ -194,6 +236,7 @@ class CreateMaps extends Component {
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         changeLayerId={this.changeLayerId.bind(this)}
+                                        items={this.state.items}
                                     />;                            
                         } else if (mapsType == 'STORY') {
                             return <StoryMaps 
@@ -203,19 +246,22 @@ class CreateMaps extends Component {
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         radioType={this.state.radioType}
+                                        items={this.state.items}
                                     />
                         } else if (mapsType == 'SERIES') { 
                             return <SeriesMaps 
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
-                                        changeLayerId={this.changeLayerId.bind(this)}                                       
+                                        changeLayerId={this.changeLayerId.bind(this)}   
+                                        items={this.state.items}                                    
                                     /> 
                         } else if (mapsType == 'SPLIT') { 
                             return <SplitMaps 
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
+                                        items={this.state.items}
                                     />
                         } else if (mapsType == 'SWIPE') {
                             return <SwipeMaps 
@@ -224,6 +270,7 @@ class CreateMaps extends Component {
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         changeLayerId2={this.changeLayerId2.bind(this)}
+                                        items={this.state.items}
                                     />
                         }
                     })()}
@@ -240,6 +287,7 @@ class CreateMaps extends Component {
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         layerId={this.state.layerId}
                                         changeLayerId={this.changeLayerId.bind(this)}
+                                        items={this.state.items}
                                     />;                            
                         } else if (mapsType == 'STORY') {
                             return <StoryMaps 
@@ -252,6 +300,7 @@ class CreateMaps extends Component {
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         changeRadioType={this.changeRadioType.bind(this)}
                                         radioType={this.state.radioType}
+                                        items={this.state.items}
                                     />
                         } else if (mapsType == 'SERIES') { 
                             return <SeriesMaps 
@@ -260,12 +309,14 @@ class CreateMaps extends Component {
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         layerId={this.state.layerId}
                                         changeLayerId={this.changeLayerId.bind(this)}
+                                        items={this.state.items}
                                     /> 
                         } else if (mapsType == 'SPLIT') { 
                             return <SplitMaps 
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
+                                        items={this.state.items}
                                     />
                         } else if (mapsType == 'SWIPE') {
                             return <SwipeMaps 
@@ -276,6 +327,7 @@ class CreateMaps extends Component {
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         layerId2={this.state.layerId2}
                                         changeLayerId2={this.changeLayerId2.bind(this)}
+                                        items={this.state.items}
                                     />
                         }
                     })()}
@@ -284,14 +336,7 @@ class CreateMaps extends Component {
           default:
             return (
                 <div style={{textAlign: 'center'}}>
-                    <p>
-                        <i className="fa fa-map" style={{fontSize: '200px'}}></i>
-                    </p>
-                    <p>
-                        <br />
-                        위와 같은 내용으로 새로운 스토리맵을 만들겠습니다. <br />
-                        아래 버튼을 클릭하면 설정 페이지로 이동합니다.
-                    </p>
+                    Error
                 </div>
             );
         }
@@ -410,4 +455,4 @@ class CreateMaps extends Component {
     }
 }
 
-export default CreateMaps;
+export default withRouter(CreateMaps);

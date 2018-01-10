@@ -151,6 +151,12 @@ class MainContainer extends React.Component {
                 isDone: String(!isDone)
             },
             function (data) {
+
+                if (!isDone) {
+                    alert('결과물이 제출되었습니다.');
+                } else {
+                    alert('결과물 제출이 취소되었습니다.');
+                }
                 
                 //state수정
                 for (let i=0; i<maps.length; i++) {
@@ -183,6 +189,12 @@ class MainContainer extends React.Component {
                 isShared: String(!isShared)
             },
             function (data) {
+
+                if (!isShared) {
+                    alert('결과물이 공유되었습니다.');
+                } else {
+                    alert('결과물 공유가 취소되었습니다.');
+                }
                 
                 //state수정
                 for (let i=0; i<maps.length; i++) {

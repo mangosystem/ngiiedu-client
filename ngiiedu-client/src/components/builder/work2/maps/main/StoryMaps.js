@@ -20,7 +20,7 @@ class StoryMaps extends Component {
         this.state = {
             stepIndex: 0,
             typeKind: 'TAB',
-            items: [],
+            items: [{}],
             itemTitle: ''
         };
     }
@@ -35,31 +35,14 @@ class StoryMaps extends Component {
             this.props.changeTypeKind("TAB");
         }
 
-        const workId = this.props.match.params.WORKID;
+        let items = this.props.items;
 
-        ajaxJson(
-            ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
-            null,
-            function (data) {
-              
-                let workSubData = JSON.parse(JSON.stringify(data)).response.data;
-                let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+        this.setState({
+            items: items
+        });
 
-                this.setState({
-                    items: items
-                });
-
-                if (!this.props.map) {
-                    this.props.changeLayerId(items[0].pinogioOutputId);
-                }
-
-      
-            }.bind(this),
-            function (xhr, status, err) {
-                alert('Error');
-            }.bind(this)
-          );
     }
+    
 
     componentWillMount() {
         //수정할때
@@ -91,6 +74,12 @@ class StoryMaps extends Component {
         this.setState({
             radioType: nextProps.radioType
         });
+
+        if (this.props.items != nextProps.items) {
+            this.setState({
+                items: nextProps.items
+            });
+        }
     }
 
     handleNext() {

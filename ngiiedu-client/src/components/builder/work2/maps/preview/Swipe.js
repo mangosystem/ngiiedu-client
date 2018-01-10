@@ -44,10 +44,12 @@ class Swipe extends Component {
             return a[sortingField] - b[sortingField];
         });
 
+        let description = decodeURIComponent(items[0].description);
+
         this.setState({
             maps: this.props.maps,
             items,
-            description: items[0].description
+            description
         });
     }
 

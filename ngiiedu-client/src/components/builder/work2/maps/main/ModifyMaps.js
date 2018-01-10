@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
 import { cyan500 } from 'material-ui/styles/colors';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
@@ -22,7 +24,8 @@ class ModifyMaps extends Component {
             title: '',
             layerId: '',
             layerId2: '',
-            radioType: 'layer'
+            radioType: 'layer',
+            items: [{}]
         };
     }
 
@@ -37,6 +40,25 @@ class ModifyMaps extends Component {
             typeKind: map.pngoData.typeKind
         });
 
+        const workId = this.props.match.params.WORKID;
+
+        ajaxJson(
+            ['GET', apiSvr + '/courses/' + workId + '/workSubData.json'],
+            null,
+            function (data) {
+                
+                let workSubData = JSON.parse(JSON.stringify(data)).response.data;
+                let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+
+                this.setState({
+                    items: items
+                });
+
+            }.bind(this),
+            function (xhr, status, err) {
+                alert('Error');
+            }.bind(this)
+        );
         
     }
 
@@ -182,6 +204,7 @@ class ModifyMaps extends Component {
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         map={this.props.map}
+                                        items={this.state.items}
                                     />;                            
                         } else if (mapsType == 'STORY') {
                             return <StoryMaps 
@@ -194,6 +217,7 @@ class ModifyMaps extends Component {
                                         map={this.props.map}
                                         radioType={this.state.radioType}
                                         changeRadioType={this.changeRadioType.bind(this)}
+                                        items={this.state.items}
                                     />;
                         } else if (mapsType == 'SERIES') { 
                             return <SeriesMaps 
@@ -202,6 +226,7 @@ class ModifyMaps extends Component {
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         map={this.props.map}
+                                        items={this.state.items}
                                     />;
                         } else if (mapsType == 'SPLIT') { 
                             return <SplitMaps 
@@ -209,6 +234,7 @@ class ModifyMaps extends Component {
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         map={this.props.map}
+                                        items={this.state.items}
                                     />;
                         } else if (mapsType == 'SWIPE') {
                             return <SwipeMaps 
@@ -218,6 +244,7 @@ class ModifyMaps extends Component {
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         changeLayerId2={this.changeLayerId2.bind(this)}
                                         map={this.props.map}
+                                        items={this.state.items}
                                     />;
                         }
                     })()}
@@ -235,6 +262,7 @@ class ModifyMaps extends Component {
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         layerId={this.state.layerId}
                                         map={this.props.map}
+                                        items={this.state.items}
                                     />;                            
                         } else if (mapsType == 'STORY') {
                             return <StoryMaps 
@@ -248,6 +276,7 @@ class ModifyMaps extends Component {
                                         map={this.props.map}
                                         radioType={this.state.radioType}
                                         changeRadioType={this.changeRadioType.bind(this)}
+                                        items={this.state.items}
                                     />
                         } else if (mapsType == 'SERIES') { 
                             return <SeriesMaps 
@@ -257,6 +286,7 @@ class ModifyMaps extends Component {
                                         changeLayerId={this.changeLayerId.bind(this)}
                                         layerId={this.state.layerId}
                                         map={this.props.map}
+                                        items={this.state.items}
                                     /> 
                         } else if (mapsType == 'SPLIT') { 
                             return <SplitMaps 
@@ -264,6 +294,7 @@ class ModifyMaps extends Component {
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         map={this.props.map}
+                                        items={this.state.items}
                                     />
                         } else if (mapsType == 'SWIPE') {
                             return <SwipeMaps 
@@ -275,6 +306,7 @@ class ModifyMaps extends Component {
                                         changeLayerId2={this.changeLayerId2.bind(this)}
                                         layerId2={this.state.layerId2}
                                         map={this.props.map}
+                                        items={this.state.items}
                                     />
                         }
                     })()}
@@ -337,4 +369,4 @@ class ModifyMaps extends Component {
     }
 }
 
-export default ModifyMaps;
+export default withRouter(ModifyMaps);

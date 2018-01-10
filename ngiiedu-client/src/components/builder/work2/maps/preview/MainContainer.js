@@ -14,6 +14,7 @@ import BasicLeft from './BasicLeft';
 import BasicRight from './BasicRight';
 import StoryTab from './StoryTab';
 import Swipe from './Swipe';
+import SeriesSlide from './SeriesSlide';
 
 class MainContainer extends React.Component {
 
@@ -150,6 +151,15 @@ class MainContainer extends React.Component {
                   isInputChecked={this.state.isInputChecked}                    
                 />
               );
+            } else if (this.state.mapsType == 'SERIES') {
+              if (this.state.typeKind == 'SLIDE') {
+                return (
+                  <SeriesSlide
+                    maps={this.state.maps}
+                    isInputChecked={this.state.isInputChecked}                    
+                  />
+                );
+              }
             }
           })()}
         </main>

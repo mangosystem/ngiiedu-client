@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { cyan500, limeA100 } from 'material-ui/styles/colors';
 import MapsView from './MapsView';
 import EditorPanel from './EditorPanel';
-import StorySetting from './StorySetting';
 import CreateItems from './CreateItems';
 import DeleteItems from './DeleteItems';
 
@@ -25,13 +26,14 @@ class StoryTab extends Component {
         this.state = {
             maps: {},
             items: [{}],
-            itemMode: 'map',
+            itemMode: 'add',
             itemOpen: false,
             deleteOpen: false,
             layerId: '',
             itemTitle: '',
             itemIndex: 0,
-            isMount: false
+            isMount: false,
+            defaultLayerId: ''
         };
     }
 
@@ -55,12 +57,24 @@ class StoryTab extends Component {
             description: items[0].description,
             isMount: true
         });
+
     }
 
     setDefaultLayerId(defaultLayerId) {
-        this.setState({
-            defaultLayerId
-        });
+
+        let { itemMode } = this.state;
+
+        if (itemMode == 'add') {
+            this.setState({
+                layerId: defaultLayerId,
+                defaultLayerId
+            });
+        } else {
+            this.setState({
+                defaultLayerId
+            });
+        }
+
     }
 
     changeItemIndex(newIndex) {
@@ -94,7 +108,7 @@ class StoryTab extends Component {
             ['PUT', apiSvr + '/coursesWork/maps/' + maps.mapsId + '/itemOrder.json'],
             { priority },
             function (data) {
-                console.log(data);
+                //console.log(data);
             }.bind(this),
             function (xhr, status, err) {
               alert('Error');
@@ -104,22 +118,30 @@ class StoryTab extends Component {
     }
 
     addItems(item) {
-
         this.setState({
             items: this.state.items.concat(item),
             itemIndex: this.state.items.length,
-            description: ""
+            description: item.description,
+            tempTitle: item.title
         });
     }
 
     modifyItems(item) {
         let { items, itemIndex } = this.state;
-        items[itemIndex] = item;
 
-        this.setState({
-            items: items
-        });
+        if (items.length == 1) {
+            let newItems = [];
+            newItems.push(item);
 
+            this.setState({
+                items: newItems
+            });
+        } else {
+            items[itemIndex] = item;
+            this.setState({
+                items: items
+            });
+        }
     }
 
     changeItemTitle(itemTitle) {
@@ -153,6 +175,11 @@ class StoryTab extends Component {
         const mapsId = maps.mapsId;
         const itemId = items[itemIndex].id;
 
+        if (items.length == 1) {
+            alert('더 이상 삭제할 수 없습니다.');
+            return;
+        }
+
         ajaxJson(
             ['DELETE', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + itemId + '.json'],
             null,
@@ -166,9 +193,17 @@ class StoryTab extends Component {
 
         items.splice(itemIndex, 1);
 
+        let newIndex = itemIndex;
+
+        if (newIndex == items.length) {
+            newIndex -= 1;
+        }
+
         this.setState({
             items,
-            description: items[itemIndex].description
+            tempTitle: items[newIndex].title,
+            description: items[newIndex].description,
+            itemIndex: newIndex
         });
 
     }
@@ -344,4 +379,4 @@ class StoryTab extends Component {
     }
 }
 
-export default StoryTab;
+export default withRouter(StoryTab);

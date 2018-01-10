@@ -26,7 +26,7 @@ class CreateItems extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
 
         const workId = this.props.match.params.WORKID;
 
@@ -38,11 +38,17 @@ class CreateItems extends Component {
                 let workSubData = JSON.parse(JSON.stringify(data)).response.data;
                 let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
 
+                if (items.length == 0) {
+                    items = [{}];
+                }
+
                 this.setState({
                     items: items
                 });
 
-                this.props.setDefaultLayerId(items[0].pinogioOutputId);
+                if ("pinogioOutputId" in items[0]) {
+                    this.props.setDefaultLayerId(items[0].pinogioOutputId);
+                }
         
             }.bind(this),
             function (xhr, status, err) {
@@ -51,7 +57,6 @@ class CreateItems extends Component {
         );
 
     }
-
 
     createItems() {
 
@@ -205,7 +210,9 @@ class CreateItems extends Component {
                     <div style={{display: 'flex', justifyContent: 'center'}}>
                         <Paper className="paper">
                             {this.props.mode == 'add' ? 
-                            <SelectableList value={radioType == 'layer' ? this.props.layerId : null}>
+                            <SelectableList 
+                                value={radioType == 'layer' ? this.props.layerId : null}
+                            >
                             {"pinogioOutputId" in items[0] ?
                                 items.map((item, i) => (
                                 <ListItem

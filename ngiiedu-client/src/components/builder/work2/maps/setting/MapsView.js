@@ -135,7 +135,7 @@ class MapsView extends React.Component {
 
     ajaxJson(
       ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
-      null,
+      {},
       function(res){
 
         let data = res.response.data.data;

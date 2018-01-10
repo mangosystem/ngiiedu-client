@@ -141,6 +141,7 @@ class EditorPanel extends React.Component {
         }.bind(this)
       );
 
+    //maps의 description 수정할 경우
     } else {
       let { mapsId } = this.props;
 
