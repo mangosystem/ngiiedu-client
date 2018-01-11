@@ -346,7 +346,7 @@ class MainContainer extends React.Component {
                                                         anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                                                         targetOrigin={{horizontal: 'left', vertical: 'top'}}
                                                     >
-                                                        <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/map/preview/'+data.pngoData.layerId)}/>
+                                                        <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/layer/preview/'+data.pngoData.layerId)}/>
                                                         <MenuItem primaryText="편집하기" onClick={()=>this.editLayer(data)}/>
                                                         <MenuItem primaryText="삭제하기" onClick={()=>this.deleteModalOpen(data)}/>
                                                         {data.isDone==false?
