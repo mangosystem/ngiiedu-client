@@ -47,7 +47,7 @@ class Header extends React.Component {
       <header className="adminHeader">
         <div id="headerWrap">
           <div className="header">
-            <h1 className="edge" onClick={()=>window.location.href=contextPath + '/main'}>공간정보융합 활용지원정보</h1>
+            <h1 className="edge" onClick={()=>window.location.href=contextPath}>공간정보융합 활용지원정보</h1>
             {this.props.loginStatus.userDivision==3 ? //관리자. = 3
               <div className="gnb">
                 <span className="admin">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.

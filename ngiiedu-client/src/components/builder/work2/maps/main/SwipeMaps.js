@@ -137,7 +137,7 @@ class SwipeMaps extends Component {
                         defaultValue={this.props.map ? this.props.map.outputName : ''}
                     />
                     <br /><br />
-                    <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                         <figure>
                             <img 
                                src="/ngiiedu/assets/images/HORIZONTAL.png" 
@@ -193,7 +193,7 @@ class SwipeMaps extends Component {
                                             key={item.idx}
                                             value={item.pinogioOutputId} 
                                             primaryText={item.outputName}
-                                            onClick={(i) => this.props.changeLayerId(item.pinogioOutputId)}
+                                            onClick={(i) => this.props.changeLayerId2(item.pinogioOutputId)}
                                         />
                                     )): null}
                                     </SelectableList>

@@ -272,7 +272,7 @@ class List extends React.Component {
                                 </i>
                             </TableHeaderColumn>
                             <TableHeaderColumn className="admin-th">
-                                사용자구분
+                                회원구분
                                 <i
                                     className="fa fa-sort"
                                     aria-hidden="true"

@@ -144,7 +144,7 @@ class BasicMaps extends Component {
                         </div>
                         <br />
                     */}
-                    <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                         <img 
                             src="/ngiiedu/assets/images/RIGHT.png" 
                             // src="/assets/images/b3.png" 

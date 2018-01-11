@@ -69,7 +69,7 @@ class UserPopup extends React.Component {
         return (
             <div>
                 <Dialog
-                title="사용자 상세정보"
+                title="회원 상세정보"
                 actions={actions}
                 modal={false}
                 open={this.props.open}
@@ -89,11 +89,11 @@ class UserPopup extends React.Component {
                                 <TableRowColumn className="admin-td">{this.state.detail.userid}</TableRowColumn>
                             </TableRow>
                             <TableRow className="admin-tr">
-                                <TableRowColumn className="admin-td">이름</TableRowColumn>
+                                <TableRowColumn className="admin-td">별명</TableRowColumn>
                                 <TableRowColumn className="admin-td">{this.state.detail.userName}</TableRowColumn>
                             </TableRow>
                             <TableRow className="admin-tr">
-                                <TableRowColumn className="admin-td">사용자구분</TableRowColumn>
+                                <TableRowColumn className="admin-td">회원구분</TableRowColumn>
                                 <TableRowColumn className="admin-td">{this.state.detail.userDivision==1? '교사' : this.state.detail.userDivision==2? '학생' : '관리자'}</TableRowColumn>
                             </TableRow>
                             <TableRow className="admin-tr">
