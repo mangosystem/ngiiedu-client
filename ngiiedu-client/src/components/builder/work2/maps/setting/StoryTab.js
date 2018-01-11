@@ -342,7 +342,7 @@ class StoryTab extends Component {
                         modifyDescription={this.modifyDescription.bind(this)}
                         mapsId={this.state.maps.mapsId}
                         itemId={this.state.items[this.state.itemIndex].id}
-                        pinoLayer=""
+                        pinoLayer="text"
                     />
                 </div>
                 : null }

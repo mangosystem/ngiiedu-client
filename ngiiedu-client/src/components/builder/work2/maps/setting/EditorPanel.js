@@ -128,6 +128,10 @@ class EditorPanel extends React.Component {
     //items의 description 수정할 경우
     if (this.props.pinoLayer && this.props.itemId) {
       let { mapsId, itemId, pinoLayer } = this.props;
+
+      if (pinoLayer == 'text') {
+        pinoLayer = '';
+      }
       
       //서버 데이터 수정
       ajaxJson(

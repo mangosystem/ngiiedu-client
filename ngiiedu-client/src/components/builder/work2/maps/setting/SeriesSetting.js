@@ -93,13 +93,13 @@ class SeriesSetting extends Component {
         const actions = [
             <FlatButton
               label="취소"
-              onClick={() => this.props.settingHandle}
+              onClick={this.props.settingHandle}
             />,
             <FlatButton
               label="변경"
               backgroundColor={cyan500}
               style={{color: 'white'}}
-              onClick={() => this.updateMapsSetting.bind(this)}
+              onClick={this.updateMapsSetting.bind(this)}
             />
         ];
 
