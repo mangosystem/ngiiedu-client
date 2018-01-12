@@ -70,6 +70,9 @@ class MenuPanel extends React.Component {
                 memberNumber: CJS02.length
             })
               
+          }.bind(this),
+          function(xhr, status, err) {
+            console.log(err);
           }.bind(this)
         )
 
@@ -82,7 +85,10 @@ class MenuPanel extends React.Component {
               this.setState({
                 teamNumber : data.length
               });
-            }.bind(this)
+            }.bind(this),
+            function(xhr, status, err) {
+                console.log(err);
+              }.bind(this)
         );
 
         //과정 수
@@ -102,9 +108,11 @@ class MenuPanel extends React.Component {
                 workNumber:count,
                 workList:data
               });
-            }.bind(this)
+            }.bind(this),
+            function(xhr, status, err) {
+                console.log(err);
+              }.bind(this)
         );
-
 
         //활동 목록 , 서브활동 확인
         ajaxJson(
@@ -114,21 +122,24 @@ class MenuPanel extends React.Component {
                 var data = res.response.data;
                 this.setState({
                     workAndSubWork:data
+                },function(){
+                    if(this.props.subWorkList!=undefined){
+                        this.props.subWorkList(data);
+                    }
                 })
 
-            }.bind(this)
+            }.bind(this),
+            function(xhr, status, err) {
+                console.log(err);
+              }.bind(this)
         );
 
-
-
-    };
-
-    componentWillMount() {
-        // alert('생성자, 참여자 구분하여 UI 구성');
         this.setState({
             courseId:this.props.match.params.COURSEID
         });
-    }
+
+    };
+
 
     render() {
         const {props} = this;

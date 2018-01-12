@@ -31,23 +31,21 @@ class CourseHeader extends Component {
         const courseData = data.response.data;
         this.setState({
           courseData: courseData
+        },function(){
+          ajaxJson(
+            ['GET', apiSvr + '/modules/' + courseData.moduleId + '.json'],
+            null,
+            function(data){
+              this.setState({
+                moduleMetadata : data.response.data.moduleMetadata
+              })
+  
+            }.bind(this),
+            function(xhr, status, err) {
+              console.error(status, err.toString());
+            }.bind(this)
+          )
         });
-        
-        ajaxJson(
-          ['GET', apiSvr + '/modules/' + courseData.moduleId + '.json'],
-          null,
-          function(data){
-            this.setState({
-              moduleMetadata : data.response.data.moduleMetadata
-            })
-
-          }.bind(this),
-          function(xhr, status, err) {
-            console.error(status, err.toString());
-          }.bind(this)
-        )
-
-
 			}.bind(this),
 			function(xhr, status, err) {
 				console.error(status, err.toString());

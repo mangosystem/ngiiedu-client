@@ -18,12 +18,12 @@ class EditDataset extends Component {
         this.changeTitle = this.changeTitle.bind(this);
     }
 
-    componentWillReceiveProps(nextProps){
+    componentDidMount(){
       this.setState({
-        title :nextProps.data.outputName,
+        title :this.props.data.outputName,
         // idx : nextProps.data.pinogioOutputId
       });
-      console.log(nextProps.data.pinogioOutputId);
+      // console.log(nextProps.data.pinogioOutputId);
     }
 
     changeTitle(e, v){
@@ -64,11 +64,12 @@ class EditDataset extends Component {
                   <Subheader>제목</Subheader>
                   <TextField 
                     hintText="제목을 입력하세요" 
+                    // defaultValue={this.props.data.pinogioOutputId}
                     value={this.state.title}
                     onChange={this.changeTitle}
                     type='text'
                   />
-
+                  <br/>
                   <FlatButton
                     hoverColor="#FAFAFA"
                     label="취소"

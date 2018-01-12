@@ -114,6 +114,8 @@ class NewDataset extends Component {
     changeGeometryType(v){
         this.setState({
             geometry_type:v
+        },function(){
+            this.onChangedDataset();
         })
     }
     /////---------------------------
@@ -222,7 +224,7 @@ class NewDataset extends Component {
                         alias:'나무종류',
                         value_type:'ALLOWED_VALUES',
                         type:'STRING',
-                        value_base:'소나무|잣나무|낙엽송|리기다소나무|편백나무|상수리나무|신갈나무|침엽수|활엽수|기타',
+                        value_base:'소나무|잣나무|낙엽송|리기다소나무|편백나무|상수리나무|신갈나무|침엽수|활엽수|개나리|진달래|철쭉|할미꽃|무궁화|목련|해바라기|봉숭아|기타',
                         required:true
                     }
                 ],
@@ -427,6 +429,7 @@ class NewDataset extends Component {
             name: 'column'+(newColumnIdx+1),
             alias:'',
             value_type:'ANY_VALUE',
+            type:'STRING',
             value_base:'',
             required:true
         }

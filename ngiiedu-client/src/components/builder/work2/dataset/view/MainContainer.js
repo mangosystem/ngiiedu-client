@@ -275,8 +275,8 @@ class MainContainer extends React.Component {
                   anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                   targetOrigin={{horizontal: 'left', vertical: 'top'}}
               >
-                  <MenuItem primaryText="수업 홈" onClick={()=>this.props.history.push("/ngiiedu/course")}/>
-                  <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
+                  {/* <MenuItem primaryText="수업 홈" onClick={()=>this.props.history.push("/ngiiedu/course")}/> */}
+                  <MenuItem primaryText="뒤로 가기" onClick={()=>this.props.history.goBack()}/>
               </IconMenu>
               <div 
                   style={{fontSize: 20, textAlign:'left'}}>
