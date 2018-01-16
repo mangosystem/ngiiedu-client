@@ -19,7 +19,7 @@ class Column extends React.Component {
 			this.props.column.map((value) => {
 				if (value.name!='pino_id' && value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {
 					column.push({
-						text: value.name,
+						text: value.alias,
 						value: value.name,
 						dataType: value.dataType,
 						description: value.description
@@ -30,7 +30,7 @@ class Column extends React.Component {
 			this.props.column.map((value) => {
 				if (value.name != 'pino_id'&&value.name != 'the_geom') {
 					column.push({
-						text: value.name,
+						text: value.alias,
 						value: value.name,
 						dataType: value.dataType,
 						description: value.description
@@ -49,7 +49,7 @@ class Column extends React.Component {
 			nextProps.column.map((value) => {
 				if (value.name!='pino_id' && value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {
 					column.push({
-						text: value.name,
+						text: value.alias,
 						value: value.name,
 						dataType: value.dataType,
 						description: value.description
@@ -59,7 +59,7 @@ class Column extends React.Component {
 		}else if(nextProps.type=='CATEGORIES'){
 			nextProps.column.map((value) => {
 					column.push({
-						text: value.name,
+						text: value.alias,
 						value: value.name,
 						dataType: value.dataType,
 						description: value.description
