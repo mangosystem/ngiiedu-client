@@ -158,6 +158,11 @@ class MapsView extends React.Component {
               feature.getGeometry().getExtent(),
               map.getSize()
           );
+        }else if(data.bounds==null&&data.metadata!=null){
+          let wgs84Bounds=JSON.parse(data.metadata).wgs84Bounds;
+          let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
+          let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
+          map.getView().fit(transformExtent, this.state.map.getSize());
         }
 
         
