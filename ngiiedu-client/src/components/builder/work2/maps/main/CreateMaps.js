@@ -306,6 +306,8 @@ class CreateMaps extends Component {
                             return <SeriesMaps 
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
+                                        changeItemTitle={this.changeItemTitle.bind(this)}
+                                        itemTitle={this.state.itemTitle}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         layerId={this.state.layerId}
                                         changeLayerId={this.changeLayerId.bind(this)}

@@ -51,7 +51,7 @@ class StoryMaps extends Component {
             let items = this.props.map.pngoData.items;
 
             if (items.length >= 2) {
-                let sortingField = 'id';
+                let sortingField = 'priority';
     
                 items.sort(function(a, b) { // 오름차순
                     return a[sortingField] - b[sortingField];

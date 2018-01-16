@@ -46,7 +46,18 @@ class SeriesMaps extends Component {
 
     componentWillMount() {
         if (this.props.map) {
-            this.props.changeLayerId(this.props.map.pngoData.items[0].pinoLayer);
+
+            let items = this.props.map.pngoData.items;
+
+            if (items.length >= 2) {
+                let sortingField = 'priority';
+    
+                items.sort(function(a, b) { // 오름차순
+                    return a[sortingField] - b[sortingField];
+                });
+            }
+
+            this.props.changeLayerId(items[0].pinoLayer);
         }
     }
 
@@ -125,6 +136,7 @@ class SeriesMaps extends Component {
                     <br />
                     <Subheader>제목</Subheader>
                     <TextField 
+                        id="title"
                         fullWidth={true}
                         hintText="*스토리맵 제목을 입력해주세요"
                         onChange={(e, value) => this.props.changeTitle(value)}
