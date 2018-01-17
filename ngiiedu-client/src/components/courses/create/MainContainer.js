@@ -188,10 +188,18 @@ class MainContainer extends React.Component {
 				datasetData = true;
 			}
 		}
+		var columns = state.datasetData.columns;
+		for(var i =0;i<columns.length;i++){
+			if(columns[i].value_type=='STRING'||columns[i].value_type=='INTEGER'){
+				columns[i].value_type='ANY_VALUE';
+			}
+		}
 		
-		var emptyTemplate ;
+		var emptyTemplate;
 		if(datasetData){
-			emptyTemplate = JSON.stringify(state.datasetData);
+			emptyTemplate = state.datasetData;
+			emptyTemplate.columns = columns;
+			emptyTemplate = JSON.stringify(emptyTemplate);
 		} else{
 			emptyTemplate = null;
 		}

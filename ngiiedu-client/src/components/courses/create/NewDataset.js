@@ -139,8 +139,8 @@ class NewDataset extends Component {
                         idx:0,
                         name:'column1',
                         alias:'소음측정값',
-                        value_type:'ANY_VALUE',
-                        type:'STRING',
+                        value_type:'INTEGER',
+                        type:'INTEGER',
                         value_base:'',
                         required:true
                     },
@@ -166,7 +166,7 @@ class NewDataset extends Component {
                         idx:3,
                         name:'column4',
                         alias:'기타',
-                        value_type:'ANY_VALUE',
+                        value_type:'STRING',
                         type:'STRING',
                         value_base:'',
                         required:true
@@ -185,7 +185,7 @@ class NewDataset extends Component {
                         // name:'column100',
                         name:'column1',
                         alias:'장소명',
-                        value_type:'ANY_VALUE',
+                        value_type:'STRING',
                         type:'STRING',
                         value_base:'',
                         required:true
@@ -203,7 +203,7 @@ class NewDataset extends Component {
                         idx:0,
                         name:'column1',
                         alias:'불편내용',
-                        value_type:'ANY_VALUE',
+                        value_type:'STRING',
                         type:'STRING',
                         value_base:'',
                         required:true
@@ -343,17 +343,21 @@ class NewDataset extends Component {
         
         let arrayIdx = this.findColumnIdx(column.idx);
         let value_base ='';
+        let value_type =v;
         let type = 'STRING';
-        if(v=='RANGE_VALUE'){
+        if(v=='RANGE_VALUES'){
             value_base = '1|10|1'
             type = 'INTEGER'
+        }else if(v=='INTEGER' ||v=='STRING'){
+            value_type = v;
+            type = v;
         }
         this.setState({
             columns:update(
                 this.state.columns,
                 {
                     [arrayIdx] : {
-                        value_type : { $set : v},
+                        value_type : { $set : value_type},
                         value_base : { $set : value_base},
                         type : { $set : type}
                     }
@@ -369,6 +373,8 @@ class NewDataset extends Component {
 
         
     }
+
+
 
     //컬럼 필수여부 변경
     changeColumnRequired(v, column){
@@ -580,9 +586,11 @@ class NewDataset extends Component {
                                     value={row.value_type}
                                     onChange={(e,i,v)=>this.changeColumnType(v,row)}
                                 >
-                                    <MenuItem value={'ANY_VALUE'} primaryText="모든 값" />
-                                    <MenuItem value={'ALLOWED_VALUES'} primaryText="범주형" />
-                                    <MenuItem value={'RANGE_VALUE'} primaryText="범위형" />
+                                  {/* <MenuItem value={'ANY_VALUE'} primaryText="모든 값" /> */}
+                                  <MenuItem value={'STRING'} primaryText="문자형" />
+                                  <MenuItem value={'INTEGER'} primaryText="숫자형" />
+                                  <MenuItem value={'ALLOWED_VALUES'} primaryText="범주형" />
+                                  <MenuItem value={'RANGE_VALUES'} primaryText="범위형" />
                                 </SelectField>
                                 </div>
                                 <div style={{gridColumn:'4',margin:'auto auto'}}>
@@ -672,7 +680,7 @@ class NewDataset extends Component {
                                 </div>
                             </Paper>  
 
-                        :this.state.selectedColumn.value_type == 'RANGE_VALUE'? // RANGE_VALUE 일때
+                        :this.state.selectedColumn.value_type == 'RANGE_VALUES'? // RANGE_VALUES 일때
                             <Paper style={{height:270}}>
                                 <div style={{height:30,display:'flex',alignItems:'center',paddingLeft:10}}>
                                     <h3> 범위 설정 </h3>

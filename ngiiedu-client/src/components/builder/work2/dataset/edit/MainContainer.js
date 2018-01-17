@@ -309,19 +309,9 @@ class MainContainer extends React.Component {
                 },function(){
                     this.init.bind(this)();
                     this.state.map.setTarget('mapView');
-
-                    if(data.spatialType=='RASTER'){
-                        var w = JSON.parse(data.metadata).wgs84Bounds;
-                        var extent = [w.minX,w.minY,w.maxX,w.maxY];
-                        var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
-                        
-                        this.state.map.getView().fit(
-                          extent3857,
-                          this.state.map.getSize()
-                        );
-                    }else{
+                    if(data.bounds != null){
                         let wkt = data.bounds;
-    
+                        
                         if(wkt != null){
                             let format = new ol.format.WKT();
                             let feature = format.readFeature(wkt, {
@@ -333,7 +323,40 @@ class MainContainer extends React.Component {
                                 this.state.map.getSize()
                             );
                         }
+                    }else{
+                        var w = JSON.parse(data.metadata).wgs84Bounds;
+                        var extent = [w.minX,w.minY,w.maxX,w.maxY];
+                        var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
+                        
+                        this.state.map.getView().fit(
+                          extent3857,
+                          this.state.map.getSize()
+                        );
                     }
+                    // if(data.spatialType=='RASTER'){
+                    //     var w = JSON.parse(data.metadata).wgs84Bounds;
+                    //     var extent = [w.minX,w.minY,w.maxX,w.maxY];
+                    //     var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
+                        
+                    //     this.state.map.getView().fit(
+                    //       extent3857,
+                    //       this.state.map.getSize()
+                    //     );
+                    // }else{
+                    //     let wkt = data.bounds;
+    
+                    //     if(wkt != null){
+                    //         let format = new ol.format.WKT();
+                    //         let feature = format.readFeature(wkt, {
+                    //             dataProjection: 'EPSG:4326',
+                    //             featureProjection: 'EPSG:3857'
+                    //         });
+                    //         this.state.map.getView().fit(
+                    //             feature.getGeometry().getExtent(),
+                    //             this.state.map.getSize()
+                    //         );
+                    //     }
+                    // }
                 })
             }.bind(this),
             function (e) {
@@ -738,7 +761,7 @@ class MainContainer extends React.Component {
                     var geometry = this.state.selectedGeometry;
                     value = this.geometryTransform(geometry,sourceCRS,transformCRS)
                 }else{
-                    if(column.valueType=='ALLOWED_VALUES'||column.valueType=='RANGE_VALUE'){
+                    if(column.valueType=='ALLOWED_VALUES'||column.valueType=='RANGE_VALUES'){
                         value=this.refs[column.name].props.value;
                     }else{
                         value=this.refs[column.name].getValue();//field value
@@ -787,7 +810,7 @@ class MainContainer extends React.Component {
                     properties[column.name]=value;
                 }else if(column.name=="pino_id"||column.name == 'pino_photo'){
                 }else{
-                    if(column.valueType=='ALLOWED_VALUES'||column.valueType=='RANGE_VALUE'){
+                    if(column.valueType=='ALLOWED_VALUES'||column.valueType=='RANGE_VALUES'){
                         value=this.refs[column.name].props.value;
                     }else{
                         value=this.refs[column.name].getValue();//field value
@@ -1074,7 +1097,7 @@ class MainContainer extends React.Component {
                                         </SelectField>
                                     </div>
                                 )
-                            }else if(row.valueType=='RANGE_VALUE'){
+                            }else if(row.valueType=='RANGE_VALUES'){
                                 var items = row.valueBase.split('|')
                                 var item1 = Number(items[0]);
                                 var item2 = Number(items[1]);
