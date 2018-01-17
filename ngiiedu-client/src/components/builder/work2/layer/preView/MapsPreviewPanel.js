@@ -16,7 +16,7 @@ class MapsPreviewPanel extends React.Component {
       map: new ol.Map({
         view: new ol.View({
           center: [14143701.095047, 4477593.930960],
-          zoom: 15,
+          zoom: 7,
           minZoom: 1,	maxZoom: 18
         }),
         layers: [

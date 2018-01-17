@@ -17,6 +17,7 @@ import LayerMain from './layer/MainContainer';
 import MapsMain from './maps/main/MainContainer';
 import Population from './population/MainContainer';
 
+
 //testdata
 //"안양시 동안구 소음지도"
 // d=AnyangDong
@@ -116,6 +117,15 @@ class MainContainer extends React.Component {
                 :
                 this.state.workType=='population'?
                 <Population />
+                :
+                this.state.workType=='populationLayer'?
+                <LayerMain
+                    courseId={this.props.match.params.COURSEID}
+                    workId={this.props.match.params.WORKID} 
+                    data={this.state.data}
+                    getDataList={this.getDataList}
+                    option={"populationLayer"}
+                />
                 :
                 null}
             </main>

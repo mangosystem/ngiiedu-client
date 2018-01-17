@@ -13,7 +13,8 @@ import Paper from 'material-ui/Paper';
 import Subheader from 'material-ui/Subheader';
 
 import update from 'react-addons-update';
- 
+import { withRouter } from "react-router-dom";
+
 import BoundsModal from './BoundsModal.js';
 import NewWarnModal from '../../../courses/create/NewWarnModal.js'
 
@@ -105,7 +106,52 @@ class NewDataset extends Component {
 
     //데이터셋 생성
     createDataset(){
+        let {state} = this;
+        
         console.dir(this.state.result)
+        var columns = state.result.columns;
+		for(var i =0;i<columns.length;i++){
+			if(columns[i].value_type=='STRING'||columns[i].value_type=='INTEGER'){
+				columns[i].value_type='ANY_VALUE';
+			}
+        }
+        
+        var emptyTemplate;
+		// if(result){
+        emptyTemplate = state.result;
+        emptyTemplate.columns = columns;
+        emptyTemplate = JSON.stringify(emptyTemplate);
+		// } else{
+			// emptyTemplate = null;
+		// }
+        console.log(emptyTemplate);
+        
+
+        ajaxJson(
+			['POST', apiSvr+'/courses/addDataset.json'],
+			{
+				courseId: this.props.match.params.COURSEID,
+				courseWorkId: this.props.courseWorkSubId,
+				emptyTemplate:emptyTemplate
+			},
+			function(res) {
+				const courseData = JSON.parse(JSON.stringify(res)).response.data;
+				if(courseData==null){
+					alert('수업 생성에 실패하였습니다. 현장실습 데이터 생성을 확인하세요.')
+					return;
+                }
+                alert('데이터셋이 추가되었습니다.');
+				this.setState({
+                    warnModalOpen:!this.state.warnModalOpen
+                })
+                this.props.handleStep('addDataset')
+
+
+			}.bind(this),
+			function(xhr, status, err) {
+				alert('Error');
+			}.bind(this)
+		);
     }
 
     //모달온오프 헨들러.
@@ -336,7 +382,7 @@ class NewDataset extends Component {
             idx: newColumnIdx,
             name: 'column'+(newColumnIdx+1),
             alias:'',
-            value_type:'ANY_VALUE',
+            value_type:'STRING',
             type:'STRING',
             value_base:'',
             required:true
@@ -508,8 +554,8 @@ class NewDataset extends Component {
                                     value={row.value_type}
                                     onChange={(e,i,v)=>this.changeColumnType(v,row)}
                                 >
-                                    <MenuItem value={'STRING'} primaryText="문자" />
-                                    <MenuItem value={'INTEGER'} primaryText="숫자" />
+                                    <MenuItem value={'STRING'} primaryText="문자형" />
+                                    <MenuItem value={'INTEGER'} primaryText="숫자형" />
                                     <MenuItem value={'ALLOWED_VALUES'} primaryText="범주형" />
                                     <MenuItem value={'RANGE_VALUES'} primaryText="범위형" />
                                 </SelectField>
@@ -686,4 +732,4 @@ class NewDataset extends Component {
     }
 }
 
-export default NewDataset;
+export default withRouter(NewDataset);
