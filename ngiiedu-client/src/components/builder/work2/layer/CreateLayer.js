@@ -68,7 +68,8 @@ class CreateLayer extends Component {
     ajaxJson(
       ['PUT', apiSvr + '/coursesWork/layers/' + this.props.selectRow.pinogioOutputId + '/metadata.json'],
       {
-        title:this.state.title
+        title:this.state.title,
+        metadata:this.props.selectRow.pngoData.metadata
       },
       function (data) {
         this.props.changeView('main');

@@ -26,7 +26,8 @@ class MainContainer extends React.Component {
         raster : null,
         title:'',
         bounds:null,
-        extent:null
+        extent:null,
+        wgs84Bounds:null
         
     }
   }
@@ -64,10 +65,13 @@ class MainContainer extends React.Component {
         function(res){
           let bounds = res.response.data.data.bounds;
           let extent = res.response.data.data.metadata;
+          let wgs84Bounds = JSON.parse(res.response.data.metadata).wgs84Bounds;
+          
           this.setState({
             title:res.response.data.data.title,
             bounds:bounds!=null?bounds:null,
-            extent:extent!=""&&extent!=null?JSON.parse(extent):null
+            extent:extent!=""&&extent!=null?JSON.parse(extent):null,
+            wgs84Bounds: wgs84Bounds
           });
         }.bind(this),
         function(e){
@@ -111,6 +115,7 @@ class MainContainer extends React.Component {
                     raster={this.state.raster}
                     bounds={this.state.bounds}
                     extent={this.state.extent}
+                    wgs84Bounds={this.state.wgs84Bounds}
                 />
             </div>
         </main>

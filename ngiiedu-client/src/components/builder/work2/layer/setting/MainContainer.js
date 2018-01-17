@@ -74,7 +74,8 @@ class MainContainer extends React.Component {
                 '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c',
                 '#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'
             ],
-            spatialType:null
+            spatialType:null,
+            metadata:''
 
         }
 
@@ -119,7 +120,6 @@ class MainContainer extends React.Component {
                     })
                 }
                 console.log(res.response.data.data)
-                console.log('testtest')
                 this.setState({
                     layerId:this.props.match.params.LAYERID,
                     datasetId:JSON.parse(res.response.data.data.sources).inputDataset.datasetId,
@@ -127,7 +127,9 @@ class MainContainer extends React.Component {
                     title:res.response.data.data.title,
                     changeTitle:res.response.data.data.title,
                     type:res.response.data.data.geometryType,
-                    process:res.response.data.data.process!=undefined&&res.response.data.data.process!=null ? JSON.parse(res.response.data.data.process):null
+                    process:res.response.data.data.process!=undefined&&res.response.data.data.process!=null ? JSON.parse(res.response.data.data.process):null,
+                    metadata: res.response.data.data.metadata
+
                 });
 
                 if(JSON.parse(res.response.data.data.styling)!=null && JSON.parse(res.response.data.data.styling).symbolizerType=='CATEGORIES'){
@@ -467,7 +469,8 @@ class MainContainer extends React.Component {
         ajaxJson(
         ['PUT', apiSvr + '/coursesWork/layers/' + this.state.layerId + '/metadata.json'],
         {
-            title:this.state.changeTitle
+            title:this.state.changeTitle,
+            metadata:this.state.metadata
         },
         function (data) {
             this.setState({
