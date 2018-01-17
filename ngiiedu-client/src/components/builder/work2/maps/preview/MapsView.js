@@ -24,7 +24,12 @@ class MapsView extends React.Component {
           })
         ],
         controls: ol.control.defaults({
-          zoom: true, rotate: false, attribution: true
+          zoom: true, 
+          rotate: false, 
+          attribution: true,
+          attributionOptions: {
+            collapsible: false
+          }
         })
       }),
 
@@ -289,12 +294,17 @@ class MapsView extends React.Component {
     });
     
     let vworldBase = new ol.layer.Tile({
-        title : 'Vworld base',
-        visible : false,
-        type : 'base',
-        source:new ol.source.XYZ({
-            url: 'http://xdworld.vworld.kr:8080/2d/Base/201512/{z}/{x}/{y}.png'
-        })
+      title : 'Vworld base',
+      visible : false,
+      type : 'base',
+      source:new ol.source.XYZ({
+          url: 'http://xdworld.vworld.kr:8080/2d/Base/201512/{z}/{x}/{y}.png',
+          attributions: [
+            new ol.Attribution({ 
+                html: '© <a href="http://map.vworld.kr/map/maps.do">vworld.kr</a>'
+            })
+          ]
+      })
     });
     
     let vworldSatelite = new ol.layer.Tile({
@@ -302,7 +312,12 @@ class MapsView extends React.Component {
         visible : false,
         type : 'base',
         source:new ol.source.XYZ({
-            url: 'http://xdworld.vworld.kr:8080/2d/Satellite/201301/{z}/{x}/{y}.jpeg'
+            url: 'http://xdworld.vworld.kr:8080/2d/Satellite/201301/{z}/{x}/{y}.jpeg',
+            attributions: [
+              new ol.Attribution({ 
+                  html: '© <a href="http://map.vworld.kr/map/maps.do">vworld.kr</a>'
+              })
+            ]
         })
     });
     
@@ -311,7 +326,12 @@ class MapsView extends React.Component {
         visible : false,
         type : 'base',
         source:new ol.source.XYZ({
-            url: 'http://xdworld.vworld.kr:8080/2d/Hybrid/201310/{z}/{x}/{y}.png'
+            url: 'http://xdworld.vworld.kr:8080/2d/Hybrid/201310/{z}/{x}/{y}.png',
+            attributions: [
+              new ol.Attribution({ 
+                  html: '© <a href="http://map.vworld.kr/map/maps.do">vworld.kr</a>'
+              })
+            ]
         })
     });
 
@@ -359,7 +379,7 @@ class MapsView extends React.Component {
     layers.push($.extend(true, {}, osm));
     layers.push($.extend(true, {}, daum));
     layers.push($.extend(true, {}, naver));
-    layers.push($.extend(true, {}, ngiiStreet));
+    //layers.push($.extend(true, {}, ngiiStreet));
 
     let layerGroup = new ol.layer.Group({
       title : 'Base Maps',

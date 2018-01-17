@@ -21,7 +21,8 @@ class SeriesMaps extends Component {
             stepIndex: 0,
             typeKind: 'SLIDE',
             items: [{}],
-            radioType: 'layer'
+            radioType: 'layer',
+            itemTitle: ''
         };
     }
 
@@ -42,6 +43,14 @@ class SeriesMaps extends Component {
         });
 
     }
+
+    changeItemTitle(value) {
+        this.setState({
+            itemTitle: value
+        });
+
+        this.props.changeItemTitle(value);
+    }
     
 
     componentWillMount() {
@@ -57,6 +66,7 @@ class SeriesMaps extends Component {
                 });
             }
 
+            this.props.changeItemTitle(items[0].title);
             this.props.changeLayerId(items[0].pinoLayer);
         }
     }
@@ -191,6 +201,13 @@ class SeriesMaps extends Component {
             return (
                 <div style={{textAlign: 'left'}}>
                     <br />
+                    <Subheader>제목</Subheader>
+                    <TextField
+                        fullWidth={true}
+                        hintText="*탭 제목을 입력해주세요"
+                        onChange={(e, value) => this.changeItemTitle(value)}
+                        value={this.state.itemTitle}
+                    />
                     <Subheader>레이어 선택</Subheader>
                     <Paper className="paper">
                         <SelectableList value={this.props.layerId}>
