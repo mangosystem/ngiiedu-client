@@ -31,7 +31,12 @@ class MainContainer extends React.Component {
               })
             ],
             controls: ol.control.defaults({
-                zoom: true, rotate: false, attribution: true
+                zoom: true, 
+                rotate: false, 
+                attribution: true,
+                attributionOptions: {
+                  collapsible: false
+                }
             }),
             interactions: ol.interaction.defaults({
                 altShiftDragRotate: false, doubleClickZoom: true,

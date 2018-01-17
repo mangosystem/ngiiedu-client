@@ -248,7 +248,12 @@ addBaseLayer(map) {
         visible : false,
         type : 'base',
         source:new ol.source.XYZ({
-            url: 'http://xdworld.vworld.kr:8080/2d/Base/201512/{z}/{x}/{y}.png'
+            url: 'http://xdworld.vworld.kr:8080/2d/Base/201512/{z}/{x}/{y}.png',
+            attributions: [
+              new ol.Attribution({ 
+                  html: '© <a href="http://map.vworld.kr/map/maps.do">vworld.kr</a>'
+              })
+            ]
         })
     });
     
@@ -257,7 +262,12 @@ addBaseLayer(map) {
         visible : false,
         type : 'base',
         source:new ol.source.XYZ({
-            url: 'http://xdworld.vworld.kr:8080/2d/Satellite/201301/{z}/{x}/{y}.jpeg'
+            url: 'http://xdworld.vworld.kr:8080/2d/Satellite/201301/{z}/{x}/{y}.jpeg',
+            attributions: [
+              new ol.Attribution({ 
+                  html: '© <a href="http://map.vworld.kr/map/maps.do">vworld.kr</a>'
+              })
+            ]
         })
     });
     
@@ -266,7 +276,12 @@ addBaseLayer(map) {
         visible : false,
         type : 'base',
         source:new ol.source.XYZ({
-            url: 'http://xdworld.vworld.kr:8080/2d/Hybrid/201310/{z}/{x}/{y}.png'
+            url: 'http://xdworld.vworld.kr:8080/2d/Hybrid/201310/{z}/{x}/{y}.png',
+            attributions: [
+              new ol.Attribution({ 
+                  html: '© <a href="http://map.vworld.kr/map/maps.do">vworld.kr</a>'
+              })
+            ]
         })
     });
 
