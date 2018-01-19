@@ -19,8 +19,8 @@ class MainContainer extends React.Component {
         super(props);
         
         this.state = {
-            map1Value: 'naver',
-            map2Value: 'daum',
+            map1Value: 'ngii',
+            map2Value: 'naver',
             typeKind: 'vertical'
         };
     }
@@ -92,6 +92,7 @@ class MainContainer extends React.Component {
                                 value={this.state.map1Value}
                                 onChange={(e, i, v) => this.setState({ map1Value: v })}
                             >
+                                <MenuItem value="ngii" primaryText="Ngii Street Map" disabled={this.state.map2Value == 'ngii'? true : false}/>
                                 <MenuItem value="naver" primaryText="Naver Street Map" disabled={this.state.map2Value == 'naver'? true : false}/>
                                 <MenuItem value="daum" primaryText="Daum Street Map" disabled={this.state.map2Value == 'daum'? true : false}/>
                                 <MenuItem value="osm" primaryText="OSM" disabled={this.state.map2Value == 'osm'? true : false}/>
@@ -108,6 +109,7 @@ class MainContainer extends React.Component {
                                 value={this.state.map2Value}
                                 onChange={(e, i, v) => this.setState({ map2Value: v })}
                             >
+                            <MenuItem value="ngii" primaryText="Ngii Street Map" disabled={this.state.map1Value == 'ngii'? true : false}/>
                             <MenuItem value="naver" primaryText="Naver Street Map" disabled={this.state.map1Value == 'naver'? true : false}/>
                             <MenuItem value="daum" primaryText="Daum Street Map" disabled={this.state.map1Value == 'daum'? true : false}/>
                             <MenuItem value="osm" primaryText="OSM" disabled={this.state.map1Value == 'osm'? true : false}/>

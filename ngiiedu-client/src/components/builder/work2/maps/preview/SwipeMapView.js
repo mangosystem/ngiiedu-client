@@ -177,7 +177,7 @@ class SwipeMapView extends React.Component {
 
     let naver = new ol.layer.Tile({
         title : 'Naver Street Map',
-        visible : true,
+        visible : false,
         type : 'base',
         source : new ol.source.XYZ({
             projection: 'EPSG:5179',
@@ -286,7 +286,7 @@ class SwipeMapView extends React.Component {
     extent     = [-200000.00, -28024123.62, 31824123.62, 4000000.00];  // 4 * 3
 
     //배경지도로 활용할 지원 위성지도 URL
-    var ngiiURL     = 'http://emap.ngii.go.kr/proxy/proxyTile.jsp?URL=http://210.117.198.62:8081/2015_map/korean_map_tile';
+    var ngiiURL     = apiSvr + '/utils/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile/L16/2374/61250.png';
 
 
     let ngiiStreet = new ol.layer.Tile({
@@ -326,7 +326,7 @@ class SwipeMapView extends React.Component {
     layers.push($.extend(true, {}, osm));
     layers.push($.extend(true, {}, daum));
     layers.push($.extend(true, {}, naver));
-    //layers.push($.extend(true, {}, ngiiStreet));
+    layers.push($.extend(true, {}, ngiiStreet));
 
     let layerGroup = new ol.layer.Group({
       title : 'Base Maps',
