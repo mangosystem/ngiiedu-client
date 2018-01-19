@@ -443,7 +443,7 @@ class SwipeMapView extends React.Component {
             },
             attributions: [
                 new ol.Attribution({ 
-                    html: ['<a href="http://emap.ngii.go.kr">NGII</a>']
+                  html: ['<a href="http://ngii.go.kr/"><img src="http://map.ngii.go.kr/img/process/ms/map/common/img_btoLogo.png"></a>']
                 })
             ]
         })
