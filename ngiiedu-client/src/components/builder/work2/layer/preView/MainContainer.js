@@ -63,9 +63,12 @@ class MainContainer extends React.Component {
         ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
         null,
         function(res){
+          let wgs84Bounds=null;
           let bounds = res.response.data.data.bounds;
           let extent = res.response.data.data.metadata;
-          let wgs84Bounds = JSON.parse(res.response.data.metadata).wgs84Bounds;
+          if(res.response.data.data.metadata!=""&&res.response.data.data.metadata!=null){
+            wgs84Bounds = JSON.parse(res.response.data.data.metadata).wgs84Bounds;
+          }
           
           this.setState({
             title:res.response.data.data.title,
