@@ -81,28 +81,124 @@ class ExcelDataset extends Component {
     
     // 다음단계로..
     createDataset(){
-        var files = document.getElementById('uploadForm');
+        let courseId=this.props.match.params.COURSEID;
+        let courseWorkId = this.props.match.params.WORKID;
+        // var files = document.getElementById('uploadForm');
+//폼객체를 불러와서
+// var form = $('uploadForm')[0];
+//FormData parameter에 담아줌
+// var formData = new FormData(form);
+
+
         
         // let type = files.files[0].name.split('.')[files[0].name.split('.').length-1].toLowerCase();
-        var form = new FormData(files);
-        form.append("title",this.state.title);
-        form.append("courseId",this.props.match.params.COURSEID);
-        form.append("courseWorkId",this.props.match.params.WORKID);
-        form.append("")
-        let xFiled =false
-        let yFiled =false
+        // var form = new FormData(files);
+        // form.append("title",this.state.title);
+        // form.append("courseId",this.props.match.params.COURSEID);
+        // form.append("courseWorkId",this.props.match.params.WORKID);
+        // form.append("")
+        var form = new FormData(document.getElementById('uploadForm')); 
+        let delimiter=''
+        let xField =''
+        let yField =''
         let srid = this.state.sridCode;
         if(this.state.dataType =='xlsx' || this.state.dataType =='xls' || this.state.dataType =='csv'){
-            xFiled = $('#Xfiled').val();
-            yFiled = $('#Yfiled').val();
-            if(xFiled ==''){
+            xField = $('#xField').val();
+            yField = $('#yField').val();
+            if(xField ==''){
                 xField = 'X'
             }
-            if(yFiled ==''){
+            if(yField ==''){
                 yField = 'Y'
             }
+            
+        }
+
+        //form으로 처리
+        
+        let options = {}
+        options.lon = xField;
+        options.lat = yField;
+        options.srid = srid;
+        
+        if(this.state.dataType =='csv'){
+            options.delimiter = ','
         }
         
+        form.append('options',JSON.stringify(options))
+        // form.append('options',"")
+
+        // let ajaxData = {
+        //     // courseId:this.props.match.params.COURSEID,
+        //     // courseWorkId:this.props.match.params.WORKID,
+        //     options:options,
+        //     uFile:formData
+
+        // }
+
+        // ajaxJson(
+        //     ['POST', apiSvr + '/coursesWork/dataset.json'],
+        //     {
+        //         courseId:this.props.match.params.COURSEID,
+        //         courseWorkId:this.props.match.params.WORKID,
+        //         options:options,
+        //         uFiles:form
+        //     },
+		// 	function (data) {
+		// 	//   let columns =data.response.data.data
+		// 	//   this.setState({
+		// 	// 	layerColumns:columns
+		// 	//   })
+		// 	//   console.log('columns');
+        //       console.dir(columns);
+              
+		// 	  // console.log('ajaxcolumn')
+		// 	  // console.dir(data.response.data.data);
+		// 	}.bind(this),
+		// 	function (xhr, status, err) {
+		// 	  alert('Error');
+		// 	}.bind(this)
+        //   );
+        //   $.ajax({
+        //     method: "POST",
+        //     dataType: 'json',
+        //     processData: false,
+        //     contentType: false,
+        //     // cache: false,
+        //     url:  apiSvr + '/coursesWork/dataset/'+courseId +'/'+courseWorkId+'.json',
+        //     data: {
+        //         // courseId:courseId,
+        //         // courseWorkId:courseWorkId,
+        //         options:JSON.stringify(options),
+        //         uFile:formData
+        //     },
+        //     // processData: true=> get방식, false => post방식
+        //     //dataType: "text",
+        //     // contentType: true => application/x-www-form-urlencoded, 
+        //     //                false => multipart/form-data
+        //     //processData: false,
+        //     //contentType: false,
+        //     success: function(data){
+        //         console.dir(data);
+        //         alert(data);
+        //     }
+        // });
+
+
+        $.ajax({
+            type: "post",
+            url:  apiSvr + '/coursesWork/dataset/'+courseId +'/'+courseWorkId+'.json',
+            data: form,
+            // processData: true=> get방식, false => post방식
+            dataType: "text",
+            // contentType: true => application/x-www-form-urlencoded, 
+            //                false => multipart/form-data
+            processData: false,
+            contentType: false,
+            success: function(data){
+                alert(data);
+            }
+        });
     }
     
     //2page
@@ -190,9 +286,9 @@ class ExcelDataset extends Component {
         let uploadexplan = {
             xlxs : ['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
             xls:['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
-            csv:['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
+            csv:['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.','csv구분자는 ,로 구분해 주시기 바랍니다.'],
             zip:['좌표정보를 가진 PRJ파일을 동봉한 zip파일을 업로드해야 합니다.','PRJ 파일이 없을 시 기본 SRID는 3857 입니다.'],
-            geotiff:['geotiff 업로드 주의사항'],
+            geotiff:['올바른 좌표정보를 가진 파일을 입력해 주세요'],
         }
         
         let dataOption = 
@@ -201,7 +297,7 @@ class ExcelDataset extends Component {
                     <div>
                             <h3>참고</h3>
                         {uploadexplan[this.state.dataType].map((row,idx)=>(
-                            <div>
+                            <div key={idx}>
                                 {row}<br/>
                             </div>
                         ))}
@@ -225,7 +321,7 @@ class ExcelDataset extends Component {
                         style={{width:350}}
                         hintText="경도 필드를 입력하세요 (ex:X)"
                         floatingLabelText="경도"
-                        id='Xfiled'
+                        id='xField'
                         floatingLabelFixed={true}
                     />
                     <br/>
@@ -233,7 +329,7 @@ class ExcelDataset extends Component {
                         style={{width:350}}
                         hintText="경도 필드를 입력하세요 (ex:Y)"
                         floatingLabelText="위도"
-                        id='Yfiled'
+                        id='yField'
                         floatingLabelFixed={true}
                     />
                     {/* {this.state.dataType == 'csv' ?
@@ -254,7 +350,7 @@ class ExcelDataset extends Component {
                     <div>
                         <h3>참고</h3>
                         {uploadexplan[this.state.dataType].map((row,idx)=>(
-                            <div>
+                            <div key={idx}>
                                 {row}<br/>
                             </div>
                         ))}
@@ -294,7 +390,7 @@ class ExcelDataset extends Component {
 
                             <input className="upload-name" value={this.state.fileName} disabled="disabled"/> 
                             <label htmlFor="uploadFile">업로드</label>
-                            <input type="file" id="uploadFile" className="upload-hidden"/> 
+                            <input type="file" name="uFile" id="uploadFile" className="upload-hidden"/> 
                         </div>
                     </form>
                       {dataOption}

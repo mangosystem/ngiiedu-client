@@ -111,6 +111,9 @@ class MainContainer extends React.Component {
                   alert('Error');
                 }.bind(this)
             );
+        }else if(value=='addDataset'){
+            value='main';
+            this.ajaxCall();
         }
         this.setState({
             step: value
@@ -244,6 +247,7 @@ class MainContainer extends React.Component {
                     <div className='workMainMainContainer'>
                         <CreateDataset
                             handleStep = {this.handleStep}
+                            courseWorkSubId = {this.state.dataSetData[0].idx}
                         />
                     </div>
                 :
