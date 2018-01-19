@@ -65,7 +65,7 @@ class MainContainer extends React.Component {
         function(res){
           let bounds = res.response.data.data.bounds;
           let extent = res.response.data.data.metadata;
-          let wgs84Bounds = JSON.parse(res.response.data.metadata).wgs84Bounds;
+          let wgs84Bounds = JSON.parse(res.response.data.data.metadata).wgs84Bounds;
           
           this.setState({
             title:res.response.data.data.title,
