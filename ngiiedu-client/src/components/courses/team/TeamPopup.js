@@ -69,14 +69,12 @@ class TeamPopup extends React.Component {
         // let schoolLevel = this.state.schoolLevel;
         let keyword = this.state.value;
 
-        alert(keyword);
         // this.props.searchList(schoolLevel, keyword);
 
     };
 
     enterKey(e) {
         if(e.keyCode==13){
-            alert(e.keyCode);
         }
         // if (e.keyCode == 13) this.search();
     };
@@ -91,8 +89,6 @@ class TeamPopup extends React.Component {
         this.setState({
             selectedUserId:selectedUserId
         });
-        // alonsole.dir('teamname'+this.props.teamMember[0].team_name);
-        // console.dir(this.state.selectedTeam);
      }
     
     componentWillReceiveProps(nextProps) {
@@ -103,7 +99,6 @@ class TeamPopup extends React.Component {
             teamName : nextProps.selectedTeamName,
             open : nextProps.open,
         });
-        // console.dir('componentWillReceiveProps');
     }
 
      

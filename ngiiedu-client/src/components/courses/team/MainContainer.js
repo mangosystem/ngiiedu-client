@@ -114,7 +114,6 @@ class MainContainer extends React.Component {
   
       //팀 멤버 삭제
       ///{courseId}/team/{teamId}/member/{memberId}
-      // console.log(this.state.selectedUserId);
       for(var i = 0 ; i <this.state.selectedUserId.length;i++){
         if(selectedUserId.indexOf(this.state.selectedUserId[i])==-1){
           $.ajax({

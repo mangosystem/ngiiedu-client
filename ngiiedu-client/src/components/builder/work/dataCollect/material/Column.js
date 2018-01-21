@@ -13,9 +13,7 @@ class Column extends React.Component {
     }
 
 	componentWillMount() {
-		console.log('column componentWillMount');
         let column = [];
-        console.dir(this.props.column)
 		this.props.column.map((value) => {
 			if (value.datatype == 'INTEGER' || value.datatype == 'DOUBLE' || value.datatype == 'LONG') {
 				column.push({

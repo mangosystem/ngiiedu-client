@@ -138,12 +138,9 @@ class EditorPanel extends React.Component {
     
     // var contents = $.trim(oEditors[0].getContents()); 
     
-    // console.log("validation() : ");
-    // console.log(contents);
     
     
     let contents = CKEDITOR.instances.smarteditor.getData();
-    console.log(contents);
     
     this.props.modifyDescription(contents,this.props.layerId);
     this.props.onChangeEditorMode();

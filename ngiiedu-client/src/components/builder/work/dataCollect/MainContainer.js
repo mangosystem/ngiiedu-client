@@ -213,7 +213,6 @@ class MainContainer extends React.Component {
           workSubData[i].workOutputList.unshift({title: "임시데이터"});  
         }
         
-        console.log(workSubData);
 
         try {
           //  let subjectMap = workSubData.filter(val => (val.outputType == 'layer'))[0].courseWorkSubOutputInfoList;
@@ -286,7 +285,6 @@ class MainContainer extends React.Component {
         },
         function (data) {
 
-          console.log(data);
 
           const result = JSON.parse(JSON.stringify(data)).response.data.data;
           const pinogioOutputId = result.layerId;
@@ -363,7 +361,6 @@ class MainContainer extends React.Component {
             }
           }
 
-          console.log(workSubData);
 
           this.setState({
             workSubData: workSubData
@@ -419,7 +416,6 @@ class MainContainer extends React.Component {
         title
       },
       function (data) {
-        console.log(data);
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
@@ -476,7 +472,6 @@ class MainContainer extends React.Component {
         metadata
       },
       function (data) {
-        console.log(data);
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
@@ -639,7 +634,6 @@ class MainContainer extends React.Component {
         }
       }
 
-      //console.log(mapsId);
 
       // DB 데이터에서 삭제
       ajaxJson(
@@ -829,7 +823,6 @@ class MainContainer extends React.Component {
       },
       function (data) {
         const result = JSON.parse(JSON.stringify(data)).response.data;
-        console.log(result);
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');
@@ -895,7 +888,6 @@ class MainContainer extends React.Component {
       }
     }
 
-    console.log(layerId);
     // DB 데이터 수정
     ajaxJson(
       ['POST', apiSvr + '/coursesWork/maps/' + mapsId + "/item/" + tempTabIndex + '.json'],
@@ -979,7 +971,6 @@ class MainContainer extends React.Component {
 
   //style창 열기
   openStylePanel(layerId, styling){
-    console.log('layerId'+layerId)
     //임시
     // layerId='d=KjCXc4dmy9'
     // layerId='l=AnyangDong'
@@ -994,8 +985,6 @@ class MainContainer extends React.Component {
           stylePanelColumn:column
         })
         
-        // console.log('ajaxcolumn')
-        // console.dir(data.response.data.data);
       }.bind(this),
       function (xhr, status, err) {
         alert('Error');

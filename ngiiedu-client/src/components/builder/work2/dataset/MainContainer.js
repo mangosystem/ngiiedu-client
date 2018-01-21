@@ -84,7 +84,6 @@ class MainContainer extends React.Component {
 
     //삭제 함수
     deleteDataset(row){
-        alert(row+' 데이터 삭제')
     }
 
     // //데이터 생성
@@ -173,8 +172,6 @@ class MainContainer extends React.Component {
                 {this.state.step=='main'? 
                 //main 화면일때
                 <div className='workMainMainContainer'>
-                {/* <iframe id="fileIframe">
-                </iframe> */}
                     <div className='thumbnailsContainer'>
                     {/* 새로만들기 버튼 */}
                         <div className='createButton'  >
@@ -248,6 +245,7 @@ class MainContainer extends React.Component {
                         <CreateDataset
                             handleStep = {this.handleStep}
                             courseWorkSubId = {this.state.dataSetData[0].idx}
+                            option = {this.props.option}
                         />
                     </div>
                 :

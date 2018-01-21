@@ -128,7 +128,6 @@ class MainContainer extends React.Component {
     //데이터셋 불러오기
     getDatasetList(){
         if(this.props.option=="populationLayer"){
-            console.log(this.props.option);
 
             let data  =[
                 {idx:'1', outputName:'2000년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2000_pop'},
@@ -176,7 +175,6 @@ class MainContainer extends React.Component {
 
     //썸네일 클릭시 들어가기
     thumbnailClick(row){
-        alert(row+' 썸네일 들어가기');
         this.context.router.history.push("/some/Path");
     }
 
@@ -212,7 +210,6 @@ class MainContainer extends React.Component {
                 this.props.getDataList();   //목록 다시 불러오기
             }.bind(this),
             function (xhr, status, err) {
-                console.log('Error');
             }.bind(this)
         );
         this.setState({

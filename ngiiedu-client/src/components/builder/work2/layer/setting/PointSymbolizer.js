@@ -473,7 +473,6 @@ class PointSymbolizer extends React.Component {
             process.options=identifierOption;
             process.inputDataset = inputDataset;
         }
-        console.log(process)
         var layerId = this.props.layerId;
         ajaxJson(
             ['PUT',apiSvr+'/coursesWork/layers/'+layerId+'/process.json'],

@@ -57,9 +57,6 @@ class MainContainer extends React.Component {
   
   }
 
-  componentWillMount() {
-  // console.log(this.props.match.params.COURSEID);
-  }
 
   render() {
     return (

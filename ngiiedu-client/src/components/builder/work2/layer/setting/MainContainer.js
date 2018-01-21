@@ -124,7 +124,6 @@ class MainContainer extends React.Component {
                         spatialType:spatialType
                     })
                 }
-                console.log(res.response.data.data)
                 this.setState({
                     layerId:this.props.match.params.LAYERID,
                     datasetId:JSON.parse(res.response.data.data.sources).inputDataset.datasetId,
@@ -150,7 +149,6 @@ class MainContainer extends React.Component {
                     ['GET', apiSvr + '/coursesWork/dataset/column/list.json'],
                     {datasetId:datasetId},
                     function (data) {
-                    console.log('test33')
                         let column =[];
                         for(var i=0;i<data.response.data.data.length;i++){
                             if(data.response.data.data[i].name!='pino_id'&&data.response.data.data[i].name!='the_geom'&&data.response.data.data[i].name!='pino_photo'){

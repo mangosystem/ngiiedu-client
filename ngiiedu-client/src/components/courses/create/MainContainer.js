@@ -82,7 +82,6 @@ class MainContainer extends React.Component {
 					}
 				}
 
-				// console.dir(datasetModuleCourseIds);
 				this.setState({
 					datasetIds:datasetModuleCourseIds
 				})
@@ -189,14 +188,16 @@ class MainContainer extends React.Component {
 			}
 		}
 		var columns = state.datasetData.columns;
-		for(var i =0;i<columns.length;i++){
-			if(columns[i].value_type=='STRING'||columns[i].value_type=='INTEGER'){
-				columns[i].value_type='ANY_VALUE';
-			}
-		}
+		
 		
 		var emptyTemplate;
 		if(datasetData){
+			for(var i =0;i<columns.length;i++){
+				if(columns[i].value_type=='STRING'||columns[i].value_type=='INTEGER'){
+					columns[i].value_type='ANY_VALUE';
+				}
+			}
+			
 			emptyTemplate = state.datasetData;
 			emptyTemplate.columns = columns;
 			emptyTemplate = JSON.stringify(emptyTemplate);
@@ -204,7 +205,6 @@ class MainContainer extends React.Component {
 			emptyTemplate = null;
 		}
 
-		console.log(emptyTemplate);
 		ajaxJson(
 			['POST', apiSvr+'/courses.json'],
 			{
@@ -244,7 +244,6 @@ class MainContainer extends React.Component {
 		this.setState({
 			datasetData:value
 		})
-		console.dir(value)
 	}
 
 	//모달
@@ -255,8 +254,6 @@ class MainContainer extends React.Component {
 	}
 
 	agreeModalHandle(){
-		console.log('aggreModal')
-		console.log(this.state.warnModalOpen)
 		this.handleNextStep();
 	}
 

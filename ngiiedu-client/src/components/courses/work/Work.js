@@ -79,7 +79,6 @@ class Work extends React.Component {
             } else if (data.response.data[0].outputType == 'population') {
               
             } else {
-              //alert('수업 과정 아이디 : '+id+', 수업 과정 들어가기');
               this.props.history.push("/ngiiedu/course/" + courseId + "/work2/" + id, data.response.data[0].outputType);
             }
           }

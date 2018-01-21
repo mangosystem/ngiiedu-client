@@ -14,7 +14,6 @@ class Column extends React.Component {
 
 	componentDidMount(){
 		let column = [];
-		console.log('test222')
 		if(this.props.type!='CATEGORIES'){
 			this.props.column.map((value) => {
 				if (value.name!='pino_id' && value.dataType == 'INTEGER' || value.dataType == 'DOUBLE' || value.dataType == 'LONG') {

@@ -67,8 +67,6 @@ class MainContainer extends React.Component {
 
   handleFinalStep(){
     var editColumn = this.props.editColumn
-    // alert("마지막단계")
-    console.dir(editColumn);
 
     for(var i=0;i<editColumn.length;i++){
 
@@ -86,8 +84,6 @@ class MainContainer extends React.Component {
           editColumn:editColumn
       },
       function(res){
-          console.dir(res);
-          // alert("신규데이터 : " +res.response.data.newRow +" 중복데이터 : " +res.response.data.overlapRow);
           this.setState({
             newRow:res.response.data.newRow,
             overlapRow:res.response.data.overlapRow

@@ -49,7 +49,6 @@ class ColorMapSymbolizer extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
         if (this.props.styles != null) {
-            console.log('rastertest');
             this.setState({
                 symbolizerType: this.props.styles.symbolizerType != undefined ? this.props.styles.symbolizerType : 'COLORMAP',
             })

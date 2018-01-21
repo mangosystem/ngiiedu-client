@@ -14,8 +14,8 @@ class JoinHeader extends React.Component {
         <header className="edu">
           <div id="headerWrap">
             <div className="header">
-              <h1 className="edge" onClick={()=>alert("홈으로 가야한다능")}>공간정보융합 활용지원정보</h1>
-              <ul className="gnb">
+            <h1 className="edge" onClick={()=>window.location.href=contextPath}>공간정보융합 활용지원정보</h1>
+            <ul className="gnb">
                 <li onClick={() => this.props.history.push(contextPath + '/login')}>로그인</li>
                 <li onClick={() => this.props.history.push(contextPath + '/join')}>회원가입</li>
               </ul>

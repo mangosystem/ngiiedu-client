@@ -30,8 +30,6 @@ class MapsView extends React.Component {
 
   changeLayer(props, isChange) {
 
-    console.log("changeLayer()");
-
     let layerId = props.items[0].pinoLayer;
 
     if (props.itemIndex) {

@@ -75,15 +75,6 @@ class LineSymbolizer extends React.Component {
     this.symbolizerTypeChange = this.symbolizerTypeChange.bind(this);
 
   }
-///
-// componentDidMount() { console.log('componentDidMount'); }
-//   shouldComponentUpdate(nextProps, nextState) { console.log('shouldComponentUpdate'); return true / false; } 
-//   componentWillUpdate(nextProps, nextState) { console.log('componentWillUpdate'); } 
-//   componentDidUpdate(prevProps, prevState) { console.log('componentDidUpdate'); } 
-//   componentWillUnmount() { console.log('componentWillUnmount'); } 
-
-
-///
 
 
   componentDidMount(nextProps) {
@@ -391,7 +382,6 @@ class LineSymbolizer extends React.Component {
     var layerId = this.props.layerId;
     // var layerId = 'd=KjCXc4dmy9';
     // var layerId = 'l=AnyangDong';
-    console.log(style);
     ajaxJson(
       ['PUT',apiSvr+'/coursesWork/layers/'+layerId+'/styling.json'],
       {
@@ -619,7 +609,6 @@ class LineSymbolizer extends React.Component {
       prevArrow:<ArrawLeft/>,
       focusOnSelect:true
       //beforeChange:(preI, nextI)=>{
-      //  console.log(nextI);
       //}
     }
 

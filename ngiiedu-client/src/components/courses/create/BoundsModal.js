@@ -35,7 +35,6 @@ class BoundsModal extends React.Component {
   }
 
   componentDidMount(){
-    console.log('componentDidMount')
     let { map } = this.state;
     map.setTarget('mapView');
 
@@ -64,17 +63,9 @@ class BoundsModal extends React.Component {
     var extent4326 = ol.proj.getTransform('EPSG:3857', 'EPSG:4326')(extent);
     this.props.saveWGS(extent4326);
     
-    // var wkt = 'POLYGON (('+extent[0]+' '+extent[1]+','+ extent[1] +' '+extent[1]+','+ extent[1] +' '+extent[1]+','+ extent[1]+' '+ extent[1]+','+ extent[1]+' '+ extent[1]+'))';
     
   }
 
-  // componentDidUpdate(nextProps){
-  //   console.log('componentWillReceiveProps')
-  //   if(!this.props.open||nextProps){
-  //     let { map } = this.state;
-  //     map.setTarget('mapView');
-  //   }
-  // }
 
   render() {
     const actions = [

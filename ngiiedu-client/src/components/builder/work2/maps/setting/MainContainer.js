@@ -57,7 +57,6 @@ class MainContainer extends React.Component {
       function (data) {      
         let maps = JSON.parse(JSON.stringify(data)).response.data.data;
 
-        console.log(maps);
 
         this.setState({
           maps: maps.pngoData,

@@ -176,7 +176,6 @@ class SchoolList extends React.Component {
 
     deleteSelectData(selectedRows){
         if(this.state.selected =='all'){
-            console.log(this.state.tableData)
             for(let i of this.state.tableData){
                 ajaxJson(
                     ['DELETE',apiSvr+'/schools/'+i.idx+'.json'],

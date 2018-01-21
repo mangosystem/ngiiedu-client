@@ -48,14 +48,10 @@ class MapsPreviewPanel extends React.Component {
     //초기 맵 지정
     let { map } = this.state;
     let { layers } = this.state;
-    // console.dir(layers)
-    // map.addLayer(layers.raster);
     map.setTarget('mapView');
   }
 
   componentWillReceiveProps(nextProps){
-    console.log("componentWillReceiveProps: ");
-    console.dir(nextProps)
 
     //새로받은 레이어를 비교
     if(this.props.raster != nextProps.raster){
@@ -70,7 +66,6 @@ class MapsPreviewPanel extends React.Component {
         ['GET',apiSvr+'/coursesWork/layers/'+nextProps.layerId+'.json'],
         null,
         function(res){
-          // console.log('bounds :' +  res.response.data.data.bounds )
             this.setState({
                 bounds:res.response.data.data.bounds
             },function(){

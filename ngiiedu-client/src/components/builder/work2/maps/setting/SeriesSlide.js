@@ -101,7 +101,6 @@ class SeriesSlide extends Component {
             ['PUT', apiSvr + '/coursesWork/maps/' + maps.mapsId + '/itemOrder.json'],
             { priority },
             function (data) {
-                console.log(data);
             }.bind(this),
             function (xhr, status, err) {
               alert('Error');

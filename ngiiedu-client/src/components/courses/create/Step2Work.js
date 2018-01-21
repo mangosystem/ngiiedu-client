@@ -32,7 +32,6 @@ class Step2Work extends React.Component {
   }
 
   componentDidMount() {
-    // console.log('componentDidMount');
 
     const {selectedModule} = this.state;
 
@@ -64,10 +63,8 @@ class Step2Work extends React.Component {
           this.state.items.map(function(v, i) {
             if (n == v.idx) {
               if(n == datasetWorkIdx){
-                console.log('현장실습 체크중')
                 handleNewDataset() //newDataset =true
               }
-              console.log(n)
               workIds.push(i);
               return;
             }
@@ -118,7 +115,6 @@ class Step2Work extends React.Component {
       })
     }
 
-    console.log(workIds);
     this.props.onSelectedWorks(workIds);
   }
 

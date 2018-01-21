@@ -45,14 +45,12 @@ class GoogleDataset extends Component {
                 step:value
             })
         }else{
-            // alert('데이터셋 생성')
         }
     }
     
     //2page
     //x y 좌표 변경 이벤트
     handleChange(type, value){
-        console.log(type +', '+value)
         if(type=='x'){
             this.setState({
                 xValue:value  
@@ -67,7 +65,6 @@ class GoogleDataset extends Component {
     
     //구글로그인 이벤트
     googleConnect(value){
-        // alert('googleConnect')
         if(value =='connect'){
             var listFiles = this.listFiles;
             gapi.auth2.getAuthInstance().signIn().then(listFiles);
@@ -92,7 +89,6 @@ class GoogleDataset extends Component {
           'supportsTeamDrives':false,
           'q':"mimeType contains 'sheet' or mimeType contains 'excel'"
         }).then(function(response) {
-            // console.dir(response)
             filesSetState(response.result.files);
             
         });
@@ -139,7 +135,6 @@ class GoogleDataset extends Component {
                 spreadsheetId: response.result.spreadsheetId,
                 range: properties.title+'!A1:'+columnAlpha(properties.gridProperties.columnCount),
             }).then(function(response) {
-                console.dir(response.result.values);
                 sheetDataSetState(response.result.values);
             }, function(response) {
             console('Error: ' + response.result.error.message);
@@ -161,17 +156,13 @@ class GoogleDataset extends Component {
             if(Math.floor(value/27)>=1){
                 alphabet.push(value%26)
                 value=Math.floor(value/26)
-                console.log(value)
             }else{
-                console.log(value)
                 alphabet.push(value);
                 break;
             }
         }
-        console.log( alphabet.toString())
 
         for(var i =alphabet.length-1;i>=0; i--){
-            console.log(i+','+alphabet.length)
             result=result+String.fromCharCode(alphabet[i]+64);
         }
         return result;        

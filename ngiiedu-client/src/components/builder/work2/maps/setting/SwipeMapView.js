@@ -61,7 +61,6 @@ class SwipeMapView extends React.Component {
 
   changeLayer(layerId1, layerId2, ctrl, right) {
 
-    console.log("changeLayer()");
 
     
     let { map } = this.state;

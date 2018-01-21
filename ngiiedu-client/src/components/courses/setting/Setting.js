@@ -154,7 +154,6 @@ class Setting extends React.Component {
         </div>
       )
     } else {
-      console.log('접근권한없음');
     }
   }
 };

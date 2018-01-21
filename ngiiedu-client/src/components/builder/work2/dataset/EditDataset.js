@@ -23,7 +23,6 @@ class EditDataset extends Component {
         title :this.props.data.outputName,
         // idx : nextProps.data.pinogioOutputId
       });
-      // console.log(nextProps.data.pinogioOutputId);
     }
 
     changeTitle(e, v){

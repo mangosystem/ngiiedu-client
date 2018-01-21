@@ -48,8 +48,6 @@ class MapsPreviewPanel extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('componentWillReceiveProps : ')
-    console.dir(nextProps.raster)
     this.setState({
       layers: {
         raster: nextProps.raster,
@@ -78,8 +76,6 @@ class MapsPreviewPanel extends React.Component {
 
   
   componentDidMount() {
-    console.log('componentDidMount')
-    // map.addLayer(layers.vector);
     let { map } = this.state;
     let layers = this.state.layers;
     let { interactions } = this.state;

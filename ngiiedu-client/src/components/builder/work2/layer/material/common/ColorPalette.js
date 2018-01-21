@@ -19,7 +19,6 @@ class ColorPalette extends React.Component {
             option.push({text: name, value: value});
 		});
         this.setState({ options: option });
-        console.log('color : '+this.props.classesNumber)
     }
     
 

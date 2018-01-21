@@ -35,8 +35,6 @@ class ItemSort extends Component {
     }
 
     handleOnStop(event, ui) {
-        // Attach any custom behavior here
-        //console.log(event.target.children);
 
         if (this.state.children) {
             this.setState({

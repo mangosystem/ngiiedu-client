@@ -76,38 +76,7 @@ class CourseList extends React.Component {
         );
     };
 
-    // componentWillReceiveProps(nextProps) {
-    //     // 검색
-    //     let params = ({ 'keyword': '%' + nextProps.keyword + '%' });
-    //     ajaxJson(
-    //         ['GET', apiSvr + '/courses/list/courseInfoListJoin.json'],
-    //         params,
-    //         function (res) {
-    //             this.setState({
-    //                 courseInfoListJoinData: res.response.data
-    //             });
-    //         }.bind(this),
-    //         function (xhr, status, err) {
-    //             console.log(err);
-    //         }.bind(this)
-    //     );
-
-    //     ajaxJson(
-    //         ['GET', apiSvr + '/courses/list/courseInfoListOwn.json'],
-    //         params,
-    //         function (res) {
-    //             this.setState({
-    //                 courseInfoListOwnData: res.response.data
-    //             });
-    //         }.bind(this),
-    //         function (xhr, status, err) {
-    //             console.log(err);
-    //         }.bind(this)
-    //     );
-    // };
-
     handleExpandChange(value){
-        console.log(value)
         if(value==this.state.selectedCourse){
             this.setState({
                 selectedCourse:''
@@ -117,7 +86,6 @@ class CourseList extends React.Component {
                 selectedCourse: value
             })
         }
-        console.dir(this.props)
 
     }
 

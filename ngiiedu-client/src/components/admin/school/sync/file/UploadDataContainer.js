@@ -28,32 +28,9 @@ class UploadDataContainer extends Component {
 
 
    handleSubmit(event){
-    alert("테스트 중 ");
-    // event.preventDefault();
-    // let formData = new FormData();
-    // formData.append('file', this.state.file);
-    // alert("tlwkr");
-    // console.dir(formData);
-
-    // ajaxJson(
-    //     ['POST',apiSvr+'/schools/sync/file'],
-    //     formData,
-    //     function(res){
-            
-    //         console.dir(res);
-            
-    //     }.bind(this)
-    //   )
+    // alert("테스트 중 ");
 
 
-
-    // axios.post(apiSvr+'/schools/sync/file', formData)
-    // .then((response) => {
-    //   console.log(response);
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    // });
   }
   handleChange(event){
     let file = event.target.files[0];

@@ -93,7 +93,6 @@ class NewDataset extends Component {
 
     //모달 바운더리 저장
     saveWGS(extent){
-        console.log(extent)
         this.setState({
             wgs84Bounds:{
                 minX:extent[0],
@@ -256,12 +255,12 @@ class NewDataset extends Component {
         if(event.charCode == 13){
             let selectedColumn = this.state.selectedColumn
             let value = $('#category').val();
-            if(value==''){return console.log('값 없음')};
+            if(value==''){return ;};
             let textArray, value_base;
 
             if(selectedColumn.value_base!=''){
                 textArray = selectedColumn.value_base.split('|');
-                if(textArray.indexOf(value)>=0){return console.log('중복된값')}
+                if(textArray.indexOf(value)>=0){return ;}
                 textArray.push(value);
                 value_base = textArray.join('|');
             }else{
@@ -286,7 +285,6 @@ class NewDataset extends Component {
                 this.onChangedDataset();
             });
             
-            // console.log(text)
             
         }
     }
@@ -303,7 +301,6 @@ class NewDataset extends Component {
 
     //컬럼선택
     selectColumnRow(column){
-        console.log('selectedColumnRow')
         this.setState({
             selectedColumn:column,
             selectedCategory:''    
@@ -313,7 +310,6 @@ class NewDataset extends Component {
 
     //컬럼명 변경
     changeColumnName(v, column){
-        console.log('changeColumnName')
         let arrayIdx = this.findColumnIdx(column.idx);
         this.setState({
             columns:update(
@@ -336,7 +332,6 @@ class NewDataset extends Component {
 
     //컬럼 타입변경
     changeColumnType(v, column){
-        console.log('changeColumnType')
         if(v==this.state.selectedColumn.value_type){
             return;
         }
@@ -378,7 +373,6 @@ class NewDataset extends Component {
 
     //컬럼 필수여부 변경
     changeColumnRequired(v, column){
-        console.log('changeColumnRequired')
         
         let arrayIdx = this.findColumnIdx(column.idx);
         this.setState({
@@ -402,7 +396,6 @@ class NewDataset extends Component {
 
     //컬럼삭제
     deleteColumn(column){
-        console.log('deleteColumn');
         let arrayIdx = this.findColumnIdx(column.idx);
         this.setState({
             columns: update(
@@ -424,7 +417,6 @@ class NewDataset extends Component {
 
     //컬럼 추가 
     addColumn(){
-        console.log('addColumn');
         let columns = this.state.columns;
         let newColumnIdx=0
         
@@ -543,7 +535,6 @@ class NewDataset extends Component {
 
         return (
             <div style={{margin:30,textAlign:'left'}}>
-                {/* <div onClick={()=>console.log(this.state)}>state확인</div> */}
                 <h2>현장실습 데이터 생성</h2>
                 <div style={{display:'grid',gridTemplateColumns:'75% 25%',height:400, marginTop:20}}>
                     <Paper style={{gridColumn:'1',gridRow:'1'}}>

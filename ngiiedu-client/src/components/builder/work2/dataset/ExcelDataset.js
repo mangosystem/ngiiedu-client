@@ -49,7 +49,6 @@ class ExcelDataset extends Component {
     }
 
 
-    // componentWillMount() { console.log('componentWillMount');} 
     componentDidMount() {
         var setFileName = this.setFileName.bind(this);
         let setType = this.setType.bind(this);
@@ -59,10 +58,6 @@ class ExcelDataset extends Component {
             setType(type);
             setFileName(document.getElementById('uploadFile').files[0].name)
         });
-     
-        
-
-
     } 
 
     setFileName(v){
@@ -83,7 +78,6 @@ class ExcelDataset extends Component {
     createDataset(){
         let courseId=this.props.match.params.COURSEID;
         let courseWorkId = this.props.match.params.WORKID;
-        // var files = document.getElementById('uploadForm');
 //폼객체를 불러와서
 // var form = $('uploadForm')[0];
 //FormData parameter에 담아줌
@@ -126,64 +120,6 @@ class ExcelDataset extends Component {
         }
         
         form.append('options',JSON.stringify(options))
-        // form.append('options',"")
-
-        // let ajaxData = {
-        //     // courseId:this.props.match.params.COURSEID,
-        //     // courseWorkId:this.props.match.params.WORKID,
-        //     options:options,
-        //     uFile:formData
-
-        // }
-
-        // ajaxJson(
-        //     ['POST', apiSvr + '/coursesWork/dataset.json'],
-        //     {
-        //         courseId:this.props.match.params.COURSEID,
-        //         courseWorkId:this.props.match.params.WORKID,
-        //         options:options,
-        //         uFiles:form
-        //     },
-		// 	function (data) {
-		// 	//   let columns =data.response.data.data
-		// 	//   this.setState({
-		// 	// 	layerColumns:columns
-		// 	//   })
-		// 	//   console.log('columns');
-        //       console.dir(columns);
-              
-		// 	  // console.log('ajaxcolumn')
-		// 	  // console.dir(data.response.data.data);
-		// 	}.bind(this),
-		// 	function (xhr, status, err) {
-		// 	  alert('Error');
-		// 	}.bind(this)
-        //   );
-        //   $.ajax({
-        //     method: "POST",
-        //     dataType: 'json',
-        //     processData: false,
-        //     contentType: false,
-        //     // cache: false,
-        //     url:  apiSvr + '/coursesWork/dataset/'+courseId +'/'+courseWorkId+'.json',
-        //     data: {
-        //         // courseId:courseId,
-        //         // courseWorkId:courseWorkId,
-        //         options:JSON.stringify(options),
-        //         uFile:formData
-        //     },
-        //     // processData: true=> get방식, false => post방식
-        //     //dataType: "text",
-        //     // contentType: true => application/x-www-form-urlencoded, 
-        //     //                false => multipart/form-data
-        //     //processData: false,
-        //     //contentType: false,
-        //     success: function(data){
-        //         console.dir(data);
-        //         alert(data);
-        //     }
-        // });
-
 
         $.ajax({
             type: "post",
@@ -196,7 +132,6 @@ class ExcelDataset extends Component {
             processData: false,
             contentType: false,
             success: function(data){
-                alert(data);
             }
         });
     }
@@ -251,7 +186,6 @@ class ExcelDataset extends Component {
             title:value
         })
 
-        // console.log(value)
     }
 
     sridHandler(e, i, v){
@@ -284,7 +218,7 @@ class ExcelDataset extends Component {
         ]
 
         let uploadexplan = {
-            xlxs : ['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
+            xlsx : ['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
             xls:['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.'],
             csv:['데이터의 필드명은 해당 파일의 첫번째 열에 있어야 합니다.','데이터의 기본 SRID는 3857 입니다.','csv구분자는 ,로 구분해 주시기 바랍니다.'],
             zip:['좌표정보를 가진 PRJ파일을 동봉한 zip파일을 업로드해야 합니다.','PRJ 파일이 없을 시 기본 SRID는 3857 입니다.'],
@@ -384,18 +318,17 @@ class ExcelDataset extends Component {
             <br/>
             <Paper style={{marginTop:20,marginBottom:20,textAlign:'center',padding:'20px 0'}}>
                     
-                    <form id="uploadForm" style={{marginTop:30,marginBottom:20}}>
-                        <div className="filebox">
-                            {/* <input type="file" id="uploadFile" name="uFile"/> */}
+                <form id="uploadForm" style={{marginTop:30,marginBottom:20}}>
+                    <div className="filebox">
 
-                            <input className="upload-name" value={this.state.fileName} disabled="disabled"/> 
-                            <label htmlFor="uploadFile">업로드</label>
-                            <input type="file" name="uFile" id="uploadFile" className="upload-hidden"/> 
-                        </div>
-                    </form>
-                      {dataOption}
+                        <input className="upload-name" value={this.state.fileName} disabled="disabled"/> 
+                        <label htmlFor="uploadFile">업로드</label>
+                        <input type="file" name="uFile" id="uploadFile" className="upload-hidden"/> 
+                    </div>
+                </form>
+                    {dataOption}
 
-                </Paper>
+            </Paper>
                 
                 
                 <Divider style={{marginTop:20,marginBottom:20,zIndex:100}}/>

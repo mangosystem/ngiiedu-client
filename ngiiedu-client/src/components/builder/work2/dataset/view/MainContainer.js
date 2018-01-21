@@ -63,7 +63,6 @@ class MainContainer extends React.Component {
   
 
   componentWillMount() {
-      console.log('componentWillMount')
     let layerId = this.props.match.params.DATASETID;
     let raster = new ol.layer.Image({
       source: new ol.source.ImageWMS({
@@ -115,7 +114,6 @@ class MainContainer extends React.Component {
                     // img.src = url;
                     img.onload = function(){
                         w= this.width;
-                        console.log( this.width+' '+ this.height );
                         cache[url].getImage().setScale(128/w);
                     };
                     img.src = url;
@@ -229,7 +227,6 @@ class MainContainer extends React.Component {
             // layerColumns:columns,
             toggleVisible:toggleVisible
         })
-          console.log('toggleVisible : '+toggleVisible);
 
         }.bind(this),
         function (xhr, status, err) {

@@ -46,7 +46,6 @@ class MenuPanel extends React.Component {
           null,
           function(res){
             var data = res.response.data;
-            // console.dir(data);
             var CJS01=[]; //승인대기
             var CJS02=[]; //참여자
             var CJS03=[]; //??  

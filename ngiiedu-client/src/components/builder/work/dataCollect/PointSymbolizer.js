@@ -73,29 +73,15 @@ class PointSymbolizer extends React.Component {
         this.styleTypeChange = this.styleTypeChange.bind(this);
         
 	}
-///
-// componentDidMount() { console.log('componentDidMount'); }
-//   shouldComponentUpdate(nextProps, nextState) { console.log('shouldComponentUpdate'); return true / false; } 
-//   componentWillUpdate(nextProps, nextState) { console.log('componentWillUpdate'); } 
-//   componentDidUpdate(prevProps, prevState) { console.log('componentDidUpdate'); } 
-//   componentWillUnmount() { console.log('componentWillUnmount'); } 
-
-
-///
 
 
 	componentWillReceiveProps(nextProps) {
-        console.log('PointSymbolizer componentWillReceiveProps');
-        console.dir(nextProps.column)
-        console.dir(this.props.styles);
         if (this.props.styles != null) {
             this.setState({
                 styleType: this.props.styles.styleType != undefined ? this.props.styles.styleType : 'SINGLE',
             })
 			let options = this.props.styles.options;
 			if (options != undefined) {
-                console.log('options')
-                console.dir(options)
                 if(options.fillColor != undefined &&options.fillOpacity != undefined ){
                     var color = options.fillColor.replace('#','');
                     var r = parseInt(color.substring(0,2), 16);
@@ -152,32 +138,11 @@ class PointSymbolizer extends React.Component {
 			});
 		}
         
-        console.log('column')
-        console.dir(this.props.column)
 	}
 
-	componentWillMount() {
-        console.debug('PointSymbolizer componentWillMount');
-        //defaultRandomColor
-        // var letters = '0123456789ABCDEF';
-        // var defaultFillColor = '#';
-        // var defaultStrokeColor = '#';
-        // for (var i = 0; i < 6; i++) {
-        //     defaultFillColor += letters[Math.floor(Math.random() * 16)];
-        //     defaultStrokeColor += letters[Math.floor(Math.random() * 16)];
-        // }        
-
-        // this.setState({
-        //     randomFillColor: defaultFillColor,
-        //     randomStrokeColor: defaultStrokeColor
-        // })
-
-		
-	}
 
     //Marker
     handleChangeMarker(event, index, value){
-        console.log('markerType : ' + value);
         this.setState({
             markerType:value
         })
@@ -186,7 +151,6 @@ class PointSymbolizer extends React.Component {
 
     //MarkerSize
     handleChangeMarkerSize(event, index, value){
-        console.log('markerSize : ' + value);
         this.setState({
             markerSize:value
         })
@@ -230,8 +194,6 @@ class PointSymbolizer extends React.Component {
 
         });
 
-        console.log('fillColor : '+ color);
-
     }
 
     //StrokeColor
@@ -272,13 +234,10 @@ class PointSymbolizer extends React.Component {
 
         });
 
-        console.log('StrokeColor : '+ color);
-        
     }
 
     //StrokeWidth
     handleChangeStrokeWidth(event, index, value){
-        console.log('StrokeWidth : ' + value);
         this.setState({
             strokeWidth:value
         })
@@ -286,7 +245,6 @@ class PointSymbolizer extends React.Component {
 
     //Column
     handleChangeColumn(event, index, value){
-        console.log('Column : '+ value);
         this.setState({
             columnName:value
         })
@@ -298,7 +256,6 @@ class PointSymbolizer extends React.Component {
 
     //Classification
     handleChangeClassification(event, index, value){
-        console.log('Classification : '+ value);
         this.setState({
             classification:value
         })
@@ -306,7 +263,6 @@ class PointSymbolizer extends React.Component {
 
     //ClassesNum
     handleChangeClassesNum(event, index, value){
-        console.log('ClassesNum : '+ value);
         this.setState({
             classesNumber:value
         })
@@ -314,7 +270,6 @@ class PointSymbolizer extends React.Component {
 
     //Reverse
     handleChangeReverse(event, bool){
-        console.log('Reverse : '+bool);
         this.setState({
             reverse:bool
         })
@@ -322,7 +277,6 @@ class PointSymbolizer extends React.Component {
 
     //RangeSize - min
     handleChangeRangeSizeMin(event, index, value){
-        console.log('minSize : '+value);
         this.setState({
             minSize:value
         })
@@ -330,7 +284,6 @@ class PointSymbolizer extends React.Component {
 
     //RangeSize - max
     handleChangeRangeSizeMax(event, index, value){
-        console.log('maxSize : '+value);
         this.setState({
             maxSize:value
         })
@@ -338,7 +291,6 @@ class PointSymbolizer extends React.Component {
 
     //FillPalette
     handleChangeFillPalette(event, index, value){
-        console.log('FillPalette : '+value);
         this.setState({
             fillPalette:value
         })
@@ -346,7 +298,6 @@ class PointSymbolizer extends React.Component {
 
     //FillPalette
     handleChangeFillOpacity(event, index, value){
-        console.log('FillOpacity : '+value);
         this.setState({
             fillOpacity:value
         })
@@ -374,7 +325,6 @@ class PointSymbolizer extends React.Component {
 
             style.options = options;
             style.styleType = 'SINGLE'
-            console.dir(style);
 
         }else if(this.state.styleType == 'GRADUATED'){
             let option = {
@@ -394,7 +344,6 @@ class PointSymbolizer extends React.Component {
 
             style.options = option;
             style.styleType = 'GRADUATED';
-            console.log(style);
 
         }else if(this.state.styleType == 'CATEGORIES'){
             let option = {
@@ -408,7 +357,6 @@ class PointSymbolizer extends React.Component {
             }
             style.options = option;
             style.styleType = 'CATEGORIES';
-            console.log(style);
 
         }else if(this.state.styleType == 'BUBBLE'){
             let option = {
@@ -422,13 +370,11 @@ class PointSymbolizer extends React.Component {
             }
             style.options = option;
             style.styleType = 'BUBBLE';
-            console.log(style);
             
         }else if(this.state.styleType == 'HEATMAP'){
 
         }
         var layerId = this.props.layerId;
-        console.log(layerId)
         // var layerId = 'd=KjCXc4dmy9';
         // var layerId = 'l=AnyangDong';
         ajaxJson(

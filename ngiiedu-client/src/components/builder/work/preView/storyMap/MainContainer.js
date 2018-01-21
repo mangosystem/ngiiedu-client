@@ -29,7 +29,6 @@ class MainContainer extends React.Component {
   }
 
     handleChangeTap(layerName,index){
-        console.log('handleChangeTap')
         
         if(index==this.state.selectedMenuIndex){
             // index=-1;
@@ -45,7 +44,6 @@ class MainContainer extends React.Component {
     }
 
   handleChangeAccordion(layerName,index){
-      console.log('handleChangeAccordion')
     if(index==this.state.selectedMenuIndex){
         // index=-1;
     }else{
@@ -68,9 +66,7 @@ class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount')
     let mapsId = this.props.match.params.LAYERID
-    console.log(mapsId)
 
 
     // ajax 처리 및 props 전달 필요
@@ -86,13 +82,11 @@ class MainContainer extends React.Component {
                 
             },function(){
                 if(this.state.storyMapData!=null){
-                    console.log('storymap')
                     let firstItemLayerName = JSON.parse(this.state.storyMapData.items[0].metadata).type;
                     this.setState({
                         selectedLayerName: firstItemLayerName,
                     })
                     this.layerLoad(firstItemLayerName)
-                      console.log('layerId'+firstItemLayerName)
                 }
             })
         }.bind(this),

@@ -49,16 +49,11 @@ class SampleCheckEdit extends Component {
     }
 
     handleChange(event, key, value, idx){
-        console.dir('event:'+event);
-        console.log('key:'+key);
-        console.log('value:'+value);
-        console.log('idx:'+idx);
         let dbColumnIndex = this.state.dbColumnIndex;
         dbColumnIndex[idx]=key;
         this.setState({
             dbColumnIndex:dbColumnIndex
         });
-        console.log("dbColumnIndex"+this.state.dbColumnIndex);
 
         var styleArray=[];
         for(var i =0;i<this.props.apiColumn.length;i++){
@@ -343,7 +338,6 @@ const mapDispatchToProps = (dispatch) => ({
 
         handleNextStep: (dbColumnIndex,apiColumn,dbColumn) => {
             var editColumn =[];
-            console.log("db인덱스요:"+dbColumnIndex.toString());
             for(var i=0;i<dbColumnIndex.length;i++){
 
                 if(dbColumnIndex[i]==-1){

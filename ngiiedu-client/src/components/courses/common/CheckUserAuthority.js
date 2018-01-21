@@ -17,10 +17,8 @@ const CheckUserAuthority = (courseId,Idx) => {
       success:  
       function(res){
                 var data = res.response.data;
-                console.dir(data);
                   for(var i=0;i<data.length;i++){
                     if(data[i].userId==Idx && data[i].joinStatus == 'CJS02'){
-                      console.log('isMember');
                       isMember=true;
                     }
                   }
@@ -28,7 +26,6 @@ const CheckUserAuthority = (courseId,Idx) => {
     });
  
     //owner여부 체크
-    // console.dir(this.props.loginStatus.userIdx)
     // var userIdx = this.props.loginStatus.userIdx
     $.ajax({
       method:'GET',
@@ -38,7 +35,6 @@ const CheckUserAuthority = (courseId,Idx) => {
       success:  
         function(res){
           if(res.response.data.courseCreateId == Idx){
-            console.log('isOwner');
               isOwner=true
           }else{
               isOwner=false

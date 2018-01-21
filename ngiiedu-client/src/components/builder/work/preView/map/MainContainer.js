@@ -58,7 +58,6 @@ class MainContainer extends React.Component {
         ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
         null,
         function(res){
-          console.log('bounds :' +  res.response.data.data.bounds )
             this.setState({
               title:res.response.data.data.title,
               bounds:res.response.data.data.bounds!=null?res.response.data.data.bounds:null,

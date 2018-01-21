@@ -94,7 +94,6 @@ class MainContainer extends React.Component {
             maps
         });
 
-        console.log(this.state.maps);
     }
 
     //데이터 수정

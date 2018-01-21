@@ -55,9 +55,6 @@ class MainContainer extends React.Component {
   }
 
   workList(data){
-    console.log('workList');
-    console.dir(data)
-    // var workList = {workId-courseworkSubId:};
     var a = {
       "workId-CourseworkSubId": {
         name : [
@@ -93,7 +90,6 @@ class MainContainer extends React.Component {
       workList:workList
     })
 
-    console.dir(workList)
 
   }
 
@@ -111,7 +107,6 @@ class MainContainer extends React.Component {
             });
           }
         } else {
-          alert(res.response.message);
         }
 			}.bind(this),
       null
@@ -136,7 +131,6 @@ class MainContainer extends React.Component {
   }
 
   handleExpandChange(expanded) {
-    console.log(expanded +','+ this.state.expanded)
     if(this.state.expanded==expanded){
       this.setState({expanded:-1});
     }else{

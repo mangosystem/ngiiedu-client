@@ -29,7 +29,6 @@ class JoinDataset extends Component {
     //2page
     //x y 좌표 변경 이벤트
     handleChange(type, value){
-        console.log(type +', '+value)
         if(type=='BD'){
             this.setState({
                 baseDataset:value  
@@ -51,7 +50,7 @@ class JoinDataset extends Component {
     }
 
     createDataset(){
-        alert('데이터 생성완료 페이지이동')
+        // alert('데이터 생성완료 페이지이동')
     }
 
 

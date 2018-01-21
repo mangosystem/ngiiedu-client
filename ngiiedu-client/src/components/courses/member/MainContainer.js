@@ -67,13 +67,11 @@ class MainContainer extends React.Component {
         status:status
       },
       function(res){
-        // console.dir(res);
         this.ajaxCall();
       }.bind(this)
     )
 
 
-    // alert(courseId+', '+userId+', '+status);
   }
 
   handleExpandChange(expand) {
@@ -92,7 +90,6 @@ class MainContainer extends React.Component {
       null,
       function(res){
         var data = res.response.data;
-        // console.dir(data);
         var CJS01=[];
         var CJS02=[];
         var CJS03=[];
@@ -145,7 +142,6 @@ class MainContainer extends React.Component {
 
   componentDidMount() {
     this.ajaxCall();
-    console.dir(this.props)
 
     //redux owner, member 정보 확인
     let courseId = this.props.match.params.COURSEID;

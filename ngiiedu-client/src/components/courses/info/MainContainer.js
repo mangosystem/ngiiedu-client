@@ -131,7 +131,6 @@ class MainContainer extends React.Component {
       ['PUT', apiSvr + '/courses/' + this.state.courseid + '.json'],
 			data,
 			function(data) {
-        //console.log("수정됨");
 			}.bind(this),
 			function(xhr, status, err) {
 				console.error(status, err.toString());

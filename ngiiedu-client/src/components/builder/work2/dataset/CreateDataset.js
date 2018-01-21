@@ -51,70 +51,75 @@ class CreateDataset extends Component {
                 <Paper style={{width:1024, padding:20,paddingBottom:50}}>
                     <h3 className='edge'> 데이터 추가 </h3>
                     <div >
-                    <Tabs
-                        tabItemContainerStyle={{backgroundColor:'#3e81f6'}}
-                    >
-                        <Tab label="데이터 생성" 
-                            buttonStyle={{fontSize:20}}
-                            onActive={()=>this.tapChange('newDataset')}
-                            
-                            
-                        >   
-                            {this.state.tabStep == 'newDataset'?
-                                <NewDataset
-                                    handleStep={this.props.handleStep}
-                                    courseWorkSubId = {this.props.courseWorkSubId}
-                                />
-                            :
-                                null
-                            }
-                        </Tab>
-
-                        <Tab label="파일 업로드" 
-                            buttonStyle={{fontSize:20}}
-                            onActive={()=>this.tapChange('file')}
-                            
-                            
-                        >   
-                            {this.state.tabStep == 'file'?
-                                <ExcelDataset
-                                    handleStep={this.props.handleStep}
-                                />
-                            :
-                                null
-                            }
-                        </Tab>
-                        
-                        {/* <Tab label="구글 시트" 
-                            buttonStyle={{fontSize:20}}
-                            onActive={()=>this.tapChange('google')}
-                            
+                    {this.props.option == 'datasetPopulation' ?
+                        <BoundaryJoinDataset
+                            handleStep={this.props.handleStep}
+                        />
+                    :
+                        <Tabs
+                            tabItemContainerStyle={{backgroundColor:'#3e81f6'}}
                         >
-                            {this.state.tabStep == 'google'?
-                                <GoogleDataset
-                                    handleStep={this.props.handleStep}
-                                />
-                            :
-                                null
-                            }
-                            
-                        </Tab>
+                            <Tab label="데이터 생성" 
+                                buttonStyle={{fontSize:20}}
+                                onActive={()=>this.tapChange('newDataset')}
+                                
+                                
+                            >   
+                                {this.state.tabStep == 'newDataset'?
+                                    <NewDataset
+                                        handleStep={this.props.handleStep}
+                                        courseWorkSubId = {this.props.courseWorkSubId}
+                                    />
+                                :
+                                    null
+                                }
+                            </Tab>
 
-                        <Tab label="행정경계 결합" 
-                            buttonStyle={{fontSize:20}}
-                            onActive={()=>this.tapChange('join')}
+                            <Tab label="파일 업로드" 
+                                buttonStyle={{fontSize:20}}
+                                onActive={()=>this.tapChange('file')}
+                            >   
+                                {this.state.tabStep == 'file'?
+                                    <ExcelDataset
+                                        handleStep={this.props.handleStep}
+                                    />
+                                :
+                                    null
+                                }
+                            </Tab>
                             
-                        >
-                            {this.state.tabStep == 'join'?
-                                <BoundaryJoinDataset
-                                    handleStep={this.props.handleStep}
-                                />
-                            :
-                                null
-                            }
                             
-                        </Tab> */}
-                    </Tabs>
+                            <Tab label="구글 시트" 
+                                buttonStyle={{fontSize:20}}
+                                onActive={()=>this.tapChange('google')}
+                                
+                            >
+                                {this.state.tabStep == 'google'?
+                                    <GoogleDataset
+                                        handleStep={this.props.handleStep}
+                                    />
+                                :
+                                    null
+                                }
+                                
+                            </Tab>
+    {/* 
+                            <Tab label="행정경계 결합" 
+                                buttonStyle={{fontSize:20}}
+                                onActive={()=>this.tapChange('join')}
+                                
+                            >
+                                {this.state.tabStep == 'join'?
+                                    <BoundaryJoinDataset
+                                        handleStep={this.props.handleStep}
+                                    />
+                                :
+                                    null
+                                }
+                                
+                            </Tab> */}
+                        </Tabs>
+                    }
                     </div>
                     
 

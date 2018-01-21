@@ -33,7 +33,6 @@ class ModifyMaps extends Component {
 
         let { map } = this.props;
 
-        console.log(map);
 
         this.setState({
             mapsType: map.pngoData.mapsType,
@@ -133,7 +132,6 @@ class ModifyMaps extends Component {
                 pinoLayer: layerId
             },
             function (data) {
-                console.log(data);
             }.bind(this),
             function (xhr, status, err) {
                 alert('Error');
@@ -152,7 +150,6 @@ class ModifyMaps extends Component {
                     pinoLayer: layerId2
                 },
                 function (data) {
-                    console.log(data);
                 }.bind(this),
                 function (xhr, status, err) {
                     alert('Error');

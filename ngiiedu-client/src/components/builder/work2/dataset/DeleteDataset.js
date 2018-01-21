@@ -21,8 +21,6 @@ class DeleteDataset extends React.Component {
         let idx = this.props.data.idx;
 
         let deleteDataseHandle = this.props.deleteDatasetHandle;
-        // console.log(datasetId)
-        // console.log(idx)
         // DB 데이터에서 삭제
         ajaxJson(
             ['DELETE', apiSvr + '/coursesWork/dataset/' + datasetId + '.json'],

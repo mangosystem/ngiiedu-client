@@ -38,7 +38,6 @@ class MainContainer extends React.Component {
     }
 
     componentDidMount(){
-        //console.log(this.props.history);
         this.getDataList();
     }
 	
@@ -52,8 +51,6 @@ class MainContainer extends React.Component {
                 if(data.response.data!=null && data.response.data.length!=0){
                     this.setState({
                         data:data.response.data
-                    },function(){
-                        //console.log(this.state.data)
                     });
 
                     if (this.props.history.action == 'PUSH' && this.props.history.location.state) {
@@ -101,6 +98,15 @@ class MainContainer extends React.Component {
                     getDataList={this.getDataList}
                 />
                 :
+                this.state.workType=='datasetPopulation'?
+                <DatasetMain
+                    courseId={this.props.match.params.COURSEID}
+                    workId={this.props.match.params.WORKID} 
+                    data={this.state.data}
+                    getDataList={this.getDataList}
+                    option={this.state.workType}
+                />
+                :
                 this.state.workType=='layer'?
                 <LayerMain
                     courseId={this.props.match.params.COURSEID}
@@ -124,7 +130,7 @@ class MainContainer extends React.Component {
                     workId={this.props.match.params.WORKID} 
                     data={this.state.data}
                     getDataList={this.getDataList}
-                    option={"populationLayer"}
+                    option={this.state.workType}
                 />
                 :
                 null}

@@ -77,7 +77,6 @@ class CreateItems extends Component {
                 
                 let mapsItem = JSON.parse(JSON.stringify(data)).response.data.data;
                 this.props.addItems(mapsItem);
-                //console.log(mapsItem);
     
             }.bind(this),
             function (xhr, status, err) {
