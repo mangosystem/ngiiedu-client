@@ -14,15 +14,13 @@ class Footer extends React.Component {
     return (
       <footer id="footer">
         <div className={this.props.wide ? "inner wide" : "inner"}>
-          <nav>
-            <a href="#">이용약관</a>
-            <a href="#">위치기반서비스이용약관</a>
-            <a href="#">개인정보처리방침</a>
-            <a href="#">오픈소스라이센스</a>
-          </nav>
-          <address>
-            Copyright © <a href="http://www.ngii.go.kr/" target="_blank">NGII.</a>All rights reserved.
-          </address>
+          <div style={{position:"absolute", top:40}}>
+            <img src="/ngiiedu/assets/images/ft_logo.png"/>
+          </div>
+          <ul>
+            <li>이용약관</li>
+            <li>오픈소스라이센스</li>
+          </ul>
         </div>
       </footer>
     );
