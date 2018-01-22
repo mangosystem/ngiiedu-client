@@ -54,6 +54,7 @@ class CreateDataset extends Component {
                     {this.props.option == 'datasetPopulation' ?
                         <BoundaryJoinDataset
                             handleStep={this.props.handleStep}
+                            courseWorkSubId = {this.props.courseWorkSubId}
                         />
                     :
                         <Tabs
@@ -82,6 +83,7 @@ class CreateDataset extends Component {
                                 {this.state.tabStep == 'file'?
                                     <ExcelDataset
                                         handleStep={this.props.handleStep}
+                                        courseWorkSubId = {this.props.courseWorkSubId}
                                     />
                                 :
                                     null

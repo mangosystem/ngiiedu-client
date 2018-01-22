@@ -130,21 +130,21 @@ class MainContainer extends React.Component {
         if(this.props.option=="populationLayer"){
 
             let data  =[
-                {idx:'1', outputName:'2000년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2000_pop'},
-                {idx:'2', outputName:'2000년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2000_pop'},
-                {idx:'3', outputName:'2000년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2000_pop'},
-                {idx:'4', outputName:'2005년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2005_pop'},
-                {idx:'5', outputName:'2005년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2005_pop'},
-                {idx:'6', outputName:'2005년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2005_pop '},
-                {idx:'7', outputName:'2010년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2010_pop'},
-                {idx:'8', outputName:'2010년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2010_pop'},
-                {idx:'8', outputName:'2010년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2010_pop'},
-                {idx:'9', outputName:'2015년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2015_pop'},
-                {idx:'10', outputName:'2015년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2015_pop'},
-                {idx:'11', outputName:'2015년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2015_pop'},
-                {idx:'12', outputName:'2016년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2016_pop'},
-                {idx:'13', outputName:'2016년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2016_pop'},
-                {idx:'14', outputName:'2016년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2016_pop'}
+                {idx:'1', outputName:'2000년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2000_pop_v'},
+                {idx:'2', outputName:'2000년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2000_pop_v'},
+                {idx:'3', outputName:'2000년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2000_pop_v'},
+                {idx:'4', outputName:'2005년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2005_pop_v'},
+                {idx:'5', outputName:'2005년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2005_pop_v'},
+                {idx:'6', outputName:'2005년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2005_pop_v'},
+                {idx:'7', outputName:'2010년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2010_pop_v'},
+                {idx:'8', outputName:'2010년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2010_pop_v'},
+                {idx:'8', outputName:'2010년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2010_pop_v'},
+                {idx:'9', outputName:'2015년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2015_pop_v'},
+                {idx:'10', outputName:'2015년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2015_pop_v'},
+                {idx:'11', outputName:'2015년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2015_pop_v'},
+                {idx:'12', outputName:'2016년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2016_pop_v'},
+                {idx:'13', outputName:'2016년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2016_pop_v'},
+                {idx:'14', outputName:'2016년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2016_pop_v'}
             ]
 
             this.setState({ 
