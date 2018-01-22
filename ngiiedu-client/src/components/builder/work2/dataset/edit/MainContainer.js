@@ -334,10 +334,6 @@ class MainContainer extends React.Component {
 			  this.setState({
 				layerColumns:columns
 			  })
-			  console.log('columns');
-			  console.dir(columns);
-			  // console.log('ajaxcolumn')
-			  // console.dir(data.response.data.data);
 			}.bind(this),
 			function (xhr, status, err) {
 			  alert('Error');
@@ -553,9 +549,7 @@ class MainContainer extends React.Component {
             interactions.select.setActive(true);
             //객체선택
             interactions.select.getFeatures().on('add', (e) => {
-                console.log('객체선택!')
                 // if(this.state.saveType=='firstClick'){this.setState({saveType:'save'});return;}
-                console.dir(e.element);
                 // this.state.overlay.setPosition(e.element.values_.geometry.flatCoordinates);
                 this.setState({
                     infoDisplayNone:false,
@@ -585,8 +579,6 @@ class MainContainer extends React.Component {
                             rowId : e.element.id_.split('.')[1]
                         },
                         function (res) {
-                            console.log('row-> value')
-                            console.dir(res.response.data.data);
                             if (!interactions.draw.getActive()) {
                                 this.onChangeEditMode('edit', res.response.data.data);
                             };
@@ -617,7 +609,6 @@ class MainContainer extends React.Component {
 
             //객체선택 해제
             interactions.select.getFeatures().on('remove', (e) => {
-                console.log('객체선택해제!')
                 this.onChangeEditMode('null', {});
 
                 if (this.props.editingFeature == true) {
@@ -650,7 +641,6 @@ class MainContainer extends React.Component {
                 // this.setState({
                 //     wfsFeatureInfo: e.features.getArray()[0].values_
                 // });
-                console.log('객체수정시작')
             });
 
             //객체수정 완료
@@ -661,13 +651,11 @@ class MainContainer extends React.Component {
 
             //객체추가 그리기 시작
             interactions.draw.on('drawstart', (e) => {
-                console.log('객체추가그리기시작!')
                 interactions.select.setActive(false);
             });
 
             //객체추가 그리기 완료
             interactions.draw.on('drawend', (e) => {
-                console.log('객체추가그리기완료!')
                 interactions.draw.setActive(false);
                 this.setState({
                     featureGeometry : e.feature.getGeometry(),
@@ -705,10 +693,6 @@ class MainContainer extends React.Component {
             dataType: 'jsonp',
             success: function (response) {
                 let feature = new ol.format.GeoJSON().readFeatures(response);
-                console.log('feature')
-                console.dir(feature)
-                console.log('response')
-                console.dir(response)
 
                 if (feature.length == 0) {
                     setFeatureInfo([])
@@ -729,7 +713,6 @@ class MainContainer extends React.Component {
 
     //toggleEdit
     toggleEdit(checked) {
-        // alert(checked)
 
         let { map } = this.state;
 
@@ -783,7 +766,6 @@ class MainContainer extends React.Component {
 
     //객체 수정 listner 함수 (위치정보)
     replaceProperties(e){
-        console.log('객체수정완료')
         // var selectedGeometry = e.features.getArray()[0].getGeometry();
         var sourceCRS = 'EPSG:3857';
         var transformCRS = 'EPSG:3857';
@@ -796,7 +778,6 @@ class MainContainer extends React.Component {
 
     //수정 || 저장
     saveButton(){
-        // alert('save')
         var layerColumns = this.state.layerColumns;
         let layerName = this.props.match.params.DATASETID;
         let type = this.state.saveType;
@@ -834,7 +815,6 @@ class MainContainer extends React.Component {
             }
             
             let contentJson = JSON.stringify(properties);
-            console.log(contentJson)
             ajaxJson(
                 ['PUT',apiSvr +'/coursesWork/dataset/row.json'],
                 {
@@ -843,8 +823,6 @@ class MainContainer extends React.Component {
                     contentJson : contentJson
                 },
                 function(res){
-                    console.log('data replace');
-                    console.dir(res)
                     this.geometryTransform(geometry,transformCRS,sourceCRS);
                     this.setState({
                         wfsFeatureInfo:{}
@@ -884,7 +862,6 @@ class MainContainer extends React.Component {
 
             
             let contentJson = JSON.stringify(properties);
-            console.log(contentJson);
             ajaxJson(
                 ['POST',apiSvr+'/coursesWork/dataset/row.json'], // ['POST',apiSvr+'/pngo/dataset/row.json'],
                 {'datasetId':layerName, 'contentJson':contentJson}, //{'pinogioOutputId':datasetId, 'contentJson':contentJson},
@@ -927,7 +904,6 @@ class MainContainer extends React.Component {
     }
 
     closeButton(){
-        // alert('close');
         this.setState({
             infoDisplayNone:true
         })
@@ -964,7 +940,6 @@ class MainContainer extends React.Component {
 
     //객체 추가 버튼 클릭 시
     onClickAdd(){
-        console.log('onClickAdd');
         var interactions = this.state.interactions;
         this.state.interactions.draw.setActive(true);
         this.state.interactions.modify.setActive(false);
@@ -978,7 +953,6 @@ class MainContainer extends React.Component {
 
     //객체 삭제 버튼 클릭 시 
     onClickDelete(){
-        console.log('onClickDelete');
         var interactions = this.state.interactions;
         interactions.select.getFeatures().clear();
         this.state.interactions.draw.setActive(false);
@@ -1004,7 +978,6 @@ class MainContainer extends React.Component {
     
           }.bind(this),
           function(e){
-            console.log(e);
           }
         );
     
@@ -1012,7 +985,6 @@ class MainContainer extends React.Component {
 
     //작업 초기화 버튼 클릭 시
     onClickClear(){
-        console.log('onClickClear');
         var interactions = this.state.interactions
         interactions.select.getFeatures().clear();
         interactions.draw.setActive(false);
