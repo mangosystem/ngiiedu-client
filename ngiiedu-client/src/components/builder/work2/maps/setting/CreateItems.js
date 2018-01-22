@@ -36,7 +36,7 @@ class CreateItems extends Component {
             function (data) {
                 
                 let workSubData = JSON.parse(JSON.stringify(data)).response.data;
-                let items = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+                let items = workSubData.filter(val =>(val.outputType == 'layer'||val.outputType=='populationLayer'))[0].workOutputList;
 
                 if (items.length == 0) {
                     items = [{}];

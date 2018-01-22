@@ -347,7 +347,7 @@ addBaseLayer(map) {
           opacity: 0.6,
           source: new ol.source.ImageWMS({
             ratio: 1,
-            url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+            url: pinoSvr+'/geoserver/pinogio/wms',
             params: {
               'FORMAT': 'image/png',
               'VERSION': '1.3.0',
@@ -367,9 +367,6 @@ addBaseLayer(map) {
     <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} >
         <div id="mapView" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
         
-        {/* <div style={{position:'absolute',right:100,bottom:100,zIndex:1}}>
-        <img src={"http://1.234.82.19:8083/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:"+this.props.layerName}/>
-        </div> */}
         </div>
     </div>
 

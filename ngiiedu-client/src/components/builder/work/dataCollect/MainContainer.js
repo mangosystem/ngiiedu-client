@@ -216,7 +216,7 @@ class MainContainer extends React.Component {
 
         try {
           //  let subjectMap = workSubData.filter(val => (val.outputType == 'layer'))[0].courseWorkSubOutputInfoList;
-          let subjectMap = workSubData.filter(val => (val.outputType == 'layer'))[0].workOutputList;
+          let subjectMap = workSubData.filter(val => (val.outputType == 'layer'||val.outputType=='populationLayer'))[0].workOutputList;
           
           this.setState({
             subjectMap: subjectMap
@@ -1056,7 +1056,7 @@ class MainContainer extends React.Component {
     let raster = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+        url: pinoSvr+'/geoserver/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -1081,7 +1081,7 @@ class MainContainer extends React.Component {
         format: new ol.format.GeoJSON(),
         loader: function(extent, resolution, projection) {
 
-          let url = 'http://1.234.82.19:8083/geoserver/pinogio/wfs?request=GetFeature' +
+          let url = pinoSvr+'/geoserver/pinogio/wfs?request=GetFeature' +
             '&version=1.0.0' +
             // '&typeName=pinogio:d=KjCXc4dmy9' +
             '&typeName=pinogio:' +layerName+

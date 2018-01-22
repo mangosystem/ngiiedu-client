@@ -129,48 +129,67 @@ class MainContainer extends React.Component {
     getDatasetList(){
         if(this.props.option=="populationLayer"){
 
-            let data  =[
-                {idx:'1', outputName:'2000년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2000_pop'},
-                {idx:'2', outputName:'2000년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2000_pop'},
-                {idx:'3', outputName:'2000년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2000_pop'},
-                {idx:'4', outputName:'2005년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2005_pop'},
-                {idx:'5', outputName:'2005년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2005_pop'},
-                {idx:'6', outputName:'2005년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2005_pop'},
-                {idx:'7', outputName:'2010년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2010_pop'},
-                {idx:'8', outputName:'2010년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2010_pop'},
-                {idx:'8', outputName:'2010년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2010_pop'},
-                {idx:'9', outputName:'2015년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2015_pop'},
-                {idx:'10', outputName:'2015년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2015_pop'},
-                {idx:'11', outputName:'2015년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2015_pop'},
-                {idx:'12', outputName:'2016년 시도 인구', pinogioOutputId:'dl=bnd_sido_pg_2016_pop'},
-                {idx:'13', outputName:'2016년 시군구 인구', pinogioOutputId:'dl=bnd_sigungu_pg_2016_pop'},
-                {idx:'14', outputName:'2016년 행정동 인구', pinogioOutputId:'dl=bnd_adm_dong_pg_2016_pop'}
+            let defaultData  =[
+                {idx:'1', outputName:'2000년 시도 인구 (통계청)', pinogioOutputId:'dl=bnd_sido_pg_2000_pop'},
+                {idx:'2', outputName:'2000년 시군구 인구 (통계청)', pinogioOutputId:'dl=bnd_sigungu_pg_2000_pop'},
+                {idx:'3', outputName:'2000년 행정동 인구 (통계청)', pinogioOutputId:'dl=bnd_adm_dong_pg_2000_pop'},
+                {idx:'4', outputName:'2005년 시도 인구 (통계청)', pinogioOutputId:'dl=bnd_sido_pg_2005_pop'},
+                {idx:'5', outputName:'2005년 시군구 인구 (통계청)', pinogioOutputId:'dl=bnd_sigungu_pg_2005_pop'},
+                {idx:'6', outputName:'2005년 행정동 인구 (통계청)', pinogioOutputId:'dl=bnd_adm_dong_pg_2005_pop'},
+                {idx:'7', outputName:'2010년 시도 인구 (통계청)', pinogioOutputId:'dl=bnd_sido_pg_2010_pop'},
+                {idx:'8', outputName:'2010년 시군구 인구 (통계청)', pinogioOutputId:'dl=bnd_sigungu_pg_2010_pop'},
+                {idx:'9', outputName:'2010년 행정동 인구 (통계청)', pinogioOutputId:'dl=bnd_adm_dong_pg_2010_pop'},
+                {idx:'10', outputName:'2015년 시도 인구 (통계청)', pinogioOutputId:'dl=bnd_sido_pg_2015_pop'},
+                {idx:'11', outputName:'2015년 시군구 인구 (통계청)', pinogioOutputId:'dl=bnd_sigungu_pg_2015_pop'},
+                {idx:'12', outputName:'2015년 행정동 인구 (통계청)', pinogioOutputId:'dl=bnd_adm_dong_pg_2015_pop'},
+                {idx:'13', outputName:'2016년 시도 인구 (통계청)', pinogioOutputId:'dl=bnd_sido_pg_2016_pop'},
+                {idx:'14', outputName:'2016년 시군구 인구 (통계청)', pinogioOutputId:'dl=bnd_sigungu_pg_2016_pop'},
+                {idx:'15', outputName:'2016년 행정동 인구 (통계청)', pinogioOutputId:'dl=bnd_adm_dong_pg_2016_pop'}
             ]
 
-            this.setState({ 
-                datasetList:data
-            })
-            return;
-        }
-        
-        ajaxJson(
-            ['GET', apiSvr + '/courses/' + this.props.courseId + '/workSubDataByCourseId.json'],
-            null,
-            function (data) {
-                if(data.response.data !=null){
-                    for(let i=0; i<data.response.data.length; i++){
-                        if(data.response.data[i].outputType =='dataset'){
-                            this.setState({
-                                datasetList:data.response.data[i].workOutputList
-                            });
+            ajaxJson(
+                ['GET', apiSvr + '/courses/' + this.props.courseId + '/workSubDataByCourseId.json'],
+                null,
+                function (data) {
+                    if(data.response.data !=null){
+                        for(let i=0; i<data.response.data.length; i++){
+                            if(data.response.data[i].outputType =='datasetPopulation'){
+                                let ajaxData = data.response.data[i].workOutputList;
+                                
+                                this.setState({
+                                    datasetList:ajaxData.concat(defaultData)
+                                });
+                            }
                         }
                     }
-                }
-            }.bind(this),
-            function (xhr, status, err) {
-              alert('Error');
-            }.bind(this)
-        )
+                }.bind(this),
+                function (xhr, status, err) {
+                  alert('Error');
+                }.bind(this)
+            )
+
+        }else{
+            ajaxJson(
+                ['GET', apiSvr + '/courses/' + this.props.courseId + '/workSubDataByCourseId.json'],
+                null,
+                function (data) {
+                    if(data.response.data !=null){
+                        for(let i=0; i<data.response.data.length; i++){
+                            if(data.response.data[i].outputType =='dataset'){
+                                this.setState({
+                                    datasetList:data.response.data[i].workOutputList
+                                });
+                            }
+                        }
+                    }
+                }.bind(this),
+                function (xhr, status, err) {
+                  alert('Error');
+                }.bind(this)
+            )
+        }
+        
+        
     }
 
     //썸네일 클릭시 들어가기

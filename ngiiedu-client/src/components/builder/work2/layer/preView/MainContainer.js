@@ -39,13 +39,12 @@ class MainContainer extends React.Component {
     let raster = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+        url: pinoSvr+'/geoserver/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
           'STYLES': '',
           'LAYERS': 'pinogio:'+layerId,
-          // 'LAYERS': 'pinogio:d=KjCXc4dmy9',
         }
       })
     });

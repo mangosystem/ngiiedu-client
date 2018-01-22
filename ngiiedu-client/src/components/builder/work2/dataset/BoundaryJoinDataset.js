@@ -124,9 +124,11 @@ class BoundaryJoinDataset extends Component {
             processData: false,
             contentType: false,
             success: function(data){
-                console.dir(data)
-                handleStep('addDataset')
-
+                if(JSON.parse(data).response.code==500){
+                    alert('수업 생성에 실패하였습니다. 올바른 데이터를 업로드해 주세요.')
+                }else{
+                    handleStep('addDataset')
+                }
             }
         });
 

@@ -44,11 +44,6 @@ class MainContainer extends React.Component {
                     minZoom: 1, maxZoom: 18
                 }),
                 layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.XYZ({
-                            url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
-                        })
-                    })
                 ],
                 controls: ol.control.defaults({
                     zoom: true, 
@@ -300,7 +295,7 @@ class MainContainer extends React.Component {
           opacity: 0.6,
           source: new ol.source.ImageWMS({
             ratio: 1,
-            url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+            url: pinoSvr+'/geoserver/pinogio/wms',
             params: {
               'FORMAT': 'image/png',
               'VERSION': '1.3.0',
@@ -317,14 +312,11 @@ class MainContainer extends React.Component {
 
     componentDidMount() {
         //templayerName
-        let layerName = 'd=AnyangDong';
-        layerName = this.props.match.params.DATASETID;
+        let layerName = this.props.match.params.DATASETID;
         // "POLYGON((126.956689249013 37.3794283769578,126.956689249013 37.3966047439905,126.982533779737 37.3966047439905,126.982533779737 37.3794283769578,126.956689249013 37.3794283769578))"
 
 		//get columns array
 		ajaxJson(
-			// http://1.234.82.19:8083/pinogio-web/api/v1/datasets/d%3DAnyangDong/column
-			// 
             ['GET', apiSvr + '/coursesWork/dataset/column/list.json'],
 			{
 				datasetId:layerName
@@ -387,6 +379,7 @@ class MainContainer extends React.Component {
                           this.state.map.getSize()
                         );
                     }
+                    console.log('호이')
                     // if(data.spatialType=='RASTER'){
                     //     var w = JSON.parse(data.metadata).wgs84Bounds;
                     //     var extent = [w.minX,w.minY,w.maxX,w.maxY];
@@ -426,12 +419,12 @@ class MainContainer extends React.Component {
         let raster = new ol.layer.Image({
             source: new ol.source.ImageWMS({
                 ratio: 1,
-                url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+                url: pinoSvr+'/geoserver/pinogio/wms',
                 params: {
                     'FORMAT': 'image/png',
                     'VERSION': '1.3.0',
                     'STYLES': '',
-                    'LAYERS': 'pinogio:' + layerName,
+                    'LAYERS': 'pinogio:' + layerName
                 }
             })
         });
@@ -451,7 +444,7 @@ class MainContainer extends React.Component {
                 format: new ol.format.GeoJSON(),
                 loader: function (extent, resolution, projection) {
 
-                    let url = 'http://1.234.82.19:8083/geoserver/pinogio/wfs?request=GetFeature' +
+                    let url = pinoSvr+'/geoserver/pinogio/wfs?request=GetFeature' +
                         '&version=1.0.0' +
                         // '&typeName=pinogio:d=KjCXc4dmy9' +
                         '&typeName=pinogio:' + layerName +
@@ -602,7 +595,6 @@ class MainContainer extends React.Component {
                 //   this.props.getFeatureInfo(this.state.rowId, this.state.datasetId, e.element.getGeometry());
 
 				// 선택된 rowid를 가지고 feature 정보 획득
-				// http://1.234.82.19:8083/pinogio-web/api/v1/datasets/d%3DAnyangDong/column
                 
 
             });
@@ -1051,10 +1043,10 @@ class MainContainer extends React.Component {
                                             <br/>
                                             <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
                                             <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
-                                                background:'url(http://1.234.82.19:8083/pinogio-web/data/photo/'+this.state.wmsFeatureInfo[row.name]+')',
+                                                background:'url('+pinoSvr+'/pinogio-web/data/photo/'+this.state.wmsFeatureInfo[row.name]+')',
                                                 backgroundSize:'cover'
                                             }}
-                                                onClick={()=>window.open('http://1.234.82.19:8083/pinogio-web/data/photo/'+this.state.wmsFeatureInfo[row.name])}
+                                                onClick={()=>window.open(pinoSvr+'/pinogio-web/data/photo/'+this.state.wmsFeatureInfo[row.name])}
                                             >
                                             </div>
                                         </div>
@@ -1097,10 +1089,10 @@ class MainContainer extends React.Component {
                                         <br/>
                                         <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
                                         <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
-                                            background:'url(http://1.234.82.19:8083/pinogio-web/data/photo/'+this.state.wfsFeatureInfo[row.name]+')',
+                                            background:'url('+pinoSvr+'/pinogio-web/data/photo/'+this.state.wfsFeatureInfo[row.name]+')',
                                             backgroundSize:'cover'
                                         }}
-                                            onClick={()=>window.open('http://1.234.82.19:8083/pinogio-web/data/photo/'+this.state.wfsFeatureInfo[row.name])}
+                                            onClick={()=>window.open(pinoSvr+'/pinogio-web/data/photo/'+this.state.wfsFeatureInfo[row.name])}
                                         >
                                         </div>
                                     </div>

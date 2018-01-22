@@ -87,7 +87,7 @@ class GoogleDataset extends Component {
           'pageSize': 1000,
           'fields': "nextPageToken, files(id, name)",
           'supportsTeamDrives':false,
-          'q':"mimeType contains 'sheet' or mimeType contains 'excel'"
+          'q':"mimeType contains 'application/vnd.ms-excel' or mimeType contains 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"
         }).then(function(response) {
             filesSetState(response.result.files);
             
@@ -194,7 +194,7 @@ class GoogleDataset extends Component {
                             <Paper style={{height:400,width:'100%',overflow:'auto',marginTop:40,paddingTop:10}}>
                         {this.state.files.map((row, index)=>(
                                 <Paper key={index} style={{height:60,width:'80%', marginLeft:'10%',marginBottom:10, display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                                    <div style={{height:30,width:30,border:'solid 1px gray'}}>xls</div>
+                                    <div style={{height:30,width:30,border:'solid 1px gray',textAlign:'center'}}>xls</div>
                                     <h4>{row.name}</h4>
                                     <FlatButton
                                         label="선택"

@@ -67,7 +67,7 @@ class MainContainer extends React.Component {
     let raster = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: 'http://1.234.82.19:8083/geoserver/pinogio/wms',
+        url:pinoSvr+'/geoserver/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -97,7 +97,7 @@ class MainContainer extends React.Component {
         visible: false,
         style: function(feature,resolution){
             var pino_photo = feature.get('pino_photo');
-            var url ="http://1.234.82.19:8083/pinogio-web/data/photo/"+pino_photo;
+            var url =pinoSvr+"/pinogio-web/data/photo/"+pino_photo;
             if(!cache[url]){
                 cache[url] = new ol.style.Style({
                     image:new ol.style.Icon({
@@ -123,7 +123,6 @@ class MainContainer extends React.Component {
         },
         // function (feature, resolution) {
         //     var pino_photo = feature.get('pino_photo');
-        //     var originalImageURL =" http://1.234.82.19:8083/pinogio-web/data/photo/"+pino_photo;
         //     var resizedImageURL = '';
         
         //     if (!iconCache[originalImageURL]) {
@@ -164,7 +163,7 @@ class MainContainer extends React.Component {
             format: new ol.format.GeoJSON(),
             loader: function (extent, resolution, projection) {
 
-                let url = 'http://1.234.82.19:8083/geoserver/pinogio/wfs?request=GetFeature' +
+                let url = pinoSvr+'/geoserver/pinogio/wfs?request=GetFeature' +
                     '&version=1.0.0' +
                     // '&typeName=pinogio:d=KjCXc4dmy9' +
                     '&typeName=pinogio:' + layerId+
@@ -207,8 +206,6 @@ class MainContainer extends React.Component {
     let layerName = this.props.match.params.DATASETID;
     //pino_photo가 있는지 없는지 확인.
     ajaxJson(
-        // http://1.234.82.19:8083/pinogio-web/api/v1/datasets/d%3DAnyangDong/column
-        // 
         ['GET', apiSvr + '/coursesWork/dataset/column/list.json'],
         {
             datasetId:layerName
