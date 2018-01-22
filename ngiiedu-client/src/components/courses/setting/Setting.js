@@ -127,7 +127,7 @@ class Setting extends React.Component {
     } else if (this.props.isAccessor && this.props.isMember) {
       return(
         <div>
-          <Paper style={{display:'grid',gridTemplateColumns:'85% 15%',marginBottom:20}} className="mouseOverBlue">
+          <Paper style={{display:'grid',gridTemplateColumns:'85% 15%',marginBottom:20, marginRight:20, marginLeft:20}} className="mouseOverBlue">
             <div style={{padding:'50px 20px',fontSize:20,overflow:'hidden',textOverflow:'ellipsis',fontWeight:'bold'}}>
               <div style={{paddingBottom:20,height:22,fontSize:15}}>
                     <p>수업 탈퇴</p>
