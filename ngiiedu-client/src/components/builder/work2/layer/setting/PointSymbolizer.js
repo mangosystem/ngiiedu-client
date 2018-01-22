@@ -1044,12 +1044,6 @@ class PointSymbolizer extends React.Component {
 		} else if (this.state.symbolizerType == 'DENSITY') {
             style =(
                 <Paper zDepth={0} style={{fontSize:13}}>
-                    <KernelType
-                        value={this.state.kernelType}
-                        handleChange={this.handleChangeKernelType}
-                    />
-                    
-                    <Divider style={{marginTop:1}}/>
 
                     <Column
                         type={this.state.symbolizerType}
@@ -1057,6 +1051,13 @@ class PointSymbolizer extends React.Component {
                         value={this.state.columnName}
                         onChange={this.onChangeColumn}
                         handleChange={this.handleChangeColumn}
+                    />
+
+                    <Divider style={{marginTop:1}}/>
+
+                    <KernelType
+                        value={this.state.kernelType}
+                        handleChange={this.handleChangeKernelType}
                     />
 
                     <Divider style={{marginTop:1}}/>

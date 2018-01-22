@@ -19,13 +19,13 @@ class KernelType extends React.Component {
             underlineStyle={{display:'none'}}
             labelStyle={{paddingLeft:10}}
           >
+            <MenuItem value={'Quadratic'} primaryText="Quadratic" />
             <MenuItem value={'Binary'} primaryText="Binary" />
             <MenuItem value={'Cosine'} primaryText="Cosine" />
             <MenuItem value={'Distance'} primaryText="Distance" />
             <MenuItem value={'Epanechnikov'} primaryText="Epanechnikov" />
             <MenuItem value={'Gaussian'} primaryText="Gaussian" />
             <MenuItem value={'InverseDistance'} primaryText="InverseDistance" />
-            <MenuItem value={'Quadratic'} primaryText="Quadratic" />
             <MenuItem value={'Quartic'} primaryText="Quartic" />
             <MenuItem value={'Triangular'} primaryText="Triangular" />
             <MenuItem value={'Triweight'} primaryText="Triweight" />
@@ -48,7 +48,7 @@ KernelType.propTypes = {
 KernelType.defaultProps = {
   name: 'kernelType',
   placeholder: 'KernelType',
-  value: 'Binary'
+  value: 'Quadratic'
 };
 
 export default KernelType;
