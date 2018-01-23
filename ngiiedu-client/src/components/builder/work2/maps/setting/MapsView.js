@@ -68,21 +68,21 @@ class MapsView extends React.Component {
 
           let data = res.response.data.data;
 
-          if (data.bounds) {
-            let wkt = data.bounds;
+          // if (data.bounds) {
+          //   let wkt = data.bounds;
         
-            if (wkt) {
-              let format = new ol.format.WKT();
-              let feature = format.readFeature(wkt, {
-                  dataProjection: 'EPSG:4326',
-                  featureProjection: 'EPSG:3857'
-              });
-              map.getView().fit(
-                  feature.getGeometry().getExtent(),
-                  map.getSize()
-              );
-            }
-          } else {
+          //   if (wkt) {
+          //     let format = new ol.format.WKT();
+          //     let feature = format.readFeature(wkt, {
+          //         dataProjection: 'EPSG:4326',
+          //         featureProjection: 'EPSG:3857'
+          //     });
+          //     map.getView().fit(
+          //         feature.getGeometry().getExtent(),
+          //         map.getSize()
+          //     );
+          //   }
+          // } else {
             var w = JSON.parse(data.metadata).wgs84Bounds;
             var extent = [w.minX, w.minY, w.maxX, w.maxY];
             var extent3857 = ol.proj.getTransform('EPSG:4326', 'EPSG:3857')(extent);
@@ -91,7 +91,7 @@ class MapsView extends React.Component {
                 extent3857,
                 map.getSize()
             );
-          }
+          // }
           
           
         }.bind(this),
@@ -156,23 +156,30 @@ class MapsView extends React.Component {
 
         let data = res.response.data.data;
 
-        if(data.bounds){
-          let wkt = data.bounds;
-          let format = new ol.format.WKT();
-          let feature = format.readFeature(wkt, {
-              dataProjection: 'EPSG:4326',
-              featureProjection: 'EPSG:3857'
-          });
-          map.getView().fit(
-              feature.getGeometry().getExtent(),
-              map.getSize()
-          );
-        } else if(data.bounds==null&&data.metadata!=null){
+        // if(data.bounds){
+        //   let wkt = data.bounds;
+        //   let format = new ol.format.WKT();
+        //   let feature = format.readFeature(wkt, {
+        //       dataProjection: 'EPSG:4326',
+        //       featureProjection: 'EPSG:3857'
+        //   });
+        //   map.getView().fit(
+        //       feature.getGeometry().getExtent(),
+        //       map.getSize()
+        //   );
+        // } else if(data.bounds==null&&data.metadata!=null){
+        //   let wgs84Bounds=JSON.parse(data.metadata).wgs84Bounds;
+        //   let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
+        //   let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
+        //   map.getView().fit(transformExtent, this.state.map.getSize());
+        // }
+
+        // if(data.bounds==null&&data.metadata!=null){
           let wgs84Bounds=JSON.parse(data.metadata).wgs84Bounds;
           let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
           let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
           map.getView().fit(transformExtent, this.state.map.getSize());
-        }
+        // }
         
       }.bind(this),
       function(e){

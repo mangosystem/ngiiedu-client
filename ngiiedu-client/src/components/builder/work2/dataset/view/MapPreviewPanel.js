@@ -112,21 +112,21 @@ class MapPreviewPanel extends React.Component {
         //     }
         // }
 
-        if(data.bounds != null){
-            let wkt = data.bounds;
+        // if(data.bounds != null){
+        //     let wkt = data.bounds;
             
-            if(wkt != null){
-                let format = new ol.format.WKT();
-                let feature = format.readFeature(wkt, {
-                    dataProjection: 'EPSG:4326',
-                    featureProjection: 'EPSG:3857'
-                });
-                this.props.map.getView().fit(
-                    feature.getGeometry().getExtent(),
-                    this.props.map.getSize()
-                );
-            }
-        }else{
+        //     if(wkt != null){
+        //         let format = new ol.format.WKT();
+        //         let feature = format.readFeature(wkt, {
+        //             dataProjection: 'EPSG:4326',
+        //             featureProjection: 'EPSG:3857'
+        //         });
+        //         this.props.map.getView().fit(
+        //             feature.getGeometry().getExtent(),
+        //             this.props.map.getSize()
+        //         );
+        //     }
+        // }else{
             var w = JSON.parse(data.metadata).wgs84Bounds;
             var extent = [w.minX,w.minY,w.maxX,w.maxY];
             var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
@@ -135,7 +135,7 @@ class MapPreviewPanel extends React.Component {
               extent3857,
               this.props.map.getSize()
             );
-        }
+        // }
           
       }.bind(this),
       function (e) {

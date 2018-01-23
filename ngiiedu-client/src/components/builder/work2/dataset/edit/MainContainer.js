@@ -355,21 +355,22 @@ class MainContainer extends React.Component {
                 },function(){
                     this.init.bind(this)();
                     this.state.map.setTarget('mapView');
-                    if(data.bounds != null){
-                        let wkt = data.bounds;
+                    
+                    // if(data.bounds != null){
+                    //     let wkt = data.bounds;
                         
-                        if(wkt != null){
-                            let format = new ol.format.WKT();
-                            let feature = format.readFeature(wkt, {
-                                dataProjection: 'EPSG:4326',
-                                featureProjection: 'EPSG:3857'
-                            });
-                            this.state.map.getView().fit(
-                                feature.getGeometry().getExtent(),
-                                this.state.map.getSize()
-                            );
-                        }
-                    }else{
+                    //     if(wkt != null){
+                    //         let format = new ol.format.WKT();
+                    //         let feature = format.readFeature(wkt, {
+                    //             dataProjection: 'EPSG:4326',
+                    //             featureProjection: 'EPSG:3857'
+                    //         });
+                    //         this.state.map.getView().fit(
+                    //             feature.getGeometry().getExtent(),
+                    //             this.state.map.getSize()
+                    //         );
+                    //     }
+                    // }else{
                         var w = JSON.parse(data.metadata).wgs84Bounds;
                         var extent = [w.minX,w.minY,w.maxX,w.maxY];
                         var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
@@ -378,8 +379,9 @@ class MainContainer extends React.Component {
                           extent3857,
                           this.state.map.getSize()
                         );
-                    }
-                    console.log('호이')
+                    // }
+
+
                     // if(data.spatialType=='RASTER'){
                     //     var w = JSON.parse(data.metadata).wgs84Bounds;
                     //     var extent = [w.minX,w.minY,w.maxX,w.maxY];

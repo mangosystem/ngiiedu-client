@@ -102,18 +102,29 @@ class MainContainer extends React.Component {
             ['GET', apiSvr + '/coursesWork/layers/' + layerId + '.json'],
             {},
             function(res){
-                if(res.response.data.data.bounds!=null){
-                    let wkt = res.response.data.data.bounds;
-                    let format = new ol.format.WKT();
-                    let feature = format.readFeature(wkt, {
-                        dataProjection: 'EPSG:4326',
-                        featureProjection: 'EPSG:3857'
-                    });
-                    this.state.map.getView().fit(
-                        feature.getGeometry().getExtent(),
-                        this.state.map.getSize()
-                    );
-                }else if(res.response.data.data.bounds==null&&res.response.data.data.metadata!=null){
+                // if(res.response.data.data.bounds!=null){
+                //     let wkt = res.response.data.data.bounds;
+                //     let format = new ol.format.WKT();
+                //     let feature = format.readFeature(wkt, {
+                //         dataProjection: 'EPSG:4326',
+                //         featureProjection: 'EPSG:3857'
+                //     });
+                //     this.state.map.getView().fit(
+                //         feature.getGeometry().getExtent(),
+                //         this.state.map.getSize()
+                //     );
+                // }else if(res.response.data.data.bounds==null&&res.response.data.data.metadata!=null){
+                //     let wgs84Bounds=JSON.parse(res.response.data.data.metadata).wgs84Bounds;
+                //     let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
+                //     let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
+                //     this.state.map.getView().fit(transformExtent, this.state.map.getSize());
+
+                //     let spatialType = JSON.parse(res.response.data.data.metadata).spatialType;
+                //     this.setState({
+                //         spatialType:spatialType
+                //     })
+                // }
+                // if(res.response.data.data.bounds==null&&res.response.data.data.metadata!=null){
                     let wgs84Bounds=JSON.parse(res.response.data.data.metadata).wgs84Bounds;
                     let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
                     let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
@@ -123,7 +134,7 @@ class MainContainer extends React.Component {
                     this.setState({
                         spatialType:spatialType
                     })
-                }
+                // }
                 this.setState({
                     layerId:this.props.match.params.LAYERID,
                     datasetId:JSON.parse(res.response.data.data.sources).inputDataset.datasetId,
