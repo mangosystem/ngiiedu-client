@@ -47,15 +47,17 @@ class Step3Info extends React.Component {
 	onChangeCourseName(e, v) {
 		this.setState({
 			courseName: v
+		},function(){
+			this.props.onChangedCourseName(v);
 		});
-		this.props.onChangedCourseName(v);
 	}
 
 	onChangeCourseDesc(e, v) {
 		this.setState({
 			courseDesc: v
+		},function(){
+			this.onChangedCourseMetadata(v);
 		});
-		this.onChangedCourseMetadata(v);
 	}
 
 	// onChangeSchoolLevel(e, i, v) {
