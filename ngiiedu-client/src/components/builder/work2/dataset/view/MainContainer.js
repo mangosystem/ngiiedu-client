@@ -80,15 +80,6 @@ class MainContainer extends React.Component {
 
 
 
-    // function getMeta(url){   
-    //     var img = new Image();
-    //     img.onload = function(){
-    //         alert( this.width+' '+ this.height );
-    //     };
-    //     img.src = url;
-    // }
-
-
 
     var cache = {};
     var w ;
@@ -97,7 +88,7 @@ class MainContainer extends React.Component {
         visible: false,
         style: function(feature,resolution){
             var pino_photo = feature.get('pino_photo');
-            var url =pinoSvr+"/pinogio-web/data/photo/"+pino_photo;
+            var url =pinoSvr+pngoWeb+"/data/photo/"+pino_photo;
             if(!cache[url]){
                 cache[url] = new ol.style.Style({
                     image:new ol.style.Icon({

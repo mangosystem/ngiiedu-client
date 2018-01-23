@@ -295,7 +295,7 @@ class MainContainer extends React.Component {
           opacity: 0.6,
           source: new ol.source.ImageWMS({
             ratio: 1,
-            url: pinoSvr+gisSvr+'/pinogio/wms',
+            url: pinoSvr+'/geoserver/pinogio/wms',
             params: {
               'FORMAT': 'image/png',
               'VERSION': '1.3.0',
@@ -355,7 +355,6 @@ class MainContainer extends React.Component {
                 },function(){
                     this.init.bind(this)();
                     this.state.map.setTarget('mapView');
-                    
                     // if(data.bounds != null){
                     //     let wkt = data.bounds;
                         
@@ -380,32 +379,6 @@ class MainContainer extends React.Component {
                           this.state.map.getSize()
                         );
                     // }
-
-
-                    // if(data.spatialType=='RASTER'){
-                    //     var w = JSON.parse(data.metadata).wgs84Bounds;
-                    //     var extent = [w.minX,w.minY,w.maxX,w.maxY];
-                    //     var extent3857 = ol.proj.getTransform( 'EPSG:4326','EPSG:3857')(extent);
-                        
-                    //     this.state.map.getView().fit(
-                    //       extent3857,
-                    //       this.state.map.getSize()
-                    //     );
-                    // }else{
-                    //     let wkt = data.bounds;
-    
-                    //     if(wkt != null){
-                    //         let format = new ol.format.WKT();
-                    //         let feature = format.readFeature(wkt, {
-                    //             dataProjection: 'EPSG:4326',
-                    //             featureProjection: 'EPSG:3857'
-                    //         });
-                    //         this.state.map.getView().fit(
-                    //             feature.getGeometry().getExtent(),
-                    //             this.state.map.getSize()
-                    //         );
-                    //     }
-                    // }
                 })
             }.bind(this),
             function (e) {
@@ -421,7 +394,7 @@ class MainContainer extends React.Component {
         let raster = new ol.layer.Image({
             source: new ol.source.ImageWMS({
                 ratio: 1,
-                url: pinoSvr+gisSvr+'/pinogio/wms',
+                url: pinoSvr+'/geoserver/pinogio/wms',
                 params: {
                     'FORMAT': 'image/png',
                     'VERSION': '1.3.0',
@@ -446,7 +419,7 @@ class MainContainer extends React.Component {
                 format: new ol.format.GeoJSON(),
                 loader: function (extent, resolution, projection) {
 
-                    let url = pinoSvr+gisSvr+'/pinogio/wfs?request=GetFeature' +
+                    let url = pinoSvr+'/geoserver/pinogio/wfs?request=GetFeature' +
                         '&version=1.0.0' +
                         // '&typeName=pinogio:d=KjCXc4dmy9' +
                         '&typeName=pinogio:' + layerName +
@@ -1045,10 +1018,10 @@ class MainContainer extends React.Component {
                                             <br/>
                                             <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
                                             <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
-                                                background:'url('+pinoSvr+'/pinogio-web/data/photo/'+this.state.wmsFeatureInfo[row.name]+')',
+                                                background:'url('+pinoSvr+pngoWeb+'/data/photo/'+this.state.wmsFeatureInfo[row.name]+')',
                                                 backgroundSize:'cover'
                                             }}
-                                                onClick={()=>window.open(pinoSvr+'/pinogio-web/data/photo/'+this.state.wmsFeatureInfo[row.name])}
+                                                onClick={()=>window.open(pinoSvr+pngoWeb+'/data/photo/'+this.state.wmsFeatureInfo[row.name])}
                                             >
                                             </div>
                                         </div>
@@ -1091,10 +1064,10 @@ class MainContainer extends React.Component {
                                         <br/>
                                         <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
                                         <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
-                                            background:'url('+pinoSvr+'/pinogio-web/data/photo/'+this.state.wfsFeatureInfo[row.name]+')',
+                                            background:'url('+pinoSvr+pngoWeb+'/data/photo/'+this.state.wfsFeatureInfo[row.name]+')',
                                             backgroundSize:'cover'
                                         }}
-                                            onClick={()=>window.open(pinoSvr+'/pinogio-web/data/photo/'+this.state.wfsFeatureInfo[row.name])}
+                                            onClick={()=>window.open(pinoSvr+pngoWeb+'/data/photo/'+this.state.wfsFeatureInfo[row.name])}
                                         >
                                         </div>
                                     </div>

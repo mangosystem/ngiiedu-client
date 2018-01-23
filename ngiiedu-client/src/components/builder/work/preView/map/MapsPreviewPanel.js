@@ -53,19 +53,26 @@ class MapsPreviewPanel extends React.Component {
         raster: nextProps.raster,
       }
     });
-    if(nextProps.bounds!=null){
-      let {map} = this.state;
-      let wkt = nextProps.bounds;
-      let format = new ol.format.WKT();
-      let feature = format.readFeature(wkt, {
-          dataProjection: 'EPSG:4326',
-          featureProjection: 'EPSG:3857'
-      });
-      map.getView().fit(
-          feature.getGeometry().getExtent(),
-          map.getSize()
-      );
-    }else if(nextProps.extent!=null){
+    // if(nextProps.bounds!=null){
+    //   let {map} = this.state;
+    //   let wkt = nextProps.bounds;
+    //   let format = new ol.format.WKT();
+    //   let feature = format.readFeature(wkt, {
+    //       dataProjection: 'EPSG:4326',
+    //       featureProjection: 'EPSG:3857'
+    //   });
+    //   map.getView().fit(
+    //       feature.getGeometry().getExtent(),
+    //       map.getSize()
+    //   );
+    // }else if(nextProps.extent!=null){
+    //   let wgs84Bounds=nextProps.extent.wgs84Bounds;
+    //   let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
+    //   let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
+    //   this.state.map.getView().fit(transformExtent, this.state.map.getSize());
+    // }
+
+    if(nextProps.extent!=null){
       let wgs84Bounds=nextProps.extent.wgs84Bounds;
       let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
       let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
