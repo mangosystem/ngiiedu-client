@@ -49,7 +49,7 @@ class Header extends React.Component {
       userIdx:userIdx
     });
 
-    if(this.props.match.url =='/ngiiedu/courseCreate'){
+    if(this.props.match.url ==contextPath+'/courseCreate'){
       this.setState({
         subTitle:'courseCreate'
       })

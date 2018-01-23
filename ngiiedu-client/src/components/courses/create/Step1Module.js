@@ -84,7 +84,7 @@ class Step1Module extends React.Component {
                   zDepth={0}
                   style={{
                     height:'150px',
-                    backgroundImage: this.props.selectedItem == item.idx ? 'url(/ngiiedu/assets/images/' + item.moduleMetadata + '_on.png)' : 'url(/ngiiedu/assets/images/' + item.moduleMetadata + '.png)',
+                    backgroundImage: this.props.selectedItem == item.idx ? 'url('+contextPath+'/assets/images/' + item.moduleMetadata + '_on.png)' : 'url('+contextPath+'/assets/images/' + item.moduleMetadata + '.png)',
                     backgroundSize: 'auto',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',

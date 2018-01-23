@@ -119,7 +119,7 @@ class MainContainer extends React.Component {
         const courseId = this.props.match.params.COURSEID;
         const workId = this.props.match.params.WORKID;
         
-        this.props.history.push("/ngiiedu/course/" + courseId + "/work2/" + workId + "/" + row.pinogioOutputId);
+        this.props.history.push(contextPath+"/course/" + courseId + "/work2/" + workId + "/" + row.pinogioOutputId);
 
     }
 
@@ -237,7 +237,7 @@ class MainContainer extends React.Component {
                                         className='thumbnail' 
                                         onClick={()=>this.thumbnailClick(row)}
                                         style={{
-                                            backgroundImage:'url(/ngiiedu/assets/images/' + row.pngoData.typeKind +'.png)',
+                                            backgroundImage:'url('+contextPath+'/assets/images/' + row.pngoData.typeKind +'.png)',
                                             backgroundSize: '300px 230px',
                                             backgroundRepeat: 'no-repeat'
                                         }}
@@ -253,7 +253,7 @@ class MainContainer extends React.Component {
                                                 anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                                                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
                                             >
-                                                <MenuItem primaryText="미리보기" onClick={(index) => this.props.history.push('/ngiiedu/maps/preview/'+row.pinogioOutputId)}/>
+                                                <MenuItem primaryText="미리보기" onClick={(index) => this.props.history.push(contextPath+'/maps/preview/'+row.pinogioOutputId)}/>
                                                 <MenuItem primaryText="편집하기" onClick={(index)=> this.setState({ step: 'modifyMaps', map: row})}/>
                                                 <MenuItem primaryText="삭제하기" onClick={()=>this.deleteMaps(row)}/>
                                                 <MenuItem 

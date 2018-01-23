@@ -26,7 +26,7 @@ class MainContainer extends React.Component {
     }
 
     goCourseList() {
-        this.props.history.push("/ngiiedu/course/");
+        this.props.history.push(contextPath+"/course/");
     }
 
     changeTypeKind(typekind) {

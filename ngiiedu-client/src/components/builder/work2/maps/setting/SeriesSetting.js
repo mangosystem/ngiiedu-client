@@ -164,7 +164,7 @@ class SeriesSetting extends Component {
                         &nbsp;&nbsp;&nbsp;*/}
                         <figure>
                             <img 
-                                src="/ngiiedu/assets/images/SLIDE.png" 
+                                src={contextPath+"/assets/images/SLIDE.png"} 
                                 // src="/assets/images/accordion.png" 
                                 alt="c2" 
                                 style={typeKind == "SLIDE"? style.selected : style.unselected}

@@ -601,7 +601,7 @@ class MainContainer extends React.Component {
                                 anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
                             >
-                                <MenuItem primaryText="수업 홈" onClick={() => this.props.history.push('/ngiiedu/course/'+this.props.match.params.COURSEID)}/>
+                                <MenuItem primaryText="수업 홈" onClick={() => this.props.history.push(contextPath+'/course/'+this.props.match.params.COURSEID)}/>
                                 <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
                             </IconMenu>
                             {/* 활동 제목 */}
@@ -614,7 +614,7 @@ class MainContainer extends React.Component {
                             <IconButton tooltip='설정' onClick={() => this.handleChangeSetting()}>
                                 <IconSettings color='white'/>
                             </IconButton>
-                            <IconButton tooltip='미리보기' onClick={() => this.props.history.push('/ngiiedu/layer/preview/'+this.props.match.params.LAYERID)}>
+                            <IconButton tooltip='미리보기' onClick={() => this.props.history.push(contextPath+'/layer/preview/'+this.props.match.params.LAYERID)}>
                                 <IconPageView color='white'/>
                             </IconButton>
                         </div>

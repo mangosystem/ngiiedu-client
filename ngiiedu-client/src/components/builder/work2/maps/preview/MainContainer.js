@@ -62,7 +62,7 @@ class MainContainer extends React.Component {
 
   goCourseHome() {
     const courseId = this.props.match.params.COURSEID;
-    this.props.history.push("/ngiiedu/course/" + courseId);
+    this.props.history.push(contextPath+"/course/" + courseId);
   }
 
   render() {

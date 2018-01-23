@@ -1118,27 +1118,27 @@ class PointSymbolizer extends React.Component {
 
                 <Paper zDepth={0} style={{padding:3,paddingBottom: 10,display:'flex',widht:100,overflowX:'auto',fontSize:12}}>
                     <Paper style={this.state.symbolizerType=='SINGLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('SINGLE') }>
-                        <img src="/ngiiedu/assets/images/symbol_point_simp.png" style={{width:70,height:70}} alt="SINGLE"></img>
+                        <img src={contextPath+"/assets/images/symbol_point_simp.png"} style={{width:70,height:70}} alt="SINGLE"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단일심볼</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='GRADUATED'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('GRADUATED') }>
-                        <img src='/ngiiedu/assets/images/symbol_point_chor.png' style={{width:70,height:70}} alt="GRADUATED"></img>
+                        <img src={contextPath+'/assets/images/symbol_point_chor.png'} style={{width:70,height:70}} alt="GRADUATED"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>단계구분</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='CATEGORIES'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('CATEGORIES') }>
-                        <img src='/ngiiedu/assets/images/symbol_point_cate.png' style={{width:70,height:70}} alt="CATEGORIES"></img>
+                        <img src={contextPath+'/assets/images/symbol_point_cate.png'} style={{width:70,height:70}} alt="CATEGORIES"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>분류값사용</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('BUBBLE') }>
-                        <img src='/ngiiedu/assets/images/symbol_point_bubb.png' style={{width:70,height:70}} alt="BUBBLE"></img>
+                        <img src={contextPath+'/assets/images/symbol_point_bubb.png'} style={{width:70,height:70}} alt="BUBBLE"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>거품형지도</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='INTERPOLATION'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('INTERPOLATION') }>
-                        <img src='/ngiiedu/assets/images/interpolation.png' style={{width:70,height:70}} alt="INTERPOLATION"></img>
+                        <img src={contextPath+'/assets/images/interpolation.png'} style={{width:70,height:70}} alt="INTERPOLATION"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>보간법</div>
                     </Paper>
                     <Paper style={this.state.symbolizerType=='DENSITY'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('DENSITY') }>
-                        <img src='/ngiiedu/assets/images/density.png' style={{width:70,height:70}} alt="DENSITY"></img>
+                        <img src={contextPath+'/assets/images/density.png'} style={{width:70,height:70}} alt="DENSITY"></img>
                         <div style={{width:70,height:30,textAlign:'center'}}>밀도지도</div>
                     </Paper>
                 </Paper>

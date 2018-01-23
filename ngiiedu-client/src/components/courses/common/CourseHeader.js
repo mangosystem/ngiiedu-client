@@ -58,7 +58,7 @@ class CourseHeader extends Component {
       <Paper style={{display:'flex',height:100,alignItems:'center',paddingLeft:30,marginBottom:20}}>
         <div>
           {this.state.moduleMetadata =='' ? null :
-            <Avatar style={{width:50,height:50,marginRight:20}} src={'/ngiiedu/assets/images/'+this.state.moduleMetadata+'.png'} />
+            <Avatar style={{width:50,height:50,marginRight:20}} src={contextPath+'/assets/images/'+this.state.moduleMetadata+'.png'} />
           }
         </div>
         <div>

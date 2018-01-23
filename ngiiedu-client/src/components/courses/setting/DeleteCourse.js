@@ -39,7 +39,7 @@ class DeleteCourse extends React.Component {
           alert("비밀번호 가 다릅니다.");
         }else{
           this.props.deleteCourse();//삭제 모달 닫기
-          this.props.history.push('/ngiiedu/course/'); //수업 리스트로 돌아가기
+          this.props.history.push(contextPath+'/course/'); //수업 리스트로 돌아가기
         }
       }.bind(this),
       function(e){

@@ -17,7 +17,7 @@ class MainContainer extends React.Component {
             <main style={{position: 'absolute', top: 80, bottom: 0, left: 0, right: 0}}>
                 <div>
                     <Pyramid 
-                        src='/ngiiedu/assets/cdn/pyramid/pyramid.html' 
+                        src={contextPath+'/assets/cdn/pyramid/pyramid.html'} 
                         style={{ overflowY: 'hidden', height: '100%' }}
                     />
                 </div>

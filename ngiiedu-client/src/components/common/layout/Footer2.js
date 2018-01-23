@@ -13,7 +13,7 @@ class Footer2 extends React.Component {
       <footer id="footerWrap">
         <div className="footer">
           <div style={{position:"absolute", top:40}}>
-            <img src="/ngiiedu/assets/images/ft_logo.png"/>
+            <img src={contextPath+"/assets/images/ft_logo.png"}/>
           </div>
           <ul>
             <li>이용약관</li>

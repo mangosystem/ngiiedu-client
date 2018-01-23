@@ -142,21 +142,21 @@ class SplitMaps extends Component {
                     <br /><br />
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <img 
-                            src="/ngiiedu/assets/images/DOUBLE1.png" 
+                            src={contextPath+"/assets/images/DOUBLE1.png"} 
                             // src="/assets/images/s1.png" 
                             alt="s1" 
                             style={typeKind == "DOUBLE1"? style.selected : style.unselected}
                             onClick={() => this.changeTypeKind('DOUBLE1', '2')}/>
                         &nbsp;&nbsp;&nbsp;
                         <img 
-                            src="/ngiiedu/assets/images/DOUBLE2.png" 
+                            src={contextPath+"/assets/images/DOUBLE2.png"} 
                             // src="/assets/images/s2.png" 
                             alt="s2" 
                             style={typeKind == "DOUBLE2"? style.selected : style.unselected}
                             onClick={() => this.changeTypeKind('DOUBLE2', '2')}/>
                         &nbsp;&nbsp;&nbsp;
                         <img 
-                            src="/ngiiedu/assets/images/QUADRUPLE.png" 
+                            src={contextPath+"/assets/images/QUADRUPLE.png"} 
                             // src="/assets/images/s6.png" 
                             alt="s6" 
                             style={typeKind == "QUADRUPLE"? style.selected : style.unselected}
@@ -173,7 +173,7 @@ class SplitMaps extends Component {
                 <div style={{textAlign: 'left'}}>
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <img 
-                                src={"/ngiiedu/assets/images/" + typeKind + ".png"}  
+                                src={contextPath+"/assets/images/" + typeKind + ".png"}  
                                 // src={"/assets/images/" + typeKind + ".png"}
                                 style={style.selected}
                             />

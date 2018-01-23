@@ -125,7 +125,7 @@ class MainContainer extends React.Component {
         const courseId = this.props.match.params.COURSEID;
         const workId = this.props.match.params.WORKID;
         // /course/:COURSEID/work2/dataset/edit/:DATASETID
-        this.props.history.push("/ngiiedu/course/" + courseId+"/work2/" +workId + "/dataset/"+value);
+        this.props.history.push(contextPath+"/course/" + courseId+"/work2/" +workId + "/dataset/"+value);
     }
 
     //데이터셋 다얄로그

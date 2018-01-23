@@ -172,7 +172,7 @@ class StorySetting extends Component {
                         </div>*/}
                         <figure>
                             <img 
-                                src="/ngiiedu/assets/images/TAB.png" 
+                                src={contextPath+"/assets/images/TAB.png"} 
                                 // src="/assets/images/accordion.png" 
                                 alt="tab" 
                                 style={typeKind == "TAB"? style.selected : style.unselected}

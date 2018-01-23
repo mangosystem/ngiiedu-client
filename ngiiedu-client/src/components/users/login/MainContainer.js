@@ -16,7 +16,7 @@ class LoginModal extends React.Component {
   render() {
     return (
         // <div className="layerWrap">
-          <form className="loginWrap" action="/ngiiedu/login_process" method="POST">
+          <form className="loginWrap" action={contextPath+"/login_process"} method="POST">
           <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <h4>로그인</h4>
             <ul>

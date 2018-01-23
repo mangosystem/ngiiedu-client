@@ -53,7 +53,7 @@ class CreateLayer extends Component {
           sources: JSON.stringify({"inputDataset":{"filter":[],"datasetId":this.state.selDataset.pinogioOutputId,"type":this.state.selDataset.outputType}})
         },
         function (data) {
-          this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.response.data.data.layerId);
+          this.props.history.push(contextPath+'/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.response.data.data.layerId);
 
         }.bind(this),
         function (xhr, status, err) {

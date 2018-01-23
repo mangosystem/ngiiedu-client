@@ -142,7 +142,7 @@ class MainContainer extends React.Component {
                     } else {
                       return (
                         <div style={{textAlign: 'center',padding:20}}>
-                          <Link to="/ngiiedu/cm-admin/schoolSync">
+                          <Link to={contextPath+"/cm-admin/schoolSync"}>
                             <RaisedButton
                               label={'확인'}
                               primary={true}

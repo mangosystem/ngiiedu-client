@@ -90,12 +90,12 @@ class SelectTemplate extends React.Component {
                         <br />
                         <div style={{display: 'flex', justifyContent: 'space-around'}}>
                             <img 
-                                src="/ngiiedu/assets/images/tab.png" 
+                                src={contextPath+"/assets/images/tab.png"}
                                 alt="Tab" 
                                 style={this.props.template == "tab"? style.selected : style.unselected} 
                                 onClick={() => this.changeTemplate("tab")}/>
                             <img 
-                                src="/ngiiedu/assets/images/accordion.png" 
+                                src={contextPath+"/assets/images/accordion.png"} 
                                 alt="accordion" 
                                 style={this.props.template == "accordion" ? style.selected : style.unselected} 
                                 onClick={() => this.changeTemplate("accordion")}/>

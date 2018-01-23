@@ -629,19 +629,19 @@ class PolygonSymbolizer extends React.Component {
 
         <Paper zDepth={0} style={{padding:3,paddingBottom: 10,display:'flex',widht:100,overflowY:'auto',fontSize:12,height:135, marginLeft:15, marginLeft:15}}>
           <Paper style={this.state.symbolizerType=='SINGLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('SINGLE') }>
-            <img src="/ngiiedu/assets/images/symbol_polygon_simp.png" style={{width:70,height:70}} alt="SINGLE"></img>
+            <img src={contextPath+"/assets/images/symbol_polygon_simp.png" }style={{width:70,height:70}} alt="SINGLE"></img>
             <div style={{width:70,height:30,textAlign:'center'}}>단일심볼</div>
           </Paper>
           <Paper style={this.state.symbolizerType=='GRADUATED'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('GRADUATED') }>
-            <img src='/ngiiedu/assets/images/symbol_polygon_chor.png' style={{width:70,height:70}} alt="GRADUATED"></img>
+            <img src={contextPath+'/assets/images/symbol_polygon_chor.png'} style={{width:70,height:70}} alt="GRADUATED"></img>
             <div style={{width:70,height:30,textAlign:'center'}}>단계구분</div>
           </Paper>
           <Paper style={this.state.symbolizerType=='CATEGORIES'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('CATEGORIES') }>
-            <img src='/ngiiedu/assets/images/symbol_polygon_cate.png' style={{width:70,height:70}} alt="CATEGORIES"></img>
+            <img src={contextPath+'/assets/images/symbol_polygon_cate.png'} style={{width:70,height:70}} alt="CATEGORIES"></img>
             <div style={{width:70,height:30,textAlign:'center'}}>분류값사용</div>
           </Paper>
           <Paper style={this.state.symbolizerType=='BUBBLE'? styleStyle.selected : styleStyle.unSelected} onClick={()=>this.symbolizerTypeChange('BUBBLE') }>
-            <img src='/ngiiedu/assets/images/symbol_point_bubb.png' style={{width:70,height:70}} alt="BUBBLE"></img>
+            <img src={contextPath+'/assets/images/symbol_point_bubb.png'} style={{width:70,height:70}} alt="BUBBLE"></img>
             <div style={{width:70,height:30,textAlign:'center'}}>거품형지도</div>
           </Paper>
         </Paper>

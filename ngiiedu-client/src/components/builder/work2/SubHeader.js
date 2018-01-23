@@ -56,7 +56,7 @@ class SubHeader extends React.Component {
                 anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                 targetOrigin={{horizontal: 'left', vertical: 'top'}}
               >
-                <MenuItem primaryText="수업 목록" onClick={() => this.props.history.push('/ngiiedu/course/')}/>
+                <MenuItem primaryText="수업 목록" onClick={() => this.props.history.push(contextPath+'/course/')}/>
                 <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
               </IconMenu>
               {/* 활동 제목 */}

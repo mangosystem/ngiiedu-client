@@ -1261,7 +1261,7 @@ class MainContainer extends React.Component {
                                 >
                                   <MenuItem primaryText="이름변경" onClick={(index) => this.setState({openNewMap: true, tempTitle: data.outputName, tempIndex: data.idx, mode: 'edit' })}/>
                                   <MenuItem primaryText="삭제하기" onClick={() => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: true})}/>
-                                  <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/map/preview/'+data.pngoData.layerId)}/>
+                                  <MenuItem primaryText="미리보기" onClick={() => this.props.history.push(contextPath+'/map/preview/'+data.pngoData.layerId)}/>
                                   
                                 </IconMenu>
                               }
@@ -1284,7 +1284,7 @@ class MainContainer extends React.Component {
                                 >
                                   <MenuItem primaryText="설정변경" onClick={(i) => this.setState({openTemplate: true, tempTitle: data.outputName, tempIndex: data.idx, template: data.pngoData.metadata.type, mode: 'edit' })}/>
                                   <MenuItem primaryText="삭제하기" onClick={(i) => this.setState({openDeleteMap: true, tempTitle: data.outputName, tempIndex: data.idx, isSubjectMode: false})}/>
-                                  <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/storymap/preview/'+data.pngoData.mapsId)}/>
+                                  <MenuItem primaryText="미리보기" onClick={() => this.props.history.push(contextPath+'/storymap/preview/'+data.pngoData.mapsId)}/>
                                   </IconMenu>
                               }
                               nestedItems={

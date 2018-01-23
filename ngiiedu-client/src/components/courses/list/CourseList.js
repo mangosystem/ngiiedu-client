@@ -113,7 +113,7 @@ class CourseList extends React.Component {
                         >
                             <div style={{display:'grid',gridTemplateColumns:'15% 75% 10%'}}>
                                 <div style={{gridColumn:1,textAlign:'right'}} onClick={()=>this.handleExpandChange("own_"+row.idx)}>
-                                    <Avatar src={'/ngiiedu/assets/images/' + row.moduleMetadata + '.png'} />
+                                    <Avatar src={contextPath+'/assets/images/' + row.moduleMetadata + '.png'} />
                                 </div>
                                 <div style={{gridColumn:2,paddingLeft:20}} onClick={()=>this.handleExpandChange("own_"+row.idx)}>
                                     {/* <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px'}}> */}
@@ -174,7 +174,7 @@ class CourseList extends React.Component {
                                         >
                                             <div style={{display:'grid',gridTemplateColumns:'15% 75% 10%'}}>
                                                 <div style={{gridColumn:1,textAlign:'right'}} onClick={()=>this.handleExpandChange("join_"+row.idx)}>
-                                                    <Avatar src={'/ngiiedu/assets/images/' + row.moduleMetadata + '.png'} />
+                                                    <Avatar src={contextPath+'/assets/images/' + row.moduleMetadata + '.png'} />
                                                 </div>
                                                 <div style={{gridColumn:2,paddingLeft:20,display:'flex',alignItems:'center'}} onClick={()=>this.handleExpandChange("join_"+row.idx)}>
                                                     <div style={{fontSize:22,fontWeight:'bold'}}>{row.courseName}</div>

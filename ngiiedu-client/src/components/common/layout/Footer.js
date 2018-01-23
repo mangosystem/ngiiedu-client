@@ -15,7 +15,7 @@ class Footer extends React.Component {
       <footer id="footer">
         <div className={this.props.wide ? "inner wide" : "inner"}>
           <div style={{position:"absolute", top:40}}>
-            <img src="/ngiiedu/assets/images/ft_logo.png"/>
+            <img src={contextPath+"/assets/images/ft_logo.png"}/>
           </div>
           <ul>
             <li>이용약관</li>

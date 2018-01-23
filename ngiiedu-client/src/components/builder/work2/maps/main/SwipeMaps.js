@@ -140,7 +140,7 @@ class SwipeMaps extends Component {
                     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                         <figure>
                             <img 
-                               src="/ngiiedu/assets/images/HORIZONTAL.png" 
+                               src={contextPath+"/assets/images/HORIZONTAL.png"} 
                                 // src="/assets/images/sw1.png" 
                                 alt="HORIZONTAL" 
                                 style={typeKind == "HORIZONTAL"? style.selected : style.unselected}
@@ -150,7 +150,7 @@ class SwipeMaps extends Component {
                         &nbsp;&nbsp;&nbsp;
                         <figure>
                             <img 
-                                src="/ngiiedu/assets/images/VERTICAL.png" 
+                                src={contextPath+"/assets/images/VERTICAL.png"} 
                                 // src="/assets/images/sw2.png" 
                                 alt="VERTICAL" 
                                 style={typeKind == "VERTICAL"? style.selected : style.unselected}

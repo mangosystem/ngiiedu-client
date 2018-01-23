@@ -1202,7 +1202,7 @@ class MainContainer extends React.Component {
                             anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                             targetOrigin={{horizontal: 'left', vertical: 'top'}}
                         >
-                            <MenuItem primaryText="수업 홈" onClick={()=>this.props.history.push("/ngiiedu/course/" +this.props.match.params.COURSEID)}/>
+                            <MenuItem primaryText="수업 홈" onClick={()=>this.props.history.push(contextPath+"/course/" +this.props.match.params.COURSEID)}/>
                             <MenuItem primaryText="이전 목록" onClick={()=>this.props.history.goBack()}/>
                         </IconMenu>
                         <div 
@@ -1224,7 +1224,7 @@ class MainContainer extends React.Component {
                             <IconButton 
                             style={{width: 50, height: 50}}
                             tooltip="미리보기"
-                            onClick={() => this.props.history.push('/ngiiedu/course/dataset/preview/'+this.props.match.params.DATASETID)}
+                            onClick={() => this.props.history.push(contextPath+'/course/dataset/preview/'+this.props.match.params.DATASETID)}
                             >
                             
                                 <IconPageView

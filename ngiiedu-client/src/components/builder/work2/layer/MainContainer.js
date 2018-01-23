@@ -402,7 +402,7 @@ class MainContainer extends React.Component {
                                 row.workOutputList.map((data,i)=>(
                                     <div className='thumbnailContainer' key={i}>
                                         <Paper zDepth={1} className='thumbnailContainer2'>
-                                            <div className='thumbnail' onClick={()=>this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}
+                                            <div className='thumbnail' onClick={()=>this.props.history.push(contextPath+'/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}
                                                 style={{
                                                     background:'url('+apiSvr+'/coursesWork/layers/thumbNail/'+data.pinogioOutputId+'?width=300&height=230)',
                                                     backgroundSize: 'cover',
@@ -424,7 +424,7 @@ class MainContainer extends React.Component {
                                                         anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                                                         targetOrigin={{horizontal: 'left', vertical: 'top'}}
                                                     >
-                                                        <MenuItem primaryText="미리보기" onClick={() => this.props.history.push('/ngiiedu/layer/preview/'+data.pngoData.layerId)}/>
+                                                        <MenuItem primaryText="미리보기" onClick={() => this.props.history.push(contextPath+'/layer/preview/'+data.pngoData.layerId)}/>
                                                         <MenuItem primaryText="편집하기" onClick={()=>this.editLayer(data)}/>
                                                         <MenuItem primaryText="삭제하기" onClick={()=>this.deleteModalOpen(data)}/>
                                                         {data.isDone==false?

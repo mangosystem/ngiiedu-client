@@ -146,14 +146,14 @@ class BasicMaps extends Component {
                     */}
                     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                         <img 
-                            src="/ngiiedu/assets/images/RIGHT.png" 
+                            src={contextPath+"/assets/images/RIGHT.png"} 
                             // src="/assets/images/b3.png" 
                             alt="b3" 
                             style={typeKind == "RIGHT"? style.selected : style.unselected}
                             onClick={() => this.changeTypeKind('RIGHT')}/>
                         &nbsp;&nbsp;&nbsp;
                         <img 
-                            src="/ngiiedu/assets/images/LEFT.png" 
+                            src={contextPath+"/assets/images/LEFT.png"} 
                             // src="/assets/images/b4.png" 
                             alt="b4" 
                             style={typeKind == "LEFT"? style.selected : style.unselected}

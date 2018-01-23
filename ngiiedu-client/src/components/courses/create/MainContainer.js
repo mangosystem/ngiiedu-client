@@ -237,7 +237,7 @@ class MainContainer extends React.Component {
 	onClickCoursePage() {
 		// browserHistory.push('/course/' + courseId);
 		const courseId = this.state.courseId;
-		this.props.history.push("/ngiiedu/course/" + courseId);
+		this.props.history.push(contextPath+"/course/" + courseId);
 	}
 
 	onChangedDataset(value){

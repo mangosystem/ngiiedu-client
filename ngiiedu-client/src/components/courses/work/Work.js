@@ -73,13 +73,13 @@ class Work extends React.Component {
       function (data) {
           if(data.response.data!=null && data.response.data.length!=0){
             if (data.response.data[0].outputType == 'split') {
-              this.props.history.push("/ngiiedu/split");
+              this.props.history.push(contextPath+"/split");
             } else if (data.response.data[0].outputType == 'swipe') {
-              this.props.history.push("/ngiiedu/swipe");
+              this.props.history.push(contextPath+"/swipe");
             } else if (data.response.data[0].outputType == 'population') {
               
             } else {
-              this.props.history.push("/ngiiedu/course/" + courseId + "/work2/" + id, data.response.data[0].outputType);
+              this.props.history.push(contextPath+"/course/" + courseId + "/work2/" + id, data.response.data[0].outputType);
             }
           }
       }.bind(this),

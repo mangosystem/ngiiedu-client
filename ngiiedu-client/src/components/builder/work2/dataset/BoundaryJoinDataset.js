@@ -242,7 +242,7 @@ class BoundaryJoinDataset extends Component {
                             <h3>참고</h3>
                             엑셀자료의 첫번째 열은 행정경계결합에 사용될 행정구역코드 또는 행정구역명이어야 합니다.<br/>
                             엑셀자료의 첫번째 행은 자료의 컬럼이름이어야 합니다.
-                            <img src="/ngiiedu/assets/images/populationExample.png" style={{width:700}}></img>
+                            <img src={contextPath+"/assets/images/populationExample.png"} style={{width:700}}></img>
                     </Paper>
 
             

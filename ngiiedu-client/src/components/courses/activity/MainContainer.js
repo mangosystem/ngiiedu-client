@@ -120,11 +120,11 @@ class MainContainer extends React.Component {
   
   activityView(type,id){
     if(type=='story'){//스토리맵 일때
-      window.location.href='/ngiiedu/storymap/preview/'+id
+      window.location.href=contextPath+'/storymap/preview/'+id
       
     }
     if(type=='motify'){
-      window.location.href='/ngiiedu/map/preview/'+id
+      window.location.href=contextPath+'/map/preview/'+id
     }
 
 
@@ -140,11 +140,11 @@ class MainContainer extends React.Component {
 
   movePreview(type,id){
     if(type=='dataset'){
-      this.props.history.push('/ngiiedu/course/dataset/preview/'+id)
+      this.props.history.push(contextPath+'/course/dataset/preview/'+id)
     }else if(type=='layer'){
-      this.props.history.push('/ngiiedu/layer/preview/'+id)
+      this.props.history.push(contextPath+'/layer/preview/'+id)
     }else if(type=='maps')
-      this.props.history.push('/ngiiedu/maps/preview/'+id)
+      this.props.history.push(contextPath+'/maps/preview/'+id)
     }
 
   render() {
