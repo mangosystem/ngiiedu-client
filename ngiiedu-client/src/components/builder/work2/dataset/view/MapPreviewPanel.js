@@ -347,7 +347,7 @@ addBaseLayer(map) {
           opacity: 0.6,
           source: new ol.source.ImageWMS({
             ratio: 1,
-            url: pinoSvr+'/geoserver/pinogio/wms',
+            url: pinoSvr+gisSvr+'/pinogio/wms',
             params: {
               'FORMAT': 'image/png',
               'VERSION': '1.3.0',

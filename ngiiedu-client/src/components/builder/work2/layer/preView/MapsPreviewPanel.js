@@ -307,7 +307,7 @@ class MapsPreviewPanel extends React.Component {
             opacity: 0.6,
             source: new ol.source.ImageWMS({
             ratio: 1,
-            url: pinoSvr+'/geoserver/pinogio/wms',
+            url: pinoSvr+gisSvr+'/pinogio/wms',
             params: {
                 'FORMAT': 'image/png',
                 'VERSION': '1.3.0',
@@ -328,7 +328,7 @@ class MapsPreviewPanel extends React.Component {
         <div id="mapView" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
         
             <div style={{position:'absolute',right:100,bottom:100,zIndex:1}}>
-                <img src={pinoSvr+"/geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:"+this.props.layerName}/>
+                <img src={pinoSvr+gisSvr+"/wms?REQUEST=GetLegendGraphic&VERSION=1.3.0&FORMAT=image/png&LAYER=pinogio:"+this.props.layerName}/>
             </div>
         </div>
     </div>

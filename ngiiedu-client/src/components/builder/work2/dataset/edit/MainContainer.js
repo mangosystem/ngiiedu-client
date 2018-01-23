@@ -295,7 +295,7 @@ class MainContainer extends React.Component {
           opacity: 0.6,
           source: new ol.source.ImageWMS({
             ratio: 1,
-            url: pinoSvr+'/geoserver/pinogio/wms',
+            url: pinoSvr+gisSvr+'/pinogio/wms',
             params: {
               'FORMAT': 'image/png',
               'VERSION': '1.3.0',
@@ -419,7 +419,7 @@ class MainContainer extends React.Component {
         let raster = new ol.layer.Image({
             source: new ol.source.ImageWMS({
                 ratio: 1,
-                url: pinoSvr+'/geoserver/pinogio/wms',
+                url: pinoSvr+gisSvr+'/pinogio/wms',
                 params: {
                     'FORMAT': 'image/png',
                     'VERSION': '1.3.0',
@@ -444,7 +444,7 @@ class MainContainer extends React.Component {
                 format: new ol.format.GeoJSON(),
                 loader: function (extent, resolution, projection) {
 
-                    let url = pinoSvr+'/geoserver/pinogio/wfs?request=GetFeature' +
+                    let url = pinoSvr+gisSvr+'/pinogio/wfs?request=GetFeature' +
                         '&version=1.0.0' +
                         // '&typeName=pinogio:d=KjCXc4dmy9' +
                         '&typeName=pinogio:' + layerName +
