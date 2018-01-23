@@ -64,9 +64,9 @@ class MainContainer extends React.Component {
     //주제지도 생성
     createLayer(){
 
-        if(this.props.option =='populationLayer'){
+        if(this.props.option =='layerPopulation'){
             for(let i=0;i<this.props.data.length;i++){
-                if(this.props.data[i].outputType == 'populationLayer'){
+                if(this.props.data[i].outputType == 'layerPopulation'){
                     this.setState({
                         step:'createLayer',
                         courseWorkSubId:this.props.data[i].idx,
@@ -97,9 +97,9 @@ class MainContainer extends React.Component {
 
     //주제지도 편집
     editLayer(row){
-        if(this.props.option =='populationLayer'){
+        if(this.props.option =='layerPopulation'){
             for(let i=0;i<this.props.data.length;i++){
-                if(this.props.data[i].outputType == 'populationLayer'){
+                if(this.props.data[i].outputType == 'layerPopulation'){
                     this.setState({
                         step:'editLayer',
                         selectRow:row,
@@ -127,7 +127,7 @@ class MainContainer extends React.Component {
 
     //데이터셋 불러오기
     getDatasetList(){
-        if(this.props.option=="populationLayer"){
+        if(this.props.option=="layerPopulation"){
 
             let defaultData  =[
                 {idx:'1', outputName:'2000년 시도 인구 (통계청)', pinogioOutputId:'dl=bnd_sido_pg_2000_pop'},
@@ -398,7 +398,7 @@ class MainContainer extends React.Component {
                     {/* 불러온 데이터 리스트 */}
                         {this.props.data.map((row,index)=>(
                             //데이터 리스트 중 outputType이 layer(주제지도)인 데이터
-                            row.outputType =='layer'||row.outputType =='populationLayer'?
+                            row.outputType =='layer'||row.outputType =='layerPopulation'?
                                 row.workOutputList.map((data,i)=>(
                                     <div className='thumbnailContainer' key={i}>
                                         <Paper zDepth={1} className='thumbnailContainer2'>

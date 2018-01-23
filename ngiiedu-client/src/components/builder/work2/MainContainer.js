@@ -124,7 +124,7 @@ class MainContainer extends React.Component {
                 this.state.workType=='population'?
                 <Population />
                 :
-                this.state.workType=='populationLayer'?
+                this.state.workType=='layerPopulation'?
                 <LayerMain
                     courseId={this.props.match.params.COURSEID}
                     workId={this.props.match.params.WORKID} 
