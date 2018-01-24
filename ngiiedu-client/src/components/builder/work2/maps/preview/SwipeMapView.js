@@ -11,18 +11,6 @@ class SwipeMapView extends React.Component {
 
     this.state = {
       map: new ol.Map({
-        view: new ol.View({
-          center: [14143701.095047, 4477593.930960],
-          zoom: 15,
-          minZoom: 1,	maxZoom: 18
-        }),
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.XYZ({
-              url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
-            })
-          })
-        ],
         controls: ol.control.defaults({
           zoom: true, 
           rotate: false, 
@@ -86,29 +74,29 @@ class SwipeMapView extends React.Component {
 
         let data = res.response.data.data;
 
-        // if(data.bounds){
-        //   let wkt = data.bounds;
-        //   let format = new ol.format.WKT();
-        //   let feature = format.readFeature(wkt, {
-        //       dataProjection: 'EPSG:4326',
-        //       featureProjection: 'EPSG:3857'
-        //   });
-        //   map.getView().fit(
-        //       feature.getGeometry().getExtent(),
-        //       map.getSize()
-        //   );
-        // }else if(data.bounds==null&&data.metadata!=null){
-        //   let wgs84Bounds=JSON.parse(data.metadata).wgs84Bounds;
-        //   let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
-        //   let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
-        //   map.getView().fit(transformExtent, this.state.map.getSize());
-        // }
-
-        // if(data.bounds==null&&data.metadata!=null){
+        if(data.bounds){
+          let wkt = data.bounds;
+          let format = new ol.format.WKT();
+          let feature = format.readFeature(wkt, {
+              dataProjection: 'EPSG:4326',
+              featureProjection: 'EPSG:3857'
+          });
+          map.getView().fit(
+              feature.getGeometry().getExtent(),
+              map.getSize()
+          );
+        }else if(data.bounds==null&&data.metadata!=null){
           let wgs84Bounds=JSON.parse(data.metadata).wgs84Bounds;
           let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
           let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
           map.getView().fit(transformExtent, this.state.map.getSize());
+        }
+
+        // if(data.bounds==null&&data.metadata!=null){
+          // let wgs84Bounds=JSON.parse(data.metadata).wgs84Bounds;
+          // let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
+          // let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
+          // map.getView().fit(transformExtent, this.state.map.getSize());
         // }
 
         
