@@ -2,7 +2,10 @@ var webpack = require("webpack");
 
 module.exports = {
 
-		entry: './src/index.js',
+		// entry: './src/index.js',
+		entry: {
+			App: ['babel-polyfill', './src/index.js']
+		},
 
 		output: {
 			// path: __dirname + '/webapps',
@@ -10,14 +13,14 @@ module.exports = {
 			filename: 'bundle.js'
 		},
 
-		// plugins: [
-		// 	// UglifyJsPlugin
-		// 	new webpack.optimize.UglifyJsPlugin({
-		// 	  compress: true,
-		// 	  warnings: false,
-		// 	  except: ['$super', '$', 'exports', 'require']
-		// 	})
-		// ],
+		plugins: [
+			// UglifyJsPlugin
+			new webpack.optimize.UglifyJsPlugin({
+			  compress: true,
+			  warnings: false,
+			  except: ['$super', '$', 'exports', 'require']
+			})
+		],
 
 		devServer: {
 			// inline: true,
