@@ -116,8 +116,6 @@ class CourseList extends React.Component {
                                     <Avatar src={contextPath+'/assets/images/' + row.moduleMetadata + '.png'} />
                                 </div>
                                 <div style={{gridColumn:2,paddingLeft:20}} onClick={()=>this.handleExpandChange("own_"+row.idx)}>
-                                    {/* <div style={{paddingLeft:40,height:22,background:'url(/ngiiedu/assets/images/ico.png) no-repeat left -50px'}}> */}
-                                    {/* </div> */}
                                     {row.status == 't'?
                                     <LockOpen color={'#3e81f6'} />
                                         :

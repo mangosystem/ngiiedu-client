@@ -180,8 +180,6 @@ class MainContainer extends React.Component {
                             </FloatingActionButton>
                         </div>
 
-                    {/* 컨텐츠 내용 map */}
-                    {/* backgroundImage: this.props.selectedItem == item.idx ? 'url(/ngiiedu/assets/images/' + item.moduleMetadata + '_on.png)' : 'url(/ngiiedu/assets/images/' + item.moduleMetadata + '.png)', */}
 
                         {this.state.dataSetData[0].workOutputList.map((row,index)=>(
                             <div className='thumbnailContainer'  key={index} >

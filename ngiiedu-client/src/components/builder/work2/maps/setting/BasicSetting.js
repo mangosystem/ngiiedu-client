@@ -190,24 +190,7 @@ class BasicSetting extends Component {
                     />
                     <Subheader>템플릿 변경</Subheader>
                     <div style={{textAlign: 'center'}}>
-                    {/* 
-                        <div style={{display: 'flex', justifyContent: 'center'}}>
-                            <img 
-                                src="/ngiiedu/assets/images/b1.png" 
-                                // src="/assets/images/b1.png" 
-                                alt="b1" 
-                                style={typeKind == "BOTTOM"? style.selected : style.unselected}
-                                onClick={() => this.changeTypeKind('BOTTOM')}/>
-                            &nbsp;&nbsp;&nbsp;
-                            <img 
-                                src="/ngiiedu/assets/images/b2.png" 
-                                // src="/assets/images/b2.png" 
-                                alt="b2" 
-                                style={typeKind == "TOP"? style.selected : style.unselected}
-                                onClick={() => this.changeTypeKind('TOP')}/>
-                        </div>
-                        <br />
-                    */}                        
+                               
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                             <img 
                                 src={contextPath+"/assets/images/RIGHT.png"} 

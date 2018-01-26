@@ -44,7 +44,7 @@ const CheckUserAuthority = (courseId,Idx) => {
   
     if(isMember==false && isOwner==false){
       alert("수업참여자가 아닙니다.");
-      window.location.href=contextPath
+      window.location.href=contextPath+'/';
     }
 
     return (

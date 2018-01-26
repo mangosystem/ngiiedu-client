@@ -153,38 +153,8 @@ class SeriesMaps extends Component {
                         defaultValue={this.props.map ? this.props.map.outputName : ''}
                     />
                     <br /><br />
-                    {/*<div style={{display: 'flex', alignItems: 'center'}}>
-                        <img 
-                            src="/ngiiedu/assets/images/c1.png" 
-                            // src="/assets/images/tab.png" 
-                            alt="c1" 
-                            style={typeKind == "CAROUSEL"? style.selected : style.unselected}
-                            onClick={() => this.changeTypeKind('CAROUSEL')}/>
-                        &nbsp;&nbsp;&nbsp;
-                        <div>
-                            <h4>화면전환형</h4> <br />
-                            <p>
-                                설명 텍스트에 대한 옵션 패널과 함께 탭을 사용하여 <br />
-                                맵과 다른 콘텐츠를 나타냅니다.
-                            </p>
-                        </div>
-                    </div>
-                    <br />*/}
                     <div style={{display: 'flex', alignItems: 'center',justifyContent: 'center'}}>
-                        {/*<img 
-                            src="/ngiiedu/assets/images/c2.png" 
-                            // src="/assets/images/accordion.png" 
-                            alt="c2" 
-                            style={typeKind == "SLIDE"? style.selected : style.unselected}
-                            onClick={() => this.changeTypeKind('SLIDE')}/>
-                        &nbsp;&nbsp;&nbsp;
-                        <div>
-                            <h4>슬라이더형</h4> <br />
-                            <p>
-                                설명 텍스트를 포함하는 확장 가능한 컨트롤을 사용하여 <br />
-                                맵과 다른 콘텐츠를 나타냅니다.
-                            </p>
-                        </div>*/}
+                    
                         <figure>
                             <img 
                                 src={contextPath+"/assets/images/SLIDE.png"} 

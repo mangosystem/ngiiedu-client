@@ -55,7 +55,6 @@ class MainContainer extends React.Component {
   }
 
   handleJoinStatusChange(userId,status){
-    // http://localhost:8080/ngiiedu/api/v1/20/member/1/status.json 
     // /{courseId}/member/{userId}/status
     var courseId = this.props.match.params.COURSEID;
     // @RequestMapping(value="/{courseId}/member/{userId}/status", method=RequestMethod.PUT)

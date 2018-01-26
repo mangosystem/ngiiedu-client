@@ -409,11 +409,6 @@ class MainContainer extends React.Component {
                                                     backgroundRepeat: 'no-repeat',
                                                     }}>
                                             </div>
-                                            {/* <div 
-                                            className='thumbnail' 
-                                            onClick={()=>this.props.history.push('/ngiiedu/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}>
-                                                썸네일
-                                            </div> */}
                                             <div className='thumbnailTitleContainer'>
                                                 <div className='thumbnailTitle'>
                                                     {data.outputName}

@@ -152,16 +152,7 @@ class SeriesSetting extends Component {
                     />
                     <Subheader>템플릿 변경</Subheader>
                     <div style={{display: 'flex', justifyContent: 'center'}}>
-                        {/*<figure>
-                            <img 
-                                src="/ngiiedu/assets/images/c1.png" 
-                                // src="/assets/images/tab.png" 
-                                alt="c1" 
-                                style={typeKind == "CAROUSEL"? style.selected : style.unselected}
-                                onClick={() => this.changeTypeKind('CAROUSEL')}/>
-                            <figcaption style={style.text}>화면전환형</figcaption>
-                        </figure>
-                        &nbsp;&nbsp;&nbsp;*/}
+                       
                         <figure>
                             <img 
                                 src={contextPath+"/assets/images/SLIDE.png"} 

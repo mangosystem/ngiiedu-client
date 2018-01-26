@@ -295,7 +295,7 @@ class MainContainer extends React.Component {
           opacity: 0.6,
           source: new ol.source.ImageWMS({
             ratio: 1,
-            url: pinoSvr+'/geoserver/pinogio/wms',
+            url: gisSvr+'/pinogio/wms',
             params: {
               'FORMAT': 'image/png',
               'VERSION': '1.3.0',
@@ -394,7 +394,7 @@ class MainContainer extends React.Component {
         let raster = new ol.layer.Image({
             source: new ol.source.ImageWMS({
                 ratio: 1,
-                url: pinoSvr+'/geoserver/pinogio/wms',
+                url: gisSvr+'/pinogio/wms',
                 params: {
                     'FORMAT': 'image/png',
                     'VERSION': '1.3.0',
@@ -419,7 +419,7 @@ class MainContainer extends React.Component {
                 format: new ol.format.GeoJSON(),
                 loader: function (extent, resolution, projection) {
 
-                    let url = pinoSvr+'/geoserver/pinogio/wfs?request=GetFeature' +
+                    let url = gisSvr+'/pinogio/wfs?request=GetFeature' +
                         '&version=1.0.0' +
                         // '&typeName=pinogio:d=KjCXc4dmy9' +
                         '&typeName=pinogio:' + layerName +
@@ -1018,10 +1018,10 @@ class MainContainer extends React.Component {
                                             <br/>
                                             <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
                                             <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
-                                                background:'url('+pinoSvr+pngoWeb+'/data/photo/'+this.state.wmsFeatureInfo[row.name]+')',
+                                                background:'url('+pngoSvr+'/data/photo/'+this.state.wmsFeatureInfo[row.name]+')',
                                                 backgroundSize:'cover'
                                             }}
-                                                onClick={()=>window.open(pinoSvr+pngoWeb+'/data/photo/'+this.state.wmsFeatureInfo[row.name])}
+                                                onClick={()=>window.open(pngoSvr+'/data/photo/'+this.state.wmsFeatureInfo[row.name])}
                                             >
                                             </div>
                                         </div>
@@ -1064,10 +1064,10 @@ class MainContainer extends React.Component {
                                         <br/>
                                         <label style={{marginLeft:10,marginTop:15,fontSize:15,marginBottom:5,color:'rgba(0,0,0,0.3)'}}>사진</label>
                                         <div key={idx} style={{ width: 200, display: 'flex', height: 200, alignItems: 'center', marginLeft: 10, marginRight: 10 ,
-                                            background:'url('+pinoSvr+pngoWeb+'/data/photo/'+this.state.wfsFeatureInfo[row.name]+')',
+                                            background:'url('+pngoSvr+'/data/photo/'+this.state.wfsFeatureInfo[row.name]+')',
                                             backgroundSize:'cover'
                                         }}
-                                            onClick={()=>window.open(pinoSvr+pngoWeb+'/data/photo/'+this.state.wfsFeatureInfo[row.name])}
+                                            onClick={()=>window.open(pngoSvr+'/data/photo/'+this.state.wfsFeatureInfo[row.name])}
                                         >
                                         </div>
                                     </div>

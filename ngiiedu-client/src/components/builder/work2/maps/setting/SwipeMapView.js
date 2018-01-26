@@ -70,7 +70,7 @@ class SwipeMapView extends React.Component {
     let raster1 = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: pinoSvr+gisSvr+'/pinogio/wms',
+        url: gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -84,7 +84,7 @@ class SwipeMapView extends React.Component {
     let raster2 = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: pinoSvr+gisSvr+'/pinogio/wms',
+        url: gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -191,7 +191,7 @@ class SwipeMapView extends React.Component {
     let raster1 = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: pinoSvr+gisSvr+'/pinogio/wms',
+        url: gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -205,7 +205,7 @@ class SwipeMapView extends React.Component {
     let raster2 = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: pinoSvr+gisSvr+'/pinogio/wms',
+        url: gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -488,7 +488,7 @@ class SwipeMapView extends React.Component {
       opacity: 0.6,
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: pinoSvr+gisSvr+'/pinogio/wms',
+        url: gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',

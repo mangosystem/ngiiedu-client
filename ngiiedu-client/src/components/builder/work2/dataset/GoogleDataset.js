@@ -22,7 +22,8 @@ class GoogleDataset extends Component {
             yValue : 'temp2',
             files : [], //google api loading files
             sheetData : [], //google api loading sheet json,
-            loading:'false'
+            loading:'false',
+            title:''
             
         }
 
@@ -32,9 +33,14 @@ class GoogleDataset extends Component {
         this.listFiles = this.listFiles.bind(this);
         this.filesSetState = this.filesSetState.bind(this);
         this.sheetConnect = this.sheetConnect.bind(this);
+        this.changeTitle = this.changeTitle.bind(this);
         // this.updateSigninStatus = this.updateSigninStatus.bind(this);
     }
 
+
+    changeTitle(v){
+        title:v
+    }
     
     
     // 다음단계로..
@@ -113,38 +119,61 @@ class GoogleDataset extends Component {
     
     //시트 정보 가져오기 google api
     sheetConnect(sheetId){
-        var sheetDataSetState = this.sheetDataSetState.bind(this);
-        var columnAlpha = this.columnAlpha.bind(this);
-        var params = {
-        // The spreadsheet to request.
-        spreadsheetId: sheetId,// TODO: Update placeholder value.
+        var courseWorkSubId= this.props.courseWorkSubId ;
+        var fileId = sheetId;
+        var vendorId = 'GOOGLE';
+        var title = this.state.title;
 
-        // The ranges to retrieve from the spreadsheet.
-        ranges: [],  // TODO: Update placeholder value.
+        ajaxJson(
+            ['POST',apiSvr+ '/coursesWork/onlineDataset.json'],
+            {
+                courseWorkSubId:courseWorkSubId,
+                fileId: fileId,
+                vendorId:vendorId,
+                title:title
+            },
+            function(res) {
+				console.dir(res)
 
-        };
+			}.bind(this),
+			function(xhr, status, err) {
+				alert('Error');
+			}.bind(this)
+        )
+
+
+        // var sheetDataSetState = this.sheetDataSetState.bind(this);
+        // var columnAlpha = this.columnAlpha.bind(this);
+        // var params = {
+        // // The spreadsheet to request.
+        // spreadsheetId: sheetId,// TODO: Update placeholder value.
+
+        // // The ranges to retrieve from the spreadsheet.
+        // ranges: [],  // TODO: Update placeholder value.
+
+        // };
 
         //sheet 기본정보 요청
-        var request = gapi.client.sheets.spreadsheets.get(params);
-        request.then(function(response) {
-            let properties = response.result.sheets[0].properties
+        // var request = gapi.client.sheets.spreadsheets.get(params);
+        // request.then(function(response) {
+        //     let properties = response.result.sheets[0].properties
             
-            //sheet 세부정보요청
-            //내부 재요청...
-            gapi.client.sheets.spreadsheets.values.get({
-                spreadsheetId: response.result.spreadsheetId,
-                range: properties.title+'!A1:'+columnAlpha(properties.gridProperties.columnCount),
-            }).then(function(response) {
-                sheetDataSetState(response.result.values);
-            }, function(response) {
-            console('Error: ' + response.result.error.message);
-            });
+        //     //sheet 세부정보요청
+        //     //내부 재요청...
+        //     gapi.client.sheets.spreadsheets.values.get({
+        //         spreadsheetId: response.result.spreadsheetId,
+        //         range: properties.title+'!A1:'+columnAlpha(properties.gridProperties.columnCount),
+        //     }).then(function(response) {
+        //         sheetDataSetState(response.result.values);
+        //     }, function(response) {
+        //     console('Error: ' + response.result.error.message);
+        //     });
 
 
 
-        }, function(reason) {
-        console.error('error: ' + reason.result.error.message);
-        });
+        // }, function(reason) {
+        // console.error('error: ' + reason.result.error.message);
+        // });
     
     }
     
@@ -179,43 +208,51 @@ class GoogleDataset extends Component {
                     <TextField
                         style={{marginLeft:'0%'}}
                         hintText="제목"
+                        onChange={(e,v)=>this.changeTitle(v)}
                     />
                     <br/>
                     <div style={{marginTop:20}}>
-                        <p>시트 선택</p>
-                       
+                        <p style={{marginBottom:20}}>시트 선택</p>
                         
-                    {this.state.files.length !=0 ? 
-                    <div>
-                        <FlatButton
-                            label="해제"
-                            onClick={()=>this.googleConnect('disconnect')}
-                        /> 
-                            <Paper style={{height:400,width:'100%',overflow:'auto',marginTop:40,paddingTop:10}}>
-                        {this.state.files.map((row, index)=>(
-                                <Paper key={index} style={{height:60,width:'80%', marginLeft:'10%',marginBottom:10, display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-                                    <div style={{height:30,width:30,border:'solid 1px gray',textAlign:'center'}}>xls</div>
-                                    <h4>{row.name}</h4>
-                                    <FlatButton
-                                        label="선택"
-                                        onClick={()=>this.sheetConnect(row.id)}
-                                    />  
+                        {this.state.files.length !=0 ? 
+                        <div>
+                            <FlatButton
+                                label="해제"
+                                onClick={()=>this.googleConnect('disconnect')}
+                                style={{color: 'white'}}
+                                backgroundColor={'#3e81f6'}
+                                
+                            /> 
+                                <Paper style={{height:400,width:'100%',overflow:'auto',marginTop:40,paddingTop:10}}>
+                            {this.state.files.map((row, index)=>(
+                                    <Paper key={index} style={{height:60,width:'80%', marginLeft:'10%',marginBottom:10, display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                                        <div style={{height:30,width:30,border:'solid 1px gray',textAlign:'center'}}>xls</div>
+                                        <h4>{row.name}</h4>
+                                        <FlatButton
+                                            label="선택"
+                                            onClick={()=>this.sheetConnect(row.id)}
+                                            style={{marginRight:10,color: 'white'}}
+                                            backgroundColor={'#3e81f6'}
+                                        />  
+                                    </Paper>
+                            ))}
                                 </Paper>
-                        ))}
-                            </Paper>
-                    </div>
-                    :
-                    <FlatButton
-                            label="연결"
-                            onClick={()=>this.googleConnect('connect')}
-                    /> 
-                    }
-                    {this.state.loading=='true'?
-                    <div style={{width:'100%', height:400, marginTop:40, display:'flex',alignItems:'center',justifyContent:'center'}}>
-                        <CircularProgress size={80} thickness={5} />
-                    </div> 
-                    :
-                    null}
+                        </div>
+                        :
+                        <FlatButton
+                                label="연결"
+                                onClick={()=>this.googleConnect('connect')}
+                                style={{color: 'white'}}
+                                backgroundColor={'#3e81f6'}
+                                
+                        /> 
+                        }
+                        {this.state.loading=='true'?
+                        <div style={{width:'100%', height:400, marginTop:40, display:'flex',alignItems:'center',justifyContent:'center'}}>
+                            <CircularProgress size={80} thickness={5} />
+                        </div> 
+                        :
+                        null}
                         
 
                     </div>

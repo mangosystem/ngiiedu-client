@@ -53,7 +53,7 @@ class MapsView extends React.Component {
     let raster = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: pinoSvr+gisSvr+'/pinogio/wms',
+        url: gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -136,7 +136,7 @@ class MapsView extends React.Component {
       source: new ol.source.ImageWMS({
         ratio: 1,
         visible: true,
-        url:pinoSvr+gisSvr+'/pinogio/wms',
+        url:gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -411,7 +411,7 @@ class MapsView extends React.Component {
       opacity: 0.6,
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url: pinoSvr+gisSvr+'/pinogio/wms',
+        url: gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',

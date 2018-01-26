@@ -67,7 +67,7 @@ class MainContainer extends React.Component {
     let raster = new ol.layer.Image({
       source: new ol.source.ImageWMS({
         ratio: 1,
-        url:pinoSvr+gisSvr+'/pinogio/wms',
+        url:gisSvr+'/pinogio/wms',
         params: {
           'FORMAT': 'image/png',
           'VERSION': '1.3.0',
@@ -88,7 +88,7 @@ class MainContainer extends React.Component {
         visible: false,
         style: function(feature,resolution){
             var pino_photo = feature.get('pino_photo');
-            var url =pinoSvr+pngoWeb+"/data/photo/"+pino_photo;
+            var url =pngoSvr+"/data/photo/"+pino_photo;
             if(!cache[url]){
                 cache[url] = new ol.style.Style({
                     image:new ol.style.Icon({
@@ -154,7 +154,7 @@ class MainContainer extends React.Component {
             format: new ol.format.GeoJSON(),
             loader: function (extent, resolution, projection) {
 
-                let url = pinoSvr+gisSvr+'/pinogio/wfs?request=GetFeature' +
+                let url = gisSvr+'/pinogio/wfs?request=GetFeature' +
                     '&version=1.0.0' +
                     // '&typeName=pinogio:d=KjCXc4dmy9' +
                     '&typeName=pinogio:' + layerId+
@@ -265,7 +265,6 @@ class MainContainer extends React.Component {
                   anchorOrigin={{horizontal: 'left', vertical: 'top'}}
                   targetOrigin={{horizontal: 'left', vertical: 'top'}}
               >
-                  {/* <MenuItem primaryText="수업 홈" onClick={()=>this.props.history.push("/ngiiedu/course")}/> */}
                   <MenuItem primaryText="뒤로 가기" onClick={()=>this.props.history.goBack()}/>
               </IconMenu>
               <div 

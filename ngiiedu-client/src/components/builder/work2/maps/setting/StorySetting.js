@@ -156,20 +156,7 @@ class StorySetting extends Component {
                     />
                     <Subheader>템플릿 변경</Subheader>
                     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                        {/*<img 
-                            src="/ngiiedu/assets/images/TAB.png" 
-                            // src="/assets/images/tab.png" 
-                            alt="tab" 
-                            style={typeKind == "TAB"? style.selected : style.unselected}
-                            onClick={() => this.changeTypeKind('TAB')}/>
-                        &nbsp;&nbsp;&nbsp;
-                        <div>
-                            <h4>탭</h4> <br />
-                            <p>
-                                설명 텍스트에 대한 옵션 패널과 함께 탭을 사용하여 <br />
-                                맵과 다른 콘텐츠를 나타냅니다.
-                            </p>
-                        </div>*/}
+                       
                         <figure>
                             <img 
                                 src={contextPath+"/assets/images/TAB.png"} 
@@ -181,22 +168,7 @@ class StorySetting extends Component {
                         </figure>
                     </div>
                     <br />
-                    {/*<div style={{display: 'flex', alignItems: 'center'}}>
-                        <img 
-                            src="/ngiiedu/assets/images/ACCORDION.png" 
-                            // src="/assets/images/accordion.png" 
-                            alt="accordion" 
-                            style={typeKind == "ACCORDION"? style.selected : style.unselected}
-                            onClick={() => this.changeTypeKind('ACCORDION')}/>
-                        &nbsp;&nbsp;&nbsp;
-                        <div>
-                            <h4>아코디언</h4> <br />
-                            <p>
-                                설명 텍스트를 포함하는 확장 가능한 컨트롤을 사용하여 <br />
-                                맵과 다른 콘텐츠를 나타냅니다.
-                            </p>
-                        </div>
-                    </div>*/}
+                   
                 </div>
             </Dialog>
         );

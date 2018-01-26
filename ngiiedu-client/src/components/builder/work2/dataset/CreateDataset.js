@@ -99,6 +99,7 @@ class CreateDataset extends Component {
                                 {this.state.tabStep == 'google'?
                                     <GoogleDataset
                                         handleStep={this.props.handleStep}
+                                        courseWorkSubId = {this.props.courseWorkSubId}
                                     />
                                 :
                                     null

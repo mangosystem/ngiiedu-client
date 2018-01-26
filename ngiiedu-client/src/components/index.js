@@ -62,9 +62,6 @@ import LayerPreview from './builder/work2/layer/preView/MainContainer';
 
 import WorkFramePreviewMaps from './builder/work2/maps/preview/MainContainer';
 
-
-const contextPath = '/ngiiedu';
-
 import Error404 from './common/message/Error404';
 
 class App extends Component {
