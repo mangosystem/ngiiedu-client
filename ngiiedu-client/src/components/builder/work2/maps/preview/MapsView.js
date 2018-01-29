@@ -11,18 +11,6 @@ class MapsView extends React.Component {
 
     this.state = {
       map: new ol.Map({
-        view: new ol.View({
-          center: [14143701.095047, 4477593.930960],
-          zoom: 15,
-          minZoom: 1,	maxZoom: 18
-        }),
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.XYZ({
-              url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
-            })
-          })
-        ],
         controls: ol.control.defaults({
           zoom: true, 
           rotate: false, 
@@ -72,39 +60,48 @@ class MapsView extends React.Component {
       }
     }
 
-    ajaxJson(
-      ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
-      null,
-      function(res){
+    if (this.props.maps.mapsType != 'SERIES') {
+      ajaxJson(
+        ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
+        null,
+        function(res){
 
-        let data = res.response.data.data;
+          let data = res.response.data.data;
 
-        // if(data.bounds){
-        //   let wkt = data.bounds;
-        //   let format = new ol.format.WKT();
-        //   let feature = format.readFeature(wkt, {
-        //       dataProjection: 'EPSG:4326',
-        //       featureProjection: 'EPSG:3857'
-        //   });
-        //   map.getView().fit(
-        //       feature.getGeometry().getExtent(),
-        //       map.getSize()
-        //   );
-        // }
-
-        // if(data.bounds==null&&data.metadata!=null){
-          let wgs84Bounds=JSON.parse(data.metadata).wgs84Bounds;
-          let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
-          let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
-          map.getView().fit(transformExtent, this.state.map.getSize());
-        // }
-
+          // if (data.bounds) {
+          //   let wkt = data.bounds;
         
-      }.bind(this),
-      function(e){
-        alert(e);
-      }
-    );      
+          //   if (wkt) {
+          //     let format = new ol.format.WKT();
+          //     let feature = format.readFeature(wkt, {
+          //         dataProjection: 'EPSG:4326',
+          //         featureProjection: 'EPSG:3857'
+          //     });
+          //     map.getView().fit(
+          //         feature.getGeometry().getExtent(),
+          //         map.getSize()
+          //     );
+          //   }
+          // } else {
+            var w = JSON.parse(data.metadata).wgs84Bounds;
+            var extent = [w.minX, w.minY, w.maxX, w.maxY];
+            var extent3857 = ol.proj.getTransform('EPSG:4326', 'EPSG:3857')(extent);
+        
+            map.getView().fit(
+                extent3857,
+                map.getSize()
+            );
+          // }
+          
+          
+        }.bind(this),
+        function(e){
+          alert(e);
+        }
+      );
+    }
+
+
     map.addLayer(raster);
     
   }
@@ -154,7 +151,7 @@ class MapsView extends React.Component {
 
     ajaxJson(
       ['GET',apiSvr+'/coursesWork/layers/'+layerId+'.json'],
-      null,
+      {},
       function(res){
 
         let data = res.response.data.data;
@@ -170,7 +167,7 @@ class MapsView extends React.Component {
         //       feature.getGeometry().getExtent(),
         //       map.getSize()
         //   );
-        // }else if(data.bounds==null&&data.metadata!=null){
+        // } else if(data.bounds==null&&data.metadata!=null){
         //   let wgs84Bounds=JSON.parse(data.metadata).wgs84Bounds;
         //   let extent=[wgs84Bounds.minX, wgs84Bounds.minY, wgs84Bounds.maxX, wgs84Bounds.maxY];
         //   let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
@@ -183,7 +180,6 @@ class MapsView extends React.Component {
           let transformExtent = ol.proj.transformExtent(extent,'EPSG:4326', 'EPSG:3857');
           map.getView().fit(transformExtent, this.state.map.getSize());
         // }
-
         
       }.bind(this),
       function(e){
@@ -216,7 +212,7 @@ class MapsView extends React.Component {
     map.addLayer(raster);
 
     map.setTarget('mapView');
-
+    
   }
 
   addBaseLayer(map) {
@@ -230,7 +226,6 @@ class MapsView extends React.Component {
     proj4.defs("EPSG:5181","+proj=tmerc +lat_0=38 +lon_0=127 +k=1 +x_0=200000 +y_0=500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
     let proj5181 = ol.proj.get('EPSG:5181');
     proj5181.setExtent([-30000, -60000, 494288, 988576]);
-
 
     let osm = new ol.layer.Tile({
         title : 'OSM',
@@ -308,17 +303,17 @@ class MapsView extends React.Component {
     });
     
     let vworldBase = new ol.layer.Tile({
-      title : 'Vworld base',
-      visible : false,
-      type : 'base',
-      source:new ol.source.XYZ({
-          url: 'http://xdworld.vworld.kr:8080/2d/Base/201512/{z}/{x}/{y}.png',
-          attributions: [
-            new ol.Attribution({ 
-                html: '© <a href="http://map.vworld.kr/map/maps.do">vworld.kr</a>'
-            })
-          ]
-      })
+        title : 'Vworld base',
+        visible : false,
+        type : 'base',
+        source:new ol.source.XYZ({
+            url: 'http://xdworld.vworld.kr:8080/2d/Base/201512/{z}/{x}/{y}.png',
+            attributions: [
+              new ol.Attribution({ 
+                  html: '© <a href="http://map.vworld.kr/map/maps.do">vworld.kr</a>'
+              })
+            ]
+        })
     });
     
     let vworldSatelite = new ol.layer.Tile({
@@ -353,8 +348,8 @@ class MapsView extends React.Component {
     extent     = [-200000.00, -28024123.62, 31824123.62, 4000000.00];  // 4 * 3
 
     //배경지도로 활용할 지원 위성지도 URL
-    var ngiiURL     = apiSvr + '/utils/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile/L16/2374/61250.png';
-
+    //var ngiiURL     = contextPath + '/utils/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile/L16/2374/61250.png';
+    var ngiiURL     = contextPath + '/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile';
 
     let ngiiStreet = new ol.layer.Tile({
         title : 'Ngii Street Map',
@@ -376,7 +371,7 @@ class MapsView extends React.Component {
                 var z = ('00'+ (tileCoord[0] + 6)).slice(-2);
                 var x = tileCoord[1];
                 var y = tileCoord[2];
-                return 'http://mango.iptime.org:28086/postdata/tileMap?tileType=ngii_base&zxyUrl='+'/L' + z + '/' + x + '/' + y + '.png';
+                return ngiiURL+'/L' + z + '/' + x + '/' + y + '.png';
             },
             attributions: [
                 new ol.Attribution({ 
@@ -391,8 +386,8 @@ class MapsView extends React.Component {
     layers.push($.extend(true, {}, vworldSatelite));
     layers.push($.extend(true, {}, vworldBase));
     layers.push($.extend(true, {}, osm));
-    layers.push($.extend(true, {}, daum));
-    layers.push($.extend(true, {}, naver));
+    //layers.push($.extend(true, {}, daum));
+    //layers.push($.extend(true, {}, naver));
     layers.push($.extend(true, {}, ngiiStreet));
 
     let layerGroup = new ol.layer.Group({
@@ -401,8 +396,9 @@ class MapsView extends React.Component {
     });
 
     map.addLayer(layerGroup);
-
+    
   }
+
 
   addBoundaryLayer(layer, title) {
     let boundaryLayer = new ol.layer.Image({

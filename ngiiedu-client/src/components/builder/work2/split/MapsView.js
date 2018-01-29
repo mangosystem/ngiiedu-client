@@ -164,8 +164,8 @@ class MapsView extends React.Component {
         extent     = [-200000.00, -28024123.62, 31824123.62, 4000000.00];  // 4 * 3
 
         //배경지도로 활용할 지원 위성지도 URL
-        var ngiiURL     = apiSvr + '/utils/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile/L16/2374/61250.png';
-
+        //var ngiiURL     = contextPath + '/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile/L16/2374/61250.png';
+        var ngiiURL     = contextPath + '/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile';
 
         let ngiiStreet = new ol.layer.Tile({
             title : 'Ngii Street Map',
@@ -187,7 +187,7 @@ class MapsView extends React.Component {
                     var z = ('00'+ (tileCoord[0] + 6)).slice(-2);
                     var x = tileCoord[1];
                     var y = tileCoord[2];
-                    return 'http://mango.iptime.org:28086/postdata/tileMap?tileType=ngii_base&zxyUrl='+'/L' + z + '/' + x + '/' + y + '.png';
+                    return ngiiURL+'/L' + z + '/' + x + '/' + y + '.png';
                 },
                 attributions: [
                     new ol.Attribution({ 
@@ -202,8 +202,8 @@ class MapsView extends React.Component {
         layers1.push($.extend(true, {}, vworldSatelite));
         layers1.push($.extend(true, {}, vworldBase));
         layers1.push($.extend(true, {}, osm));
-        layers1.push($.extend(true, {}, daum));
-        layers1.push($.extend(true, {}, naver));
+        // layers1.push($.extend(true, {}, daum));
+        // layers1.push($.extend(true, {}, naver));
         layers1.push($.extend(true, {}, ngiiStreet));
 
         let layers2 = [];
@@ -211,8 +211,8 @@ class MapsView extends React.Component {
         layers2.push($.extend(true, {}, vworldSatelite));
         layers2.push($.extend(true, {}, vworldBase));
         layers2.push($.extend(true, {}, osm));
-        layers2.push($.extend(true, {}, daum));
-        layers2.push($.extend(true, {}, naver));
+        // layers2.push($.extend(true, {}, daum));
+        // layers2.push($.extend(true, {}, naver));
         layers2.push($.extend(true, {}, ngiiStreet));
 
         let layers3 = [];
@@ -220,8 +220,8 @@ class MapsView extends React.Component {
         layers3.push($.extend(true, {}, vworldSatelite));
         layers3.push($.extend(true, {}, vworldBase));
         layers3.push($.extend(true, {}, osm));
-        layers3.push($.extend(true, {}, daum));
-        layers3.push($.extend(true, {}, naver));
+        // layers3.push($.extend(true, {}, daum));
+        // layers3.push($.extend(true, {}, naver));
         layers3.push($.extend(true, {}, ngiiStreet));
 
         let layers4 = [];
@@ -229,8 +229,8 @@ class MapsView extends React.Component {
         layers4.push($.extend(true, {}, vworldSatelite));
         layers4.push($.extend(true, {}, vworldBase));
         layers4.push($.extend(true, {}, osm));
-        layers4.push($.extend(true, {}, daum));
-        layers4.push($.extend(true, {}, naver));
+        // layers4.push($.extend(true, {}, daum));
+        // layers4.push($.extend(true, {}, naver));
         layers4.push($.extend(true, {}, ngiiStreet));
 
         let map1 = new ol.Map({

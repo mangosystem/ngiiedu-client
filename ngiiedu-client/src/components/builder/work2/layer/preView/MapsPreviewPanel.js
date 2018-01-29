@@ -19,16 +19,6 @@ class MapsPreviewPanel extends React.Component {
           zoom: 7,
           minZoom: 1,	maxZoom: 18
         }),
-        layers: [
-          new ol.layer.Tile({
-            // source: new ol.source.OSM()
-            // source:new ol.source.Stamen({layer:"toner"})
-            // source:new ol.source.Stamen({layer:"watercolor"})
-            source: new ol.source.XYZ({
-              url: 'http://mango.iptime.org:8995/v.1.0.0/{z}/{x}/{y}.png?gray=false'
-            })
-          })
-        ],
         controls: ol.control.defaults({
             zoom: true, 
             rotate: false, 
@@ -256,8 +246,8 @@ class MapsPreviewPanel extends React.Component {
     extent     = [-200000.00, -28024123.62, 31824123.62, 4000000.00];  // 4 * 3
 
     //배경지도로 활용할 지원 위성지도 URL
-    var ngiiURL     = apiSvr + '/utils/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile/L16/2374/61250.png';
-
+    //var ngiiURL     = contextPath + '/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile/L16/2374/61250.png';
+    var ngiiURL     = contextPath + '/ngiiemapProxy?ngiiproxy=http://map.ngii.go.kr/proxys//proxy/proxyTile.jsp?apikey=04trYP9_xwLAfALjwZ-B8g&URL=http://210.117.198.62:8081/2015_map/korean_map_tile';
 
     let ngiiStreet = new ol.layer.Tile({
         title : 'Ngii Street Map',
@@ -279,7 +269,7 @@ class MapsPreviewPanel extends React.Component {
                 var z = ('00'+ (tileCoord[0] + 6)).slice(-2);
                 var x = tileCoord[1];
                 var y = tileCoord[2];
-                return 'http://mango.iptime.org:28086/postdata/tileMap?tileType=ngii_base&zxyUrl='+'/L' + z + '/' + x + '/' + y + '.png';
+                return ngiiURL+'/L' + z + '/' + x + '/' + y + '.png';
             },
             attributions: [
                 new ol.Attribution({ 
@@ -294,8 +284,8 @@ class MapsPreviewPanel extends React.Component {
     layers.push($.extend(true, {}, vworldSatelite));
     layers.push($.extend(true, {}, vworldBase));
     layers.push($.extend(true, {}, osm));
-    layers.push($.extend(true, {}, daum));
-    layers.push($.extend(true, {}, naver));
+    // layers.push($.extend(true, {}, daum));
+    // layers.push($.extend(true, {}, naver));
     layers.push($.extend(true, {}, ngiiStreet));
 
     let layerGroup = new ol.layer.Group({
