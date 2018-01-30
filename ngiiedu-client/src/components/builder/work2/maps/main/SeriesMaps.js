@@ -21,7 +21,6 @@ class SeriesMaps extends Component {
             stepIndex: 0,
             typeKind: 'SLIDE',
             items: [{}],
-            radioType: 'layer',
             itemTitle: ''
         };
     }
@@ -44,15 +43,6 @@ class SeriesMaps extends Component {
 
     }
 
-    changeItemTitle(value) {
-        this.setState({
-            itemTitle: value
-        });
-
-        this.props.changeItemTitle(value);
-    }
-    
-
     componentWillMount() {
         if (this.props.map) {
 
@@ -66,6 +56,11 @@ class SeriesMaps extends Component {
                 });
             }
 
+            this.setState({
+                itemTitle: items[0].title
+            });
+
+            this.props.changeTitle(this.props.map.outputName);
             this.props.changeItemTitle(items[0].title);
             this.props.changeLayerId(items[0].pinoLayer);
         }
@@ -103,7 +98,7 @@ class SeriesMaps extends Component {
 
     getStepContent(stepIndex) {
 
-        const { itemValue, typeKind, items, radioType } = this.state;
+        const { itemValue, typeKind, items } = this.state;
 
         const style = {
             selected: {
@@ -120,19 +115,6 @@ class SeriesMaps extends Component {
                 height: '164px'
             },
 
-            itemSelected: {
-                color: pink400,
-                backgroundColor: 'rgba(128, 128, 128, 0.2)'
-            },
-
-            itemUnselected: {
-
-            },
-
-            radioButton: {
-                marginBottom: 16,
-            },
-
             text: {
                 textAlign: 'center'
             }
@@ -142,7 +124,7 @@ class SeriesMaps extends Component {
         switch (stepIndex) {
           case 1:
             return (
-                <div style={{textAlign: 'left'}}>
+                <div style={{textAlign: 'left', width: '100%'}}>
                     <br />
                     <Subheader>제목</Subheader>
                     <TextField 
@@ -150,7 +132,7 @@ class SeriesMaps extends Component {
                         fullWidth={true}
                         hintText="*스토리맵 제목을 입력해주세요"
                         onChange={(e, value) => this.props.changeTitle(value)}
-                        defaultValue={this.props.map ? this.props.map.outputName : ''}
+                        value={this.props.title}
                     />
                     <br /><br />
                     <div style={{display: 'flex', alignItems: 'center',justifyContent: 'center'}}>
@@ -173,10 +155,11 @@ class SeriesMaps extends Component {
                     <br />
                     <Subheader>제목</Subheader>
                     <TextField
+                        id="itemTitle"
                         fullWidth={true}
                         hintText="*탭 제목을 입력해주세요"
-                        onChange={(e, value) => this.changeItemTitle(value)}
-                        value={this.state.itemTitle}
+                        onChange={(e, value) => this.props.changeItemTitle(value)}
+                        value={this.props.itemTitle}
                     />
                     <Subheader>레이어 선택</Subheader>
                     <Paper className="paper">

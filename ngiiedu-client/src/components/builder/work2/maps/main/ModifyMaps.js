@@ -220,8 +220,10 @@ class ModifyMaps extends Component {
                             return <SeriesMaps 
                                         stepIndex={this.state.stepIndex}
                                         changeTitle={this.changeTitle.bind(this)}
+                                        title={this.state.title}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         changeLayerId={this.changeLayerId.bind(this)}
+                                        changeItemTitle={this.changeItemTitle.bind(this)}
                                         map={this.props.map}
                                         items={this.state.items}
                                     />;
@@ -281,6 +283,8 @@ class ModifyMaps extends Component {
                                         changeTitle={this.changeTitle.bind(this)}
                                         changeTypeKind={this.changeTypeKind.bind(this)}
                                         changeLayerId={this.changeLayerId.bind(this)}
+                                        changeItemTitle={this.changeItemTitle.bind(this)}
+                                        itemTitle={this.state.itemTitle}
                                         layerId={this.state.layerId}
                                         map={this.props.map}
                                         items={this.state.items}
