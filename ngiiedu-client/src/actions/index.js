@@ -100,3 +100,10 @@ export const actionLoginInfo = (loginStatus) => ({
     type: types.LOGIN_INFO,
     loginStatus
 })
+
+
+//코스 헤더 서브타이틀 변경
+export const actionCourseTitle = (subTitle) => ({
+    type: types.COURSE_TITLE,
+    subTitle
+});

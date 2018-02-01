@@ -1,6 +1,9 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 
+import { connect } from 'react-redux';
+import { actionCourseTitle } from '../../../actions/index';
+
 //팝업창
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -39,6 +42,7 @@ class DeleteCourse extends React.Component {
           alert("비밀번호 가 다릅니다.");
         }else{
           this.props.deleteCourse();//삭제 모달 닫기
+          this.props.changeSubTitle('course');
           this.props.history.push(contextPath+'/course/'); //수업 리스트로 돌아가기
         }
       }.bind(this),
@@ -89,5 +93,15 @@ class DeleteCourse extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({  
+	changeSubTitle: (subTitle) => {
+	  dispatch(actionCourseTitle(subTitle));
+	}
+});
+
+
+DeleteCourse = connect(undefined, mapDispatchToProps)(DeleteCourse);
+
 
 export default withRouter(DeleteCourse);

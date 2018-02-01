@@ -40,6 +40,14 @@ class Header extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.subTitle != '') {
+      this.setState({
+        subTitle: nextProps.subTitle
+      });
+    }
+  }
+
   componentDidMount(){
 
     this.props.loginRedux({
@@ -161,6 +169,7 @@ const mapDispatchToProps = (dispatch) => ({
 let mapStateToProps = (state) => {
   return {
     loginStatus: state.loginInfo.loginStatus,
+    subTitle: state.courseList.subTitle
   };
 }
   

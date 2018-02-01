@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { actionCourseTitle } from '../../../actions/index';
+
 
 import { Step, Stepper, StepLabel } from 'material-ui/Stepper';
 import Divider from 'material-ui/Divider';
@@ -235,9 +239,12 @@ class MainContainer extends React.Component {
 	}
 
 	onClickCoursePage() {
+		this.props.changeSubTitle('course');
 		// browserHistory.push('/course/' + courseId);
 		const courseId = this.state.courseId;
 		this.props.history.push(contextPath+"/course/" + courseId);
+
+
 	}
 
 	onChangedDataset(value){
@@ -376,5 +383,16 @@ class MainContainer extends React.Component {
 		)
 	}
 }
+
+
+const mapDispatchToProps = (dispatch) => ({  
+	changeSubTitle: (subTitle) => {
+	  dispatch(actionCourseTitle(subTitle));
+	}
+});
+
+
+MainContainer = connect(undefined, mapDispatchToProps)(MainContainer);
+
 
 export default withRouter(MainContainer);

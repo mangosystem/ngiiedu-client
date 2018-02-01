@@ -2,7 +2,8 @@ import * as types from '../actions/ActionTypes';
 
 const courseListInitialState = {
     keyword: '',
-    courseId: ''
+    courseId: '',
+    subTitle: ''
 };
 
 const courseList = (state = courseListInitialState, action) => {
@@ -14,6 +15,10 @@ const courseList = (state = courseListInitialState, action) => {
         case types.COURSE_ID:
             return Object.assign({}, state, {
                 courseId: action.courseId
+            });
+        case types.COURSE_TITLE:
+            return Object.assign({}, state, {
+                subTitle: action.subTitle
             });
         default:
             return state;

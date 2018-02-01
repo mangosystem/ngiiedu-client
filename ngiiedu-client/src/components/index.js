@@ -122,8 +122,9 @@ class App extends Component {
             				</div>
             			</Route>
 
-									<Redirect exact from={contextPath} to={contextPath + "/course"} />
-            			<Route path={contextPath + "/courseCreate"}>
+						<Redirect exact from={contextPath} to={contextPath + "/course"} />
+						
+						<Route path={contextPath + "/courseCreate"}>
             				<div>
             					<Header2 />
             					<CourseCreateContainer loginStatus={this.state.loginStatus}/>

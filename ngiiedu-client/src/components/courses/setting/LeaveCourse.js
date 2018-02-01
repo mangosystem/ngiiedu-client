@@ -1,6 +1,9 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
 
+import { connect } from 'react-redux';
+import { actionCourseTitle } from '../../../actions/index';
+
 //팝업창
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -38,7 +41,10 @@ class LeaveCourse extends React.Component {
           alert("비밀번호 가 다릅니다.");
         }else{
           this.props.leaveCourse();//탈퇴 모달 닫기
+
+          this.props.changeSubTitle('course');
           this.props.history.push(contextPath+'/course/'); //수업 리스트로 돌아가기
+
         }
       }.bind(this),
       function(e){
@@ -88,5 +94,15 @@ class LeaveCourse extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({  
+	changeSubTitle: (subTitle) => {
+	  dispatch(actionCourseTitle(subTitle));
+	}
+});
+
+
+LeaveCourse = connect(undefined, mapDispatchToProps)(LeaveCourse);
+
 
 export default withRouter(LeaveCourse);

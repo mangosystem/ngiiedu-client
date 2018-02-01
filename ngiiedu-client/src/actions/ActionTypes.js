@@ -33,3 +33,6 @@ export const COURSE_ID = "COURSE_ID";
 
 //login info
 export const LOGIN_INFO = "LOGIN_INFO";
+
+//course header
+export const COURSE_TITLE = "COURSE_TITLE";
