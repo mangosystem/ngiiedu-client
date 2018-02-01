@@ -34,6 +34,10 @@ import SchoolsSyncApiContainer from './admin/school/sync/api/MainContainer';
 // 관리자 - 사용자
 import UsersManageContainer from './admin/user/MainContainer';
 
+// 관리자 - 정보변경
+import ChangeIdContainer from './admin/changeInfo/id/MainContainer';
+import ChangePwContainer from './admin/changeInfo/password/MainContainer';
+
 // 수업
 import CourseListContainer from './courses/list/MainContainer';
 import CourseCreateContainer from './courses/create/MainContainer';
@@ -122,8 +126,23 @@ class App extends Component {
             				</div>
             			</Route>
 
+							<Route path={contextPath + "/cm-admin/changeId"}>
+								<div>
+									<Header />
+									<ChangeIdContainer loginStatus={this.state.loginStatus}/>
+									<Footer2 />
+								</div>
+							</Route>
+							<Route path={contextPath + "/cm-admin/changePw"}>
+								<div>
+									<Header />
+									<ChangePwContainer loginStatus={this.state.loginStatus}/>
+									<Footer2 />
+								</div>
+							</Route>
+
 						<Redirect exact from={contextPath} to={contextPath + "/course"} />
-						
+
 						<Route path={contextPath + "/courseCreate"}>
             				<div>
             					<Header2 />

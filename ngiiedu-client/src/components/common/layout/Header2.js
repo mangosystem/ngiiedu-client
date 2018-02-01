@@ -100,18 +100,24 @@ class Header extends React.Component {
             <div className="header">
               <h1 className="edge" onClick={()=>window.location.href=contextPath+'/'}>공간정보융합 활용지원시스템</h1>
               {this.props.loginStatus.userDivision==1 ?//교사
-               <div className="gnb" >
-                <span className="teacher">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.
-                <button type="button" title="로그아웃" onClick={()=>window.location.href=contextPath + "/logout"}>로그아웃</button>
-              </div>
+                <div className="gnb" >
+                  <span className="teacher" onClick={()=>window.location.href=contextPath+'/modifyUserInfo'}>
+                    {this.props.loginStatus.userName}
+                  </span>님, 로그인하셨습니다.
+                  <button type="button" title="로그아웃" onClick={()=>window.location.href=contextPath + "/logout"}>로그아웃</button>
+                </div>
               : this.props.loginStatus.userDivision==2 ? //학생
                 <div className="gnb">
-                  <span className="student">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.
+                  <span className="student" onClick={()=>window.location.href=contextPath+'/modifyUserInfo'}>
+                    {this.props.loginStatus.userName}
+                  </span>님, 로그인하셨습니다.
                   <button type="button" title="로그아웃" onClick={()=>window.location.href=contextPath + "/logout"}>로그아웃</button>
                 </div> 
               : this.props.loginStatus.userDivision==3 ? //관리자.
                 <div className="gnb">
-                  <span className="admin">{this.props.loginStatus.userName}</span>님, 로그인하셨습니다.
+                  <span className="admin" onClick={()=>this.props.history.push(contextPath + "/cm-admin")}>
+                    {this.props.loginStatus.userName}
+                  </span>님, 로그인하셨습니다.
                   <button type="button" title="로그아웃" onClick={()=>window.location.href=contextPath + "/logout"}>로그아웃</button>
                 </div> 
               : //로그인 전  

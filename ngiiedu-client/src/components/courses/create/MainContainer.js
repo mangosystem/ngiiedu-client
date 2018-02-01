@@ -47,7 +47,8 @@ class MainContainer extends React.Component {
 
 			courseId: '',
 			datasetData:'',//데이터셋 생성
-			warnModalOpen:false // 데이터셋 생성 모달 오픈
+			warnModalOpen:false, // 데이터셋 생성 모달 오픈
+			loading:false //완료 클릭시 loading
 
 		};
 
@@ -138,6 +139,10 @@ class MainContainer extends React.Component {
 		}
 
 		if (stepIndex == 2) {
+			this.setState({
+				loading:true,
+				courseName:''
+			})
 			this.onCourseCreate();
 
 		} else {
@@ -323,6 +328,7 @@ class MainContainer extends React.Component {
 								<Step3Info
 									onChangedCourseName={this.onChangedCourseName}
 									onChangedCourseMetadata={this.onChangedCourseMetadata}
+									loading={this.state.loading}
 								/>
 							)
 						}	else if (this.state.stepIndex == 3) {
@@ -352,7 +358,7 @@ class MainContainer extends React.Component {
 										disabled={
 											this.state.processing ||
 											this.state.stepIndex == 0 && this.state.selectedModule == null ||
-											this.state.stepIndex == 1 && this.state.selectedWorks.length < 1 ||
+											//this.state.stepIndex == 1 && this.state.selectedWorks.length < 1 ||
 											this.state.stepIndex == 2 && this.state.courseName == ''
 											? true : false
 										}

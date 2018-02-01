@@ -17,7 +17,7 @@ class LoginModal extends React.Component {
     return (
         // <div className="layerWrap">
           <form className="loginWrap" action={contextPath+"/login_process"} method="POST">
-          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <h4>로그인</h4>
             <ul>
               <li><input type="text" id="userid" name="username" placeholder="아이디"/></li>
@@ -27,10 +27,7 @@ class LoginModal extends React.Component {
                   // onClick={this.loginButton.bind(this)}
                 >로그인</button>
               </li>
-              <li>
-                {/* <a href="#">아이디 찾기</a> */}
-                {/* <a href="#">비밀번호 찾기</a> */}
-              </li>
+              
               <li>
                 <button type="button" className="default2" onClick={() => this.props.history.push(contextPath + '/join')}>회원가입</button>
               </li>

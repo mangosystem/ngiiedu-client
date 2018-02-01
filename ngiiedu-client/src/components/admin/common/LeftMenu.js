@@ -17,6 +17,8 @@ import IconHelp from 'material-ui/svg-icons/action/help';
 import IconHelpOutLine from 'material-ui/svg-icons/action/help-outline';
 import IconSettings from 'material-ui/svg-icons/action/settings';
 import IconBuild from 'material-ui/svg-icons/action/build';
+import IconLock from 'material-ui/svg-icons/action/lock';
+import IconContacts from 'material-ui/svg-icons/communication/contacts';
 
 class LeftMenu extends React.Component {
 
@@ -57,6 +59,25 @@ class LeftMenu extends React.Component {
                                 primaryText="회원관리"
                                 leftIcon={<IconAccountBox />}
                                 className={this.props.activeMenu == 'user' ? 'aml' : 'uml'}
+                            />
+                        </Link>
+                    </Menu>
+                </Paper>
+                <Paper className="mui-paper">
+                    <Menu desktop className="aside-menu">
+                        <Subheader>정보변경</Subheader>
+                        <Link to={contextPath + "/cm-admin/changeId"}>
+                            <MenuItem
+                                primaryText="아이디"
+                                leftIcon={<IconContacts />}
+                                className={this.props.activeMenu == 'changeId' ? 'aml' : 'uml'}
+                            />
+                        </Link>
+                        <Link to={contextPath + "/cm-admin/changePw"}>
+                            <MenuItem
+                                primaryText="비밀번호"
+                                leftIcon={<IconLock />}
+                                className={this.props.activeMenu == 'changePw' ? 'aml' : 'uml'}
                             />
                         </Link>
                     </Menu>

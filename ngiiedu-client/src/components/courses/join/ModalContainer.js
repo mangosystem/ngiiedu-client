@@ -10,6 +10,15 @@ import FlatButton from 'material-ui/FlatButton';
 
 import TextField from 'material-ui/TextField';
 
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+
 class ModalContainer extends React.Component {
 
 	constructor(props) {
@@ -133,6 +142,53 @@ class ModalContainer extends React.Component {
 					style={{width: '60%'}}
 					onClick={this.onClickKeyValid}
 				/>
+				<br/>
+				<br/>
+				<Table
+          selectable={false}
+        >
+          <TableHeader
+            displaySelectAll={false}
+            adjustForCheckbox={false}
+          >
+            <TableRow>
+              <TableHeaderColumn>수업명</TableHeaderColumn>
+              <TableHeaderColumn>체험 참여코드</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody
+						displayRowCheckbox={false}
+          >
+						<TableRow>
+							<TableRowColumn>우리지역 소음지도</TableRowColumn>
+							<TableRowColumn>123</TableRowColumn>
+						</TableRow>
+						<TableRow>
+							<TableRowColumn>GPS 활용 위치학습</TableRowColumn>
+							<TableRowColumn>123</TableRowColumn>
+						</TableRow>
+						<TableRow>
+							<TableRowColumn>우리지역 인구지도</TableRowColumn>
+							<TableRowColumn>123</TableRowColumn>
+						</TableRow>
+						<TableRow>
+							<TableRowColumn>통합적 영토교육</TableRowColumn>
+							<TableRowColumn>123</TableRowColumn>
+						</TableRow>
+						<TableRow>
+							<TableRowColumn>우리학교 운동장 생태지도</TableRowColumn>
+							<TableRowColumn>123</TableRowColumn>
+						</TableRow>
+						<TableRow>
+							<TableRowColumn>지도 정확성</TableRowColumn>
+							<TableRowColumn>123</TableRowColumn>
+						</TableRow>
+						<TableRow>
+							<TableRowColumn>독도의 중요성</TableRowColumn>
+							<TableRowColumn>123</TableRowColumn>
+						</TableRow>
+          </TableBody>
+        </Table>
 			</Dialog>
 			</div>
 		)

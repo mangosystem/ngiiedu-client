@@ -22,7 +22,6 @@ class Step2Work extends React.Component {
       moduleId : '',//moduleId 현장실습 default 값을 정하기 위해서 ...
 		};
 
-    this.onSelectionWork = this.onSelectionWork.bind(this);
     this.isSelected = this.isSelected.bind(this);
     this.handleNewDataset = this.handleNewDataset.bind(this);
 	}
@@ -47,18 +46,24 @@ class Step2Work extends React.Component {
 
         let datasetWorkIdx ='';
 
+        let workIds = [];
+
         data.map((row,idx)=>{
+          workIds.push(row.idx);
           if(row.moduleWorkCourseType=="현장실습"){
             datasetWorkIdx=row.idx;
             this.setState({
               datasetWorkIdx:datasetWorkIdx,
-              moduleId:row.moduleId
+              moduleId:row.moduleId,
+              newDataset:true
             })
           }
         })
 
+        this.props.onSelectedWorks(workIds);
 
-        let workIds = [];
+
+        workIds = [];
         for (let n of this.props.selectedItems) {
           this.state.items.map(function(v, i) {
             if (n == v.idx) {
@@ -87,37 +92,6 @@ class Step2Work extends React.Component {
     return this.state.selectedRows.indexOf(index) !== -1;
   }
 
-  onSelectionWork(selectedRows) {
-    this.setState({
-      selectedRows: selectedRows
-    });
-
-    let workIds = [];
-
-    let newDataset = false;
-    let stateDatasetWorkIdx = this.state.datasetWorkIdx;
-
-    for (let n of selectedRows) {
-      this.state.items.map((v, i)=> {
-        if (n == i) {
-          if(v.idx==stateDatasetWorkIdx){
-            newDataset = true;
-          }
-          workIds.push(v.idx);
-          return;
-        }
-      });
-    }
-
-    if(this.stateNewDataset!=newDataset){
-      this.setState({
-        newDataset:newDataset
-      })
-    }
-
-    this.props.onSelectedWorks(workIds);
-  }
-
 	render() {
 		return (
       <div>
@@ -140,14 +114,13 @@ class Step2Work extends React.Component {
 
               return (
                 <Table
-                  selectable
-                  multiSelectable
-                  showCheckboxes
-                  onRowSelection={this.onSelectionWork}
+                  selectable = {false}
+                  multiSelectable = {false}
+                  showCheckboxes = {false}
                   className="material-table"
                 >
                   <TableBody
-                    displayRowCheckbox
+                    displayRowCheckbox = {false}
                     deselectOnClickaway={false}
                   >
                     {tableRows}

@@ -35,7 +35,7 @@ class Footer2 extends React.Component {
           <p style={{marginLeft:360}}>
             경기도 수원시 영통구 월드컵로 92 (원천동)  팩스 : 031-210-2644
           </p>
-          <p style={{marginLeft:360}} class="ft-copyright">Copyright (c) 2015 NGII ALL RIGHTS RESERVED.</p>
+          <p style={{marginLeft:360}} className="ft-copyright">Copyright (c) 2015 NGII ALL RIGHTS RESERVED.</p>
         </div>
       </footer>
     );

@@ -3,6 +3,7 @@ import TextField from 'material-ui/TextField';
 import AutoComplete from 'material-ui/AutoComplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 const stItems = [
 	<MenuItem key={0} value={null} primaryText="" />,
@@ -130,7 +131,14 @@ class Step3Info extends React.Component {
 						onChange={this.onChangeCourseDesc}
 					/>
 					<br />
-
+					
+					<RefreshIndicator
+						size={100}
+						left={450}
+						top={300}
+						status="loading"
+						style={this.props.loading?{display:'block'}:{display:'none'}}
+					/>
 					{/* <SelectField
 						floatingLabelText="학교급구분"
 						floatingLabelFixed={false}

@@ -9,6 +9,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Avatar from 'material-ui/Avatar';
 import LockOutline from 'material-ui/svg-icons/action/lock-outline';
 import LockOpen from 'material-ui/svg-icons/action/lock-open';
+import FlatButton from 'material-ui/FlatButton';
 
 import { withRouter } from "react-router-dom";
 
@@ -125,17 +126,10 @@ class CourseList extends React.Component {
                                     <div style={{fontSize:22,fontWeight:'bold'}}>{row.courseName}</div>
                                 </div>
                                 <div style={{gridColumn:3,textAlign:'right'}}>
-                                    <IconMenu
-                                        iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                                        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                        targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                        style={{ float: 'right' }}
-                                    >
-                                        <MenuItem
-                                            primaryText="이동하기"
-                                            onClick={() => this.props.history.push(contextPath + '/course/'+row.idx)}
-                                        />
-                                    </IconMenu>
+                                    <FlatButton 
+                                        label="수업이동" 
+                                        onClick={() => this.props.history.push(contextPath + '/course/'+row.idx)}
+                                    />
                                 </div>
                             </div>
                         </CardHeader>

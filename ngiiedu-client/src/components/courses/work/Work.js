@@ -153,9 +153,9 @@ class Work extends React.Component {
                   >
                     <MenuItem primaryText="수행하기" onClick={(i)=>this.enterWork(work.idx)}/>
                     {work.status ?
-                      <MenuItem primaryText="비활성화" onClick={(i)=>this.courseChecked(work)}/>
+                      <MenuItem primaryText="수업 비활성화" onClick={(i)=>this.courseChecked(work)}/>
                     :
-                      <MenuItem primaryText="활성화" onClick={(i)=>this.courseChecked(work)}/>
+                      <MenuItem primaryText="수업 활성화" onClick={(i)=>this.courseChecked(work)}/>
                     }
                   </IconMenu>
                 </div>
