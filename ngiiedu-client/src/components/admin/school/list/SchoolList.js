@@ -40,6 +40,10 @@ class SchoolList extends React.Component {
             authkeyData:'',
             selectable: false,
             showCheckboxes: false,
+            offset:0,
+            count:0,
+            schoolLevel:null,
+            keyword:null
         };
         //TableRow 선택
         this.isSelected = this.isSelected.bind(this);
@@ -66,6 +70,7 @@ class SchoolList extends React.Component {
         this.authkeyModalOpen = this.authkeyModalOpen.bind(this);
         this.authkeyModalClose = this.authkeyModalClose.bind(this);
         this.updateAuthkey = this.updateAuthkey.bind(this);
+        this.movePage = this.movePage.bind(this);
     };
 
     //첫 학교목록 불러오기
@@ -75,7 +80,9 @@ class SchoolList extends React.Component {
             null,
             function(res){
                 this.setState({
-                    tableData:JSON.parse(JSON.stringify(res)).response.data
+                    tableData:JSON.parse(JSON.stringify(res)).response.data.list,
+                    offset:res.response.data.offset,
+                    count:res.response.data.count
                 });
             }.bind(this)
         );
@@ -83,20 +90,53 @@ class SchoolList extends React.Component {
 
     //Search
     componentWillReceiveProps(nextProps) {
-
-        let schoolLevel = nextProps.schoolLevel;
+        let offset = 0;
+        let schoolLevel;
+        if(nextProps.schoolLevel==null||this.props.schoolLevel==null){
+            schoolLevel = this.state.schoolLevel;
+        }else{
+            schoolLevel = nextProps.schoolLevel;
+        }
         let keyword = '%'+nextProps.keyword+'%';
+        this.setState({
+            schoolLevel:schoolLevel,
+            keyword:keyword
+        })
 
         ajaxJson(
             ['GET',apiSvr+'/schools.json'],
-            {'keyword':keyword, 'schoolLevel':schoolLevel},
+            {'offset':offset,'keyword':keyword, 'schoolLevel':schoolLevel},
             function(res){
                 this.setState({
-                    tableData:JSON.parse(JSON.stringify(res)).response.data
+                    tableData:JSON.parse(JSON.stringify(res)).response.data.list,
+                    offset:0,
+                    count:res.response.data.count
                 });
             }.bind(this)
         );
 
+    }
+
+    movePage(value){
+        let offset;
+        if(value=="prop"){
+            offset = this.state.offset-20;
+
+        }else if(value=="next"){
+            offset = this.state.offset+20;
+        }
+        let schoolLevel = this.state.schoolLevel
+        let keyword = '%'+this.state.keyword+'%';
+        ajaxJson(
+            ['GET',apiSvr+'/schools.json'],
+            {'offset':offset, 'keyword':keyword, 'schoolLevel':schoolLevel},
+            function(res){
+                this.setState({
+                    tableData:JSON.parse(JSON.stringify(res)).response.data.list,
+                    offset:res.response.data.offset,
+                });
+            }.bind(this)
+        );
     }
 
     //테이블(학교) 선택
@@ -351,6 +391,23 @@ class SchoolList extends React.Component {
                         ))}
                     </TableBody>
                 </Table>
+                <br/>
+                <div style={{textAlign: 'center', maxWidth: '30%', margin: 'auto', height:40}}>
+                    <FlatButton
+                        label="이전"
+                        backgroundColor={this.state.offset ==0?'#f9f9f9':'#43444c'}
+                        style={this.state.offset ==0?{color: '#43444c', float:'left'}:{color: '#f9f9f9', float:'left'}}
+                        disabled={this.state.offset ==0?true:false}
+                        onClick={()=>this.movePage('prop')}
+                    />
+                    <FlatButton
+                        label="다음"
+                        backgroundColor={this.state.offset+20>this.state.count?'#f9f9f9':'#43444c'}
+                        style={this.state.offset+20>this.state.count?{color: '#43444c', float:'right'}:{color: '#f9f9f9', float:'right'}}
+                        disabled={this.state.offset+20>this.state.count?true:false}
+                        onClick={()=>this.movePage('next')}
+                    />
+                </div>
 
                 {/* 데이터 선택 삭제 모달 */}
                 <Dialog

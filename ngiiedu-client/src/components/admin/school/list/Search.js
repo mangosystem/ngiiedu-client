@@ -23,7 +23,7 @@ class Search extends React.Component {
 
         let keyword = $('#keyword').val();
 
-        this.props.searchList('', keyword);
+        this.props.searchList(null, keyword);
 
     }
 

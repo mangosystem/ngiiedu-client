@@ -27,6 +27,8 @@ import {
 } from 'material-ui/Table';
 import Toggle from 'material-ui/Toggle';
 
+import FlatButton from 'material-ui/FlatButton';
+
 import './List.css';
 
 class List extends React.Component {
@@ -40,8 +42,11 @@ class List extends React.Component {
             isAscById: false,
             isAscByName: true,
             isAscByDivision: false,
-            isAscByState: true
+            isAscByState: true,
+            offset:0,
+            count:0
         };
+        this.movePage = this.movePage.bind(this);
     }
 
     componentDidMount() {
@@ -50,8 +55,12 @@ class List extends React.Component {
             dataType: 'json',
             cache: false,
             success: function(data) {
-                const users = JSON.parse(JSON.stringify(data)).response.data;
-                this.setState({users: users});
+                const users = JSON.parse(JSON.stringify(data)).response.data.list;
+                this.setState({
+                    users: users,
+                    offset:data.response.data.offset,
+                    count:data.response.data.count
+                });
 
             }.bind(this),
             error: function(xhr, status, err) {
@@ -63,7 +72,8 @@ class List extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
+        
+        let offset = 0;
         const keyword = '%'+nextProps.keyword+'%';
 
         $.ajax({
@@ -71,14 +81,17 @@ class List extends React.Component {
             dataType: 'json',
             cache: false,
             data: {
+                offset:offset,
                 keyword: keyword
             },
             success: function(data) {
 
-                const users = JSON.parse(JSON.stringify(data)).response.data;
+                const users = JSON.parse(JSON.stringify(data)).response.data.list;
 
                 this.setState({
-                    users: users
+                    users: users,
+                    offset:data.response.data.offset,
+                    count:data.response.data.count
                 });
 
             }.bind(this),
@@ -87,6 +100,29 @@ class List extends React.Component {
             }.bind(this)
         });
 
+    }
+
+    movePage(value){
+        let offset;
+        if(value=="prop"){
+            offset = this.state.offset-20;
+        }else if(value=="next"){
+            offset = this.state.offset+20;
+        }
+        let keyword = '%'+this.props.keyword+'%';
+
+        ajaxJson(
+            ['GET',apiSvr+'/users.json'],
+            {'offset':offset, 'keyword':keyword},
+            function(data){
+                const users = JSON.parse(JSON.stringify(data)).response.data.list;
+                
+                this.setState({
+                    users: users,
+                    offset:data.response.data.offset
+                });
+            }.bind(this)
+        );
     }
 
     changeToggle(event, value, contact) {
@@ -235,7 +271,6 @@ class List extends React.Component {
 
     }
 
-
     render() {
 
         const tableStyle = {
@@ -316,6 +351,23 @@ class List extends React.Component {
                             })}
                     </TableBody>
                 </Table>
+                <br/>
+                <div style={{textAlign: 'center', maxWidth: '30%', margin: 'auto', height:40}}>
+                    <FlatButton
+                        label="이전"
+                        backgroundColor={this.state.offset ==0?'#f9f9f9':'#43444c'}
+                        style={this.state.offset ==0?{color: '#43444c', float:'left'}:{color: '#f9f9f9', float:'left'}}
+                        disabled={this.state.offset ==0?true:false}
+                        onClick={()=>this.movePage('prop')}
+                    />
+                    <FlatButton
+                        label="다음"
+                        backgroundColor={this.state.offset+20>this.state.count?'#f9f9f9':'#43444c'}
+                        style={this.state.offset+20>this.state.count?{color: '#43444c', float:'right'}:{color: '#f9f9f9', float:'right'}}
+                        disabled={this.state.offset+20>this.state.count?true:false}
+                        onClick={()=>this.movePage('next')}
+                    />
+                </div>
             </div>
         );
     }

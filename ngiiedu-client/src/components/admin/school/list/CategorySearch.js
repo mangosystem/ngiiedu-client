@@ -34,7 +34,7 @@ class Search extends React.Component {
     search() {
 
         let schoolLevel = this.state.schoolLevel;
-
+        $('#keyword').val('');
         this.props.searchList(schoolLevel, '');
 
     };
