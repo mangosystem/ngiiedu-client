@@ -21,10 +21,12 @@ class MainContainer extends React.Component {
         this.state = {
             idErrorText: '',
             pwdErrorText: '',
+            newPwErrorText:'',
             // emailErrorText: '',
             authkeyErrorText: '',
             idErrorStyle: {},
             pwdErrorStyle: {},
+            newPwErrorStyle:{},
             // emailErrorStyle: {},
             authkeyErrorStyle: {},
             idCheck: false,
@@ -33,12 +35,14 @@ class MainContainer extends React.Component {
             authkeyCheck: false,
             termsCheck:false, //이용약관 default false
             termsModal:false, //약관 모달 오프너
+            schoolAuthkey:'',
         
         };
 
         this.termsModalHandler = this.termsModalHandler.bind(this);//모달창 온오프 헨들러
         this.termsAgree = this.termsAgree.bind(this);
         this.thermsModalClose = this.thermsModalClose.bind(this);
+        this.isValidFormPassword = this.isValidFormPassword.bind(this);
     }
 
     termsModalHandler(){
@@ -99,7 +103,7 @@ class MainContainer extends React.Component {
 
         // this.props.history.push("./login");
         // $form.submit();
-
+        console.log('test');
         ajaxJson(
             ['POST', apiSvr+'/users.json'],
             {
@@ -108,7 +112,8 @@ class MainContainer extends React.Component {
                 userName: $('form[id=join] input[name=userName]').val(),
                 // userEmail: $('form[id=join] input[name=userEmail]').val(),
                 // schoolName: $('form[id=join] input[name=schoolName]').val(),
-                userDivision: userDivision
+                userDivision: userDivision,
+                schoolAuthkey: this.state.schoolAuthkey
             }, function(res) {
                 // if (res.response.code == 200) {
                     // alert('가입이 완료되었습니다. 로그인 페이지로 이동합니다.')
@@ -224,27 +229,51 @@ class MainContainer extends React.Component {
 
         const password = $('#password').val();
         const rePassword = $('#rePassword').val();
-
-        if (password == rePassword) {
+        const checkPw = this.isValidFormPassword(password)
+        if(checkPw){
             this.setState({
-                pwdErrorText: "비밀번호가 일치합니다.",
-                pwdErrorStyle: {color: cyan500},
-                pwdCheck: true
+                newPwErrorText: "",
+                newPwErrorStyle: {color: cyan500}
             });
-        } else {
-            if (this.state.pwdErrorText == '' && id == "password") return;
-
+            if (password == rePassword) {
+                this.setState({
+                    pwdErrorText: "비밀번호가 일치합니다.",
+                    pwdErrorStyle: {color: cyan500},
+                    pwdCheck: true
+                });
+            } else {
+                if (this.state.pwdErrorText == '' && id == "password") return;
+    
+                this.setState({
+                    pwdErrorText: "비밀번호가 일치하지 않습니다.",
+                    pwdErrorStyle: {color: orange500},
+                    pwdCheck: false
+                });
+            }
+        }else{
             this.setState({
-                pwdErrorText: "비밀번호가 일치하지 않습니다.",
-                pwdErrorStyle: {color: orange500},
+                newPwErrorText: "비밀번호는 8자리 이상, 영문, 숫자, 특수문자가 포함되어야 합니다.",
+                newPwErrorStyle: {color: orange500},
                 pwdCheck: false
             });
         }
 
+
+    }
+    isValidFormPassword(pw) {
+        var check = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
+        if (!check.test(pw))     {
+            return false;
+        }
+                    
+        if (pw.length < 8 || pw.length > 20) {
+            return false;
+        }
+        return true;
     }
 
     checkAuthkey(schoolAuthkey) {
-
+        const authkey = schoolAuthkey;
         if (schoolAuthkey == '') {
             this.setState({
                 authkeyErrorText: "",
@@ -266,6 +295,7 @@ class MainContainer extends React.Component {
                     this.setState({
                         authkeyErrorText: "학교명: " + school.schoolName + ", 소재지: " + school.schoolAddrRoad,
                         authkeyErrorStyle: {color: cyan500},
+                        schoolAuthkey:authkey,
                         authkeyCheck: true
                     });
                 } else {
@@ -309,6 +339,9 @@ class MainContainer extends React.Component {
                                 floatingLabelText="*비밀번호"
                                 fullWidth={true}
                                 type="password"
+                                errorText={this.state.newPwErrorText}
+                                errorStyle={this.state.newPwErrorStyle}
+                                floatingLabelFocusStyle={this.state.newPwErrorStyle}
                                 onChange={() => this.checkPwd("password")}
                             />
                             <TextField
