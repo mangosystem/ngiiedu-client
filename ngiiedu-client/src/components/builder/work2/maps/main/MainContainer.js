@@ -231,6 +231,7 @@ class MainContainer extends React.Component {
                         </div>
                     {/* 컨텐츠 내용 map */}                
                         {this.state.maps.map((row,index)=>(
+                            row.outputUserAlias == userId ?
                             <div className='thumbnailContainer'  key={index} >
                                 <Paper zDepth={1} className='thumbnailContainer2'>
                                     <div 
@@ -272,7 +273,7 @@ class MainContainer extends React.Component {
                                     </div>*/}
                                 </Paper>
                             </div>
-
+                            :null
                         ))}
                         
                     </div>

@@ -400,6 +400,7 @@ class MainContainer extends React.Component {
                             //데이터 리스트 중 outputType이 layer(주제지도)인 데이터
                             row.outputType =='layer'||row.outputType =='layerPopulation'?
                                 row.workOutputList.map((data,i)=>(
+                                    data.outputUserAlias == userId ?
                                     <div className='thumbnailContainer' key={i}>
                                         <Paper zDepth={1} className='thumbnailContainer2'>
                                             <div className='thumbnail' onClick={()=>this.props.history.push(contextPath+'/course/'+this.props.courseId+'/work2/'+this.props.workId+'/layer/'+data.pngoData.layerId)}
@@ -437,6 +438,7 @@ class MainContainer extends React.Component {
                                             </div>
                                         </Paper>
                                     </div>
+                                    :null
                                     ))
                             :null
                         ))}
