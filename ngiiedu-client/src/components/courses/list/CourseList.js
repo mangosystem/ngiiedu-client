@@ -156,7 +156,7 @@ class CourseList extends React.Component {
                         <h3 className="edge">참여한 수업</h3>
 
                         {this.state.courseInfoListJoinData.map((row, i) => {
-                            if(row.status=='CJS02'){
+                            if(row.status=='CJS02'&&row.courseStatus==true){
                                 return (
                                     <Card key={i} expanded={this.state.selectedCourse=="join_"+row.idx} style={{marginBottom:20,border:this.state.selectedCourse=="join_"+row.idx?'solid 2px #3e81f6': null}} className="mouseOverBlue">
                                         <CardHeader

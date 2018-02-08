@@ -90,7 +90,6 @@ class SchoolList extends React.Component {
 
     //Search
     componentWillReceiveProps(nextProps) {
-        console.log('test');
         let offset = 0;
         let schoolLevel;
         if(nextProps.schoolLevel==null){

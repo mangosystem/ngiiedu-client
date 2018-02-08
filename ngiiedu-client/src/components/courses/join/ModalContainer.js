@@ -27,13 +27,30 @@ class ModalContainer extends React.Component {
 		this.state = {
 			// 수업코드 앞자리, 뒷자리
 			frontKey: '', 
-			backKey: ''
+			backKey: '',
+			courseList:[
+			]
 		}
 
 		this.onClickClose = this.onClickClose.bind(this);
 		this.onChangeFrontKey = this.onChangeFrontKey.bind(this);
 		this.onChangeBackKey = this.onChangeBackKey.bind(this);
 		this.onClickKeyValid = this.onClickKeyValid.bind(this);
+	}
+
+	componentDidMount(){
+		ajaxJson(
+			['GET', apiSvr+'/courses//list/publicCourse.json'],
+			null,
+			function(res) {
+				this.setState({
+					courseList:res.response.data
+				})
+			}.bind(this),
+			function(err) {
+				console.log(err);
+			}
+		);
 	}
 
 	onClickClose() {
@@ -71,6 +88,7 @@ class ModalContainer extends React.Component {
 						alert('수업참여 신청을 완료하였습니다. 승인 후 사용할 수 있습니다.');
 					}
 					this.onClickClose();
+					window.location.reload();
 				} else {
 					alert(res.response.message);
 				}
@@ -152,41 +170,76 @@ class ModalContainer extends React.Component {
             adjustForCheckbox={false}
           >
             <TableRow>
-              <TableHeaderColumn>수업명</TableHeaderColumn>
-              <TableHeaderColumn>체험 참여코드</TableHeaderColumn>
+              <TableHeaderColumn style={{verticalAlign:'middle', textAlign:'center'}}>수업명</TableHeaderColumn>
+              <TableHeaderColumn style={{verticalAlign:'middle', textAlign:'center'}}>체험 참여코드</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
 						displayRowCheckbox={false}
           >
 						<TableRow>
-							<TableRowColumn>우리지역 소음지도</TableRowColumn>
-							<TableRowColumn>123</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}>우리지역 소음지도</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}><b>
+								{this.state.courseList.PUBLIC_COURSE_CODE_NSM!=undefined?
+									this.state.courseList.PUBLIC_COURSE_CODE_NSM.slice(0,3)+'-'+this.state.courseList.PUBLIC_COURSE_CODE_NSM.slice(3,6)
+								:null}
+							</b></TableRowColumn>
 						</TableRow>
+
 						<TableRow>
-							<TableRowColumn>GPS 활용 위치학습</TableRowColumn>
-							<TableRowColumn>123</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}>GPS 활용 위치학습</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}><b>
+								{this.state.courseList.PUBLIC_COURSE_CODE_GPS!=undefined?
+									this.state.courseList.PUBLIC_COURSE_CODE_GPS.slice(0,3)+'-'+this.state.courseList.PUBLIC_COURSE_CODE_GPS.slice(3,6)
+								:null}
+							</b></TableRowColumn>
 						</TableRow>
+
 						<TableRow>
-							<TableRowColumn>우리지역 인구지도</TableRowColumn>
-							<TableRowColumn>123</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}>우리지역 인구지도</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}><b>
+								{this.state.courseList.PUBLIC_COURSE_CODE_POP!=undefined?
+									this.state.courseList.PUBLIC_COURSE_CODE_POP.slice(0,3)+'-'+this.state.courseList.PUBLIC_COURSE_CODE_POP.slice(3,6)
+								:null}
+							</b></TableRowColumn>
 						</TableRow>
+
 						<TableRow>
-							<TableRowColumn>통합적 영토교육</TableRowColumn>
-							<TableRowColumn>123</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}>통합적 영토교육</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}><b>
+								{this.state.courseList.PUBLIC_COURSE_CODE_TER!=undefined?
+									this.state.courseList.PUBLIC_COURSE_CODE_TER.slice(0,3)+'-'+this.state.courseList.PUBLIC_COURSE_CODE_TER.slice(3,6)
+								:null}
+							</b></TableRowColumn>
 						</TableRow>
+
 						<TableRow>
-							<TableRowColumn>우리학교 운동장 생태지도</TableRowColumn>
-							<TableRowColumn>123</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}>우리학교 운동장 생태지도</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}><b>
+								{this.state.courseList.PUBLIC_COURSE_CODE_ECO!=undefined?
+									this.state.courseList.PUBLIC_COURSE_CODE_ECO.slice(0,3)+'-'+this.state.courseList.PUBLIC_COURSE_CODE_ECO.slice(3,6)
+								:null}
+							</b></TableRowColumn>
 						</TableRow>
+
 						<TableRow>
-							<TableRowColumn>지도 정확성</TableRowColumn>
-							<TableRowColumn>123</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}>지도 정확성</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}><b>
+								{this.state.courseList.PUBLIC_COURSE_CODE_ARC!=undefined?
+									this.state.courseList.PUBLIC_COURSE_CODE_ARC.slice(0,3)+'-'+this.state.courseList.PUBLIC_COURSE_CODE_ARC.slice(3,6)
+								:null}
+							</b></TableRowColumn>
 						</TableRow>
+
 						<TableRow>
-							<TableRowColumn>독도의 중요성</TableRowColumn>
-							<TableRowColumn>123</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}>독도의 중요성</TableRowColumn>
+							<TableRowColumn style={{verticalAlign:'middle', textAlign:'center'}}><b>
+								{this.state.courseList.PUBLIC_COURSE_CODE_DOK!=undefined?
+									this.state.courseList.PUBLIC_COURSE_CODE_DOK.slice(0,3)+'-'+this.state.courseList.PUBLIC_COURSE_CODE_DOK.slice(3,6)
+								:null}
+							</b></TableRowColumn>
 						</TableRow>
+						
           </TableBody>
         </Table>
 			</Dialog>

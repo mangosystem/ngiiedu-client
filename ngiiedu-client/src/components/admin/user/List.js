@@ -328,27 +328,27 @@ class List extends React.Component {
                             </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false} className="admin-tbody">
-                            {this.state.users.map((contact, i) => {
-                                return (
-                                    <TableRow key={i} className="admin-tr">
-                                        <TableRowColumn className="admin-td">{contact.userid}</TableRowColumn>
-                                        <TableRowColumn className="admin-td">{contact.userName}</TableRowColumn>
-                                        <TableRowColumn className="admin-td">{contact.userDivision==1? '교사': contact.userDivision==2? '학생' : '관리자'}</TableRowColumn>
-                                        <TableRowColumn className="admin-td">
-                                        <Toggle
-                                            toggled={contact.userState}
-                                            style={{maxWidth: '20%', margin: 'auto'}}
-                                            onToggle={(event, value, i) => this.changeToggle(event, value, contact)}
-                                        />
-                                        </TableRowColumn>
-                                        <TableRowColumn className="admin-td">
-                                            <IconButton onClick={(i) => this.showDetail(contact.userid)}>
-                                                <Assignment color={blue400}/>
-                                            </IconButton>
-                                        </TableRowColumn>
-                                    </TableRow>
-                                );
-                            })}
+                        {this.state.users.map((contact, i) => {
+                            return (
+                                <TableRow key={i} className="admin-tr">
+                                    <TableRowColumn className="admin-td">{contact.userid}</TableRowColumn>
+                                    <TableRowColumn className="admin-td">{contact.userName}</TableRowColumn>
+                                    <TableRowColumn className="admin-td">{contact.userDivision==1? '교사': contact.userDivision==2? '학생' : '관리자'}</TableRowColumn>
+                                    <TableRowColumn className="admin-td">
+                                    <Toggle
+                                        toggled={contact.userState}
+                                        style={{maxWidth: '20%', margin: 'auto'}}
+                                        onToggle={(event, value, i) => this.changeToggle(event, value, contact)}
+                                    />
+                                    </TableRowColumn>
+                                    <TableRowColumn className="admin-td">
+                                        <IconButton onClick={(i) => this.showDetail(contact.userid)}>
+                                            <Assignment color={blue400}/>
+                                        </IconButton>
+                                    </TableRowColumn>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
                 <br/>

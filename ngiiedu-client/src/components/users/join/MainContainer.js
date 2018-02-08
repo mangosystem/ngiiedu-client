@@ -103,7 +103,6 @@ class MainContainer extends React.Component {
 
         // this.props.history.push("./login");
         // $form.submit();
-        console.log('test');
         ajaxJson(
             ['POST', apiSvr+'/users.json'],
             {
@@ -261,7 +260,7 @@ class MainContainer extends React.Component {
 
     }
     isValidFormPassword(pw) {
-        var check = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
+        var check = /^(?=.*[a-zA-Z])(?=.*[~`?/!@#$%^*+=-])(?=.*[0-9]).{8,20}$/;
         if (!check.test(pw))     {
             return false;
         }
