@@ -26,7 +26,7 @@
     "redux": "^3.7.2",
     "style-loader": "^0.18.2",
     "uglify-js": "^3.3.7",
-    "xlsx": "^0.11.10"
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
